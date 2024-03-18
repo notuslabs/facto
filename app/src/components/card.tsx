@@ -5,7 +5,7 @@ type DivProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function Card({ children, className, ...props }: PropsWithChildren<DivProps>) {
   return (
-    <div className={cn("rounded-2xl bg-white p-8 shadow-md", className)} {...props}>
+    <div className={cn("rounded-2xl p-8 shadow-md dark:bg-white", className)} {...props}>
       {children}
     </div>
   );

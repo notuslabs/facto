@@ -6,6 +6,7 @@ import { IProvider } from "@web3auth/base";
 import { web3auth } from "@/lib/web3AuthService";
 import { OpenloginUserInfo } from "@toruslabs/openlogin-utils";
 import { SolanaWallet } from "@web3auth/solana-provider";
+import { flushSync } from "react-dom";
 
 interface AuthContextValue {
   login: () => Promise<void>;
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const init = async () => {
+      setIsLoading(true);
       try {
         await web3auth.initModal();
         setProvider(web3auth.provider);
@@ -39,13 +41,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
         }
 
         if (web3auth.connected) {
-          setUserInfo(await getUserInfo());
+          const userInfo_ = await getUserInfo();
+          setUserInfo(userInfo_);
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     };
 
     init();
