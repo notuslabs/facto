@@ -20,9 +20,9 @@ export function NavbarSignInButton() {
     );
   }
 
-  return (
-    <Button onClick={login} disabled={isLoading || userInfo}>
-      {isLoading && !userInfo ? <Loader2 size={16} className="animate-spin" /> : "Entrar"}
-    </Button>
-  );
+  if (isLoading) {
+    return <Loader2 size={16} className="animate-spin" />;
+  }
+
+  return <Button onClick={login}>Entrar</Button>;
 }
