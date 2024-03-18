@@ -52,11 +52,17 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, []);
 
   const login = async () => {
-    setIsLoading(true);
-    const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
-    setUserInfo(await getUserInfo());
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const web3authProvider = await web3auth.connect();
+      setProvider(web3authProvider);
+      setUserInfo(await getUserInfo());
+      setIsLoading(false);
+    } catch (error) {
+      setProvider(null);
+      setUserInfo(undefined);
+      setIsLoading(false);
+    }
   };
 
   const getUserInfo = async () => {
