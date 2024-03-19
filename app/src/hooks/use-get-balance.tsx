@@ -3,10 +3,12 @@ import { useSession } from "@/components/auth-provider";
 import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { CustomChainConfig } from "@web3auth/base";
 import { useEffect, useState } from "react";
+import { useConnection } from "./use-connection";
 
 export function useBalance() {
-  const [balance, setBalance] = useState<number>();
   const { userInfo, solanaWallet } = useSession();
+  const { connection } = useConnection();
+  const [balance, setBalance] = useState<number>();
   const [isLoading, setIsLoading] = useState(true);
 
   const getBalance = async () => {
@@ -26,8 +28,6 @@ export function useBalance() {
       params: [],
     });
 
-    const connection = new Connection(connectionConfig.rpcTarget);
-
     const balance = await connection.getBalance(new PublicKey(accounts[0]));
 
     setBalance(balance != null ? balance / LAMPORTS_PER_SOL : 0);
@@ -39,6 +39,7 @@ export function useBalance() {
   useEffect(() => {
     getBalance();
     // Every time the userInfo changes, we need to get the balance again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInfo]);
 
   return {

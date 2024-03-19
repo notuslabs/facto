@@ -1,12 +1,11 @@
 "use client";
 
-import { PublicKey } from "@solana/web3.js";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 import { IProvider } from "@web3auth/base";
 import { web3auth } from "@/lib/web3AuthService";
 import { OpenloginUserInfo } from "@toruslabs/openlogin-utils";
 import { SolanaWallet } from "@web3auth/solana-provider";
-import { flushSync } from "react-dom";
+import { PublicKey } from "@solana/web3.js";
 
 interface AuthContextValue {
   login: () => Promise<void>;
@@ -89,27 +88,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setProvider(null);
     setUserInfo(undefined);
   };
-
-  // TODO: use solana
-  // const signMessage = async () => {
-  //   if (!provider) {
-  //     return;
-  //   }
-
-  //   const web3 = new Web3(provider as any);
-
-  //   // Get user's Ethereum public address
-  //   const fromAddress = (await web3.eth.getAccounts())[0];
-
-  //   const originalMessage = "YOUR_MESSAGE";
-
-  //   // Sign the message
-  //   const signedMessage = await web3.eth.personal.sign(
-  //     originalMessage,
-  //     fromAddress,
-  //     "test password!", // configure your own password here.
-  //   );
-  // };
 
   return (
     <AuthContext.Provider

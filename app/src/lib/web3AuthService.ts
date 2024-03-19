@@ -3,10 +3,10 @@ import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { SolanaPrivKeyProviderConfig, SolanaPrivateKeyProvider } from "@web3auth/solana-provider";
 
-const config: SolanaPrivKeyProviderConfig = {
+export const config: SolanaPrivKeyProviderConfig = {
   chainConfig: {
     chainId: "0x3", // Please use 0x1 for Mainnet
-    rpcTarget: "https://api.devnet.solana.com",
+    rpcTarget: env.NEXT_PUBLIC_RPC_URL,
     chainNamespace: CHAIN_NAMESPACES.SOLANA,
     displayName: "Solana Devnet",
     blockExplorerUrl: "https://explorer.solana.com",
@@ -16,7 +16,7 @@ const config: SolanaPrivKeyProviderConfig = {
   },
 };
 
-const privateKeyProvider = new SolanaPrivateKeyProvider({
+export const privateKeyProvider = new SolanaPrivateKeyProvider({
   config: config,
 });
 
