@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Providers } from "@/components/providers";
 import { Navbar } from "@/components/navbar";
+import { Provider } from "jotai";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html className="dark" lang="en" suppressHydrationWarning>
-      <body className={cn("bg-background min-h-screen font-sans antialiased", fontSans.variable)}>
+      <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <Providers>
           <Navbar />
           {children}
