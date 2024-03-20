@@ -17,4 +17,8 @@ pub mod hackathon {
     pub fn create_offer(ctx: Context<CreateOffer>, title: String) -> Result<()> {
         instructions::create_offer(ctx, title)
     }
+
+    pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
+        instructions::withdraw_investments(ctx)
+    }
 }
