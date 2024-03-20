@@ -1,0 +1,41 @@
+{
+  "meta-data": {
+    "title": "Hackathon Solana",
+    "description": "Hackathon project for Solana"
+  },
+  "navbar" : {
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "home" : {
+    "hero" : {
+      "title": "Start investing",
+      "description": "A description here"
+    },
+    "offers" : {
+      "title": "Opportunities to invest",
+      "search-input-placeholder": "Search for offers, originators",
+      "card": {
+        "header": {
+          "time-period": "per Year"
+        },
+        "body": {
+          "progress": "Progress",
+          "captured-total": "Captured total",
+          "credit-score": "Credit score"
+        },
+        "footer": {
+          "receive-in": "Receive in {installments} installments",
+          "until": "until {endDate, date}",
+          "invest": "Invest"
+        }
+      }
+    }
+  },
+  "score-card": {
+    "bad": "Bad",
+    "regular": "Regular",
+    "good": "Good",
+    "excellent": "Excellent"
+  }
+}

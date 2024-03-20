@@ -1,6 +1,8 @@
 import { formatNumber } from "@/lib/format-number";
 import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { ScoreBadge } from "./score-badge";
 
 type OfferCardHeaderProps = {
   offerName: string;
@@ -30,13 +32,15 @@ type OfferCardBodyProps = {
 };
 
 function OfferCardBody({ amountAcquired, amountToBeAcquired }: OfferCardBodyProps) {
+  const t = useTranslations("home.offers.card.body");
+
   return (
     <div className="flex w-full flex-col text-background">
       <div className="flex w-full flex-col gap-2 bg-white p-4">
         <div className="flex w-full flex-col gap-3">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-xs font-semibold">Progresso</p>
-            <p className="text-xs font-semibold">Total a ser captado</p>
+            <p className="text-xs font-semibold">{t("progress")}</p>
+            <p className="text-xs font-semibold">{t("captured-total")}</p>
           </div>
           <div className="flex items-center justify-between gap-2">
             <p className="text-sm">{formatNumber(amountAcquired)}</p>
@@ -49,7 +53,8 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired }: OfferCardBodyProp
         </div>
       </div>
       <div className="flex items-center justify-between gap-2 border-t border-zinc-200 px-4 py-3.5">
-        <p className="text-sm">Pontuação de crédito</p>
+        <p className="text-sm">{t("credit-score")}</p>
+        <ScoreBadge score={123} />
       </div>
     </div>
   );
@@ -61,17 +66,16 @@ type OfferCardFooterProps = {
 };
 
 function OfferCardFooter({ installments, endDate }: OfferCardFooterProps) {
+  const t = useTranslations("home.offers.card.footer");
   return (
     <div className="flex items-center justify-between gap-2 bg-primary px-4 py-[1.125rem]">
       <p className="text-xs text-muted-foreground">
-        Receba em {installments} parcelas
-        <span className="block font-semibold text-background">
-          até {endDate.toLocaleDateString()}
-        </span>
+        {t("receive-in", { installments })}
+        <span className="block font-semibold text-background">{t("until", { endDate })}</span>
       </p>
 
       <Button variant="secondary" className="gap-2">
-        Investir
+        {t("invest")}
         <HelpingHand size={16} />
       </Button>
     </div>
@@ -79,13 +83,14 @@ function OfferCardFooter({ installments, endDate }: OfferCardFooterProps) {
 }
 
 export function OfferCard() {
+  const t = useTranslations("home.offers.card.header");
   return (
     <div className="rounded-lg shadow-md">
       <OfferCardHeader
         offerName="Nome da Oferta"
-        originatorName="NomeDoOriginador"
+        originatorName="Nome do Originador"
         percent={2.5}
-        period="ao Ano"
+        period={t("time-period")}
       />
       <OfferCardBody amountAcquired={15895.15} amountToBeAcquired={146452} />
       <OfferCardFooter
