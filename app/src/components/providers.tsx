@@ -1,11 +1,20 @@
-import { PropsWithChildren } from "react";
+import { ReactNode } from "react";
 import { AuthProvider } from "./auth-provider";
 import { Provider } from "jotai";
+import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
 
-export function Providers({ children }: PropsWithChildren) {
+type ProvidersProps = {
+  children?: ReactNode | undefined;
+  locale?: string | undefined;
+  messages?: AbstractIntlMessages | undefined;
+};
+
+export function Providers({ children, locale, messages }: ProvidersProps) {
   return (
     <Provider>
-      <AuthProvider>{children}</AuthProvider>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <AuthProvider>{children}</AuthProvider>
+      </NextIntlClientProvider>
     </Provider>
   );
 }

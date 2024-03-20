@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Badge } from "../ui/badge";
 
 type ScoreBadgeProps = {
@@ -5,11 +6,12 @@ type ScoreBadgeProps = {
 };
 
 export function ScoreBadge({ score }: ScoreBadgeProps) {
+  const t = useTranslations("score-card");
   const scoreCodes = [
-    { range: [0, 250], info: { code: "C", text: "Ruim" } },
-    { range: [250, 500], info: { code: "B", text: "Regular" } },
-    { range: [500, 750], info: { code: "A", text: "Bom" } },
-    { range: [750, Infinity], info: { code: "AAA", text: "Excelente" } },
+    { range: [0, 250], info: { code: "C", text: t("bad") } },
+    { range: [250, 500], info: { code: "B", text: t("regular") } },
+    { range: [500, 750], info: { code: "A", text: t("good") } },
+    { range: [750, Infinity], info: { code: "AAA", text: t("excellent") } },
   ];
 
   const { code, text } = scoreCodes.find(({ range }) => score >= range[0] && score < range[1])
@@ -39,7 +41,7 @@ export function ScoreBadge({ score }: ScoreBadgeProps) {
       variant="outline"
       className={`text-foreground ${colorClass} rounded-md hover:${colorClass}`}
     >
-      {text}
+      {code}
     </Badge>
   );
 }
