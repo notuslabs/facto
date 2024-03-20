@@ -21,8 +21,6 @@ import {
   mintTo,
   transfer,
 } from "@solana/spl-token";
-import { unstable_setRequestLocale } from "next-intl/server";
-import { PageProps } from "@/lib/types";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -53,7 +51,7 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
 
 const FAKE_MINT = new PublicKey("HryooQB7FbyU97UGavoiA8DWMpk7j4JXETSvcfg6SeLP");
 
-export default function TestTokenAccountTransfer({ params }: PageProps<{ locale: string }>) {
+export default function TestTokenAccountTransfer() {
   const { solanaWallet } = useSession();
   const [loggedUserTokenAccount, setLoggedUserTokenAccount] = useState<Account | null>(null);
   const [fakeTokenAccount, setFakeTokenAccount] = useState<Account | null>(null);
