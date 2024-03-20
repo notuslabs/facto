@@ -32,8 +32,8 @@ export async function generateMetadata({ params: { locale } }: Omit<Props, "chil
 }
 
 export default function RootLayout({ children, params: { locale } }: Props) {
-  const messages = useMessages();
   unstable_setRequestLocale(locale);
+  const messages = useMessages();
 
   return (
     <html className="dark" lang={locale} suppressHydrationWarning>
