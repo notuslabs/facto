@@ -9,6 +9,7 @@ import { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { locales } from "../../config";
 import { useMessages } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -32,6 +33,7 @@ export async function generateMetadata({ params: { locale } }: Omit<Props, "chil
 
 export default function RootLayout({ children, params: { locale } }: Props) {
   const messages = useMessages();
+  unstable_setRequestLocale(locale);
 
   return (
     <html className="dark" lang={locale} suppressHydrationWarning>

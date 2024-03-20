@@ -5,6 +5,7 @@ import { DetailsCard } from "./_components/details-card";
 import { ReceptionCronogram } from "./_components/reception-cronogram";
 import { AboutCard } from "./_components/about-card";
 import { LateralCard } from "./_components/lateral-card";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 const tabs = [
   {
@@ -29,7 +30,8 @@ const tabs = [
   },
 ];
 
-export default function OfferPage({ params }: PageProps<{ id: string }>) {
+export default function OfferPage({ params }: PageProps<{ id: string } & { locale: string }>) {
+  unstable_setRequestLocale(params.locale);
   return (
     <main className="container flex flex-col gap-[72px]">
       <Header title="Agiotagem" description="Nicholas Mariano Style" score={999} id={params.id} />
