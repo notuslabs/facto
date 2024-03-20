@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NavbarSignInButton } from "./navbar-sign-in-button";
 import { NavbarUserButton } from "./navbar-user-button";
+import LocaleSwitcher from "../locale-switcher";
 
 export function Navbar() {
   return (
@@ -12,6 +13,7 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center justify-end gap-8">
+          <LocaleSwitcher />
           <NavbarUserButton />
           <NavbarSignInButton />
         </div>
