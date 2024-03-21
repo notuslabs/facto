@@ -1,12 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import { HelpingHand } from "lucide-react";
 
 export function LateralCard() {
   return (
-    <aside className="flex flex-col gap-6 rounded-lg bg-primary text-gray-950">
+    <aside className="flex flex-col gap-6 rounded-lg dark:bg-secondary dark:text-primary">
       <div className="flex justify-between p-6">
         <div>
           <p className="text-placeholder text-2xl font-semibold text-muted">$0</p>
@@ -24,7 +23,7 @@ export function LateralCard() {
         </Button>
       </div>
 
-      <div className="rounded-lg bg-white">
+      <div className="rounded-bl-lg rounded-br-lg border dark:bg-primary-foreground">
         <div className="flex justify-between px-6 pb-2 pt-4">
           <div className="flex flex-col gap-3">
             <span className="font-medium">Valor captado</span>
@@ -38,26 +37,20 @@ export function LateralCard() {
         </div>
 
         <div className="px-6 pb-4">
-          <Progress className="invert" value={69420 - 666.69} />
+          <Progress indicatorColor="bg-success-strong" value={33} />
         </div>
 
-        <Separator className="bg-zinc-300" />
-
-        <div className="flex justify-between px-6 py-[14px] text-sm">
+        <div className="flex justify-between border-b border-t px-6 py-[14px] text-sm">
           <p>Status do projeto</p>
           <Badge variant="secondary" className="rounded-md">
             Em captação
           </Badge>
         </div>
 
-        <Separator className="bg-zinc-300" />
-
-        <div className="flex justify-between px-6 py-[14px] text-sm">
+        <div className="flex justify-between border-b px-6 py-[14px] text-sm">
           <p>Frequência de pagamento</p>
           <span className="font-semibold">Mensal</span>
         </div>
-
-        <Separator className="bg-zinc-300" />
 
         <div className="flex justify-between px-6 py-[14px] text-sm">
           <p>Receba em 6 parcelas até</p>

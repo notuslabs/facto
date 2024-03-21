@@ -3,7 +3,7 @@ import { CalendarDays, HandCoins } from "lucide-react";
 
 export function DetailsCard() {
   return (
-    <div className="flex flex-col gap-4 rounded-2xl bg-zinc-800 p-8">
+    <div className="flex flex-col gap-4 rounded-2xl p-8 dark:bg-primary-foreground dark:text-primary">
       <div className="flex justify-between pb-2">
         <div className="flex gap-2">
           <HandCoins size={32} /> Rendimento esperado
@@ -12,7 +12,7 @@ export function DetailsCard() {
           <span className="text-2xl font-bold">2,5%</span> ao ano
         </div>
       </div>
-      <Separator className="bg-foreground" />
+      <Separator className="dark:bg-secondary" />
       <div className="flex justify-between pb-4">
         <div className="flex gap-2">
           <CalendarDays size={24} /> Prazo do empréstimo

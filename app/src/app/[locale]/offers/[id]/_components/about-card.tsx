@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -9,67 +8,63 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BadgeCheck } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const tableData = [
   {
     data: "16/04/2024",
     offer: "Agiotagem #1",
     totalAmount: "R$250.00",
-    paymentStatus: <Badge className="bg-green-500">Pago</Badge>,
+    paymentStatus: <Badge variant="green">Pago</Badge>,
   },
   {
     data: "16/04/2024",
     offer: "Agiotagem #1",
     totalAmount: "R$250.00",
-    paymentStatus: <Badge className="bg-yellow-500">Previsto</Badge>,
+    paymentStatus: <Badge variant="yellow">Previsto</Badge>,
   },
   {
     data: "16/04/2024",
     offer: "Agiotagem #1",
     totalAmount: "R$250.00",
-    paymentStatus: <Badge className="bg-yellow-500">Previsto</Badge>,
+    paymentStatus: <Badge variant="red">Previsto</Badge>,
   },
   {
     data: "16/04/2024",
     offer: "Agiotagem #1",
     totalAmount: "R$250.00",
-    paymentStatus: <Badge className="bg-yellow-500">Previsto</Badge>,
+    paymentStatus: <Badge variant="secondary">Previsto</Badge>,
   },
   {
     data: "16/04/2024",
     offer: "Agiotagem #1",
     totalAmount: "R$250.00",
-    paymentStatus: <Badge className="bg-yellow-500">Previsto</Badge>,
+    paymentStatus: <Badge variant="secondary">Previsto</Badge>,
   },
   {
     data: "16/04/2024",
     offer: "Agiotagem #1",
     totalAmount: "R$250.00",
-    paymentStatus: <Badge className="bg-yellow-500">Previsto</Badge>,
+    paymentStatus: <Badge variant="secondary">Previsto</Badge>,
   },
 ];
 
 export function AboutCard() {
+  const t = useTranslations("offer-page.tabs.about-originator");
   return (
-    <div className="rounded-2xl bg-zinc-800">
+    <div className="rounded-2xl dark:bg-primary-foreground dark:text-primary">
       <div className="flex flex-col gap-4 px-8 py-6">
-        <h2 className="pb-2 text-xl font-bold">Sobre o originador</h2>
-        <Separator className="bg-foreground" />
+        <h2 className="pb-2 text-xl font-bold">{t("title")}</h2>
+        <Separator className="dark:bg-secondary" />
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between ">
             <div className="flex items-center gap-2">
-              <Checkbox className="size-8 rounded-lg" />
+              <div className="size-8 rounded-md border dark:border-primary"></div>
               <div className="flex flex-col text-sm">
                 <span className="font-bold">Agiotagem</span>
                 <span className="text-xs text-muted-foreground">Tipo, Categoria ou nicho</span>
               </div>
             </div>
-
-            <Badge className="flex h-5 gap-1 bg-blue-400 text-gray-900 hover:bg-blue-400">
-              <BadgeCheck size={10} />
-              Verificado
-            </Badge>
           </div>
           <p className="text-sm">
             Como Agiotagem, o mentor por trás deste projeto residencial ecológico, estou
@@ -89,7 +84,7 @@ export function AboutCard() {
           </div>
 
           <div className="flex gap-4">
-            <Separator orientation="vertical" className="bg-zinc-700" />
+            <Separator orientation="vertical" className="dark:bg-secondary" />
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">Perda</span>
               <span>66.6%</span>
@@ -97,7 +92,7 @@ export function AboutCard() {
           </div>
 
           <div className="flex gap-4">
-            <Separator orientation="vertical" className="bg-zinc-700" />
+            <Separator orientation="vertical" className="dark:bg-secondary" />
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">Total captado</span>
               <span>$69.420,00</span>
@@ -106,7 +101,7 @@ export function AboutCard() {
         </div>
       </div>
       <Table>
-        <TableHeader className="bg-zinc-900 text-sm">
+        <TableHeader className="text-sm dark:bg-primary-foreground">
           <TableRow>
             <TableHead className="w-1/4 text-foreground">Data</TableHead>
             <TableHead className="w-1/4 text-foreground">Nº Parcela</TableHead>
@@ -116,7 +111,7 @@ export function AboutCard() {
         </TableHeader>
         <TableBody>
           {tableData.map((tableData) => (
-            <TableRow className="border-b border-zinc-700 text-sm" key={tableData.data}>
+            <TableRow className="border-b text-sm  dark:border-secondary" key={tableData.data}>
               <TableCell>{tableData.offer}</TableCell>
               <TableCell>{tableData.totalAmount}</TableCell>
               <TableCell>{tableData.data}</TableCell>

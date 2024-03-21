@@ -24,7 +24,7 @@ export function ScoreBadge({ score }: ScoreBadgeProps) {
       colorClass = "bg-red-500 border-red-300";
       break;
     case "B":
-      colorClass = "bg-yellow-500 border-yellow-300";
+      colorClass = "bg-yellow-600 border-yellow-300";
       break;
     case "A":
       colorClass = "bg-green-500 border-green-300";
