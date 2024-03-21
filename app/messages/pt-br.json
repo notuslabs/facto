@@ -18,18 +18,39 @@
       "search-input-placeholder": "Buscar ofertas, originadores",
       "card": {
         "header": {
-          "time-period": "ao Ano"
+          "time-period": "ao ano",
+          "awaited-return": "Rendimento esperado"
         },
         "body": {
-          "progress": "Progresso",
-          "captured-total": "Total a ser captado",
-          "credit-score": "Pontuação de crédito"
+          "total": "Total",
+          "raised-total": "Valor captado",
+          "credit-score": "Pontuação de crédito",
+          "project-status": "Status do projeto",
+          "in-fundraising": "Em captação",
+          "payment-frequency": "Frequência de pagamento",
+          "monthly": "Mensal"
         },
         "footer": {
-          "receive-in": "Receba em {installments} parcelas",
-          "until": "until {endDate, date}",
+          "receive-in": "Receba em {installments} parcelas até",
+          "date": "{endDate, date}",
           "invest": "Investir"
         }
+      }
+    }
+  },
+  "offer-page": {
+    "tabs": {
+      "yield": {
+        "title": "Rendimento"
+      },
+      "income-cronogram": {
+        "title": "Cronograma de recebimento"
+      },
+      "about-originator":  {
+        "title": "Sobre o originador"
+      },
+      "credit-score": {
+        "title": "Score de crédito"
       }
     }
   },

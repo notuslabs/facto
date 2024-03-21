@@ -10,7 +10,7 @@ export function InvestmentsPageHeader() {
   if (!isLoading && !userInfo) return null;
 
   return (
-    <div className="min-h-[270px] dark:bg-zinc-800">
+    <div className="min-h-[270px] dark:bg-primary-foreground">
       <div className="container">
         <div className="flex items-start justify-between gap-4 px-[88px]">
           <div className="flex flex-col items-start justify-start gap-2">

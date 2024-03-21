@@ -17,18 +17,39 @@
       "search-input-placeholder": "Search for offers, originators",
       "card": {
         "header": {
-          "time-period": "per Year"
+          "time-period": "per year",
+          "awaited-return": "Awaited return"
         },
         "body": {
-          "progress": "Progress",
-          "captured-total": "Captured total",
-          "credit-score": "Credit score"
+          "total": "Total",
+          "raised-total": "Raised total",
+          "credit-score": "Credit score",
+          "project-status": "Project status",
+          "in-fundraising": "In fundraising",
+          "payment-frequency": "Payment frequency",
+          "monthly": "Monthly"
         },
         "footer": {
-          "receive-in": "Receive in {installments} installments",
-          "until": "until {endDate, date}",
+          "receive-in": "Receive in {installments} installments until",
+          "date": "{endDate, date}",
           "invest": "Invest"
         }
+      }
+    }
+  },
+  "offer-page": {
+    "tabs": {
+      "yield": {
+        "title": "Yield"
+      },
+      "income-cronogram": {
+        "title": "Income schedule"
+      },
+      "about-originator":  {
+        "title": "About originator"
+      },
+      "credit-score": {
+        "title": "Credit score"
       }
     }
   },

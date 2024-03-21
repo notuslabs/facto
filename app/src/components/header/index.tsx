@@ -1,3 +1,4 @@
+import { CircleDollarSign, HelpingHand } from "lucide-react";
 import { ScoreBadge } from "../score-badge";
 import { Badge } from "../ui/badge";
 
@@ -21,7 +22,12 @@ export function Header({ title, description, score, id }: HeaderProps) {
 
       <div className="flex gap-1">
         <ScoreBadge score={score} />
-        <Badge variant="secondary" className="text-muted-foreground">
+        <Badge className="flex gap-1" variant="gray">
+          <HelpingHand size={14} />
+          125 pessoas investiram
+        </Badge>
+        <Badge className="flex gap-1" variant="gray">
+          <CircleDollarSign size={14} />
           $15.895,15 - captados
         </Badge>
       </div>
