@@ -22,6 +22,6 @@ export const privateKeyProvider = new SolanaPrivateKeyProvider({
 
 export const web3auth = new Web3Auth({
   clientId: env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   privateKeyProvider: privateKeyProvider,
 });
