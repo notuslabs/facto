@@ -46,7 +46,7 @@ pub struct Offer {
     pub installments_total: u8,
     pub installments_paid: u8,
     pub installment_amount: f32,
-    pub installments_start_date: u64,
+    pub installments_start_date: Option<u64>,
     pub credit_score: CreditScore,
     pub created_at: i64,
     pub bump: u8,

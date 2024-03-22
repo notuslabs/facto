@@ -4,7 +4,7 @@ import { BN } from "@coral-xyz/anchor";
 import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
-import { createMint, getAccount, mintTo } from "@solana/spl-token";
+import { createMint } from "@solana/spl-token";
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
 	const airdropTx = await anchor
@@ -101,9 +101,5 @@ describe("Offer", () => {
 			.signers([caller])
 			.rpc()
 			.catch((e) => console.log(e));
-
-		const mint = await getAccount(anchor.getProvider().connection, vaultPubKey);
-
-		console.log(tx, mint);
 	});
 });
