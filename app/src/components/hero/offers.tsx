@@ -1,8 +1,9 @@
-import { Search } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { Card } from "../card";
 import { Input } from "../ui/input";
 import { OfferCard } from "../offer-card";
 import { useTranslations } from "next-intl";
+import { Button } from "../ui/button";
 
 export function Offers() {
   const t = useTranslations("home.offers");
@@ -18,6 +19,9 @@ export function Offers() {
               className="pl-10"
             />
           </div>
+          <Button variant="secondary" className="flex items-center">
+            {t("offer-stage")} <ChevronDown size={20} />
+          </Button>
         </div>
         <Card className="flex flex-col gap-6">
           <h2 className="bg-back text-2xl font-bold dark:text-primary">{t("title")}</h2>

@@ -21,6 +21,7 @@
     "offers" : {
       "title": "Opportunities to invest",
       "search-input-placeholder": "Search for offers, originators",
+      "offer-stage": "Offer stage",
       "card": {
         "header": {
           "time-period": "per year",
