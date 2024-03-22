@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Hackathon, IDL } from "@/lib/idl";
-import { metadata } from "@/lib/idl/idl-json.json";
+import idl from "@/lib/idl/idl-json.json";
 import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import { useSession } from "@/components/auth-provider";
@@ -16,10 +16,14 @@ export function useProgram() {
     const setupProgram = async () => {
       if (!solanaWallet) return;
 
-      const privateKey = await solanaWallet.request<unknown, string>({
-        method: "solanaPrivateKey",
-        params: [],
-      });
+      let privateKey: string = "";
+      try {
+        privateKey = await solanaWallet.request<unknown, string>({
+          method: "solanaPrivateKey",
+        });
+      } catch (err) {
+        console.log({ err });
+      }
 
       const keyPair = Keypair.fromSecretKey(Buffer.from(privateKey, "hex"));
       setKeypair(keyPair);
@@ -38,7 +42,7 @@ export function useProgram() {
         {},
       );
 
-      setProgram(new Program<Hackathon>(IDL, new PublicKey(metadata.address), provider));
+      setProgram(new Program<Hackathon>(IDL, new PublicKey(idl.metadata.address), provider));
     };
 
     setupProgram();
