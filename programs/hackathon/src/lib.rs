@@ -17,4 +17,12 @@ pub mod hackathon {
     pub fn create_offer(ctx: Context<CreateOffer>, title: String) -> Result<()> {
         instructions::create_offer(ctx, title)
     }
+
+    pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()> {
+        instructions::create_investor(ctx, name)
+    }
+
+    pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> { 
+        instructions::deposit_tokens(ctx, amount)
+    }
 }
