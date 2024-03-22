@@ -76,12 +76,15 @@ pub struct CreateOffer<'info> {
     )]
     pub token: Box<Account<'info, Mint>>,
 
+    #[account()] // TODO: add constraint to ensure that the token is a stablecoin
+    pub stable_token: Box<Account<'info, Mint>>,
+
     #[account(
         init,
         seeds = [b"offer_vault", offer.key().as_ref()],
         bump,
         payer = payer,
-        token::mint = token,
+        token::mint = stable_token,
         token::authority = offer
       )]
     pub vault: Box<Account<'info, TokenAccount>>,

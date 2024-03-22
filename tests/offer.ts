@@ -3,14 +3,8 @@ import type { Program } from "@coral-xyz/anchor";
 import { BN } from "@coral-xyz/anchor";
 import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
-import { Keypair, PublicKey } from "@solana/web3.js";
-import {
-	createMint,
-	getAssociatedTokenAddressSync,
-	mintTo,
-	getAccount,
-	createAssociatedTokenAccount,
-} from "@solana/spl-token";
+import { PublicKey } from "@solana/web3.js";
+import { createMint, getAccount, mintTo } from "@solana/spl-token";
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
 	const airdropTx = await anchor
@@ -51,6 +45,7 @@ describe("Offer", () => {
 		],
 		program.programId,
 	);
+	let stableTokenPubKey: PublicKey;
 
 	before(async () => {
 		await airdropSol(caller.publicKey, 30);
@@ -63,6 +58,14 @@ describe("Offer", () => {
 			})
 			.signers([caller])
 			.rpc();
+
+		stableTokenPubKey = await createMint(
+			anchor.getProvider().connection,
+			caller,
+			caller.publicKey,
+			caller.publicKey,
+			9,
+		);
 	});
 
 	it("should be able to create an offer", async () => {
@@ -92,6 +95,7 @@ describe("Offer", () => {
 				payer: caller.publicKey,
 				offer,
 				token: tokenPubKey,
+				stableToken: stableTokenPubKey,
 				vault: vaultPubKey,
 			})
 			.signers([caller])
