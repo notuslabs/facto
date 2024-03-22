@@ -10,47 +10,48 @@ import {
 } from "@/components/ui/table";
 import { useTranslations } from "next-intl";
 
-const tableData = [
-  {
-    data: "16/04/2024",
-    offer: "Agiotagem #1",
-    totalAmount: "R$250.00",
-    paymentStatus: <Badge variant="green">Pago</Badge>,
-  },
-  {
-    data: "16/04/2024",
-    offer: "Agiotagem #1",
-    totalAmount: "R$250.00",
-    paymentStatus: <Badge variant="yellow">Previsto</Badge>,
-  },
-  {
-    data: "16/04/2024",
-    offer: "Agiotagem #1",
-    totalAmount: "R$250.00",
-    paymentStatus: <Badge variant="red">Previsto</Badge>,
-  },
-  {
-    data: "16/04/2024",
-    offer: "Agiotagem #1",
-    totalAmount: "R$250.00",
-    paymentStatus: <Badge variant="secondary">Previsto</Badge>,
-  },
-  {
-    data: "16/04/2024",
-    offer: "Agiotagem #1",
-    totalAmount: "R$250.00",
-    paymentStatus: <Badge variant="secondary">Previsto</Badge>,
-  },
-  {
-    data: "16/04/2024",
-    offer: "Agiotagem #1",
-    totalAmount: "R$250.00",
-    paymentStatus: <Badge variant="secondary">Previsto</Badge>,
-  },
-];
-
 export function AboutCard() {
-  const t = useTranslations("offer-page.tabs.about-originator");
+  const t = useTranslations("offer-page.about-originator");
+  const tr = useTranslations("badges");
+
+  const tableData = [
+    {
+      data: "16/04/2024",
+      offer: "Agiotagem #1",
+      totalAmount: "R$250.00",
+      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
+    },
+    {
+      data: "16/04/2024",
+      offer: "Agiotagem #1",
+      totalAmount: "R$250.00",
+      paymentStatus: <Badge variant="yellow">{tr("anticipated")}</Badge>,
+    },
+    {
+      data: "16/04/2024",
+      offer: "Agiotagem #1",
+      totalAmount: "R$250.00",
+      paymentStatus: <Badge variant="red">{tr("anticipated")}</Badge>,
+    },
+    {
+      data: "16/04/2024",
+      offer: "Agiotagem #1",
+      totalAmount: "R$250.00",
+      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
+    },
+    {
+      data: "16/04/2024",
+      offer: "Agiotagem #1",
+      totalAmount: "R$250.00",
+      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
+    },
+    {
+      data: "16/04/2024",
+      offer: "Agiotagem #1",
+      totalAmount: "R$250.00",
+      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
+    },
+  ];
   return (
     <div className="rounded-2xl dark:bg-primary-foreground dark:text-primary">
       <div className="flex flex-col gap-4 px-8 py-6">
@@ -66,27 +67,19 @@ export function AboutCard() {
               </div>
             </div>
           </div>
-          <p className="text-sm">
-            Como Agiotagem, o mentor por trás deste projeto residencial ecológico, estou
-            comprometido em promover uma mudança positiva na construção civil. Com vasta experiência
-            e uma visão sustentável, cada contribuição é valorizada e investida com integridade e
-            transparência. Juntos, estamos construindo mais do que simples casas; estamos criando um
-            santuário para aqueles que valorizam o meio ambiente e a qualidade de vida. Agradeço
-            imensamente por se juntar a nós nesta jornada rumo a um futuro mais sustentável e
-            próspero para todos.
-          </p>
+          <p className="text-sm">{t("description")}</p>
         </div>
 
         <div className="flex justify-between">
           <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground">Ofertas</span>
+            <span className="text-xs text-muted-foreground">{t("offers")}</span>
             <span className="text-2xl font-medium text-foreground">1</span>
           </div>
 
           <div className="flex gap-4">
             <Separator orientation="vertical" className="dark:bg-secondary" />
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">Perda</span>
+              <span className="text-xs text-muted-foreground">{t("loss")}</span>
               <span>66.6%</span>
             </div>
           </div>
@@ -94,7 +87,7 @@ export function AboutCard() {
           <div className="flex gap-4">
             <Separator orientation="vertical" className="dark:bg-secondary" />
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">Total captado</span>
+              <span className="text-xs text-muted-foreground">{t("total-raised")}</span>
               <span>$69.420,00</span>
             </div>
           </div>
@@ -103,10 +96,10 @@ export function AboutCard() {
       <Table>
         <TableHeader className="text-sm dark:bg-primary-foreground">
           <TableRow>
-            <TableHead className="w-1/4 text-foreground">Data</TableHead>
-            <TableHead className="w-1/4 text-foreground">Nº Parcela</TableHead>
-            <TableHead className="w-1/4 text-foreground">Valor</TableHead>
-            <TableHead className="w-1/4 text-right text-foreground">Status</TableHead>
+            <TableHead className="w-1/4 text-foreground">{t("date")}</TableHead>
+            <TableHead className="w-1/4 text-foreground">{t("installment-number")}</TableHead>
+            <TableHead className="w-1/4 text-foreground">{t("amount")}</TableHead>
+            <TableHead className="w-1/4 text-right text-foreground">{t("status")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

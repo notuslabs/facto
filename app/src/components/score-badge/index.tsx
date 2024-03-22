@@ -30,7 +30,7 @@ export function ScoreBadge({ score }: ScoreBadgeProps) {
       colorClass = "bg-green-500 border-green-300";
       break;
     case "AAA":
-      colorClass = "bg-blue-900 border-blue-600";
+      colorClass = "bg-info-muted text-info-strong border-blue-600";
       break;
     default:
       colorClass = "bg-gray-500 border-gray-300";
@@ -39,7 +39,7 @@ export function ScoreBadge({ score }: ScoreBadgeProps) {
   return (
     <Badge
       variant="outline"
-      className={`text-foreground ${colorClass} rounded-md hover:${colorClass}`}
+      className={`text-foreground ${colorClass} rounded-md hover:${colorClass} h-7`}
     >
       {code}
     </Badge>

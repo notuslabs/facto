@@ -1,12 +1,12 @@
 import { Header } from "@/components/header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DetailsCard } from "./_components/details-card";
 import { AboutCard } from "./_components/about-card";
 import { LateralCard } from "./_components/lateral-card";
 import { unstable_setRequestLocale } from "next-intl/server";
 import { useTranslations } from "next-intl";
 import { ReceptionCronogram } from "./_components/cronogram-card";
 import { ScoreCard } from "./_components/score-card";
+import { DetailsCard } from "./_components/yield-card";
 
 type OfferPageProps = {
   params: {
@@ -26,7 +26,7 @@ export default function OfferPage({ params }: OfferPageProps) {
     },
     {
       name: "cronogram",
-      display: t("tabs.income-cronogram.title"),
+      display: t("tabs.income-schedule.title"),
       content: <ReceptionCronogram />,
     },
     {
@@ -48,7 +48,7 @@ export default function OfferPage({ params }: OfferPageProps) {
 
       <div className="flex gap-8">
         <div className="w-1/2">
-          <Tabs defaultValue="details" className="flex flex-col items-start gap-4">
+          <Tabs defaultValue="yield" className="flex flex-col items-start gap-4">
             <TabsList>
               {tabs.map((tab) => (
                 <TabsTrigger value={tab.name} key={tab.name}>
