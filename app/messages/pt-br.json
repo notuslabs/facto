@@ -5,9 +5,14 @@
   },
   "navbar" : {
     "login": "Entrar",
-    "logout": "Sair"
+    "logout": "Sair",
+    "my-investments": "Meus investimentos",
+    "receivables": "Parcelas a receber"
   },
-
+  "header": {
+    "people-invested": "{peopleNumber} pessoas investiram",
+    "money-raised": "{moneyRaised} - captados"
+  },
   "home": {
     "hero" : {
       "title": "Comece a investir",
@@ -43,7 +48,7 @@
       "yield": {
         "title": "Rendimento"
       },
-      "income-cronogram": {
+      "income-schedule": {
         "title": "Cronograma de recebimento"
       },
       "about-originator":  {
@@ -52,6 +57,47 @@
       "credit-score": {
         "title": "Score de crédito"
       }
+    },
+    "details-card": {
+      "title": "Rendimento esperado",
+      "per-year": "ao ano",
+      "loan-term": "Prazo do empréstimo",
+      "months": "meses",
+      "description": "Junte-se a nós na construção do Sonho Verde, um condomínio residencial ecologicamente sustentável, onde o conforto se une à preservação ambiental. Com sua contribuição através do nosso crowdfunding, podemos transformar esse projeto em realidade, oferecendo espaços verdes, tecnologias eco-friendly e qualidade de vida incomparável. Cada doação conta! Participe agora e faça parte dessa comunidade que valoriza o futuro do planeta e o bem-estar de todos os seus habitantes."
+    },
+    "income-schedule" : {
+      "title": "Cronograma de recebimento",
+      "date": "Data",
+      "installment-number": "Nº Parcela",
+      "amount": "Valor",
+      "status": "Status"
+    },
+    "about-originator" : {
+      "title": "Sobre o originador",
+      "description": "Como Agiotagem, o mentor por trás deste projeto residencial ecológico, estou comprometido em promover uma mudança positiva na construção civil. Com vasta experiência e uma visão sustentável, cada contribuição é valorizada e investida com integridade e transparência. Juntos, estamos construindo mais do que simples casas; estamos criando um santuário para aqueles que valorizam o meio ambiente e a qualidade de vida. Agradeço imensamente por se juntar a nós nesta jornada rumo a um futuro mais sustentável e próspero para todos.",
+      "offers": "Ofertas",
+      "loss": "Perda",
+      "total-raised": "Total captado",
+      "date": "Data",
+      "installment-number": "Nº Parcela",
+      "amount": "Valor",
+      "status": "Status"
+    },
+    "score-card": {
+      "title": "Score de crédito",
+      "description": "Nicholas, um verdadeiro carioca de coração, encontra alegria no ritmo vibrante das ruas do Rio de Janeiro e no balanço tranquilo de suas praias. No entanto, sob a ensolarada aparência, há um amor apaixonado por One Piece, um mundo onde piratas navegam pelos mares em busca de aventura e tesouro. Dos personagens coloridos às batalhas épicas, Nicholas se envolve na cativante história, tecendo sonhos de terras distantes e liberdade sem limites. A cada capítulo, seu espírito voa, levado pelos ventos da imaginação, enquanto espera ansiosamente a próxima viagem ao lado de Luffy e sua tripulação."
+    },
+    "lateral-card": {
+      "your-balance": "Seu saldo em conta é de ",
+      "invest-now": "Investir agora",
+      "you-invested": "Você investiu",
+      "raised-value": "Valor captado",
+      "in-fundraising": "Em captação",
+      "offer-status": "Status da oferta",
+      "payment-frequency": "Frequência de pagamento",
+      "monthly": "Mensal",
+      "receive-in": "Receba em {installments} parcelas até",
+      "date": "{date, date}"
     }
   },
   "score-card": {
@@ -59,5 +105,9 @@
     "regular": "Regular",
     "good": "Bom",
     "excellent": "Excelente"
+  },
+  "badges": {
+    "paid": "Pago",
+    "anticipated": "Previsto"
   }
 }
