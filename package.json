@@ -5,7 +5,8 @@
     },
     "dependencies": {
         "@coral-xyz/anchor": "^0.29.0",
-        "@solana/spl-token": "^0.4.1"
+        "@solana/spl-token": "^0.4.1",
+        "nanoid": "^3.3.7"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.6.1",

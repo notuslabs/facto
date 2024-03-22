@@ -1,65 +1,98 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{Token, TokenAccount, Mint};
 use anchor_spl::associated_token::AssociatedToken;
+use anchor_spl::token::{Mint, Token, TokenAccount};
 
 use crate::Originator;
 
+#[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace)]
+pub enum OfferStatus {
+    Open,
+    Failed,
+    Funded,
+    OnTrack,
+    Finished,
+}
+
+#[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace)]
+pub enum CreditScore {
+    AAA,
+    AA,
+    A,
+    BBB,
+    BB,
+    B,
+    CCC,
+    CC,
+    C,
+    DDD,
+    DD,
+    D,
+}
+
 #[account]
+#[derive(InitSpace)]
 pub struct Offer {
-    pub title: String,
-    pub owner: Pubkey,
+    #[max_len(16)]
+    pub id: String,
+    #[max_len(100)]
+    pub name: String,
+    #[max_len(500)]
+    pub description: String,
+    pub interest_rate_percent: f32,
+    pub deadline_date: u64,
+    pub goal_amount: f32,
+    pub start_date: Option<u64>,
+    pub status: OfferStatus,
+    pub installments_total: u8,
+    pub installments_paid: u8,
+    pub installment_amount: f32,
+    pub installments_start_date: u64,
+    pub credit_score: CreditScore,
+    pub created_at: i64,
     pub bump: u8,
+    pub token_bump: u8,
+    pub vault_bump: u8,
 }
-
-impl Offer {
-    const LENGTH: usize = 8 + 4 + 140 + 32 + 1; // default length + (string prefix length + 140 title content) + originator pubkey length + bump length
-}
-
-#[account]
-pub struct Empty {}
 
 #[derive(Accounts)]
+#[instruction(id: String)]
 pub struct CreateOffer<'info> {
-    // spl token stuff
-    #[account(init, payer = payer, space = 8)]
-    pub token_account_authority: Account<'info, Empty>,
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+
+    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump = originator.bump)]
+    pub originator: Box<Account<'info, Originator>>,
+    #[account(init, payer = payer, space = Offer::INIT_SPACE, seeds = [b"offer", id.as_bytes()], bump)]
+    pub offer: Box<Account<'info, Offer>>,
     #[account(
         init,
+        seeds = [b"offer_token", offer.key().as_ref()],
+        bump,
         payer = payer,
-        associated_token::mint = mint,
-        associated_token::authority = token_account_authority
+        mint::authority = offer,
+        mint::decimals = 9,
     )]
-    pub token_account: Account<'info, TokenAccount>,
-    pub mint: Account<'info, Mint>,
+    pub token: Box<Account<'info, Mint>>,
 
-    #[account(mut)]
-    pub owner: Signer<'info>,
-    #[account(mut, seeds = [b"originator", owner.key().as_ref()], bump = originator.bump)] 
-    pub originator: Account<'info, Originator>,
-
-    // offer stuff
-    #[account(init, payer = payer, space = Offer::LENGTH, seeds = [b"offer", originator.key().as_ref()], bump)]
-    pub offer: Account<'info, Offer>,
+    #[account(
+        init,
+        seeds = [b"offer_vault", offer.key().as_ref()],
+        bump,
+        payer = payer,
+        token::mint = token,
+        token::authority = offer
+      )]
+    pub vault: Box<Account<'info, TokenAccount>>,
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
-    #[account(mut)]
-    pub payer: Signer<'info>,
 }
 
 #[derive(Accounts)]
 pub struct WithdrawInvestments<'info> {
-    #[account(mut)]
-    pub token_account: Account<'info, TokenAccount>,
-    #[account(mut)]
-    pub mint: Account<'info, Mint>,
-    #[account(mut)]
-    pub token_account_authority: Account<'info, Empty>,
-    #[account(mut)]
-    pub from: Signer<'info>,
-    #[account(mut)]
-    pub destination: Account<'info, TokenAccount>,
     #[account(mut)]
     pub payer: Signer<'info>,
     pub system_program: Program<'info, System>,
