@@ -27,6 +27,7 @@ pub fn create_offer(
     offer.interest_rate_percent = interest_rate_percent;
     offer.installments_total = installments_total;
     offer.installments_paid = 0;
+    offer.installments_start_date = installments_start_date;
     offer.installment_amount = 0.0; // TODO: calculate the installment amount
     offer.credit_score = CreditScore::A; // TODO: in the future we'll have a system to set the credit score
     offer.created_at = Clock::get()?.unix_timestamp; // TODO: find a better way to get the timestamp
