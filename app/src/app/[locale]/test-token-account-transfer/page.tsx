@@ -16,6 +16,7 @@ import { utils } from "@coral-xyz/anchor";
 import { useProgram } from "@/hooks/use-program";
 import { BN } from "bn.js";
 import { config } from "@/lib/web3AuthService";
+import { Input } from "@/components/ui/input";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -43,13 +44,15 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
   );
 }
 
-const FAKE_MINT = new PublicKey("4vJ8pofMGdE6GWTdgZp12UKpkc1w6RmrSyt6oEwGjBEK");
+const FAKE_MINT = new PublicKey("2HLi3JMD6Yd9ikBjFYfPv23uchngaBu5TPvRiBHXVPd4");
 
 export default function TestTokenAccountTransfer() {
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [userTokenAccount, setUserTokenAccount] = useState<Account | null>(null);
+  const [investorTokenAccount, setInvestorTokenAccount] = useState<Account | null>(null);
+  const [fakeTokenAccount, setFakeTokenAccount] = useState<Account | null>(null);
   const { solanaWallet, userInfo } = useSession();
   const { program } = useProgram();
-  const [loggedUserTokenAccount, setLoggedUserTokenAccount] = useState<Account | null>(null);
-  const [fakeTokenAccount, setFakeTokenAccount] = useState<Account | null>(null);
 
   function createConnection() {
     const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
@@ -77,7 +80,7 @@ export default function TestTokenAccountTransfer() {
   }
 
   async function depositTokens() {
-    if (!solanaWallet || !loggedUserTokenAccount || !program) return;
+    if (!solanaWallet || !investorTokenAccount || !program) return;
 
     const connection = createConnection();
     const privateKey = await getPrivateKey(solanaWallet);
@@ -88,7 +91,7 @@ export default function TestTokenAccountTransfer() {
       program.programId,
     );
 
-    const [investorTokenAccount] = PublicKey.findProgramAddressSync(
+    const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
       [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
       program.programId,
     );
@@ -97,16 +100,16 @@ export default function TestTokenAccountTransfer() {
       .depositTokens(new BN(20e9))
       .accounts({
         investor: investorPubKey,
-        investorTokenAccount: investorTokenAccount,
+        investorTokenAccount: investorTokenAccountPubKey,
         owner: loggedUserWallet.publicKey,
         payer: loggedUserWallet.publicKey,
         mint: FAKE_MINT,
       })
       .rpc();
 
-    const investorInfo = await getAccount(connection, investorTokenAccount);
+    const investorInfo = await getAccount(connection, investorTokenAccountPubKey);
 
-    setLoggedUserTokenAccount(investorInfo);
+    setInvestorTokenAccount(investorInfo);
   }
 
   async function createInvestorAccount() {
@@ -121,7 +124,7 @@ export default function TestTokenAccountTransfer() {
       program.programId,
     );
 
-    const [investorTokenAccount] = PublicKey.findProgramAddressSync(
+    const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
       [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
       program.programId,
     );
@@ -130,7 +133,7 @@ export default function TestTokenAccountTransfer() {
       .createInvestor(userInfo?.name ?? userInfo?.email ?? loggedUserWallet.publicKey.toString())
       .accounts({
         investor: investorPubKey,
-        investorTokenAccount: investorTokenAccount,
+        investorTokenAccount: investorTokenAccountPubKey,
         payer: loggedUserWallet.publicKey,
         owner: loggedUserWallet.publicKey,
         mint: FAKE_MINT,
@@ -138,9 +141,45 @@ export default function TestTokenAccountTransfer() {
       .signers([loggedUserWallet])
       .rpc();
 
-    const investorInfo = await getAccount(connection, investorTokenAccount);
+    const investorInfo = await getAccount(connection, investorTokenAccountPubKey);
 
-    setLoggedUserTokenAccount(investorInfo);
+    setInvestorTokenAccount(investorInfo);
+  }
+
+  async function withdraw() {
+    if (!solanaWallet || !investorTokenAccount || !program || !userTokenAccount) return;
+    const connection = createConnection();
+    const privateKey = await getPrivateKey(solanaWallet);
+    const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
+
+    const [investorPubKey] = PublicKey.findProgramAddressSync(
+      [utils.bytes.utf8.encode("investor"), loggedUserWallet.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+      [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
+      program.programId,
+    );
+
+    await program.methods
+      .withdrawTokens(new BN(withdrawAmount * 10 ** 9))
+      .accounts({
+        investor: investorPubKey,
+        investorTokenAccount: investorTokenAccountPubKey,
+        toTokenAccount: userTokenAccount.address,
+        mint: FAKE_MINT,
+        payer: loggedUserWallet.publicKey,
+        owner: loggedUserWallet.publicKey,
+      })
+      .rpc()
+      .catch((e) => console.log(e));
+
+    const investorInfo = await getAccount(connection, investorTokenAccountPubKey);
+    const userInfo = await getAccount(connection, userTokenAccount.address);
+
+    setInvestorTokenAccount(investorInfo);
+    setUserTokenAccount(userInfo);
   }
 
   // Initialize Token Account
@@ -162,7 +201,15 @@ export default function TestTokenAccountTransfer() {
         program.programId,
       );
 
-      setLoggedUserTokenAccount(await getAccount(connection, investorTokenAccount));
+      const userTokenAccount = await getOrCreateAssociatedTokenAccount(
+        connection,
+        loggedUserWallet,
+        FAKE_MINT,
+        loggedUserWallet.publicKey,
+      );
+
+      setInvestorTokenAccount(await getAccount(connection, investorTokenAccount));
+      setUserTokenAccount(userTokenAccount);
     })();
   }, [solanaWallet, program]);
 
@@ -171,13 +218,35 @@ export default function TestTokenAccountTransfer() {
       <h1 className="pb-1 text-3xl font-bold">Test Token Account Transfer</h1>
       <p>This page is a test for transferring tokens from one token account to another.</p>
 
-      {(loggedUserTokenAccount || fakeTokenAccount) && (
+      {(investorTokenAccount || fakeTokenAccount || userTokenAccount) && (
         <div className="flex flex-col items-start justify-start gap-4 pt-4">
-          {loggedUserTokenAccount && (
+          {investorTokenAccount && (
+            <>
+              <div className="flex flex-col items-start justify-start gap-4">
+                <TokenAccountOverview
+                  title="Current User Token Account"
+                  address={investorTokenAccount.address}
+                  amount={investorTokenAccount.amount}
+                />
+
+                <div className="flex w-full gap-2">
+                  <Input
+                    value={withdrawAmount}
+                    onChange={(e) => setWithdrawAmount(Number(e.target.value))}
+                    placeholder="Amount to Withdraw"
+                  />
+
+                  <Button onClick={withdraw}>Withdraw</Button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {userTokenAccount && (
             <TokenAccountOverview
               title="Current User Token Account"
-              address={loggedUserTokenAccount.address}
-              amount={loggedUserTokenAccount.amount}
+              address={userTokenAccount.address}
+              amount={userTokenAccount.amount}
             />
           )}
 
@@ -193,11 +262,11 @@ export default function TestTokenAccountTransfer() {
 
       <div className="flex flex-col items-start justify-start gap-6 py-4">
         <div className="flex items-center justify-start gap-2">
-          <Button onClick={createInvestorAccount} disabled={!!loggedUserTokenAccount}>
+          <Button onClick={createInvestorAccount} disabled={!!investorTokenAccount}>
             I Want to be an investor
           </Button>
 
-          <Button onClick={depositTokens} disabled={!loggedUserTokenAccount}>
+          <Button onClick={depositTokens} disabled={!investorTokenAccount}>
             GIVE ME TOKENS
           </Button>
         </div>
