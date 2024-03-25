@@ -8,6 +8,7 @@ pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()>
     investor.name = name;
     investor.owner = ctx.accounts.owner.key();
     investor.bump = ctx.bumps.investor;
+    investor.token_account_bump = ctx.bumps.investor_token_account;
     Ok(())
 }
 

@@ -6,6 +6,7 @@ pub struct Investor {
     pub name: String,
     pub owner: Pubkey,
     pub bump: u8,
+    pub token_account_bump: u8,
 }
 
 #[account]
