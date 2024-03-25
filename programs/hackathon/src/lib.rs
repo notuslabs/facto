@@ -14,6 +14,10 @@ pub mod hackathon {
         instructions::create_originator(ctx, name, description)
     }
 
+    pub fn edit_originator(ctx: Context<EditOriginator>, name: String, description: String) -> Result<()> {
+        instructions::edit_originator(ctx, name, description)
+    }
+
     pub fn create_offer(ctx: Context<CreateOffer>, title: String) -> Result<()> {
         instructions::create_offer(ctx, title)
     }
