@@ -4,7 +4,6 @@ import "../globals.css";
 import { cn } from "@/lib/utils";
 import { Providers } from "@/components/providers";
 import { Navbar } from "@/components/navbar";
-import { Provider } from "jotai";
 import { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { locales } from "../../config";
