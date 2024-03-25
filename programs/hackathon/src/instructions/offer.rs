@@ -1,9 +1,10 @@
 use crate::CreateOffer;
 use crate::CreditScore;
 use crate::OfferStatus;
-use crate::WithdrawInvestments;
-use anchor_lang::prelude::Clock;
+use crate::{WithdrawInvestments, Invest};
 use anchor_lang::prelude::*;
+use anchor_spl::token;
+use anchor_spl::token::{MintTo, Transfer};
 
 pub fn create_offer(
     ctx: Context<CreateOffer>,
@@ -32,6 +33,33 @@ pub fn create_offer(
     offer.bump = ctx.bumps.offer;
     offer.token_bump = ctx.bumps.token;
     offer.vault_bump = ctx.bumps.vault;
+    Ok(())
+}
+
+pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
+    let token_account = &mut ctx.accounts.investor_token_account;
+
+    let transfer = Transfer {
+        from: token_account.to_account_info().clone(),
+        to: ctx.accounts.vault_token_account.to_account_info().clone(),
+        authority: ctx.accounts.caller.to_account_info().clone(),
+    };
+    let cpi_program = ctx.accounts.token_program.to_account_info();
+
+    token::transfer(CpiContext::new(cpi_program, transfer), amount)?;
+
+    let mint_to = MintTo {
+        mint: ctx.accounts.offer_token.to_account_info().clone(),
+        to: ctx.accounts.investor_offer_token_account.to_account_info().clone(),
+        authority: ctx.accounts.offer.to_account_info().clone(),
+    };
+
+    token::mint_to(CpiContext::new_with_signer(
+        ctx.accounts.token_program.to_account_info(), 
+        mint_to,
+        &[&[b"offer", ctx.accounts.offer.id.as_bytes(), &[ctx.accounts.offer.bump]]]
+    ), amount)?;
+
     Ok(())
 }
 

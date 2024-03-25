@@ -95,6 +95,36 @@ pub struct CreateOffer<'info> {
 }
 
 #[derive(Accounts)]
+pub struct Invest<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+    
+    #[account(
+        init_if_needed,
+        payer = payer,
+        associated_token::mint = offer_token,
+        associated_token::authority = caller
+    )]
+    pub investor_offer_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
+    pub vault_token_account: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub investor_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    pub offer: Account<'info, Offer>,
+    
+    #[account(mut)]
+    pub offer_token: Account<'info, Mint>,
+    
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+}
+
+
+#[derive(Accounts)]
 pub struct WithdrawInvestments<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
