@@ -1,13 +1,20 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, MintTo, Transfer};
 
-use crate::{CreateInvestor, DepositTokens, WithdrawTokens};
+use crate::{CreateInvestor, DepositTokens, EditInvestor, WithdrawTokens};
 
 pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()> {
     let investor = &mut ctx.accounts.investor;
     investor.name = name;
     investor.owner = ctx.accounts.owner.key();
     investor.bump = ctx.bumps.investor;
+    Ok(())
+}
+
+pub fn edit_investor(ctx: Context<EditInvestor>, name: String) -> Result<()> {
+    let investor = &mut ctx.accounts.investor;
+    investor.name = name;
+
     Ok(())
 }
 
@@ -22,7 +29,6 @@ pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
             authority: ctx.accounts.owner.to_account_info(),
         },
     ), amount).unwrap();
-
 
     Ok(())
 }

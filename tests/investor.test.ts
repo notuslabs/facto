@@ -1,16 +1,10 @@
 import * as anchor from '@coral-xyz/anchor';
 import type { Hackathon } from '../target/types/hackathon';
-import {
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  sendAndConfirmTransaction,
-} from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js';
 import {
   createMint,
   getAccount,
   getOrCreateAssociatedTokenAccount,
-  transfer,
 } from '@solana/spl-token';
 import { airdropSol } from './utils';
 import { BN } from 'bn.js';
@@ -50,7 +44,7 @@ describe('Investor', () => {
 
   it('should be able to become an investor', async () => {
     await program.methods
-      .createInvestor('Random Investor')
+      .createInvestor('Investor 1')
       .accounts({
         investor: investorPubKey,
         investorTokenAccount: investorTokenAccountPubKey,
@@ -59,17 +53,36 @@ describe('Investor', () => {
         mint: tokenPublicKey,
       })
       .signers([caller])
-      .rpc()
-      .catch((e) => console.log(e));
+      .rpc();
 
     const investorTokenAccount = await getAccount(
       anchor.getProvider().connection,
       investorTokenAccountPubKey
     );
 
+    const investorInfo = await program.account.investor.fetch(investorPubKey);
+
     expect(investorTokenAccount).not.to.be.undefined;
     expect(investorTokenAccount).not.to.be.null;
     expect(parseFloat(investorTokenAccount.amount.toString())).to.equal(0);
+    expect(investorInfo.name).to.equal('Investor 1');
+  });
+
+  it('Should be able to edit the investor name', async () => {
+    await program.methods
+      .editInvestor('Investor 2')
+      .accounts({
+        investor: investorPubKey,
+        owner: caller.publicKey,
+        payer: caller.publicKey,
+      })
+      .signers([caller])
+      .rpc()
+      .catch((e) => console.log(e));
+
+    const investorInfo = await program.account.investor.fetch(investorPubKey);
+
+    expect(investorInfo.name).to.equal('Investor 2');
   });
 
   it('Should be able to deposit', async () => {
