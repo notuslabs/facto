@@ -8,10 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PageProps } from "@/lib/types";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 
-export default function ReceivablesPage() {
+export default function ReceivablesPage({ params }: PageProps<{ locale: string }>) {
+  unstable_setRequestLocale(params.locale);
   const t = useTranslations("receivables-page");
   const tr = useTranslations("badges");
   const installments = 2;

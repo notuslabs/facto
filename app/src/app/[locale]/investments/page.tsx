@@ -8,10 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PageProps } from "@/lib/types";
 import { ChevronDown, ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 
-export default function InvestmentsPage() {
+export default function InvestmentsPage({ params }: PageProps<{ locale: string }>) {
+  unstable_setRequestLocale(params.locale);
+
   const t = useTranslations("investments-page");
   const tr = useTranslations("badges");
 
