@@ -25,6 +25,8 @@ export function useProgram() {
         console.log({ err });
       }
 
+      if (!privateKey) return;
+
       const keyPair = Keypair.fromSecretKey(Buffer.from(privateKey, "hex"));
       setKeypair(keyPair);
 
