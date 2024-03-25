@@ -27,7 +27,7 @@ export default function LocaleSwitcher() {
   return (
     <Button
       className="flex gap-1 font-semibold"
-      variant={"ghost"}
+      variant="ghost"
       onClick={() => changeLocale(otherLocale)}
     >
       <Globe size={20} />

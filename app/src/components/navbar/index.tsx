@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { NavbarSignInButton } from "./navbar-sign-in-button";
-import { NavbarUserButton } from "./navbar-user-button";
 import LocaleSwitcher from "../locale-switcher";
 import { useLocale, useTranslations } from "next-intl";
 import { Smile } from "lucide-react";
 import { usePathname } from "@/navigation";
 import { cn } from "@/lib/utils";
+import { NavbarUserButton } from "./_components/navbar-user-button";
+import { NavbarSignInButton } from "./_components/navbar-sign-in-button";
+import { NavbarCreateAccountButton } from "./_components/navbar-create-account-button";
+import { NavbarWithdrawalButton } from "./_components/navbar-withdrawal-button";
+import { NavbarBalance } from "./_components/navbar-balance";
+import { NavbarDepositButton } from "./_components/navbar-deposit-button";
 
 export function Navbar() {
   const t = useTranslations("navbar");
@@ -16,13 +20,13 @@ export function Navbar() {
 
   return (
     <nav className="h-[153px] w-full pt-8 dark:bg-background">
-      <div className="container flex h-10 items-center justify-between">
+      <div className="container flex items-center justify-between">
         <div className="flex items-center gap-12">
           <Link href="/" className="flex items-center justify-start gap-2">
             <Smile size={40} />
             <span className="text-4xl font-bold">LOGO</span>
           </Link>
-          <div className="flex gap-4 text-disabled-foreground  dark:text-muted-foreground">
+          <div className="flex gap-4 text-sm font-medium text-disabled-foreground dark:text-muted-foreground">
             <Link
               className={cn(pathname === "/investments" ? "text-primary" : "", "transition-colors")}
               href={`/${locale}/investments`}
@@ -40,8 +44,14 @@ export function Navbar() {
 
         <div className="flex items-center justify-end gap-8">
           <LocaleSwitcher />
-          <NavbarUserButton />
-          <NavbarSignInButton />
+          <div className="flex gap-3">
+            <NavbarCreateAccountButton />
+            <NavbarWithdrawalButton />
+            <NavbarDepositButton />
+            <NavbarBalance />
+            <NavbarUserButton />
+            <NavbarSignInButton />
+          </div>
         </div>
       </div>
     </nav>

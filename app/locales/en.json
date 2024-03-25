@@ -7,7 +7,11 @@
     "login": "Login",
     "logout": "Logout",
     "my-investments": "My investments",
-    "receivables": "Outstanding receivables"
+    "receivables": "Outstanding receivables",
+    "create-account": "Create account",
+    "withdrawal": "Withdrawal",
+    "deposit": "Deposit",
+    "balance": "My Balance"
   },
   "header": {
     "people-invested": "{peopleNumber} people invested",
