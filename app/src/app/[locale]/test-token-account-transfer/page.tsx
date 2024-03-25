@@ -14,8 +14,8 @@ import {
 } from "@solana/spl-token";
 import { utils } from "@coral-xyz/anchor";
 import { useProgram } from "@/hooks/use-program";
-import { env } from "@/env";
 import { BN } from "bn.js";
+import { config } from "@/lib/web3AuthService";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -52,7 +52,7 @@ export default function TestTokenAccountTransfer() {
   const [fakeTokenAccount, setFakeTokenAccount] = useState<Account | null>(null);
 
   function createConnection() {
-    const connection = new Connection(env.NEXT_PUBLIC_RPC_URL, "confirmed");
+    const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
 
     return connection;
   }
