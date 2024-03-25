@@ -1,7 +1,7 @@
 use crate::CreateOffer;
 use crate::CreditScore;
 use crate::OfferStatus;
-use crate::{WithdrawInvestments, Invest};
+use crate::{Invest, WithdrawInvestments};
 use anchor_lang::prelude::*;
 use anchor_spl::token;
 use anchor_spl::token::{MintTo, Transfer};
@@ -38,28 +38,50 @@ pub fn create_offer(
 }
 
 pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
-    let token_account = &mut ctx.accounts.investor_token_account;
+    let investor_token_account = &mut ctx.accounts.investor_token_account;
 
     let transfer = Transfer {
-        from: token_account.to_account_info().clone(),
+        from: investor_token_account.to_account_info().clone(),
         to: ctx.accounts.vault_token_account.to_account_info().clone(),
-        authority: ctx.accounts.caller.to_account_info().clone(),
+        authority: ctx.accounts.investor.to_account_info().clone(),
     };
     let cpi_program = ctx.accounts.token_program.to_account_info();
 
-    token::transfer(CpiContext::new(cpi_program, transfer), amount)?;
+    token::transfer(
+        CpiContext::new_with_signer(
+            cpi_program,
+            transfer,
+            &[&[
+                b"investor",
+                ctx.accounts.caller.key().as_ref(),
+                &[ctx.accounts.investor.bump],
+            ]],
+        ),
+        amount,
+    )?;
 
     let mint_to = MintTo {
         mint: ctx.accounts.offer_token.to_account_info().clone(),
-        to: ctx.accounts.investor_offer_token_account.to_account_info().clone(),
+        to: ctx
+            .accounts
+            .investor_offer_token_account
+            .to_account_info()
+            .clone(),
         authority: ctx.accounts.offer.to_account_info().clone(),
     };
 
-    token::mint_to(CpiContext::new_with_signer(
-        ctx.accounts.token_program.to_account_info(), 
-        mint_to,
-        &[&[b"offer", ctx.accounts.offer.id.as_bytes(), &[ctx.accounts.offer.bump]]]
-    ), amount)?;
+    token::mint_to(
+        CpiContext::new_with_signer(
+            ctx.accounts.token_program.to_account_info(),
+            mint_to,
+            &[&[
+                b"offer",
+                ctx.accounts.offer.id.as_bytes(),
+                &[ctx.accounts.offer.bump],
+            ]],
+        ),
+        amount,
+    )?;
 
     Ok(())
 }

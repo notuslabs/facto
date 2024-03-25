@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::{Mint, Token, TokenAccount};
 
-use crate::Originator;
+use crate::{Investor, Originator};
 
 #[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace)]
 pub enum OfferStatus {
@@ -104,19 +104,22 @@ pub struct Invest<'info> {
     #[account(
         init_if_needed,
         payer = payer,
-        associated_token::mint = offer_token,
-        associated_token::authority = caller
+        token::mint = offer_token,
+        token::authority = investor,
+        seeds=[b"investor_offer_token_account", investor.key().as_ref()],
+        bump
     )]
     pub investor_offer_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
     pub vault_token_account: Account<'info, TokenAccount>,
-    #[account(mut)]
+    #[account(mut, seeds=[b"investor_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
     pub investor_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
-    
     #[account(mut)]
     pub offer_token: Account<'info, Mint>,
+    #[account(mut, seeds=[b"investor", caller.key().as_ref()], bump=investor.bump)]
+    pub investor: Account<'info, Investor>,
     
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
