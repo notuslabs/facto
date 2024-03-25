@@ -14,6 +14,7 @@ interface AuthContextValue {
   solanaWallet: SolanaWallet | null;
   provider: IProvider | null;
   userInfo: Partial<OpenloginUserInfo> | undefined;
+  address: PublicKey | null;
   isLoading: boolean;
 }
 
@@ -24,6 +25,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [userInfo, setUserInfo] = useState<Partial<OpenloginUserInfo>>();
   const [solanaWallet, setSolanaWallet] = useState<SolanaWallet | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [address, setAddress] = useState<PublicKey | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -36,7 +38,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
         // every time we want to execute an action, so I'm saving it
         // in a state variable.
         if (web3auth.provider) {
-          setSolanaWallet(new SolanaWallet(web3auth.provider));
+          const solanaWallet = new SolanaWallet(web3auth.provider);
+
+          setSolanaWallet(solanaWallet);
+          setAddress((await getPublicKey(solanaWallet)) ?? null);
         }
 
         if (web3auth.connected) {
@@ -73,7 +78,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     return user;
   };
 
-  const getPublicKey = async () => {
+  const getPublicKey = async (solanaWallet?: SolanaWallet | null) => {
     if (!solanaWallet) {
       return;
     }
@@ -99,6 +104,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         login,
         logout,
         getPublicKey,
+        address,
       }}
     >
       {children}
