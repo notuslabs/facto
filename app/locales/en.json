@@ -1,0 +1,114 @@
+{
+  "meta-data": {
+    "title": "Hackathon Solana",
+    "description": "Hackathon project for Solana"
+  },
+  "navbar" : {
+    "login": "Login",
+    "logout": "Logout",
+    "my-investments": "My investments",
+    "receivables": "Outstanding receivables"
+  },
+  "header": {
+    "people-invested": "{peopleNumber} people invested",
+    "money-raised": "{moneyRaised} - raised"
+  },
+  "home" : {
+    "hero" : {
+      "title": "Start investing",
+      "description": "A description here"
+    },
+    "offers" : {
+      "title": "Opportunities to invest",
+      "search-input-placeholder": "Search for offers, originators",
+      "offer-stage": "Offer stage",
+      "card": {
+        "header": {
+          "time-period": "per year",
+          "awaited-return": "Awaited return"
+        },
+        "body": {
+          "total": "Total",
+          "raised-total": "Raised total",
+          "credit-score": "Credit score",
+          "project-status": "Project status",
+          "in-fundraising": "In fundraising",
+          "payment-frequency": "Payment frequency",
+          "monthly": "Monthly"
+        },
+        "footer": {
+          "receive-in": "Receive in {installments} installments until",
+          "date": "{endDate, date}",
+          "invest": "Invest"
+        }
+      }
+    }
+  },
+  "offer-page": {
+    "tabs": {
+      "yield": {
+        "title": "Yield"
+      },
+      "income-schedule": {
+        "title": "Income schedule"
+      },
+      "about-originator": {
+        "title": "About originator"
+      },
+      "credit-score": {
+        "title": "Credit score"
+      }
+    },
+    "details-card": {
+      "title": "Expected yield",
+      "per-year": "per year",
+      "loan-term": "Loan term",
+      "months": "months",
+      "description": "Join us in building the Green Dream, an environmentally sustainable residential condominium, where comfort meets environmental preservation. With your contribution through our crowdfunding, we can turn this project into reality, offering green spaces, eco-friendly technologies, and unparalleled quality of life. Every donation counts! Join now and be part of this community that values the future of the planet and the well-being of all its inhabitants."
+    },
+    "income-schedule" : {
+      "title": "Income schedule",
+      "date": "Date",
+      "installment-number": "Installment nº",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "about-originator": {
+      "title": "About originator",
+      "description": "As Usury, the mentor behind this ecological residential project, I am committed to promoting positive change in the construction industry. With extensive experience and a sustainable vision, each contribution is valued and invested with integrity and transparency. Together, we are building more than just houses; we are creating a sanctuary for those who value the environment and quality of life. I am immensely grateful for you joining us on this journey towards a more sustainable and prosperous future for all.",
+      "offers": "Offers",
+      "loss": "Loss",
+      "total-raised": "Raised total",
+      "date": "Date",
+      "installment-number": "Installment nº",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "score-card": {
+      "title": "Credit score",
+      "description": "Nicholas, a true Carioca at heart, finds joy in the vibrant rhythm of Rio de Janeiro's streets and the soothing sway of its beaches. Yet, beneath the sunny exterior lies a passionate love for One Piece, a world where pirates roam the seas in search of adventure and treasure. From the colorful characters to the epic battles, Nicholas immerses himself in the captivating tale, weaving dreams of distant shores and boundless freedom. With each chapter, his spirit soars, carried on the winds of imagination, as he eagerly awaits the next voyage alongside Luffy and his crew."
+    },
+    "lateral-card": {
+      "your-balance": "Your in account balance is ",
+      "invest-now": "Invest now",
+      "you-invested": "You invested",
+      "raised-value": "Raised value",
+      "in-fundraising": "In fundraising",
+      "offer-status": "Offer status",
+      "payment-frequency": "Payment frequency",
+      "monthly": "Monthly",
+      "receive-in": "Receive in {installments} installments until",
+      "date": "{date, date}"
+    }
+  },
+  "score-card": {
+    "bad": "Bad",
+    "regular": "Regular",
+    "good": "Good",
+    "excellent": "Excellent"
+  },
+  "badges": {
+    "paid": "Paid",
+    "anticipated": "Anticipated"
+  }
+}
