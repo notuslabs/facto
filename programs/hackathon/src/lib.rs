@@ -25,4 +25,8 @@ pub mod hackathon {
     pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> { 
         instructions::deposit_tokens(ctx, amount)
     }
+
+    pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> { 
+        instructions::withdraw_tokens(ctx, amount)
+    }
 }
