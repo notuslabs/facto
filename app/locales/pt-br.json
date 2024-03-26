@@ -7,7 +7,11 @@
     "login": "Entrar",
     "logout": "Sair",
     "my-investments": "Meus investimentos",
-    "receivables": "Parcelas a receber"
+    "receivables": "Parcelas a receber",
+    "create-account": "Criar conta",
+    "withdrawal": "Saque",
+    "deposit": "Depósito",
+    "balance": "Meu Saldo"
   },
   "header": {
     "people-invested": "{peopleNumber} pessoas investiram",
@@ -100,6 +104,33 @@
       "receive-in": "Receba em {installments} parcelas até",
       "date": "{date, date}"
     }
+  },
+  "investments-page": {
+    "title": "Meus investimentos",
+    "all-status": "Todos status",
+    "exhibiting": "Exibindo",
+    "offers": "ofertas",
+    "offer-name": "Oferta",
+    "raised-value": "Valor captado",
+    "offer-total": "Total da oferta",
+    "invested-amount": "Valor investido",
+    "return": "Rendimento esperado",
+    "final-date": "Data final",
+    "installment-number": "Receberá em",
+    "visualize": "Visualizar",
+    "status": "Status",
+    "see-offer": "Ver oferta"
+  },
+  "receivables-page": {
+    "title": "Parcelas a receber",
+    "exhibiting": "Exibindo",
+    "all-status": "Todos status",
+    "installments-to-receive": "Parcelas a receber de {installments} ofertas",
+    "offer-name": "Oferta",
+    "date": "Data",
+    "installment": "Parcela",
+    "installment-value": "Valor da parcela",
+    "status": "Status"
   },
   "score-card": {
     "bad": "Ruim",

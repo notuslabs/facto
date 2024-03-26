@@ -7,7 +7,11 @@
     "login": "Login",
     "logout": "Logout",
     "my-investments": "My investments",
-    "receivables": "Outstanding receivables"
+    "receivables": "Outstanding receivables",
+    "create-account": "Create account",
+    "withdrawal": "Withdrawal",
+    "deposit": "Deposit",
+    "balance": "My Balance"
   },
   "header": {
     "people-invested": "{peopleNumber} people invested",
@@ -100,6 +104,33 @@
       "receive-in": "Receive in {installments} installments until",
       "date": "{date, date}"
     }
+  },
+  "investments-page": {
+    "title": "My investments",
+    "all-status": "All status",
+    "exhibiting": "Exhibiting",
+    "offers": "offers",
+    "offer-name": "Offer",
+    "raised-value": "Raised value",
+    "offer-total": "Offer total",
+    "invested-amount": "Invested amount",
+    "return": "Expected returns",
+    "final-date": "Final date",
+    "installment-number": "Installments number",
+    "visualize": "Visualize",
+    "status": "Status",
+    "see-offer": "See offer"
+  },
+  "receivables-page": {
+    "title": "Outstanding receivables",
+    "exhibiting": "Exhibiting",
+    "all-status": "All status",
+    "installments-to-receive": "Installments to receive from {installments} offers",
+    "offer-name": "Offer",
+    "date": "Date",
+    "installment": "Installment",
+    "installment-value": "Installment value",
+    "status": "Status"
   },
   "score-card": {
     "bad": "Bad",

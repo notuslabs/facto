@@ -39,6 +39,19 @@ pub struct CreateInvestor<'info> {
 }
 
 #[derive(Accounts)]
+pub struct EditInvestor<'info> {
+    #[account(mut, seeds = [b"investor", owner.key().as_ref()], bump = investor.bump)]
+    pub investor: Account<'info, Investor>,
+
+    #[account(mut)]
+    pub payer: Signer<'info>,
+
+    #[account(mut)]
+    pub owner: Signer<'info>, // owner of the token account
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
 pub struct DepositTokens<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,

@@ -16,8 +16,6 @@ export default function LocaleSwitcher() {
     startTransition(() => {
       router.replace(
         // @ts-expect-error -- TypeScript will validate that only known `params`
-        // are used in combination with a given `pathname`. Since the two will
-        // always match for the current route, we can skip runtime checks.
         { pathname, params },
         { locale: locale },
       );
@@ -29,7 +27,7 @@ export default function LocaleSwitcher() {
   return (
     <Button
       className="flex gap-1 font-semibold"
-      variant={"ghost"}
+      variant="ghost"
       onClick={() => changeLocale(otherLocale)}
     >
       <Globe size={20} />
