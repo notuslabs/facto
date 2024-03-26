@@ -4,50 +4,21 @@ use anchor_spl::token::{Mint, Token, TokenAccount};
 
 use crate::Originator;
 
-#[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace)]
-pub enum OfferStatus {
-    Open,
-    Failed,
-    Funded,
-    OnTrack,
-    Finished,
-}
-
-#[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace)]
-pub enum CreditScore {
-    AAA,
-    AA,
-    A,
-    BBB,
-    BB,
-    B,
-    CCC,
-    CC,
-    C,
-    DDD,
-    DD,
-    D,
-}
-
 #[account]
 #[derive(InitSpace)]
 pub struct Offer {
     #[max_len(16)]
     pub id: String,
-    #[max_len(100)]
-    pub name: String,
     #[max_len(500)]
     pub description: String,
+    pub discriminator: u32,
     pub interest_rate_percent: f32,
-    pub deadline_date: u64,
     pub goal_amount: f32,
-    pub start_date: Option<u64>,
-    pub status: OfferStatus,
+    pub deadline_date: u64,
+    pub acquired_amount: f32,
+    pub originator: Pubkey,
     pub installments_total: u8,
-    pub installments_paid: u8,
-    pub installment_amount: f32,
-    pub installments_start_date: Option<u64>,
-    pub credit_score: CreditScore,
+    pub credit_score: u16,
     pub created_at: i64,
     pub bump: u8,
     pub token_bump: u8,
@@ -76,9 +47,8 @@ pub struct CreateOffer<'info> {
     )]
     pub token: Box<Account<'info, Mint>>,
 
-    #[account()] // TODO: add constraint to ensure that the token is a stablecoin
+    #[account(mut)] // TODO: add constraint to ensure that the token is a stablecoin
     pub stable_token: Box<Account<'info, Mint>>,
-
     #[account(
         init,
         seeds = [b"offer_vault", offer.key().as_ref()],

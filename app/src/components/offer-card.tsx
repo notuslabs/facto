@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ScoreBadge } from "./score-badge";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
+import { Offer } from "@/lib/idl/offer";
 
 type OfferCardHeaderProps = {
   offerName: string;
@@ -87,10 +88,10 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
 type OfferCardFooterProps = {
   installments: number;
   endDate: Date;
-  offerNumber: number;
+  offerId: string;
 };
 
-function OfferCardFooter({ installments, endDate, offerNumber }: OfferCardFooterProps) {
+function OfferCardFooter({ installments, endDate, offerId }: OfferCardFooterProps) {
   const t = useTranslations("home.offers.card.footer");
   const locale = useLocale();
   return (
@@ -103,7 +104,7 @@ function OfferCardFooter({ installments, endDate, offerNumber }: OfferCardFooter
       </p>
 
       <Button variant="default" size="sm">
-        <a className="flex items-center gap-2" href={`${locale}/offers/${offerNumber}`}>
+        <a className="flex items-center gap-2" href={`${locale}/offers/${offerId}`}>
           {t("invest")}
           <HelpingHand size={16} />
         </a>
@@ -113,52 +114,30 @@ function OfferCardFooter({ installments, endDate, offerNumber }: OfferCardFooter
 }
 
 type OfferCardProps = {
-  offerNumber: number;
+  offer: Offer;
 };
 
-export function OfferCard({ offerNumber }: OfferCardProps) {
+export function OfferCard({ offer }: OfferCardProps) {
   const t = useTranslations("home.offers.card.header");
-
-  const nameExamples = [
-    { name: "Growth Booster Bonds", originatorName: "Alpha Investments" },
-    { name: "Fortune Builder Fund", originatorName: "Beta Capital" },
-    { name: "Prosperity Portfolio", originatorName: "Gamma Finance" },
-    { name: "Wealth Expansion Equity", originatorName: "Delta Ventures" },
-    { name: "Opportunity Oasis", originatorName: "Omega Holdings" },
-    { name: "Success Surge Securities", originatorName: "Sigma Securities" },
-    { name: "Prosperity Pathway Plan", originatorName: "Zeta Funds" },
-    { name: "Future Harvest Fund", originatorName: "Epsilon Investors" },
-    { name: "WealthWise Opportunities", originatorName: "Theta Trust" },
-    { name: "Capital Catalyst Collection", originatorName: "Nu Assets" },
-  ];
-
-  const randomData = {
-    date: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * Math.ceil(Math.random() * 300)),
-    percent: Number((Math.random() * 15).toFixed(1)),
-    creditScore: Math.floor(Math.random() * 1001),
-    amountAcquired: Math.floor(Math.random() * 10000),
-    amountToBeAcquired: Math.random() * 150000 + 10000,
-    installments: Math.floor(Math.random() * 20) + 6,
-  };
 
   return (
     <div className="rounded-lg border dark:border-border">
       <OfferCardHeader
-        offerName={nameExamples[offerNumber - 1].name}
-        originatorName={nameExamples[offerNumber - 1].originatorName}
-        percent={randomData.percent}
+        offerName={`${offer.originator.tokenSlug}#${offer.discriminator}`}
+        originatorName={offer.originator.name}
+        percent={offer.interestRatePercent}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
       <OfferCardBody
-        creditScore={randomData.creditScore}
-        amountAcquired={randomData.amountAcquired}
-        amountToBeAcquired={randomData.amountToBeAcquired}
+        creditScore={offer.creditScore}
+        amountAcquired={offer.acquiredAmount}
+        amountToBeAcquired={offer.goalAmount}
       />
       <OfferCardFooter
-        installments={randomData.installments}
-        endDate={randomData.date}
-        offerNumber={offerNumber}
+        installments={offer.installmentsTotal}
+        endDate={new Date(offer.deadlineDate.toNumber())}
+        offerId={offer.id}
       />
     </div>
   );

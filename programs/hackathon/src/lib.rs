@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use state::*;
 
-declare_id!("7sffxVRTvBY1CUezQcbWAC4J6Gp134tktjrzLExnsfcn");
+declare_id!("fsbZaAAcxGLVUikWonjzJJdmJv4Aj2CWPxgRsGaUUbu");
 
 pub mod instructions;
 pub mod state;
@@ -14,31 +14,28 @@ pub mod hackathon {
         ctx: Context<CreateOriginator>,
         name: String,
         description: String,
+        token_slug: String,
     ) -> Result<()> {
-        instructions::create_originator(ctx, name, description)
+        instructions::create_originator(ctx, name, description, token_slug)
     }
 
     pub fn create_offer(
         ctx: Context<CreateOffer>,
         id: String,
-        name: String,
         description: String,
-        deadline_date: u64,
         goal_amount: f32,
+        deadline_date: u64,
         interest_rate_percent: f32,
         installments_total: u8,
-        installments_start_date: Option<u64>,
     ) -> Result<()> {
         instructions::create_offer(
             ctx,
             id,
-            name,
             description,
-            deadline_date,
             goal_amount,
+            deadline_date,
             interest_rate_percent,
             installments_total,
-            installments_start_date,
         )
     }
 

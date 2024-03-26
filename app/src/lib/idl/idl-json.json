@@ -8,7 +8,7 @@
         {
           "name": "originator",
           "isMut": true,
-          "isSigner": true
+          "isSigner": false
         },
         {
           "name": "payer",
@@ -41,19 +41,39 @@
       "name": "createOffer",
       "accounts": [
         {
-          "name": "owner",
+          "name": "payer",
           "isMut": true,
           "isSigner": true
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "offer",
           "isMut": true,
-          "isSigner": true
+          "isSigner": false
         },
         {
-          "name": "payer",
+          "name": "token",
           "isMut": true,
-          "isSigner": true
+          "isSigner": false
+        },
+        {
+          "name": "stableToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -64,12 +84,47 @@
           "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": [
         {
-          "name": "title",
+          "name": "id",
           "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "deadlineDate",
+          "type": "u64"
+        },
+        {
+          "name": "goalAmount",
+          "type": "f32"
+        },
+        {
+          "name": "interestRatePercent",
+          "type": "f32"
+        },
+        {
+          "name": "installmentsTotal",
+          "type": "u8"
+        },
+        {
+          "name": "installmentsStartDate",
+          "type": {
+            "option": "u64"
+          }
         }
       ]
     }
@@ -97,15 +152,83 @@
         "kind": "struct",
         "fields": [
           {
-            "name": "title",
+            "name": "id",
             "type": "string"
           },
           {
-            "name": "owner",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "interestRatePercent",
+            "type": "f32"
+          },
+          {
+            "name": "deadlineDate",
+            "type": "u64"
+          },
+          {
+            "name": "goalAmount",
+            "type": "f32"
+          },
+          {
+            "name": "originator",
             "type": "publicKey"
           },
           {
+            "name": "startDate",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "OfferStatus"
+            }
+          },
+          {
+            "name": "installmentsTotal",
+            "type": "u8"
+          },
+          {
+            "name": "installmentsPaid",
+            "type": "u8"
+          },
+          {
+            "name": "installmentAmount",
+            "type": "f32"
+          },
+          {
+            "name": "installmentsStartDate",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "creditScore",
+            "type": {
+              "defined": "CreditScore"
+            }
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
             "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "tokenBump",
+            "type": "u8"
+          },
+          {
+            "name": "vaultBump",
             "type": "u8"
           }
         ]
@@ -123,12 +246,89 @@
           {
             "name": "description",
             "type": "string"
+          },
+          {
+            "name": "totalOffers",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "OfferStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Failed"
+          },
+          {
+            "name": "Funded"
+          },
+          {
+            "name": "OnTrack"
+          },
+          {
+            "name": "Finished"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreditScore",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AAA"
+          },
+          {
+            "name": "AA"
+          },
+          {
+            "name": "A"
+          },
+          {
+            "name": "BBB"
+          },
+          {
+            "name": "BB"
+          },
+          {
+            "name": "B"
+          },
+          {
+            "name": "CCC"
+          },
+          {
+            "name": "CC"
+          },
+          {
+            "name": "C"
+          },
+          {
+            "name": "DDD"
+          },
+          {
+            "name": "DD"
+          },
+          {
+            "name": "D"
           }
         ]
       }
     }
   ],
   "metadata": {
-    "address": "7sffxVRTvBY1CUezQcbWAC4J6Gp134tktjrzLExnsfcn"
+    "address": "fhv5QKFeZSJW6i7Tx3hHZpuSh3wwatDKCCst3BWCoLx"
   }
 }

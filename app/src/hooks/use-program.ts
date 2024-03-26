@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Hackathon, IDL } from "@/lib/idl";
-import { metadata } from "@/lib/idl/idl-json.json";
+import idl from "../../../target/idl/hackathon.json";
 import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import { useSession } from "@/components/auth-provider";
@@ -37,8 +37,7 @@ export function useProgram() {
         },
         {},
       );
-
-      setProgram(new Program<Hackathon>(IDL, new PublicKey(metadata.address), provider));
+      setProgram(new Program<Hackathon>(IDL, new PublicKey(idl.metadata.address), provider));
     };
 
     setupProgram();

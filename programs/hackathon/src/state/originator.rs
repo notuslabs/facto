@@ -3,11 +3,13 @@ use anchor_lang::prelude::*;
 #[account]
 #[derive(InitSpace)]
 pub struct Originator {
-    #[max_len(16)]
+    #[max_len(50)]
     pub name: String,
     #[max_len(256)]
     pub description: String,
-    pub total_offers: u8,
+    pub total_offers: u32,
+    #[max_len(30)]
+    pub token_slug: String,
     pub bump: u8,
 }
 

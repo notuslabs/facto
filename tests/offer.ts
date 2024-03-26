@@ -57,7 +57,7 @@ describe("Offer", () => {
   before(async () => {
     await airdropSol(caller.publicKey, 30);
     await program.methods
-      .createOriginator("test", "description")
+      .createOriginator("test", "description", "teste")
       .accounts({
         originator,
         owner: caller.publicKey,
@@ -88,13 +88,11 @@ describe("Offer", () => {
     const tx = await program.methods
       .createOffer(
         offerId,
-        "Offer Name",
         "Offer Description",
-        new BN(1664996800),
         100,
+        new BN(1664996800),
         1.5,
-        3,
-        null
+        3
       )
       .accounts({
         caller: caller.publicKey,
