@@ -5,7 +5,12 @@ import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
 import { createMint, mintTo, getAccount } from "@solana/spl-token";
-import { expect } from "chai";
+import chai from "chai";
+import chaiSubset from "chai-subset";
+
+chai.use(chaiSubset);
+
+const { expect } = chai;
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
@@ -65,7 +70,7 @@ describe("Offer", () => {
     );
 
     await program.methods
-      .createOriginator("test", "description")
+      .createOriginator("test", "description", "teste")
       .accounts({
         originator,
         caller: caller.publicKey,
@@ -108,13 +113,13 @@ describe("Offer", () => {
       program.programId
     );
 
-    const tx = await program.methods
+    await program.methods
       .createOffer(
         offerId,
-        "Offer Name",
         "Offer Description",
         new BN(1664996800),
         new BN(100),
+        null,
         new BN(50),
         1.5,
         3,
@@ -130,12 +135,24 @@ describe("Offer", () => {
         vault: vaultPubKey,
       })
       .signers([caller])
-      .rpc()
+      .rpc({ commitment: "processed" })
       .catch((e) => console.log(e));
 
-    const mint = await getAccount(anchor.getProvider().connection, vaultPubKey);
+    const offerAccount = await program.account.offer.fetch(offer);
 
-    console.log(tx, mint);
+    expect(offerAccount).to.containSubset({
+      id: offerId,
+      description: "Offer Description",
+      discriminator: 0,
+      interestRatePercent: 1.5,
+      goalAmount: new BN(100),
+      originator,
+      installmentsTotal: 3,
+      installmentsStartDate: null,
+      minAmountInvest: new BN(50),
+      startDate: null,
+    });
+    expect(offerAccount.deadlineDate.toString()).to.equal("1664996800");
   });
 
   it("should be able to deposit in the offer", async () => {
@@ -191,7 +208,7 @@ describe("Offer", () => {
           investor,
         })
         .signers([caller, caller])
-        .rpc()
+        .rpc();
 
       expect(false, "should've failed but didn't ").true;
     } catch (err) {
@@ -215,7 +232,7 @@ describe("Offer", () => {
           investor,
         })
         .signers([caller, caller])
-        .rpc()
+        .rpc();
 
       expect(false, "should've failed but didn't ").true;
     } catch (err) {
