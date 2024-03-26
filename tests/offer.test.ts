@@ -68,7 +68,7 @@ describe("Offer", () => {
       .createOriginator("test", "description")
       .accounts({
         originator,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
       })
       .signers([caller])
@@ -87,9 +87,9 @@ describe("Offer", () => {
       .accounts({
         investor,
         investorTokenAccount: investorTokenAccountPubKey,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
-        mint: stableTokenPubKey,
+        stableCoin: stableTokenPubKey,
       })
       .signers([caller])
       .rpc()
