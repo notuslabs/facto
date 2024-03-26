@@ -153,7 +153,22 @@
       "submit-button": "Continuar",
       "success-toast-message": "Sua conta foi criada com sucesso",
       "error-toast-message": "Ocorreu um erro ao criar sua conta",
-      "already-registered-toast-message": "Já existe uma conta de investidor vinculada à sua conta"
+      "already-registered-toast-message": "Já existe uma conta de investidor vinculada à sua conta."
+    },
+    "originator": {
+      "title": "Vamos criar sua conta",
+      "form-fields": {
+        "name": "Nome de Originador",
+        "name-description": "{chars}/{maxChars} caracteres max",
+        "name-placeholder": "Nome de Investidor",
+        "description": "Descrição",
+        "description-description": "{chars}/{maxChars} caracteres max",
+        "description-placeholder": "Breve descrição sobre seu perfil"
+      },
+      "submit-button": "Continuar",
+      "success-toast-message": "Sua conta foi criada com sucesso",
+      "error-toast-message": "Ocorreu um erro ao criar sua conta",
+      "already-registered-toast-message": "Já existe uma conta de originador vinculada à sua conta."
     }
   }
 }

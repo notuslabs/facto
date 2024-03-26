@@ -41,7 +41,7 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
   );
 }
 
-export const FAKE_MINT = new PublicKey("AcNkmYkBwhqnKdAmuxzUJZC41YUtVUxhiR3uEMRzvWab");
+export const FAKE_MINT = new PublicKey("H3MKGszLcdLgXTGpKTtQdaygPkqnM5wumwUz93jxd679");
 
 export default function TestTokenAccountTransfer() {
   const withdrawRef = useRef<HTMLInputElement>(null);

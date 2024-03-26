@@ -154,6 +154,21 @@
       "success-toast-message": "Your account was created successfully",
       "error-toast-message": "An error occurred while creating your account",
       "already-registered-toast-message": "There is already an investor account linked to your account."
+    },
+    "originator": {
+      "title": "Let's create your account",
+      "form-fields": {
+        "name": "Originator Name",
+        "name-description": "{chars}/{maxChars} characteres max",
+        "name-placeholder": "Originator Name",
+        "description": "Description",
+        "description-description": "{chars}/{maxChars} characteres max",
+        "description-placeholder": "Short description about your profile"
+      },
+      "submit-button": "Continue",
+      "success-toast-message": "Your account was created successfully",
+      "error-toast-message": "An error occurred while creating your account",
+      "already-registered-toast-message": "There is already an originator account linked to your account."
     }
   }
 }
