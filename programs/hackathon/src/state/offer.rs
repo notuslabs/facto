@@ -4,7 +4,7 @@ use anchor_spl::token::{Mint, Token, TokenAccount};
 
 use crate::{Investor, Originator};
 
-#[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace)]
+#[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace, PartialEq)]
 pub enum OfferStatus {
     Open,
     Failed,
@@ -40,8 +40,10 @@ pub struct Offer {
     pub description: String,
     pub interest_rate_percent: f32,
     pub deadline_date: u64,
-    pub goal_amount: f32,
-    pub start_date: Option<u64>,
+    pub goal_amount: u64,
+    pub acquired_amount: u64,
+    pub min_amount_invest: u64,
+    pub start_date: Option<i64>,
     pub status: OfferStatus,
     pub installments_total: u8,
     pub installments_paid: u8,
@@ -52,6 +54,20 @@ pub struct Offer {
     pub bump: u8,
     pub token_bump: u8,
     pub vault_bump: u8,
+}
+
+impl<'info> Offer {
+    // Função que calcula o status com base em alguma lógica
+    pub fn status(&self) -> OfferStatus {
+        let clock = Clock::get().unwrap();
+        let current_timestamp = clock.unix_timestamp;
+
+        if current_timestamp < self.start_date.unwrap() && self.acquired_amount < self.goal_amount {
+            OfferStatus::Open
+        } else {
+            OfferStatus::Finished
+        }
+    }
 }
 
 #[derive(Accounts)]

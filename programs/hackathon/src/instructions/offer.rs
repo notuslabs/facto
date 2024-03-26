@@ -12,7 +12,8 @@ pub fn create_offer(
     name: String,
     description: String,
     deadline_date: u64,
-    goal_amount: f32,
+    goal_amount: u64,
+    min_amount_invest: u64,
     interest_rate_percent: f32,
     installments_total: u8,
     installments_start_date: Option<u64>,
@@ -34,14 +35,19 @@ pub fn create_offer(
     offer.bump = ctx.bumps.offer;
     offer.token_bump = ctx.bumps.token;
     offer.vault_bump = ctx.bumps.vault;
+    offer.min_amount_invest = min_amount_invest;
     Ok(())
 }
 
 pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
-    let investor_token_account = &mut ctx.accounts.investor_token_account;
-
+    require!(amount >= ctx.accounts.offer.min_amount_invest, OfferErrors::MinAmountRequired);
+    require!((ctx.accounts.vault_token_account.amount + amount) <= ctx.accounts.offer.goal_amount, OfferErrors::GoalAmountExceeded);
+    require!(ctx.accounts.offer.status == OfferStatus::Open, OfferErrors::OfferIsNotOpen);
+    
+    ctx.accounts.offer.acquired_amount += amount;
+    
     let transfer = Transfer {
-        from: investor_token_account.to_account_info().clone(),
+        from: ctx.accounts.investor_token_account.to_account_info().clone(),
         to: ctx.accounts.vault_token_account.to_account_info().clone(),
         authority: ctx.accounts.investor.to_account_info().clone(),
     };
@@ -88,4 +94,14 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
 
 pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
     Ok(())
+}
+
+#[error_code]
+pub enum OfferErrors {
+    #[msg("Min amount required")]
+    MinAmountRequired,
+    #[msg("Goal amount exceeded")]
+    GoalAmountExceeded,
+    #[msg("The Offer is not open")]
+    OfferIsNotOpen
 }

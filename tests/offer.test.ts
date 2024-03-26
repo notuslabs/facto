@@ -1,6 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import type { Program } from "@coral-xyz/anchor";
-import { BN } from "@coral-xyz/anchor";
+import { AnchorError, BN } from "@coral-xyz/anchor";
 import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
@@ -114,7 +114,8 @@ describe("Offer", () => {
         "Offer Name",
         "Offer Description",
         new BN(1664996800),
-        100,
+        new BN(100),
+        new BN(50),
         1.5,
         3,
         null
@@ -175,6 +176,54 @@ describe("Offer", () => {
       ],
       program.programId
     );
+
+    try {
+      await program.methods
+        .invest(new anchor.BN("49"))
+        .accounts({
+          vaultTokenAccount,
+          caller: caller.publicKey,
+          investorOfferTokenAccount,
+          investorTokenAccount: investorTokenAccountPubKey,
+          payer: caller.publicKey,
+          offerToken: offerTokenPublicKey,
+          offer,
+          investor,
+        })
+        .signers([caller, caller])
+        .rpc()
+
+      expect(false, "should've failed but didn't ").true;
+    } catch (err) {
+      expect(err).to.be.instanceOf(AnchorError);
+      expect((err as AnchorError).error.errorMessage).to.equal(
+        "Min amount required"
+      );
+    }
+
+    try {
+      await program.methods
+        .invest(new anchor.BN("101"))
+        .accounts({
+          vaultTokenAccount,
+          caller: caller.publicKey,
+          investorOfferTokenAccount,
+          investorTokenAccount: investorTokenAccountPubKey,
+          payer: caller.publicKey,
+          offerToken: offerTokenPublicKey,
+          offer,
+          investor,
+        })
+        .signers([caller, caller])
+        .rpc()
+
+      expect(false, "should've failed but didn't ").true;
+    } catch (err) {
+      expect(err).to.be.instanceOf(AnchorError);
+      expect((err as AnchorError).error.errorMessage).to.equal(
+        "Goal amount exceeded"
+      );
+    }
 
     const tx1 = await program.methods
       .invest(new anchor.BN(investAmount.toString()))
