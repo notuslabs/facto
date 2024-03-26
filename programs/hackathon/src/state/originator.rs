@@ -23,7 +23,11 @@ pub struct CreateOriginator<'info> {
 
 #[derive(Accounts)]
 pub struct EditOriginator<'info> {
-    #[account(mut)]
+    #[account(
+        mut,
+        seeds = [b"originator", owner.key().as_ref()],
+        bump=originator.bump
+    )]
     pub originator: Account<'info, Originator>,
     #[account(mut)]
     pub payer: Signer<'info>,
