@@ -48,9 +48,9 @@ describe('Investor', () => {
       .accounts({
         investor: investorPubKey,
         investorTokenAccount: investorTokenAccountPubKey,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
-        mint: tokenPublicKey,
+        stableCoin: tokenPublicKey,
       })
       .signers([caller])
       .rpc();
@@ -91,9 +91,9 @@ describe('Investor', () => {
       .accounts({
         investor: investorPubKey,
         investorTokenAccount: investorTokenAccountPubKey,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
-        mint: tokenPublicKey,
+        stableCoin: tokenPublicKey,
       })
       .signers([caller])
       .rpc()
@@ -126,9 +126,9 @@ describe('Investor', () => {
         investor: investorPubKey,
         investorTokenAccount: investorTokenAccount.address,
         toTokenAccount: caller_token_account.address,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
-        mint: tokenPublicKey,
+        stableCoin: tokenPublicKey,
       })
       .signers([caller])
       .rpc()
