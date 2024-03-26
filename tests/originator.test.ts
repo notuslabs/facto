@@ -25,7 +25,7 @@ describe('Originator', () => {
       .accounts({
         originator: originatorPubKey,
         payer: caller.publicKey,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
       })
       .signers([caller])
       .rpc()
@@ -47,7 +47,7 @@ describe('Originator', () => {
       .accounts({
         originator: originatorPubKey,
         payer: caller.publicKey,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
       })
       .signers([caller])
       .rpc()
