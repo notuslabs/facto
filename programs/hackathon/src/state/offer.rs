@@ -80,7 +80,7 @@ pub struct CreateOffer<'info> {
 
     #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump = originator.bump)]
     pub originator: Box<Account<'info, Originator>>,
-    #[account(init, payer = payer, space = Offer::INIT_SPACE, seeds = [b"offer", id.as_bytes()], bump)]
+    #[account(init, payer = payer, space = Offer::INIT_SPACE, seeds = [b"offer", id.as_bytes()], bump=offer.bump)]
     pub offer: Box<Account<'info, Offer>>,
     #[account(
         init,
