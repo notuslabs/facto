@@ -2,21 +2,16 @@ use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token::{Mint, Token, TokenAccount}};
 
 #[account]
+#[derive(InitSpace)]
 pub struct Investor {
+    #[max_len(30)]
     pub name: String,
     pub bump: u8,
 }
 
-#[account]
-pub struct Empty {}
-
-impl Investor {
-    const LENGTH: usize = 8 + 4 + 32 + 32; // default length + (string prefix length + investor name length) + caller pubkey length
-}
-
 #[derive(Accounts)]
 pub struct CreateInvestor<'info> {
-    #[account(init, payer = payer, space = Investor::LENGTH, seeds = [b"investor", caller.key().as_ref()], bump)]
+    #[account(init, payer = payer, space = Investor::INIT_SPACE, seeds = [b"investor", caller.key().as_ref()], bump)]
     pub investor: Account<'info, Investor>,
     #[account(
         init,
