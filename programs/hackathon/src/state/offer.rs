@@ -80,12 +80,12 @@ pub struct CreateOffer<'info> {
 
     #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump = originator.bump)]
     pub originator: Box<Account<'info, Originator>>,
-    #[account(init, payer = payer, space = Offer::INIT_SPACE, seeds = [b"offer", id.as_bytes()], bump=offer.bump)]
+    #[account(init, payer = payer, space = Offer::INIT_SPACE, seeds = [b"offer", id.as_bytes()], bump)]
     pub offer: Box<Account<'info, Offer>>,
     #[account(
         init,
         seeds = [b"offer_token", offer.key().as_ref()],
-        bump=offer.token_bump,
+        bump,
         payer = payer,
         mint::authority = offer,
         mint::decimals = 9,
@@ -98,7 +98,7 @@ pub struct CreateOffer<'info> {
     #[account(
         init,
         seeds = [b"offer_vault", offer.key().as_ref()],
-        bump=offer.vault_bump,
+        bump,
         payer = payer,
         token::mint = stable_token,
         token::authority = offer
@@ -116,7 +116,7 @@ pub struct Invest<'info> {
     pub payer: Signer<'info>,
     #[account(mut)]
     pub caller: Signer<'info>,
-    
+
     #[account(
         init_if_needed,
         payer = payer,
@@ -136,12 +136,11 @@ pub struct Invest<'info> {
     pub offer_token: Account<'info, Mint>,
     #[account(mut, seeds=[b"investor", caller.key().as_ref()], bump=investor.bump)]
     pub investor: Account<'info, Investor>,
-    
+
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
 }
-
 
 #[derive(Accounts)]
 pub struct WithdrawInvestments<'info> {
