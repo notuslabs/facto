@@ -85,7 +85,7 @@ pub struct CreateOffer<'info> {
     #[account(
         init,
         seeds = [b"offer_token", offer.key().as_ref()],
-        bump,
+        bump=offer.token_bump,
         payer = payer,
         mint::authority = offer,
         mint::decimals = 9,
