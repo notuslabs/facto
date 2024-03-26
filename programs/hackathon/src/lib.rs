@@ -22,6 +22,10 @@ pub mod hackathon {
         instructions::create_investor(ctx, name)
     }
 
+    pub fn edit_investor(ctx: Context<EditInvestor>, name: String) -> Result<()> {
+        instructions::edit_investor(ctx, name)
+    }
+
     pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> { 
         instructions::deposit_tokens(ctx, amount)
     }
