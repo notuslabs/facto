@@ -5,6 +5,8 @@ pub fn create_originator(ctx: Context<CreateOriginator>, name: String, descripti
     let originator = &mut ctx.accounts.originator;
     originator.name = name;
     originator.description = description;
+    originator.total_offers = 0;
+    originator.bump = ctx.bumps.originator;
     originator.bump = ctx.bumps.originator;
     Ok(())
 }
