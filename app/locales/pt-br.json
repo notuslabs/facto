@@ -3,7 +3,7 @@
     "title": "Hackathon Solana",
     "description": "Projeto da Hackathon Solana"
   },
-  "navbar" : {
+  "navbar": {
     "login": "Entrar",
     "logout": "Sair",
     "my-investments": "Meus investimentos",
@@ -18,11 +18,11 @@
     "money-raised": "{moneyRaised} - captados"
   },
   "home": {
-    "hero" : {
+    "hero": {
       "title": "Comece a investir",
       "description": "Alguma descrição de apoio sobre a proposta de valor do projeto e trazer mais"
     },
-    "offers" : {
+    "offers": {
       "title": "Oportunidades para investir",
       "search-input-placeholder": "Buscar ofertas, originadores",
       "offer-stage": "Etapa da oferta",
@@ -56,7 +56,7 @@
       "income-schedule": {
         "title": "Cronograma de recebimento"
       },
-      "about-originator":  {
+      "about-originator": {
         "title": "Sobre o originador"
       },
       "credit-score": {
@@ -70,14 +70,14 @@
       "months": "meses",
       "description": "Junte-se a nós na construção do Sonho Verde, um condomínio residencial ecologicamente sustentável, onde o conforto se une à preservação ambiental. Com sua contribuição através do nosso crowdfunding, podemos transformar esse projeto em realidade, oferecendo espaços verdes, tecnologias eco-friendly e qualidade de vida incomparável. Cada doação conta! Participe agora e faça parte dessa comunidade que valoriza o futuro do planeta e o bem-estar de todos os seus habitantes."
     },
-    "income-schedule" : {
+    "income-schedule": {
       "title": "Cronograma de recebimento",
       "date": "Data",
       "installment-number": "Nº Parcela",
       "amount": "Valor",
       "status": "Status"
     },
-    "about-originator" : {
+    "about-originator": {
       "title": "Sobre o originador",
       "description": "Como Agiotagem, o mentor por trás deste projeto residencial ecológico, estou comprometido em promover uma mudança positiva na construção civil. Com vasta experiência e uma visão sustentável, cada contribuição é valorizada e investida com integridade e transparência. Juntos, estamos construindo mais do que simples casas; estamos criando um santuário para aqueles que valorizam o meio ambiente e a qualidade de vida. Agradeço imensamente por se juntar a nós nesta jornada rumo a um futuro mais sustentável e próspero para todos.",
       "offers": "Ofertas",
@@ -141,5 +141,19 @@
   "badges": {
     "paid": "Pago",
     "anticipated": "Previsto"
+  },
+  "become": {
+    "investor": {
+      "title": "Vamos criar sua conta",
+      "form-fields": {
+        "name": "Nome",
+        "name-description": "{chars}/{maxChars} caracteres max",
+        "name-placeholder": "Nome de Investidor"
+      },
+      "submit-button": "Continuar",
+      "success-toast-message": "Sua conta foi criada com sucesso",
+      "error-toast-message": "Ocorreu um erro ao criar sua conta",
+      "already-registered-toast-message": "Já existe uma conta de investidor vinculada à sua conta"
+    }
   }
 }

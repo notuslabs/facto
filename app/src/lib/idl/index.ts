@@ -8,7 +8,7 @@ export type Hackathon = {
         {
           name: "originator";
           isMut: true;
-          isSigner: true;
+          isSigner: false;
         },
         {
           name: "payer";
@@ -16,7 +16,42 @@ export type Hackathon = {
           isSigner: true;
         },
         {
-          name: "owner";
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: "name";
+          type: "string";
+        },
+        {
+          name: "description";
+          type: "string";
+        },
+      ];
+    },
+    {
+      name: "editOriginator";
+      accounts: [
+        {
+          name: "originator";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
           isMut: true;
           isSigner: true;
         },
@@ -77,6 +112,16 @@ export type Hackathon = {
       name: "createInvestor";
       accounts: [
         {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
           name: "investor";
           isMut: true;
           isSigner: false;
@@ -87,12 +132,7 @@ export type Hackathon = {
           isSigner: false;
         },
         {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "mint";
+          name: "stableCoin";
           isMut: true;
           isSigner: false;
         },
@@ -105,6 +145,32 @@ export type Hackathon = {
           name: "associatedTokenProgram";
           isMut: false;
           isSigner: false;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: "name";
+          type: "string";
+        },
+      ];
+    },
+    {
+      name: "editInvestor";
+      accounts: [
+        {
+          name: "investor";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
         },
         {
           name: "owner";
@@ -128,8 +194,18 @@ export type Hackathon = {
       name: "depositTokens";
       accounts: [
         {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
           name: "investor";
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -138,19 +214,9 @@ export type Hackathon = {
           isSigner: false;
         },
         {
-          name: "mint";
+          name: "stableCoin";
           isMut: true;
           isSigner: false;
-        },
-        {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "owner";
-          isMut: true;
-          isSigner: true;
         },
         {
           name: "systemProgram";
@@ -174,8 +240,18 @@ export type Hackathon = {
       name: "withdrawTokens";
       accounts: [
         {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
           name: "investor";
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -189,19 +265,9 @@ export type Hackathon = {
           isSigner: false;
         },
         {
-          name: "mint";
+          name: "stableCoin";
           isMut: true;
           isSigner: false;
-        },
-        {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "owner";
-          isMut: true;
-          isSigner: true;
         },
         {
           name: "systemProgram";
@@ -233,21 +299,14 @@ export type Hackathon = {
             type: "string";
           },
           {
-            name: "owner";
-            type: "publicKey";
-          },
-          {
             name: "bump";
             type: "u8";
           },
+          {
+            name: "tokenAccountBump";
+            type: "u8";
+          },
         ];
-      };
-    },
-    {
-      name: "empty";
-      type: {
-        kind: "struct";
-        fields: [];
       };
     },
     {
@@ -283,6 +342,10 @@ export type Hackathon = {
             name: "description";
             type: "string";
           },
+          {
+            name: "bump";
+            type: "u8";
+          },
         ];
       };
     },
@@ -299,7 +362,7 @@ export const IDL: Hackathon = {
         {
           name: "originator",
           isMut: true,
-          isSigner: true,
+          isSigner: false,
         },
         {
           name: "payer",
@@ -307,7 +370,42 @@ export const IDL: Hackathon = {
           isSigner: true,
         },
         {
-          name: "owner",
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "name",
+          type: "string",
+        },
+        {
+          name: "description",
+          type: "string",
+        },
+      ],
+    },
+    {
+      name: "editOriginator",
+      accounts: [
+        {
+          name: "originator",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
           isMut: true,
           isSigner: true,
         },
@@ -368,6 +466,16 @@ export const IDL: Hackathon = {
       name: "createInvestor",
       accounts: [
         {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
           name: "investor",
           isMut: true,
           isSigner: false,
@@ -378,12 +486,7 @@ export const IDL: Hackathon = {
           isSigner: false,
         },
         {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "mint",
+          name: "stableCoin",
           isMut: true,
           isSigner: false,
         },
@@ -396,6 +499,32 @@ export const IDL: Hackathon = {
           name: "associatedTokenProgram",
           isMut: false,
           isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "name",
+          type: "string",
+        },
+      ],
+    },
+    {
+      name: "editInvestor",
+      accounts: [
+        {
+          name: "investor",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
         },
         {
           name: "owner",
@@ -419,8 +548,18 @@ export const IDL: Hackathon = {
       name: "depositTokens",
       accounts: [
         {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
           name: "investor",
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
@@ -429,19 +568,9 @@ export const IDL: Hackathon = {
           isSigner: false,
         },
         {
-          name: "mint",
+          name: "stableCoin",
           isMut: true,
           isSigner: false,
-        },
-        {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "owner",
-          isMut: true,
-          isSigner: true,
         },
         {
           name: "systemProgram",
@@ -465,8 +594,18 @@ export const IDL: Hackathon = {
       name: "withdrawTokens",
       accounts: [
         {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
           name: "investor",
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
@@ -480,19 +619,9 @@ export const IDL: Hackathon = {
           isSigner: false,
         },
         {
-          name: "mint",
+          name: "stableCoin",
           isMut: true,
           isSigner: false,
-        },
-        {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "owner",
-          isMut: true,
-          isSigner: true,
         },
         {
           name: "systemProgram",
@@ -524,21 +653,14 @@ export const IDL: Hackathon = {
             type: "string",
           },
           {
-            name: "owner",
-            type: "publicKey",
-          },
-          {
             name: "bump",
             type: "u8",
           },
+          {
+            name: "tokenAccountBump",
+            type: "u8",
+          },
         ],
-      },
-    },
-    {
-      name: "empty",
-      type: {
-        kind: "struct",
-        fields: [],
       },
     },
     {
@@ -573,6 +695,10 @@ export const IDL: Hackathon = {
           {
             name: "description",
             type: "string",
+          },
+          {
+            name: "bump",
+            type: "u8",
           },
         ],
       },

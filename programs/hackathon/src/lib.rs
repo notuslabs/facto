@@ -1,20 +1,28 @@
 use anchor_lang::prelude::*;
 use state::*;
 
-declare_id!("7sffxVRTvBY1CUezQcbWAC4J6Gp134tktjrzLExnsfcn");
+declare_id!("8jpBiQZUNXdbchWKULLEDXvTG6hEBZQtiajtHsCzPon2");
 
-pub mod state;
 pub mod instructions;
+pub mod state;
 
 #[program]
 pub mod hackathon {
     use super::*;
 
-    pub fn create_originator(ctx: Context<CreateOriginator>, name: String, description: String) -> Result<()> {
+    pub fn create_originator(
+        ctx: Context<CreateOriginator>,
+        name: String,
+        description: String,
+    ) -> Result<()> {
         instructions::create_originator(ctx, name, description)
     }
 
-    pub fn edit_originator(ctx: Context<EditOriginator>, name: String, description: String) -> Result<()> {
+    pub fn edit_originator(
+        ctx: Context<EditOriginator>,
+        name: String,
+        description: String,
+    ) -> Result<()> {
         instructions::edit_originator(ctx, name, description)
     }
 
@@ -30,11 +38,11 @@ pub mod hackathon {
         instructions::edit_investor(ctx, name)
     }
 
-    pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> { 
+    pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
         instructions::deposit_tokens(ctx, amount)
     }
 
-    pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> { 
+    pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> {
         instructions::withdraw_tokens(ctx, amount)
     }
 }

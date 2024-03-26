@@ -15,9 +15,10 @@ export function useTokenAccounts() {
   const { solanaWallet, address } = useSession();
 
   return useQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ["token-accounts", address?.toString()],
     queryFn: async () => {
-      if (!solanaWallet || !program) return;
+      if (!solanaWallet || !program) return null;
 
       const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
       const privateKey = await getPrivateKey(solanaWallet);
@@ -48,6 +49,5 @@ export function useTokenAccounts() {
       };
     },
     retry: 0,
-    enabled: !!solanaWallet && !!program && !!address,
   });
 }

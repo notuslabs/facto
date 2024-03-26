@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/providers";
 import { Navbar } from "@/components/navbar";
 import { ReactNode } from "react";
@@ -40,6 +40,7 @@ export default function RootLayout({ children, params: { locale } }: Props) {
         <Providers locale={locale} messages={messages}>
           <Navbar />
           {children}
+          <Toaster position="top-right" />
         </Providers>
       </body>
     </html>
