@@ -11,7 +11,7 @@ pub fn create_offer(
     id: String,
     name: String,
     description: String,
-    deadline_date: u64,
+    deadline_date: i64,
     goal_amount: u64,
     min_amount_invest: u64,
     interest_rate_percent: f32,
@@ -24,7 +24,6 @@ pub fn create_offer(
     offer.description = description;
     offer.deadline_date = deadline_date;
     offer.goal_amount = goal_amount;
-    offer.status = OfferStatus::Open;
     offer.interest_rate_percent = interest_rate_percent;
     offer.installments_total = installments_total;
     offer.installments_paid = 0;
@@ -36,6 +35,8 @@ pub fn create_offer(
     offer.token_bump = *ctx.bumps.get("token").unwrap();
     offer.vault_bump = *ctx.bumps.get("vault").unwrap();
     offer.min_amount_invest = min_amount_invest;
+    offer.originator = ctx.accounts.originator.key();
+    offer.acquired_amount = 0;
     Ok(())
 }
 
@@ -49,7 +50,7 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
         OfferErrors::GoalAmountExceeded
     );
     require!(
-        ctx.accounts.offer.status == OfferStatus::Open,
+        ctx.accounts.offer.get_status() == OfferStatus::Open,
         OfferErrors::OfferIsNotOpen
     );
 
@@ -105,7 +106,36 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
     Ok(())
 }
 
-pub fn withdraw_investments(_ctx: Context<WithdrawInvestments>) -> Result<()> {
+pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
+    require!(ctx.accounts.offer.originator == ctx.accounts.originator.key(), OfferErrors::InvalidOriginatorSigner);
+    require!(
+        ctx.accounts.offer.get_status() == OfferStatus::Funded,
+        OfferErrors::OfferIsNotFunded
+    );
+
+    let transfer = Transfer {
+        authority: ctx.accounts.offer.to_account_info().clone(),
+        from: ctx.accounts.vault_token_account.to_account_info().clone(),
+        to: ctx
+            .accounts
+            .originator_stable_token_account
+            .to_account_info()
+            .clone(),
+    };
+
+    token::transfer(
+        CpiContext::new_with_signer(
+            ctx.accounts.token_program.to_account_info(),
+            transfer,
+            &[&[
+                b"offer",
+                ctx.accounts.offer.id.as_bytes(),
+                &[ctx.accounts.offer.bump],
+            ]],
+        ),
+        ctx.accounts.vault_token_account.amount,
+    )?;
+
     Ok(())
 }
 
@@ -117,4 +147,8 @@ pub enum OfferErrors {
     GoalAmountExceeded,
     #[msg("The Offer is not open")]
     OfferIsNotOpen,
+    #[msg("The Offer is not funded")]
+    OfferIsNotFunded,
+    #[msg("Caller is not the owner of the Originator")]
+    InvalidOriginatorSigner,
 }

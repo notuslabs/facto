@@ -39,12 +39,12 @@ pub struct Offer {
     #[max_len(500)]
     pub description: String,
     pub interest_rate_percent: f32,
-    pub deadline_date: u64,
+    pub originator: Pubkey,
+    pub deadline_date: i64,
     pub goal_amount: u64,
     pub acquired_amount: u64,
     pub min_amount_invest: u64,
-    pub start_date: Option<i64>,
-    pub status: OfferStatus,
+    pub start_date: i64,
     pub installments_total: u8,
     pub installments_paid: u8,
     pub installment_amount: f32,
@@ -56,14 +56,19 @@ pub struct Offer {
     pub vault_bump: u8,
 }
 
+pub trait OfferInterface {
+    fn get_status(&self) -> OfferStatus;
+}
+
 impl<'info> Offer {
-    // Função que calcula o status com base em alguma lógica
-    pub fn status(&self) -> OfferStatus {
+    pub fn get_status(&self) -> OfferStatus {
         let clock = Clock::get().unwrap();
         let current_timestamp = clock.unix_timestamp;
 
-        if current_timestamp < self.start_date.unwrap() && self.acquired_amount < self.goal_amount {
+        if current_timestamp < self.deadline_date && self.acquired_amount < self.goal_amount {
             OfferStatus::Open
+        } else if self.acquired_amount == self.goal_amount {
+            OfferStatus::Funded
         } else {
             OfferStatus::Finished
         }
@@ -146,6 +151,18 @@ pub struct Invest<'info> {
 pub struct WithdrawInvestments<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+
+    #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
+    pub vault_token_account: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub originator_stable_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
+    pub originator: Account<'info, Originator>,
+    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    pub offer: Account<'info, Offer>,
+
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
 }

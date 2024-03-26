@@ -23,7 +23,7 @@ pub mod hackathon {
         id: String,
         name: String,
         description: String,
-        deadline_date: u64,
+        deadline_date: i64,
         goal_amount: u64,
         min_amount_invest: u64,
         interest_rate_percent: f32,
