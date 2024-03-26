@@ -14,8 +14,9 @@ pub mod hackathon {
         ctx: Context<CreateOriginator>,
         name: String,
         description: String,
+        token_slug: String,
     ) -> Result<()> {
-        instructions::create_originator(ctx, name, description)
+        instructions::create_originator(ctx, name, description, token_slug)
     }
 
     pub fn create_offer(
