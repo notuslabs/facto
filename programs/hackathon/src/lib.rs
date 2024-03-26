@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use state::*;
 
-declare_id!("8jpBiQZUNXdbchWKULLEDXvTG6hEBZQtiajtHsCzPon2");
+declare_id!("7sffxVRTvBY1CUezQcbWAC4J6Gp134tktjrzLExnsfcn");
 
 pub mod instructions;
 pub mod state;
@@ -26,8 +26,38 @@ pub mod hackathon {
         instructions::edit_originator(ctx, name, description)
     }
 
-    pub fn create_offer(ctx: Context<CreateOffer>, title: String) -> Result<()> {
-        instructions::create_offer(ctx, title)
+    pub fn create_offer(
+        ctx: Context<CreateOffer>,
+        id: String,
+        name: String,
+        description: String,
+        deadline_date: u64,
+        goal_amount: u64,
+        min_amount_invest: u64,
+        interest_rate_percent: f32,
+        installments_total: u8,
+        installments_start_date: Option<u64>,
+    ) -> Result<()> {
+        instructions::create_offer(
+            ctx,
+            id,
+            name,
+            description,
+            deadline_date,
+            goal_amount,
+            min_amount_invest,
+            interest_rate_percent,
+            installments_total,
+            installments_start_date,
+        )
+    }
+
+    pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
+        instructions::invest(ctx, amount)
+    }
+
+    pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
+        instructions::withdraw_investments(ctx)
     }
 
     pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()> {

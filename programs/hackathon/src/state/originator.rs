@@ -7,7 +7,8 @@ pub struct Originator {
     pub name: String,
     #[max_len(500)]
     pub description: String,
-    pub bump: u8
+    pub total_offers: u8,
+    pub bump: u8,
 }
 
 #[derive(Accounts)]
