@@ -7,6 +7,7 @@ pub struct Investor {
     #[max_len(30)]
     pub name: String,
     pub bump: u8,
+    pub token_account_bump: u8,
 }
 
 #[derive(Accounts)]
@@ -36,13 +37,14 @@ pub struct CreateInvestor<'info> {
 
 #[derive(Accounts)]
 pub struct DepositTokens<'info> {
+    #[account(mut, seeds = [b"investor", caller.key().as_ref()], bump = investor.bump)]
     pub investor: Account<'info, Investor>,
     #[account(
         mut,
         token::mint = mint,
         token::authority = investor,
         seeds = [b"investor_token_account", investor.key().as_ref()],
-        bump
+        bump = investor.token_account_bump
     )]
     pub investor_token_account: Account<'info, TokenAccount>,
 
@@ -60,13 +62,14 @@ pub struct DepositTokens<'info> {
 
 #[derive(Accounts)]
 pub struct WithdrawTokens<'info> {
+    #[account(mut, seeds = [b"investor", caller.key().as_ref()], bump = investor.bump)]
     pub investor: Account<'info, Investor>,
     #[account(
         mut,
         token::mint = mint,
         token::authority = investor,
         seeds = [b"investor_token_account", investor.key().as_ref()],
-        bump
+        bump = investor.token_account_bump
     )]
     pub investor_token_account: Account<'info, TokenAccount>,
     #[account(

@@ -7,6 +7,7 @@ pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()>
     let investor = &mut ctx.accounts.investor;
     investor.name = name;
     investor.bump = ctx.bumps.investor;
+    investor.token_account_bump = ctx.bumps.investor_token_account;
     Ok(())
 }
 
