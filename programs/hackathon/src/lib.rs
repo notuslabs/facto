@@ -52,8 +52,16 @@ pub mod hackathon {
         instructions::withdraw_investments(ctx)
     }
 
+    pub fn edit_originator(ctx: Context<EditOriginator>, name: String, description: String) -> Result<()> {
+        instructions::edit_originator(ctx, name, description)
+    }
+
     pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()> {
         instructions::create_investor(ctx, name)
+    }
+
+    pub fn edit_investor(ctx: Context<EditInvestor>, name: String) -> Result<()> {
+        instructions::edit_investor(ctx, name)
     }
 
     pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> { 
