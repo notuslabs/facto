@@ -1,21 +1,19 @@
 "use client";
 
-import { Connection, Keypair, PublicKey, Cluster } from "@solana/web3.js";
+import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import Big from "big.js";
 import { useSession } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { SolanaWallet } from "@web3auth/solana-provider";
-import {
-  Account,
-  createMint,
-  getAccount,
-  getOrCreateAssociatedTokenAccount,
-} from "@solana/spl-token";
-import { utils } from "@coral-xyz/anchor";
-import { useProgram } from "@/hooks/use-program";
-import { BN } from "bn.js";
+import { useRef } from "react";
+import { createMint } from "@solana/spl-token";
 import { config } from "@/lib/web3AuthService";
+import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
+import { useWithdrawal } from "@/hooks/use-withdrawal";
+import { useTokenAccounts } from "@/hooks/use-token-accounts";
+import { useCreateInvestorAccount } from "@/hooks/use-create-investor-account";
+import { useDeposit } from "@/hooks/use-deposit";
+import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -43,32 +41,16 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
   );
 }
 
-const FAKE_MINT = new PublicKey("4vJ8pofMGdE6GWTdgZp12UKpkc1w6RmrSyt6oEwGjBEK");
+export const FAKE_MINT = new PublicKey("6pAjARTJGHLV8Wdvq5UYMwSUvG4faePDvK6zwmRAXE9h");
 
 export default function TestTokenAccountTransfer() {
-  const { solanaWallet, userInfo } = useSession();
-  const { program } = useProgram();
-  const [loggedUserTokenAccount, setLoggedUserTokenAccount] = useState<Account | null>(null);
-  const [fakeTokenAccount, setFakeTokenAccount] = useState<Account | null>(null);
-
-  function createConnection() {
-    const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
-
-    return connection;
-  }
-
-  function getKeypairFromPrivateKey(privateKey: string) {
-    return Keypair.fromSecretKey(Buffer.from(privateKey, "hex"));
-  }
-
-  async function getPrivateKey(solanaWallet: SolanaWallet) {
-    const privateKey = await solanaWallet.request<unknown, string>({
-      method: "solanaPrivateKey",
-      params: [],
-    });
-
-    return privateKey;
-  }
+  const withdrawRef = useRef<HTMLInputElement>(null);
+  const { solanaWallet } = useSession();
+  const { mutate: deposit, isPending: isDepositing } = useDeposit();
+  const { mutate: createInvestorAccount, isPending: isCreatingInvestorAccount } =
+    useCreateInvestorAccount();
+  const { mutate: withdraw, isPending: isWithdrawing } = useWithdrawal();
+  const { data: tokenAccounts, isPending: isLoadingAccounts } = useTokenAccounts();
 
   async function createFakeMintToken(connection: Connection, wallet: Keypair) {
     const mint = await createMint(connection, wallet, wallet.publicKey, null, 9);
@@ -76,116 +58,49 @@ export default function TestTokenAccountTransfer() {
     return mint;
   }
 
-  async function depositTokens() {
-    if (!solanaWallet || !loggedUserTokenAccount || !program) return;
+  async function withdrawAmount() {
+    if (!tokenAccounts?.userTokenAccount) return;
 
-    const connection = createConnection();
-    const privateKey = await getPrivateKey(solanaWallet);
-    const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
-
-    const [investorPubKey] = PublicKey.findProgramAddressSync(
-      [utils.bytes.utf8.encode("investor"), loggedUserWallet.publicKey.toBuffer()],
-      program.programId,
-    );
-
-    const [investorTokenAccount] = PublicKey.findProgramAddressSync(
-      [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
-      program.programId,
-    );
-
-    const tx = await program.methods
-      .depositTokens(new BN(20e9))
-      .accounts({
-        investor: investorPubKey,
-        investorTokenAccount: investorTokenAccount,
-        owner: loggedUserWallet.publicKey,
-        payer: loggedUserWallet.publicKey,
-        mint: FAKE_MINT,
-      })
-      .rpc();
-
-    const investorInfo = await getAccount(connection, investorTokenAccount);
-
-    setLoggedUserTokenAccount(investorInfo);
+    if (withdrawRef.current?.valueAsNumber)
+      withdraw({
+        amount: withdrawRef.current.valueAsNumber,
+        toTokenAccount: tokenAccounts?.userTokenAccount.address,
+      });
   }
-
-  async function createInvestorAccount() {
-    if (!solanaWallet || !program) return;
-
-    const connection = createConnection();
-    const privateKey = await getPrivateKey(solanaWallet);
-    const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
-
-    const [investorPubKey] = PublicKey.findProgramAddressSync(
-      [utils.bytes.utf8.encode("investor"), loggedUserWallet.publicKey.toBuffer()],
-      program.programId,
-    );
-
-    const [investorTokenAccount] = PublicKey.findProgramAddressSync(
-      [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
-      program.programId,
-    );
-
-    await program.methods
-      .createInvestor(userInfo?.name ?? userInfo?.email ?? loggedUserWallet.publicKey.toString())
-      .accounts({
-        investor: investorPubKey,
-        investorTokenAccount: investorTokenAccount,
-        payer: loggedUserWallet.publicKey,
-        owner: loggedUserWallet.publicKey,
-        mint: FAKE_MINT,
-      })
-      .signers([loggedUserWallet])
-      .rpc();
-
-    const investorInfo = await getAccount(connection, investorTokenAccount);
-
-    setLoggedUserTokenAccount(investorInfo);
-  }
-
-  // Initialize Token Account
-  useEffect(() => {
-    (async () => {
-      if (!solanaWallet || !program) return;
-
-      const connection = createConnection();
-      const privateKey = await getPrivateKey(solanaWallet);
-      const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
-
-      const [investorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor"), loggedUserWallet.publicKey.toBuffer()],
-        program.programId,
-      );
-
-      const [investorTokenAccount] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
-        program.programId,
-      );
-
-      setLoggedUserTokenAccount(await getAccount(connection, investorTokenAccount));
-    })();
-  }, [solanaWallet, program]);
 
   return (
     <div className="container">
       <h1 className="pb-1 text-3xl font-bold">Test Token Account Transfer</h1>
       <p>This page is a test for transferring tokens from one token account to another.</p>
 
-      {(loggedUserTokenAccount || fakeTokenAccount) && (
+      {(!!tokenAccounts?.investorTokenAccount || !!tokenAccounts?.userTokenAccount) && (
         <div className="flex flex-col items-start justify-start gap-4 pt-4">
-          {loggedUserTokenAccount && (
-            <TokenAccountOverview
-              title="Current User Token Account"
-              address={loggedUserTokenAccount.address}
-              amount={loggedUserTokenAccount.amount}
-            />
+          {tokenAccounts?.investorTokenAccount && (
+            <>
+              <div className="flex flex-col items-start justify-start gap-4">
+                <TokenAccountOverview
+                  title="Current User Token Account"
+                  address={tokenAccounts?.investorTokenAccount.address}
+                  amount={tokenAccounts?.investorTokenAccount.amount}
+                />
+
+                <div className="flex w-full gap-2">
+                  <Input ref={withdrawRef} type="number" placeholder="Amount to Withdraw" />
+
+                  <Button onClick={withdrawAmount} disabled={isWithdrawing}>
+                    {isWithdrawing && <Loader2 size={16} className="animate-spin" />}
+                    Withdraw
+                  </Button>
+                </div>
+              </div>
+            </>
           )}
 
-          {fakeTokenAccount && (
+          {!!tokenAccounts?.userTokenAccount && (
             <TokenAccountOverview
-              title="Fake User Token Account"
-              address={fakeTokenAccount.address}
-              amount={fakeTokenAccount.amount}
+              title="Current User Token Account"
+              address={tokenAccounts?.userTokenAccount.address}
+              amount={tokenAccounts?.userTokenAccount.amount}
             />
           )}
         </div>
@@ -193,11 +108,30 @@ export default function TestTokenAccountTransfer() {
 
       <div className="flex flex-col items-start justify-start gap-6 py-4">
         <div className="flex items-center justify-start gap-2">
-          <Button onClick={createInvestorAccount} disabled={!!loggedUserTokenAccount}>
-            I Want to be an investor
+          <Button
+            onClick={() => createInvestorAccount()}
+            disabled={
+              !!tokenAccounts?.investorTokenAccount ||
+              isLoadingAccounts ||
+              isCreatingInvestorAccount
+            }
+          >
+            {(isCreatingInvestorAccount || isLoadingAccounts) && (
+              <Loader2 size={16} className="animate-spin" />
+            )}
+
+            {isLoadingAccounts
+              ? "Loading..."
+              : isCreatingInvestorAccount
+                ? "Creating Investor Account"
+                : "I Want to be an investor"}
           </Button>
 
-          <Button onClick={depositTokens} disabled={!loggedUserTokenAccount}>
+          <Button
+            onClick={() => deposit(20)}
+            disabled={!tokenAccounts?.investorTokenAccount || isDepositing}
+          >
+            {(isDepositing || isLoadingAccounts) && <Loader2 size={16} className="animate-spin" />}
             GIVE ME TOKENS
           </Button>
         </div>
@@ -205,7 +139,7 @@ export default function TestTokenAccountTransfer() {
         <Button
           onClick={async () => {
             if (!solanaWallet) return;
-            const connection = createConnection();
+            const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
 
             const privateKey = await getPrivateKey(solanaWallet);
             const wallet = getKeypairFromPrivateKey(privateKey);

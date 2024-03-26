@@ -1,13 +1,13 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, MintTo};
+use anchor_spl::token::{self, MintTo, Transfer};
 
-use crate::{CreateInvestor, DepositTokens};
+use crate::{CreateInvestor, DepositTokens, WithdrawTokens};
 
 pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()> {
     let investor = &mut ctx.accounts.investor;
     investor.name = name;
     investor.owner = ctx.accounts.owner.key();
-
+    investor.bump = ctx.bumps.investor;
     Ok(())
 }
 
@@ -23,6 +23,22 @@ pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
         },
     ), amount).unwrap();
 
+
+    Ok(())
+}
+
+pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> { 
+    let investor_token_account = &mut ctx.accounts.investor_token_account;
+
+    token::transfer(CpiContext::new_with_signer(
+        ctx.accounts.token_program.to_account_info(),
+        Transfer {
+            from: investor_token_account.to_account_info(),
+            to: ctx.accounts.to_token_account.to_account_info(),
+            authority: ctx.accounts.investor.to_account_info(),
+        },
+        &[&[b"investor", ctx.accounts.owner.key().as_ref(), &[ctx.accounts.investor.bump]]],
+    ), amount).unwrap();
 
     Ok(())
 }
