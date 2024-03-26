@@ -1,11 +1,6 @@
 import * as anchor from '@coral-xyz/anchor';
 import type { Hackathon } from '../target/types/hackathon';
-import {
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  sendAndConfirmTransaction,
-} from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js';
 import {
   createMint,
   getAccount,
@@ -54,7 +49,7 @@ describe('Investor', () => {
       .accounts({
         investor: investorPubKey,
         investorTokenAccount: investorTokenAccountPubKey,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
         mint: tokenPublicKey,
       })
@@ -78,7 +73,7 @@ describe('Investor', () => {
       .accounts({
         investor: investorPubKey,
         investorTokenAccount: investorTokenAccountPubKey,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
         mint: tokenPublicKey,
       })
@@ -113,7 +108,7 @@ describe('Investor', () => {
         investor: investorPubKey,
         investorTokenAccount: investorTokenAccount.address,
         toTokenAccount: caller_token_account.address,
-        owner: caller.publicKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
         mint: tokenPublicKey,
       })

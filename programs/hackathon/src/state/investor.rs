@@ -4,7 +4,6 @@ use anchor_spl::{associated_token::AssociatedToken, token::{Mint, Token, TokenAc
 #[account]
 pub struct Investor {
     pub name: String,
-    pub owner: Pubkey,
     pub bump: u8,
 }
 
@@ -12,12 +11,12 @@ pub struct Investor {
 pub struct Empty {}
 
 impl Investor {
-    const LENGTH: usize = 8 + 4 + 32 + 32; // default length + (string prefix length + investor name length) + owner pubkey length
+    const LENGTH: usize = 8 + 4 + 32 + 32; // default length + (string prefix length + investor name length) + caller pubkey length
 }
 
 #[derive(Accounts)]
 pub struct CreateInvestor<'info> {
-    #[account(init, payer = payer, space = Investor::LENGTH, seeds = [b"investor", owner.key().as_ref()], bump)]
+    #[account(init, payer = payer, space = Investor::LENGTH, seeds = [b"investor", caller.key().as_ref()], bump)]
     pub investor: Account<'info, Investor>,
     #[account(
         init,
@@ -36,7 +35,7 @@ pub struct CreateInvestor<'info> {
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     #[account(mut)]
-    pub owner: Signer<'info>,
+    pub caller: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 
@@ -59,7 +58,7 @@ pub struct DepositTokens<'info> {
     pub payer: Signer<'info>,
 
     #[account(mut)]
-    pub owner: Signer<'info>, // owner of the token account
+    pub caller: Signer<'info>, // caller of the token account
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
 }
@@ -78,7 +77,7 @@ pub struct WithdrawTokens<'info> {
     #[account(
         mut,
         token::mint = mint,
-        token::authority = owner,
+        token::authority = caller,
     )]
     pub to_token_account: Account<'info, TokenAccount>,
 
@@ -89,7 +88,7 @@ pub struct WithdrawTokens<'info> {
     pub payer: Signer<'info>,
 
     #[account(mut)]
-    pub owner: Signer<'info>, // owner of the token account
+    pub caller: Signer<'info>, // caller of the token account
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
 }   
