@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use anchor_spl::token::{Mint, Token, TokenAccount};
 
 #[account]
 #[derive(InitSpace)]
@@ -9,17 +10,31 @@ pub struct Originator {
     pub description: String,
     pub total_offers: u8,
     pub bump: u8,
+    pub token_account_bump: u8
 }
 
 #[derive(Accounts)]
 pub struct CreateOriginator<'info> {
-    #[account(init, payer = payer, space = Originator::INIT_SPACE, seeds = [b"originator", caller.key().as_ref()], bump)]
-    pub originator: Account<'info, Originator>,
     #[account(mut)]
     pub payer: Signer<'info>,
     #[account(mut)]
     pub caller: Signer<'info>,
+
+    #[account(init, payer = payer, space = Originator::INIT_SPACE, seeds = [b"originator", caller.key().as_ref()], bump)]
+    pub originator: Account<'info, Originator>,
+    #[account(
+        init,
+        payer = payer, 
+        token::mint = stable_coin,
+        token::authority = originator,
+        seeds = [b"originator_token_account", originator.key().as_ref()],
+        bump
+    )]
+    pub originator_token_account: Account<'info, TokenAccount>,
+    pub stable_coin: Account<'info, Mint>,
+
     pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
 }
 
 #[derive(Accounts)]

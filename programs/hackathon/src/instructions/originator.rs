@@ -11,6 +11,8 @@ pub fn create_originator(
     originator.description = description;
     originator.total_offers = 0;
     originator.bump = *ctx.bumps.get("originator").unwrap();
+    originator.token_account_bump = *ctx.bumps.get("originator_token_account").unwrap();
+
     Ok(())
 }
 

@@ -1,11 +1,11 @@
-import * as anchor from "@coral-xyz/anchor";
-import type { Program } from "@coral-xyz/anchor";
-import { AnchorError, BN } from "@coral-xyz/anchor";
-import type { Hackathon } from "../target/types/hackathon";
-import { nanoid } from "nanoid";
-import { PublicKey } from "@solana/web3.js";
-import { createMint, mintTo, getAccount } from "@solana/spl-token";
-import { expect } from "chai";
+import * as anchor from '@coral-xyz/anchor';
+import type { Program } from '@coral-xyz/anchor';
+import { AnchorError, BN } from '@coral-xyz/anchor';
+import type { Hackathon } from '../target/types/hackathon';
+import { nanoid } from 'nanoid';
+import { PublicKey } from '@solana/web3.js';
+import { createMint, mintTo, getAccount } from '@solana/spl-token';
+import { expect } from 'chai';
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
@@ -28,24 +28,33 @@ async function confirmTransaction(tx: string) {
   });
 }
 
-describe("Offer", () => {
+describe('Offer', () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Hackathon as Program<Hackathon>;
   const caller = anchor.web3.Keypair.generate();
   const [originator] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("originator"), caller.publicKey.toBuffer()],
+    [anchor.utils.bytes.utf8.encode('originator'), caller.publicKey.toBuffer()],
     program.programId
   );
+
+  const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+    [
+      anchor.utils.bytes.utf8.encode('originator_token_account'),
+      originator.toBuffer(),
+    ],
+    program.programId
+  );
+
   const [investor] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("investor"), caller.publicKey.toBuffer()],
+    [anchor.utils.bytes.utf8.encode('investor'), caller.publicKey.toBuffer()],
     program.programId
   );
   const offerId = nanoid(16);
   const [offer] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode("offer"),
+      anchor.utils.bytes.utf8.encode('offer'),
       anchor.utils.bytes.utf8.encode(offerId),
     ],
     program.programId
@@ -65,9 +74,11 @@ describe("Offer", () => {
     );
 
     await program.methods
-      .createOriginator("test", "description")
+      .createOriginator('test', 'description')
       .accounts({
         originator,
+        originatorTokenAccount: originatorTokenAccountPubKey,
+        stableCoin: stableTokenPubKey,
         caller: caller.publicKey,
         payer: caller.publicKey,
       })
@@ -76,14 +87,14 @@ describe("Offer", () => {
 
     [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
       [
-        anchor.utils.bytes.utf8.encode("investor_token_account"),
+        anchor.utils.bytes.utf8.encode('investor_token_account'),
         investor.toBuffer(),
       ],
       program.programId
     );
 
     await program.methods
-      .createInvestor("Investidor 1")
+      .createInvestor('Investidor 1')
       .accounts({
         investor,
         investorTokenAccount: investorTokenAccountPubKey,
@@ -95,24 +106,24 @@ describe("Offer", () => {
       .rpc()
       .catch(console.error);
 
-    console.log("done creado um investor ihul");
+    console.log('done creado um investor ihul');
   });
 
-  it("should be able to create an offer", async () => {
+  it('should be able to create an offer', async () => {
     const [tokenPubKey] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode("offer_token"), offer.toBuffer()],
+      [anchor.utils.bytes.utf8.encode('offer_token'), offer.toBuffer()],
       program.programId
     );
     const [vaultPubKey] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
+      [anchor.utils.bytes.utf8.encode('offer_vault'), offer.toBuffer()],
       program.programId
     );
 
     const tx = await program.methods
       .createOffer(
         offerId,
-        "Offer Name",
-        "Offer Description",
+        'Offer Name',
+        'Offer Description',
         new BN(1664996800),
         new BN(100),
         new BN(50),
@@ -138,11 +149,11 @@ describe("Offer", () => {
     console.log(tx, mint);
   });
 
-  it("should be able to deposit in the offer", async () => {
+  it('should be able to deposit in the offer', async () => {
     const investAmount = 50n;
 
     const [vaultTokenAccount] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
+      [anchor.utils.bytes.utf8.encode('offer_vault'), offer.toBuffer()],
       program.programId
     );
 
@@ -160,18 +171,18 @@ describe("Offer", () => {
       investorTokenAccountPubKey
     );
     console.log(
-      "investor token amount usdc",
+      'investor token amount usdc',
       initialInvestorTokenAccountInfo.amount
     );
 
     const [offerTokenPublicKey] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode("offer_token"), offer.toBuffer()],
+      [anchor.utils.bytes.utf8.encode('offer_token'), offer.toBuffer()],
       program.programId
     );
 
     const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
       [
-        anchor.utils.bytes.utf8.encode("investor_offer_token_account"),
+        anchor.utils.bytes.utf8.encode('investor_offer_token_account'),
         investor.toBuffer(),
       ],
       program.programId
@@ -179,7 +190,7 @@ describe("Offer", () => {
 
     try {
       await program.methods
-        .invest(new anchor.BN("49"))
+        .invest(new anchor.BN('49'))
         .accounts({
           vaultTokenAccount,
           caller: caller.publicKey,
@@ -191,19 +202,19 @@ describe("Offer", () => {
           investor,
         })
         .signers([caller, caller])
-        .rpc()
+        .rpc();
 
       expect(false, "should've failed but didn't ").true;
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        "Min amount required"
+        'Min amount required'
       );
     }
 
     try {
       await program.methods
-        .invest(new anchor.BN("101"))
+        .invest(new anchor.BN('101'))
         .accounts({
           vaultTokenAccount,
           caller: caller.publicKey,
@@ -215,13 +226,13 @@ describe("Offer", () => {
           investor,
         })
         .signers([caller, caller])
-        .rpc()
+        .rpc();
 
       expect(false, "should've failed but didn't ").true;
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        "Goal amount exceeded"
+        'Goal amount exceeded'
       );
     }
 
@@ -250,21 +261,21 @@ describe("Offer", () => {
       vaultTokenAccount
     );
     console.log(
-      "investor offer token account amount",
+      'investor offer token account amount',
       investorOfferTokenAccountInfo.amount
     );
-    console.log("vault token account amount", vaultTokenAccountInfo.amount);
+    console.log('vault token account amount', vaultTokenAccountInfo.amount);
 
     let investorTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
       investorTokenAccountPubKey
     );
     console.log(
-      "investor token amount usdc after invest",
+      'investor token amount usdc after invest',
       investorTokenAccountInfo.amount
     );
 
-    console.log("Your transaction signature", tx1);
+    console.log('Your transaction signature', tx1);
 
     expect(
       initialInvestorTokenAccountInfo.amount - investAmount ===
