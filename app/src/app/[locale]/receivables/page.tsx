@@ -1,23 +1,18 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { PageProps } from "@/lib/types";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
+import ReceivablesDesktopTable from "./_components/receivables-desktop-table";
+import ReceivablesMobileTable from "./_components/receivables-mobile-table";
 
 export default function ReceivablesPage({ params }: PageProps<{ locale: string }>) {
   unstable_setRequestLocale(params.locale);
   const t = useTranslations("receivables-page");
   const tr = useTranslations("badges");
-  const installments = 2;
+  const offers = 2;
 
   const tableData = [
     {
@@ -65,17 +60,21 @@ export default function ReceivablesPage({ params }: PageProps<{ locale: string }
   ];
 
   return (
-    <div className="container flex flex-col gap-8 rounded-2xl p-10 dark:bg-primary-foreground dark:text-primary">
+    <div className="container flex flex-col gap-8 rounded-2xl p-4 dark:text-primary md:p-10 md:dark:bg-primary-foreground">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-medium">{t("title")}</h2>
+        <div className="flex flex-col">
+          <h2 className="font-medium md:text-2xl">{t("title")}</h2>
+          <div className="flex border-spacing-4 gap-1 text-xs text-muted-foreground dark:text-placeholder-foreground md:hidden">
+            <span> {t("from-offers", { offers })}</span>
+          </div>
+        </div>
+
         <div className="flex gap-4">
-          <div className="flex border-spacing-4 flex-col gap-1 border-r pr-4 text-right">
+          <div className="hidden border-spacing-4 flex-col gap-1 border-r pr-4 text-right md:flex">
             <span className="text-xs text-muted-foreground dark:text-placeholder-foreground">
               {t("exhibiting")}
             </span>
-            <span className="text-sm font-medium">
-              {t("installments-to-receive", { installments })}
-            </span>
+            <span className="text-sm font-medium">{t("installments-to-receive", { offers })}</span>
           </div>
 
           <Button variant="secondary" className="flex items-center">
@@ -84,34 +83,8 @@ export default function ReceivablesPage({ params }: PageProps<{ locale: string }
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
-        {tableData.map((tableData) => (
-          <Table className="rounded-lg bg-secondary p-4" key={tableData.offerName}>
-            <>
-              <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
-                <TableRow>
-                  <TableHead className="h-4 w-[1/9] pt-3">{t("offer-name")}</TableHead>
-                  <TableHead className="h-4 w-[1/9] pt-3">{t("date")}</TableHead>
-                  <TableHead className="h-4 w-[1/9] pt-3">{t("installment")}</TableHead>
-                  <TableHead className="h-4 w-[1/9] pt-3">{t("installment-value")}</TableHead>
-                  <TableHead className="h-4 w-[120px] pt-3 text-right">{t("status")}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="text-sm font-medium">
-                <TableRow>
-                  <TableCell className="pb-3 pt-2">{tableData.offerName}</TableCell>
-                  <TableCell className="pb-3 pt-2">{tableData.date}</TableCell>
-                  <TableCell className="pb-3 pt-2">{tableData.installment}</TableCell>
-                  <TableCell className="pb-3 pt-2">{tableData.installmentValue}</TableCell>
-                  <TableCell className="w-[120px] pb-3 pt-2 text-right">
-                    {tableData.paymentStatus}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </>
-          </Table>
-        ))}
-      </div>
+      <ReceivablesDesktopTable data={tableData} />
+      <ReceivablesMobileTable data={tableData} />
     </div>
   );
 }

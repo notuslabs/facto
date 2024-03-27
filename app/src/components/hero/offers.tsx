@@ -1,4 +1,4 @@
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, ListFilter, Search } from "lucide-react";
 import { Card } from "../card";
 import { Input } from "../ui/input";
 import { OfferCard } from "../offer-card";
@@ -10,7 +10,7 @@ export function Offers() {
   return (
     <>
       <div className="h-[168px] w-full dark:bg-background" />
-      <div className="container -mt-[168px] flex flex-col gap-9">
+      <div className="-mt-[168px] flex flex-col gap-9 p-4 md:container">
         <div className="flex items-center justify-between gap-4">
           <div className="w-80">
             <Input
@@ -19,14 +19,19 @@ export function Offers() {
               className="pl-10"
             />
           </div>
-          <Button variant="secondary" className="flex items-center">
+          <Button variant="secondary" className="hidden items-center md:flex">
             {t("offer-stage")} <ChevronDown size={20} />
+          </Button>
+          <Button variant="secondary" className="flex items-center md:hidden">
+            <ListFilter size={20} /> {t("filter")}
           </Button>
         </div>
         <Card className="flex flex-col gap-6">
-          <h2 className="bg-back text-2xl font-bold dark:text-primary">{t("title")}</h2>
+          <h2 className="bg-back text-medium dark:text-primary md:text-2xl md:font-bold">
+            {t("title")}
+          </h2>
 
-          <div className="grid grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6 lg:gap-10 xl:grid-cols-3">
             {Array(9)
               .fill(0)
               .map((_, index) => (

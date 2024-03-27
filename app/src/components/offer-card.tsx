@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ScoreBadge } from "./score-badge";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
+import Link from "next/link";
 
 type OfferCardHeaderProps = {
   offerName: string;
@@ -102,12 +103,12 @@ function OfferCardFooter({ installments, endDate, offerNumber }: OfferCardFooter
         </span>
       </p>
 
-      <Button variant="default" size="sm">
-        <a className="flex items-center gap-2" href={`${locale}/offers/${offerNumber}`}>
+      <Link className="flex items-center gap-2" href={`${locale}/offers/${offerNumber}`}>
+        <Button variant="default" size="sm">
           {t("invest")}
           <HelpingHand size={16} />
-        </a>
-      </Button>
+        </Button>
+      </Link>
     </div>
   );
 }
