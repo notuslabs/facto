@@ -8,7 +8,7 @@ export type Hackathon = {
         {
           name: "payer";
           isMut: true;
-          isSigner: true;
+          isSigner: false;
         },
         {
           name: "caller";
@@ -85,6 +85,10 @@ export type Hackathon = {
           name: "description";
           type: "string";
         },
+        {
+          name: "tokenSlug";
+          type: "string";
+        },
       ];
     },
     {
@@ -147,20 +151,22 @@ export type Hackathon = {
           type: "string";
         },
         {
-          name: "name";
-          type: "string";
-        },
-        {
           name: "description";
           type: "string";
         },
         {
           name: "deadlineDate";
-          type: "u64";
+          type: "i64";
         },
         {
           name: "goalAmount";
           type: "u64";
+        },
+        {
+          name: "startDate";
+          type: {
+            option: "i64";
+          };
         },
         {
           name: "minAmountInvest";
@@ -177,7 +183,7 @@ export type Hackathon = {
         {
           name: "installmentsStartDate";
           type: {
-            option: "u64";
+            option: "i64";
           };
         },
       ];
@@ -268,6 +274,41 @@ export type Hackathon = {
         },
       ];
       args: [];
+    },
+    {
+      name: "editOriginator";
+      accounts: [
+        {
+          name: "originator";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: "name";
+          type: "string";
+        },
+        {
+          name: "description";
+          type: "string";
+        },
+      ];
     },
     {
       name: "createInvestor";
@@ -480,28 +521,42 @@ export type Hackathon = {
             type: "string";
           },
           {
-            name: "name";
+            name: "description";
             type: "string";
           },
           {
-            name: "description";
-            type: "string";
+            name: "discriminator";
+            type: "u32";
           },
           {
             name: "interestRatePercent";
             type: "f32";
           },
           {
-            name: "deadlineDate";
-            type: "u64";
-          },
-          {
             name: "goalAmount";
             type: "u64";
           },
           {
+            name: "deadlineDate";
+            type: "i64";
+          },
+          {
             name: "acquiredAmount";
             type: "u64";
+          },
+          {
+            name: "originator";
+            type: "publicKey";
+          },
+          {
+            name: "installmentsTotal";
+            type: "u8";
+          },
+          {
+            name: "installmentsStartDate";
+            type: {
+              option: "i64";
+            };
           },
           {
             name: "minAmountInvest";
@@ -514,34 +569,8 @@ export type Hackathon = {
             };
           },
           {
-            name: "status";
-            type: {
-              defined: "OfferStatus";
-            };
-          },
-          {
-            name: "installmentsTotal";
-            type: "u8";
-          },
-          {
-            name: "installmentsPaid";
-            type: "u8";
-          },
-          {
-            name: "installmentAmount";
-            type: "f32";
-          },
-          {
-            name: "installmentsStartDate";
-            type: {
-              option: "u64";
-            };
-          },
-          {
             name: "creditScore";
-            type: {
-              defined: "CreditScore";
-            };
+            type: "u16";
           },
           {
             name: "createdAt";
@@ -577,14 +606,14 @@ export type Hackathon = {
           },
           {
             name: "totalOffers";
-            type: "u8";
+            type: "u32";
+          },
+          {
+            name: "tokenSlug";
+            type: "string";
           },
           {
             name: "bump";
-            type: "u8";
-          },
-          {
-            name: "tokenAccountBump";
             type: "u8";
           },
         ];
@@ -689,7 +718,7 @@ export const IDL: Hackathon = {
         {
           name: "payer",
           isMut: true,
-          isSigner: true,
+          isSigner: false,
         },
         {
           name: "caller",
@@ -766,6 +795,10 @@ export const IDL: Hackathon = {
           name: "description",
           type: "string",
         },
+        {
+          name: "tokenSlug",
+          type: "string",
+        },
       ],
     },
     {
@@ -828,20 +861,22 @@ export const IDL: Hackathon = {
           type: "string",
         },
         {
-          name: "name",
-          type: "string",
-        },
-        {
           name: "description",
           type: "string",
         },
         {
           name: "deadlineDate",
-          type: "u64",
+          type: "i64",
         },
         {
           name: "goalAmount",
           type: "u64",
+        },
+        {
+          name: "startDate",
+          type: {
+            option: "i64",
+          },
         },
         {
           name: "minAmountInvest",
@@ -858,7 +893,7 @@ export const IDL: Hackathon = {
         {
           name: "installmentsStartDate",
           type: {
-            option: "u64",
+            option: "i64",
           },
         },
       ],
@@ -949,6 +984,41 @@ export const IDL: Hackathon = {
         },
       ],
       args: [],
+    },
+    {
+      name: "editOriginator",
+      accounts: [
+        {
+          name: "originator",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "name",
+          type: "string",
+        },
+        {
+          name: "description",
+          type: "string",
+        },
+      ],
     },
     {
       name: "createInvestor",
@@ -1161,28 +1231,42 @@ export const IDL: Hackathon = {
             type: "string",
           },
           {
-            name: "name",
+            name: "description",
             type: "string",
           },
           {
-            name: "description",
-            type: "string",
+            name: "discriminator",
+            type: "u32",
           },
           {
             name: "interestRatePercent",
             type: "f32",
           },
           {
-            name: "deadlineDate",
-            type: "u64",
-          },
-          {
             name: "goalAmount",
             type: "u64",
           },
           {
+            name: "deadlineDate",
+            type: "i64",
+          },
+          {
             name: "acquiredAmount",
             type: "u64",
+          },
+          {
+            name: "originator",
+            type: "publicKey",
+          },
+          {
+            name: "installmentsTotal",
+            type: "u8",
+          },
+          {
+            name: "installmentsStartDate",
+            type: {
+              option: "i64",
+            },
           },
           {
             name: "minAmountInvest",
@@ -1195,34 +1279,8 @@ export const IDL: Hackathon = {
             },
           },
           {
-            name: "status",
-            type: {
-              defined: "OfferStatus",
-            },
-          },
-          {
-            name: "installmentsTotal",
-            type: "u8",
-          },
-          {
-            name: "installmentsPaid",
-            type: "u8",
-          },
-          {
-            name: "installmentAmount",
-            type: "f32",
-          },
-          {
-            name: "installmentsStartDate",
-            type: {
-              option: "u64",
-            },
-          },
-          {
             name: "creditScore",
-            type: {
-              defined: "CreditScore",
-            },
+            type: "u16",
           },
           {
             name: "createdAt",
@@ -1258,14 +1316,14 @@ export const IDL: Hackathon = {
           },
           {
             name: "totalOffers",
-            type: "u8",
+            type: "u32",
+          },
+          {
+            name: "tokenSlug",
+            type: "string",
           },
           {
             name: "bump",
-            type: "u8",
-          },
-          {
-            name: "tokenAccountBump",
             type: "u8",
           },
         ],
