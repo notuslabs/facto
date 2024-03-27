@@ -8,7 +8,7 @@ export type Hackathon = {
         {
           name: "originator";
           isMut: true;
-          isSigner: true;
+          isSigner: false;
         },
         {
           name: "payer";
@@ -16,7 +16,230 @@ export type Hackathon = {
           isSigner: true;
         },
         {
-          name: "owner";
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: "name";
+          type: "string";
+        },
+        {
+          name: "description";
+          type: "string";
+        },
+        {
+          name: "tokenSlug";
+          type: "string";
+        },
+      ];
+    },
+    {
+      name: "createOffer";
+      accounts: [
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "originator";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "offer";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "token";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "stableToken";
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: "vault";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: "associatedTokenProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: "id";
+          type: "string";
+        },
+        {
+          name: "description";
+          type: "string";
+        },
+        {
+          name: "deadlineDate";
+          type: "i64";
+        },
+        {
+          name: "goalAmount";
+          type: "u64";
+        },
+        {
+          name: "startDate";
+          type: {
+            option: "i64";
+          };
+        },
+        {
+          name: "minAmountInvest";
+          type: "u64";
+        },
+        {
+          name: "interestRatePercent";
+          type: "f32";
+        },
+        {
+          name: "installmentsTotal";
+          type: "u8";
+        },
+        {
+          name: "installmentsStartDate";
+          type: {
+            option: "i64";
+          };
+        },
+      ];
+    },
+    {
+      name: "invest";
+      accounts: [
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "investorOfferTokenAccount";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "vaultTokenAccount";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "investorTokenAccount";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "offer";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "offerToken";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "investor";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: "associatedTokenProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: "amount";
+          type: "u64";
+        },
+      ];
+    },
+    {
+      name: "withdrawInvestments";
+      accounts: [
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [];
+    },
+    {
+      name: "editOriginator";
+      accounts: [
+        {
+          name: "originator";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
           isMut: true;
           isSigner: true;
         },
@@ -38,44 +261,18 @@ export type Hackathon = {
       ];
     },
     {
-      name: "createOffer";
+      name: "createInvestor";
       accounts: [
-        {
-          name: "owner";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "offer";
-          isMut: true;
-          isSigner: true;
-        },
         {
           name: "payer";
           isMut: true;
           isSigner: true;
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          name: "caller";
+          isMut: true;
+          isSigner: true;
         },
-        {
-          name: "tokenProgram";
-          isMut: false;
-          isSigner: false;
-        },
-      ];
-      args: [
-        {
-          name: "title";
-          type: "string";
-        },
-      ];
-    },
-    {
-      name: "createInvestor";
-      accounts: [
         {
           name: "investor";
           isMut: true;
@@ -87,12 +284,7 @@ export type Hackathon = {
           isSigner: false;
         },
         {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "mint";
+          name: "stableCoin";
           isMut: true;
           isSigner: false;
         },
@@ -105,6 +297,32 @@ export type Hackathon = {
           name: "associatedTokenProgram";
           isMut: false;
           isSigner: false;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        },
+      ];
+      args: [
+        {
+          name: "name";
+          type: "string";
+        },
+      ];
+    },
+    {
+      name: "editInvestor";
+      accounts: [
+        {
+          name: "investor";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
         },
         {
           name: "owner";
@@ -128,8 +346,18 @@ export type Hackathon = {
       name: "depositTokens";
       accounts: [
         {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
           name: "investor";
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -138,19 +366,9 @@ export type Hackathon = {
           isSigner: false;
         },
         {
-          name: "mint";
+          name: "stableCoin";
           isMut: true;
           isSigner: false;
-        },
-        {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "owner";
-          isMut: true;
-          isSigner: true;
         },
         {
           name: "systemProgram";
@@ -174,8 +392,18 @@ export type Hackathon = {
       name: "withdrawTokens";
       accounts: [
         {
+          name: "payer";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "caller";
+          isMut: true;
+          isSigner: true;
+        },
+        {
           name: "investor";
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -189,19 +417,9 @@ export type Hackathon = {
           isSigner: false;
         },
         {
-          name: "mint";
+          name: "stableCoin";
           isMut: true;
           isSigner: false;
-        },
-        {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "owner";
-          isMut: true;
-          isSigner: true;
         },
         {
           name: "systemProgram";
@@ -233,21 +451,14 @@ export type Hackathon = {
             type: "string";
           },
           {
-            name: "owner";
-            type: "publicKey";
-          },
-          {
             name: "bump";
             type: "u8";
           },
+          {
+            name: "tokenAccountBump";
+            type: "u8";
+          },
         ];
-      };
-    },
-    {
-      name: "empty";
-      type: {
-        kind: "struct";
-        fields: [];
       };
     },
     {
@@ -256,15 +467,75 @@ export type Hackathon = {
         kind: "struct";
         fields: [
           {
-            name: "title";
+            name: "id";
             type: "string";
           },
           {
-            name: "owner";
+            name: "description";
+            type: "string";
+          },
+          {
+            name: "discriminator";
+            type: "u32";
+          },
+          {
+            name: "interestRatePercent";
+            type: "f32";
+          },
+          {
+            name: "goalAmount";
+            type: "u64";
+          },
+          {
+            name: "deadlineDate";
+            type: "i64";
+          },
+          {
+            name: "acquiredAmount";
+            type: "u64";
+          },
+          {
+            name: "originator";
             type: "publicKey";
           },
           {
+            name: "installmentsTotal";
+            type: "u8";
+          },
+          {
+            name: "installmentsStartDate";
+            type: {
+              option: "i64";
+            };
+          },
+          {
+            name: "minAmountInvest";
+            type: "u64";
+          },
+          {
+            name: "startDate";
+            type: {
+              option: "i64";
+            };
+          },
+          {
+            name: "creditScore";
+            type: "u16";
+          },
+          {
+            name: "createdAt";
+            type: "i64";
+          },
+          {
             name: "bump";
+            type: "u8";
+          },
+          {
+            name: "tokenBump";
+            type: "u8";
+          },
+          {
+            name: "vaultBump";
             type: "u8";
           },
         ];
@@ -283,8 +554,106 @@ export type Hackathon = {
             name: "description";
             type: "string";
           },
+          {
+            name: "totalOffers";
+            type: "u32";
+          },
+          {
+            name: "tokenSlug";
+            type: "string";
+          },
+          {
+            name: "bump";
+            type: "u8";
+          },
         ];
       };
+    },
+  ];
+  types: [
+    {
+      name: "OfferStatus";
+      type: {
+        kind: "enum";
+        variants: [
+          {
+            name: "Open";
+          },
+          {
+            name: "Failed";
+          },
+          {
+            name: "Funded";
+          },
+          {
+            name: "OnTrack";
+          },
+          {
+            name: "Finished";
+          },
+        ];
+      };
+    },
+    {
+      name: "CreditScore";
+      type: {
+        kind: "enum";
+        variants: [
+          {
+            name: "AAA";
+          },
+          {
+            name: "AA";
+          },
+          {
+            name: "A";
+          },
+          {
+            name: "BBB";
+          },
+          {
+            name: "BB";
+          },
+          {
+            name: "B";
+          },
+          {
+            name: "CCC";
+          },
+          {
+            name: "CC";
+          },
+          {
+            name: "C";
+          },
+          {
+            name: "DDD";
+          },
+          {
+            name: "DD";
+          },
+          {
+            name: "D";
+          },
+        ];
+      };
+    },
+  ];
+  errors: [
+    {
+      code: 6000;
+      name: "MinAmountRequired";
+      msg: "Min amount required";
+    },
+    {
+      code: 6001;
+      name: "GoalAmountExceeded";
+      msg: "Goal amount exceeded";
+    },
+    {
+      code: 6002;
+      name: "OfferIsNotOpen";
+      msg: "The Offer is not open";
     },
   ];
 };
@@ -299,7 +668,7 @@ export const IDL: Hackathon = {
         {
           name: "originator",
           isMut: true,
-          isSigner: true,
+          isSigner: false,
         },
         {
           name: "payer",
@@ -307,7 +676,230 @@ export const IDL: Hackathon = {
           isSigner: true,
         },
         {
-          name: "owner",
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "name",
+          type: "string",
+        },
+        {
+          name: "description",
+          type: "string",
+        },
+        {
+          name: "tokenSlug",
+          type: "string",
+        },
+      ],
+    },
+    {
+      name: "createOffer",
+      accounts: [
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "originator",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "offer",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "token",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stableToken",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "vault",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "associatedTokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "id",
+          type: "string",
+        },
+        {
+          name: "description",
+          type: "string",
+        },
+        {
+          name: "deadlineDate",
+          type: "i64",
+        },
+        {
+          name: "goalAmount",
+          type: "u64",
+        },
+        {
+          name: "startDate",
+          type: {
+            option: "i64",
+          },
+        },
+        {
+          name: "minAmountInvest",
+          type: "u64",
+        },
+        {
+          name: "interestRatePercent",
+          type: "f32",
+        },
+        {
+          name: "installmentsTotal",
+          type: "u8",
+        },
+        {
+          name: "installmentsStartDate",
+          type: {
+            option: "i64",
+          },
+        },
+      ],
+    },
+    {
+      name: "invest",
+      accounts: [
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "investorOfferTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "vaultTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "investorTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "offer",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "offerToken",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "investor",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "associatedTokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "amount",
+          type: "u64",
+        },
+      ],
+    },
+    {
+      name: "withdrawInvestments",
+      accounts: [
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "editOriginator",
+      accounts: [
+        {
+          name: "originator",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
           isMut: true,
           isSigner: true,
         },
@@ -329,44 +921,18 @@ export const IDL: Hackathon = {
       ],
     },
     {
-      name: "createOffer",
+      name: "createInvestor",
       accounts: [
-        {
-          name: "owner",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "offer",
-          isMut: true,
-          isSigner: true,
-        },
         {
           name: "payer",
           isMut: true,
           isSigner: true,
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
+          name: "caller",
+          isMut: true,
+          isSigner: true,
         },
-        {
-          name: "tokenProgram",
-          isMut: false,
-          isSigner: false,
-        },
-      ],
-      args: [
-        {
-          name: "title",
-          type: "string",
-        },
-      ],
-    },
-    {
-      name: "createInvestor",
-      accounts: [
         {
           name: "investor",
           isMut: true,
@@ -378,12 +944,7 @@ export const IDL: Hackathon = {
           isSigner: false,
         },
         {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "mint",
+          name: "stableCoin",
           isMut: true,
           isSigner: false,
         },
@@ -396,6 +957,32 @@ export const IDL: Hackathon = {
           name: "associatedTokenProgram",
           isMut: false,
           isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "name",
+          type: "string",
+        },
+      ],
+    },
+    {
+      name: "editInvestor",
+      accounts: [
+        {
+          name: "investor",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
         },
         {
           name: "owner",
@@ -419,8 +1006,18 @@ export const IDL: Hackathon = {
       name: "depositTokens",
       accounts: [
         {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
           name: "investor",
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
@@ -429,19 +1026,9 @@ export const IDL: Hackathon = {
           isSigner: false,
         },
         {
-          name: "mint",
+          name: "stableCoin",
           isMut: true,
           isSigner: false,
-        },
-        {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "owner",
-          isMut: true,
-          isSigner: true,
         },
         {
           name: "systemProgram",
@@ -465,8 +1052,18 @@ export const IDL: Hackathon = {
       name: "withdrawTokens",
       accounts: [
         {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "caller",
+          isMut: true,
+          isSigner: true,
+        },
+        {
           name: "investor",
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
@@ -480,19 +1077,9 @@ export const IDL: Hackathon = {
           isSigner: false,
         },
         {
-          name: "mint",
+          name: "stableCoin",
           isMut: true,
           isSigner: false,
-        },
-        {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "owner",
-          isMut: true,
-          isSigner: true,
         },
         {
           name: "systemProgram",
@@ -524,21 +1111,14 @@ export const IDL: Hackathon = {
             type: "string",
           },
           {
-            name: "owner",
-            type: "publicKey",
-          },
-          {
             name: "bump",
             type: "u8",
           },
+          {
+            name: "tokenAccountBump",
+            type: "u8",
+          },
         ],
-      },
-    },
-    {
-      name: "empty",
-      type: {
-        kind: "struct",
-        fields: [],
       },
     },
     {
@@ -547,15 +1127,75 @@ export const IDL: Hackathon = {
         kind: "struct",
         fields: [
           {
-            name: "title",
+            name: "id",
             type: "string",
           },
           {
-            name: "owner",
+            name: "description",
+            type: "string",
+          },
+          {
+            name: "discriminator",
+            type: "u32",
+          },
+          {
+            name: "interestRatePercent",
+            type: "f32",
+          },
+          {
+            name: "goalAmount",
+            type: "u64",
+          },
+          {
+            name: "deadlineDate",
+            type: "i64",
+          },
+          {
+            name: "acquiredAmount",
+            type: "u64",
+          },
+          {
+            name: "originator",
             type: "publicKey",
           },
           {
+            name: "installmentsTotal",
+            type: "u8",
+          },
+          {
+            name: "installmentsStartDate",
+            type: {
+              option: "i64",
+            },
+          },
+          {
+            name: "minAmountInvest",
+            type: "u64",
+          },
+          {
+            name: "startDate",
+            type: {
+              option: "i64",
+            },
+          },
+          {
+            name: "creditScore",
+            type: "u16",
+          },
+          {
+            name: "createdAt",
+            type: "i64",
+          },
+          {
             name: "bump",
+            type: "u8",
+          },
+          {
+            name: "tokenBump",
+            type: "u8",
+          },
+          {
+            name: "vaultBump",
             type: "u8",
           },
         ],
@@ -574,8 +1214,106 @@ export const IDL: Hackathon = {
             name: "description",
             type: "string",
           },
+          {
+            name: "totalOffers",
+            type: "u32",
+          },
+          {
+            name: "tokenSlug",
+            type: "string",
+          },
+          {
+            name: "bump",
+            type: "u8",
+          },
         ],
       },
+    },
+  ],
+  types: [
+    {
+      name: "OfferStatus",
+      type: {
+        kind: "enum",
+        variants: [
+          {
+            name: "Open",
+          },
+          {
+            name: "Failed",
+          },
+          {
+            name: "Funded",
+          },
+          {
+            name: "OnTrack",
+          },
+          {
+            name: "Finished",
+          },
+        ],
+      },
+    },
+    {
+      name: "CreditScore",
+      type: {
+        kind: "enum",
+        variants: [
+          {
+            name: "AAA",
+          },
+          {
+            name: "AA",
+          },
+          {
+            name: "A",
+          },
+          {
+            name: "BBB",
+          },
+          {
+            name: "BB",
+          },
+          {
+            name: "B",
+          },
+          {
+            name: "CCC",
+          },
+          {
+            name: "CC",
+          },
+          {
+            name: "C",
+          },
+          {
+            name: "DDD",
+          },
+          {
+            name: "DD",
+          },
+          {
+            name: "D",
+          },
+        ],
+      },
+    },
+  ],
+  errors: [
+    {
+      code: 6000,
+      name: "MinAmountRequired",
+      msg: "Min amount required",
+    },
+    {
+      code: 6001,
+      name: "GoalAmountExceeded",
+      msg: "Goal amount exceeded",
+    },
+    {
+      code: 6002,
+      name: "OfferIsNotOpen",
+      msg: "The Offer is not open",
     },
   ],
 };

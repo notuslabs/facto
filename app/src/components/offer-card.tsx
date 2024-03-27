@@ -1,4 +1,4 @@
-import { formatNumber } from "@/lib/format-number";
+import { formatBigNumber } from "@/lib/format-number";
 import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -6,6 +6,8 @@ import { ScoreBadge } from "./score-badge";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import Link from "next/link";
+import { Offer } from "@/structs/Offer";
+import BN from "bn.js";
 
 type OfferCardHeaderProps = {
   offerName: string;
@@ -39,8 +41,8 @@ function OfferCardHeader({
 }
 
 type OfferCardBodyProps = {
-  amountAcquired: number;
-  amountToBeAcquired: number;
+  amountAcquired: BN;
+  amountToBeAcquired: BN;
   creditScore: number;
 };
 
@@ -56,15 +58,15 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
             <p className="text-xs font-semibold">{t("total")}</p>
           </div>
           <div className="flex items-center justify-between gap-2 font-medium dark:text-primary">
-            <p className="text-sm ">{formatNumber(amountAcquired)}</p>
-            <p className="text-sm">{formatNumber(amountToBeAcquired)}</p>
+            <p className="text-sm ">{formatBigNumber(amountAcquired)}</p>
+            <p className="text-sm">{formatBigNumber(amountToBeAcquired)}</p>
           </div>
         </div>
 
         <Progress
           indicatorColor="bg-success-strong"
           className="h-2.5 w-full rounded-full dark:bg-primary-foreground"
-          value={(amountAcquired / amountToBeAcquired) * 100}
+          value={(amountAcquired.toNumber() / amountToBeAcquired.toNumber()) * 100}
         />
       </div>
       <div className="flex items-center justify-between gap-2 border-t px-4 py-[0.625rem] dark:border-border-hover dark:bg-secondary">
@@ -88,10 +90,10 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
 type OfferCardFooterProps = {
   installments: number;
   endDate: Date;
-  offerNumber: number;
+  offerId: string;
 };
 
-function OfferCardFooter({ installments, endDate, offerNumber }: OfferCardFooterProps) {
+function OfferCardFooter({ installments, endDate, offerId }: OfferCardFooterProps) {
   const t = useTranslations("home.offers.card.footer");
   const locale = useLocale();
   return (
@@ -103,7 +105,7 @@ function OfferCardFooter({ installments, endDate, offerNumber }: OfferCardFooter
         </span>
       </p>
 
-      <Link className="flex items-center gap-2" href={`${locale}/offers/${offerNumber}`}>
+      <Link className="flex items-center gap-2" href={`${locale}/offers/${offerId}`}>
         <Button variant="default" size="sm">
           {t("invest")}
           <HelpingHand size={16} />
@@ -114,52 +116,30 @@ function OfferCardFooter({ installments, endDate, offerNumber }: OfferCardFooter
 }
 
 type OfferCardProps = {
-  offerNumber: number;
+  offer: Offer;
 };
 
-export function OfferCard({ offerNumber }: OfferCardProps) {
+export function OfferCard({ offer }: OfferCardProps) {
   const t = useTranslations("home.offers.card.header");
-
-  const nameExamples = [
-    { name: "Growth Booster Bonds", originatorName: "Alpha Investments" },
-    { name: "Fortune Builder Fund", originatorName: "Beta Capital" },
-    { name: "Prosperity Portfolio", originatorName: "Gamma Finance" },
-    { name: "Wealth Expansion Equity", originatorName: "Delta Ventures" },
-    { name: "Opportunity Oasis", originatorName: "Omega Holdings" },
-    { name: "Success Surge Securities", originatorName: "Sigma Securities" },
-    { name: "Prosperity Pathway Plan", originatorName: "Zeta Funds" },
-    { name: "Future Harvest Fund", originatorName: "Epsilon Investors" },
-    { name: "WealthWise Opportunities", originatorName: "Theta Trust" },
-    { name: "Capital Catalyst Collection", originatorName: "Nu Assets" },
-  ];
-
-  const randomData = {
-    date: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * Math.ceil(Math.random() * 300)),
-    percent: Number((Math.random() * 15).toFixed(1)),
-    creditScore: Math.floor(Math.random() * 1001),
-    amountAcquired: Math.floor(Math.random() * 10000),
-    amountToBeAcquired: Math.random() * 150000 + 10000,
-    installments: Math.floor(Math.random() * 20) + 6,
-  };
 
   return (
     <div className="rounded-lg border dark:border-border">
       <OfferCardHeader
-        offerName={nameExamples[offerNumber - 1].name}
-        originatorName={nameExamples[offerNumber - 1].originatorName}
-        percent={randomData.percent}
+        offerName={offer.name}
+        originatorName={offer.originator.name}
+        percent={offer.interestRatePercent}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
       <OfferCardBody
-        creditScore={randomData.creditScore}
-        amountAcquired={randomData.amountAcquired}
-        amountToBeAcquired={randomData.amountToBeAcquired}
+        creditScore={offer.creditScore}
+        amountAcquired={offer.acquiredAmount}
+        amountToBeAcquired={offer.goalAmount}
       />
       <OfferCardFooter
-        installments={randomData.installments}
-        endDate={randomData.date}
-        offerNumber={offerNumber}
+        installments={offer.installmentsTotal}
+        endDate={offer.deadlineDate}
+        offerId={offer.id}
       />
     </div>
   );

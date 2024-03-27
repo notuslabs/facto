@@ -36,9 +36,9 @@ export function useDeposit() {
         .accounts({
           investor: investorPubKey,
           investorTokenAccount: investorTokenAccountPubKey,
-          owner: loggedUserWallet.publicKey,
+          caller: loggedUserWallet.publicKey,
           payer: loggedUserWallet.publicKey,
-          mint: FAKE_MINT,
+          stableCoin: FAKE_MINT,
         })
         .rpc();
     },

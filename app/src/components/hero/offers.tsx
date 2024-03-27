@@ -4,8 +4,13 @@ import { Input } from "../ui/input";
 import { OfferCard } from "../offer-card";
 import { useTranslations } from "next-intl";
 import { Button } from "../ui/button";
+import { Offer } from "@/structs/Offer";
 
-export function Offers() {
+export type OffersProps = {
+  offers: Offer[];
+};
+
+export function Offers({ offers }: OffersProps) {
   const t = useTranslations("home.offers");
   return (
     <>
@@ -31,12 +36,10 @@ export function Offers() {
             {t("title")}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6 lg:gap-10 xl:grid-cols-3">
-            {Array(9)
-              .fill(0)
-              .map((_, index) => (
-                <OfferCard key={index} offerNumber={index + 1} />
-              ))}
+          <div className="grid grid-cols-3 gap-10">
+            {offers.map((offer) => (
+              <OfferCard key={offer.id} offer={offer} />
+            ))}
           </div>
         </Card>
       </div>

@@ -14,6 +14,7 @@ import { useTokenAccounts } from "@/hooks/use-token-accounts";
 import { useCreateInvestorAccount } from "@/hooks/use-create-investor-account";
 import { useDeposit } from "@/hooks/use-deposit";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
+import { env } from "@/env";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -41,7 +42,7 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
   );
 }
 
-export const FAKE_MINT = new PublicKey("6pAjARTJGHLV8Wdvq5UYMwSUvG4faePDvK6zwmRAXE9h");
+export const FAKE_MINT = new PublicKey(env.NEXT_PUBLIC_FAKE_MINT_ADDRESS);
 
 export default function TestTokenAccountTransfer() {
   const withdrawRef = useRef<HTMLInputElement>(null);
