@@ -9,18 +9,22 @@ import { toast } from "sonner";
 import { useEffect } from "react";
 
 export default function InvestorFormPage() {
-  const { data: tokenAccounts, isLoading: isTokenAccountsLoading } = useTokenAccounts();
+  const { data: tokenAccounts, isPending: isTokenAccountsLoading } = useTokenAccounts();
   const t = useTranslations("become.investor");
   const router = useRouter();
 
   const isAllowedToCreate = !isTokenAccountsLoading && !tokenAccounts?.investorTokenAccount;
+  const alreadyHasInvestorAccount =
+    !isTokenAccountsLoading && !!tokenAccounts?.investorTokenAccount;
 
   useEffect(() => {
-    if (!isAllowedToCreate) {
+    if (alreadyHasInvestorAccount) {
       toast.error(t("already-registered-toast-message"));
       router.push("/");
     }
-  }, [isAllowedToCreate, router, t]);
+  }, [alreadyHasInvestorAccount, router, t]);
+
+  // TODO: block not authed user
 
   return (
     <div className="container">

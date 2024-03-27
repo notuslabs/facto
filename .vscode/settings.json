@@ -1,5 +1,5 @@
 {
-    "rust-analyzer.linkedProjects": [
-        "./programs/hackathon/Cargo.toml"
-    ]
+  "i18n-ally.localesPaths": ["app/locales"],
+  "i18n-ally.keystyle": "nested",
+  "rust-analyzer.linkedProjects": ["./programs/hackathon/Cargo.toml"]
 }

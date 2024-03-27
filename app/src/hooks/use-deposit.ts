@@ -6,8 +6,8 @@ import { PublicKey } from "@solana/web3.js";
 import { useSession } from "@/components/auth-provider";
 import { useProgram } from "@/hooks/use-program";
 import { utils } from "@coral-xyz/anchor";
-import { FAKE_MINT } from "../app/[locale]/test-token-account-transfer/page";
 import { BN } from "bn.js";
+import { FAKE_MINT } from "@/lib/constants";
 
 export function useDeposit() {
   const queryClient = useQueryClient();

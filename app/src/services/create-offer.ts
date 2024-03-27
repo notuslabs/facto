@@ -1,21 +1,22 @@
 import BN from "bn.js";
 import { nanoid } from "nanoid";
 import { PublicKey, Keypair } from "@solana/web3.js";
-import { FAKE_MINT } from "@/app/[locale]/test-token-account-transfer/page";
 import { Program, utils } from "@coral-xyz/anchor";
+import { FAKE_MINT } from "@/lib/constants";
+import { Hackathon } from "@/lib/idl";
 
 export type CreateOfferParams = {
   description: string;
   deadlineDate: Date;
-  goalAmount: BN;
+  goalAmount: number;
   startDate?: Date;
-  minAmountInvest: BN;
+  minAmountInvest: number;
   interestRatePercent: number;
   installmentsTotal: number;
   installmentsStartDate?: Date;
 
   caller: Keypair;
-  program: Program;
+  program: Program<Hackathon>;
 };
 
 export async function createOffer({
@@ -49,14 +50,14 @@ export async function createOffer({
     program.programId,
   );
 
-  const tx = await program.methods
+  await program.methods
     .createOffer(
       id,
       description,
       new BN(deadlineDate.getTime()),
-      goalAmount,
+      new BN(goalAmount),
       startDate ? new BN(startDate.getTime()) : null,
-      minAmountInvest,
+      new BN(minAmountInvest),
       interestRatePercent,
       installmentsTotal,
       installmentsStartDate ? new BN(installmentsStartDate.getTime()) : null,
@@ -71,7 +72,11 @@ export async function createOffer({
       stableToken: FAKE_MINT,
     })
     .signers([caller])
-    .rpc({ commitment: "processed" });
+    .rpc({ commitment: "finalized" });
 
-  return tx;
+  return {
+    tx: offer.toString(),
+    id: id,
+    offerAddress: offer.toString(),
+  };
 }

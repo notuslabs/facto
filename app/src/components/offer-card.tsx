@@ -130,6 +130,7 @@ export function OfferCard({ offer }: OfferCardProps) {
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
+
       <OfferCardBody
         creditScore={offer.creditScore}
         amountAcquired={offer.acquiredAmount}

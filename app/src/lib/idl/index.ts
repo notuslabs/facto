@@ -8,7 +8,7 @@ export type Hackathon = {
         {
           name: "payer";
           isMut: true;
-          isSigner: false;
+          isSigner: true;
         },
         {
           name: "caller";
@@ -50,6 +50,10 @@ export type Hackathon = {
           name: "description";
           type: "string";
         },
+        {
+          name: "tokenSlug";
+          type: "string";
+        },
       ];
     },
     {
@@ -83,10 +87,6 @@ export type Hackathon = {
         },
         {
           name: "description";
-          type: "string";
-        },
-        {
-          name: "tokenSlug";
           type: "string";
         },
       ];
@@ -274,41 +274,6 @@ export type Hackathon = {
         },
       ];
       args: [];
-    },
-    {
-      name: "editOriginator";
-      accounts: [
-        {
-          name: "originator";
-          isMut: true;
-          isSigner: false;
-        },
-        {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "caller";
-          isMut: true;
-          isSigner: true;
-        },
-        {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
-        },
-      ];
-      args: [
-        {
-          name: "name";
-          type: "string";
-        },
-        {
-          name: "description";
-          type: "string";
-        },
-      ];
     },
     {
       name: "createInvestor";
@@ -616,6 +581,10 @@ export type Hackathon = {
             name: "bump";
             type: "u8";
           },
+          {
+            name: "tokenAccountBump";
+            type: "u8";
+          },
         ];
       };
     },
@@ -718,7 +687,7 @@ export const IDL: Hackathon = {
         {
           name: "payer",
           isMut: true,
-          isSigner: false,
+          isSigner: true,
         },
         {
           name: "caller",
@@ -760,6 +729,10 @@ export const IDL: Hackathon = {
           name: "description",
           type: "string",
         },
+        {
+          name: "tokenSlug",
+          type: "string",
+        },
       ],
     },
     {
@@ -793,10 +766,6 @@ export const IDL: Hackathon = {
         },
         {
           name: "description",
-          type: "string",
-        },
-        {
-          name: "tokenSlug",
           type: "string",
         },
       ],
@@ -984,41 +953,6 @@ export const IDL: Hackathon = {
         },
       ],
       args: [],
-    },
-    {
-      name: "editOriginator",
-      accounts: [
-        {
-          name: "originator",
-          isMut: true,
-          isSigner: false,
-        },
-        {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "caller",
-          isMut: true,
-          isSigner: true,
-        },
-        {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
-      ],
-      args: [
-        {
-          name: "name",
-          type: "string",
-        },
-        {
-          name: "description",
-          type: "string",
-        },
-      ],
     },
     {
       name: "createInvestor",
@@ -1324,6 +1258,10 @@ export const IDL: Hackathon = {
           },
           {
             name: "bump",
+            type: "u8",
+          },
+          {
+            name: "tokenAccountBump",
             type: "u8",
           },
         ],

@@ -14,13 +14,17 @@ export default function InvestorFormPage() {
   const router = useRouter();
 
   const isAllowedToCreate = !isTokenAccountsLoading && !tokenAccounts?.originatorTokenAccount;
+  const alreadyHasOriginatorAccount =
+    !isTokenAccountsLoading && !!tokenAccounts?.originatorTokenAccount;
 
   useEffect(() => {
-    if (!isAllowedToCreate) {
+    if (alreadyHasOriginatorAccount) {
       toast.error(t("already-registered-toast-message"));
       router.push("/");
     }
-  }, [isAllowedToCreate, router, t]);
+  }, [alreadyHasOriginatorAccount, router, t]);
+
+  // TODO: block not authed user
 
   return (
     <div className="container">

@@ -6,10 +6,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProgram } from "./use-program";
 import { utils } from "@coral-xyz/anchor";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
-import { FAKE_MINT } from "@/app/[locale]/test-token-account-transfer/page";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useTokenAccounts } from "./use-token-accounts";
+import { FAKE_MINT } from "@/lib/constants";
 
 class AlreadyRegisteredError extends Error {
   constructor(message?: string) {
@@ -56,12 +56,6 @@ export function useCreateInvestor() {
         })
         .signers([loggedUserWallet])
         .rpc();
-
-      console.log(
-        "Investor created",
-        investorPubKey.toString(),
-        investorTokenAccountPubKey.toString(),
-      );
     },
     onSuccess: () => {
       toast.success(t("success-toast-message"));

@@ -8,7 +8,7 @@
         {
           "name": "payer",
           "isMut": true,
-          "isSigner": false
+          "isSigner": true
         },
         {
           "name": "caller",
@@ -49,6 +49,10 @@
         {
           "name": "description",
           "type": "string"
+        },
+        {
+          "name": "tokenSlug",
+          "type": "string"
         }
       ]
     },
@@ -83,10 +87,6 @@
         },
         {
           "name": "description",
-          "type": "string"
-        },
-        {
-          "name": "tokenSlug",
           "type": "string"
         }
       ]
@@ -274,41 +274,6 @@
         }
       ],
       "args": []
-    },
-    {
-      "name": "editOriginator",
-      "accounts": [
-        {
-          "name": "originator",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "caller",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        }
-      ]
     },
     {
       "name": "createInvestor",
@@ -614,6 +579,10 @@
           },
           {
             "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "tokenAccountBump",
             "type": "u8"
           }
         ]

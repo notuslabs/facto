@@ -42,8 +42,6 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
   );
 }
 
-export const FAKE_MINT = new PublicKey(env.NEXT_PUBLIC_FAKE_MINT_ADDRESS);
-
 export default function TestTokenAccountTransfer() {
   const withdrawRef = useRef<HTMLInputElement>(null);
   const { solanaWallet } = useSession();

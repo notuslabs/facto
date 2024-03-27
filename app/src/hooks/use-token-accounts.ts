@@ -7,8 +7,8 @@ import { utils } from "@coral-xyz/anchor";
 import { getAccount, getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
-import { FAKE_MINT } from "../app/[locale]/test-token-account-transfer/page";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
+import { FAKE_MINT } from "@/lib/constants";
 
 export function useTokenAccounts() {
   const { program } = useProgram();
@@ -19,7 +19,6 @@ export function useTokenAccounts() {
     queryKey: ["token-accounts", address?.toString(), program?.programId.toString()],
     queryFn: async () => {
       if (!solanaWallet || !program) return null;
-      console.log("Here");
 
       const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
       const privateKey = await getPrivateKey(solanaWallet);
@@ -45,26 +44,21 @@ export function useTokenAccounts() {
         program.programId,
       );
 
-      console.log("originatorTokenAccountPubKey", originatorTokenAccountPubKey.toString());
-
       const userTokenAccount = await getOrCreateAssociatedTokenAccount(
         connection,
         loggedUserWallet,
         FAKE_MINT,
         loggedUserWallet.publicKey,
       ).catch((e) => console.log(e));
-      console.log("userTokenAccount", userTokenAccount);
 
       const investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey).catch(
         console.error,
       );
-      console.log("investorTokenAccount", investorTokenAccount);
 
       const originatorTokenAccount = await getAccount(
         connection,
         originatorTokenAccountPubKey,
       ).catch(console.error);
-      console.log("originatorTokenAccount", originatorTokenAccount);
 
       return {
         investorTokenAccount,

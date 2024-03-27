@@ -6,7 +6,7 @@ import { useProgram } from "@/hooks/use-program";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { utils } from "@coral-xyz/anchor";
-import { FAKE_MINT } from "../app/[locale]/test-token-account-transfer/page";
+import { FAKE_MINT } from "@/lib/constants";
 
 export function useCreateInvestorAccount() {
   const queryClient = useQueryClient();

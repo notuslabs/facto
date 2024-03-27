@@ -7,7 +7,7 @@ import { useSession } from "@/components/auth-provider";
 import { utils } from "@coral-xyz/anchor";
 import { useProgram } from "@/hooks/use-program";
 import { BN } from "bn.js";
-import { FAKE_MINT } from "../app/[locale]/test-token-account-transfer/page";
+import { FAKE_MINT } from "@/lib/constants";
 
 export function useWithdrawal() {
   const queryClient = useQueryClient();

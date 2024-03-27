@@ -153,7 +153,8 @@
       "submit-button": "Continuar",
       "success-toast-message": "Sua conta foi criada com sucesso",
       "error-toast-message": "Ocorreu um erro ao criar sua conta",
-      "already-registered-toast-message": "Já existe uma conta de investidor vinculada à sua conta."
+      "already-registered-toast-message": "Já existe uma conta de investidor vinculada à sua conta.",
+      "not-authenticated": "Você precisa estar autenticado para se tornar um investidor"
     },
     "originator": {
       "title": "Vamos criar sua conta",
@@ -168,7 +169,74 @@
       "submit-button": "Continuar",
       "success-toast-message": "Sua conta foi criada com sucesso",
       "error-toast-message": "Ocorreu um erro ao criar sua conta",
-      "already-registered-toast-message": "Já existe uma conta de originador vinculada à sua conta."
+      "already-registered-toast-message": "Já existe uma conta de originador vinculada à sua conta.",
+      "not-authenticated": "Você precisa estar autenticado para se tornar um originador"
     }
+  },
+  "create-offer-page": {
+    "header": {
+      "title": "Nova oferta"
+    },
+    "steps": {
+      "step-1": "Sobre a oferta - 1/3",
+      "step-2": "Rendimento - 2/3",
+      "step-3": "Prazos - 3/3"
+    },
+    "form-fields": {
+      "name": {
+        "label": "Nome da oferta",
+        "description": "Gerado automaticamente a partir do token e número total de ofertas do originador"
+      },
+      "description": {
+        "label": "Descrição",
+        "description": "{chars}/{maxChars} caracteres max",
+        "placeholder": "Descreva a oferta"
+      },
+      "credit-score": {
+        "label": "Score de crédito",
+        "placeholder": "Selecione uma opção"
+      },
+      "goal-amount": {
+        "label": "Valor total a ser captado",
+        "left-text": "USD",
+        "placeholder": "0,0"
+      },
+      "interest-rate": {
+        "label": "Taxa de empréstimo / Borrowing Fee",
+        "left-text": "% ao ano",
+        "placeholder": "0,0"
+      },
+      "start-date": {
+        "label": "Quando começa a oferta",
+        "description": "A partir de quando a oferta poderá receber recursos",
+        "placeholder": "Defina uma data"
+      },
+      "deadline-date": {
+        "label": "Data limite para captação",
+        "description": "Até quando a oferta poderá receber recursos",
+        "placeholder": "Defina uma data"
+      },
+      "payment-frequency": {
+        "label": "Frequência de pagamento",
+        "placeholder": "Selecione uma opção",
+        "options": {
+          "monthly": "Mensal"
+        }
+      },
+      "installments-total": {
+        "label": "Número de parcelas a pagar",
+        "placeholder": "ex: 1"
+      },
+      "installments-start-date": {
+        "label": "Data da primeira parcela",
+        "placeholder": "Defina uma data"
+      }
+    },
+    "not-authenticated": "Você precisa estar autenticado para criar uma oferta",
+    "continue-button": "Continuar",
+    "submit-button": "Criar oferta",
+    "not-an-originator": "Você não é um originador, para criar uma oferta você precisa ser um originador",
+    "success-toast-message": "Sua oferta foi criada com sucesso",
+    "error-toast-message": "Ocorreu um erro ao criar sua oferta"
   }
 }

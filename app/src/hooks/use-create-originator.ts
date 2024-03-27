@@ -8,8 +8,8 @@ import { utils } from "@coral-xyz/anchor";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-import { FAKE_MINT } from "@/app/[locale]/test-token-account-transfer/page";
 import { useTokenAccounts } from "./use-token-accounts";
+import { FAKE_MINT } from "@/lib/constants";
 
 class AlreadyRegisteredError extends Error {
   constructor(message?: string) {
@@ -23,8 +23,6 @@ export function useCreateOriginator() {
   const { program } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.originator");
-
-  console.log("tokenAccounts", tokenAccounts);
 
   return useMutation({
     mutationFn: async ({ name, description }: { name: string; description: string }) => {
@@ -48,7 +46,7 @@ export function useCreateOriginator() {
       );
 
       await program.methods
-        .createOriginator(name, description)
+        .createOriginator(name, description, "SLUG")
         .accounts({
           originator: originatorPubKey,
           originatorTokenAccount: originatorTokenAccountPubKey,
@@ -57,15 +55,8 @@ export function useCreateOriginator() {
           caller: loggedUserWallet.publicKey,
         })
         .signers([loggedUserWallet])
-        .rpc();
-
-      console.log(
-        "Originator created",
-        originatorPubKey.toString(),
-        originatorTokenAccountPubKey.toString(),
-        name,
-        description,
-      );
+        .rpc()
+        .catch(console.error);
     },
     onSuccess: () => {
       toast.success(t("success-toast-message"));
