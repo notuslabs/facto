@@ -9,7 +9,7 @@ export function Offers() {
   const t = useTranslations("home.offers");
   return (
     <>
-      <div className="h-[168px] w-full dark:bg-background" />
+      <div className="h-[168px] w-full bg-background" />
       <div className="-mt-[168px] flex flex-col gap-9 p-4 md:container">
         <div className="flex items-center justify-between gap-4">
           <div className="w-80">
@@ -27,7 +27,7 @@ export function Offers() {
           </Button>
         </div>
         <Card className="flex flex-col gap-6">
-          <h2 className="bg-back text-medium dark:text-primary md:text-2xl md:font-bold">
+          <h2 className="bg-back text-medium text-primary md:text-2xl md:font-bold">
             {t("title")}
           </h2>
 
