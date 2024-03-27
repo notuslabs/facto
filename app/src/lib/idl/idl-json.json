@@ -487,6 +487,12 @@
             "type": "u64"
           },
           {
+            "name": "startDate",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
             "name": "deadlineDate",
             "type": "i64"
           },
@@ -511,12 +517,6 @@
           {
             "name": "minAmountInvest",
             "type": "u64"
-          },
-          {
-            "name": "startDate",
-            "type": {
-              "option": "i64"
-            }
           },
           {
             "name": "creditScore",

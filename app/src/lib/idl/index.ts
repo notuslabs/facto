@@ -487,6 +487,12 @@ export type Hackathon = {
             type: "u64";
           },
           {
+            name: "startDate";
+            type: {
+              option: "i64";
+            };
+          },
+          {
             name: "deadlineDate";
             type: "i64";
           },
@@ -511,12 +517,6 @@ export type Hackathon = {
           {
             name: "minAmountInvest";
             type: "u64";
-          },
-          {
-            name: "startDate";
-            type: {
-              option: "i64";
-            };
           },
           {
             name: "creditScore";
@@ -1147,6 +1147,12 @@ export const IDL: Hackathon = {
             type: "u64",
           },
           {
+            name: "startDate",
+            type: {
+              option: "i64",
+            },
+          },
+          {
             name: "deadlineDate",
             type: "i64",
           },
@@ -1171,12 +1177,6 @@ export const IDL: Hackathon = {
           {
             name: "minAmountInvest",
             type: "u64",
-          },
-          {
-            name: "startDate",
-            type: {
-              option: "i64",
-            },
           },
           {
             name: "creditScore",
