@@ -214,7 +214,7 @@ describe("Offer", () => {
       minAmountInvest: new BN(50),
       startDate: null,
     });
-    expect(offerAccount.deadlineDate.toString()).to.equal("1664996800");
+    expect(offerAccount.deadlineDate.toString()).to.equal(deadline.toString());
   });
 
   it("should be able to deposit in the offer", async () => {

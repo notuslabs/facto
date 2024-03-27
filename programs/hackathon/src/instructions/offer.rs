@@ -24,7 +24,7 @@ pub fn create_offer(
     offer.interest_rate_percent = interest_rate_percent;
     offer.goal_amount = goal_amount;
     offer.deadline_date = deadline_date;
-    offer.acquired_amount = (Clock::get()?.unix_timestamp % goal_amount as i64) as u64;
+    offer.acquired_amount = 0;
     offer.originator = ctx.accounts.originator.key();
     offer.installments_total = installments_total;
     offer.installments_start_date = installments_start_date;
