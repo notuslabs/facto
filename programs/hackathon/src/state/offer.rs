@@ -67,10 +67,10 @@ impl<'info> Offer {
 
         if current_timestamp < self.deadline_date && self.acquired_amount < self.goal_amount {
             OfferStatus::Open
-        } else if self.acquired_amount == self.goal_amount {
+        } else if self.acquired_amount == self.goal_amount && current_timestamp >= self.deadline_date {
             OfferStatus::Funded
         } else {
-            OfferStatus::Finished
+            OfferStatus::Failed
         }
     }
 }

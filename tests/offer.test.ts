@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
 import { createMint, mintTo, getAccount, getOrCreateAssociatedTokenAccount, Account } from "@solana/spl-token";
 import { expect } from "chai";
+import { sleep } from "./utils";
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
@@ -38,6 +39,7 @@ describe("Offer", () => {
   const callerInvestor = anchor.web3.Keypair.generate();
   const factoOwner = anchor.web3.Keypair.generate();
   const payer = anchor.web3.Keypair.generate();
+  const deadline = Math.floor(Date.now() / 1000 + 10);
 
   const [originator] = PublicKey.findProgramAddressSync(
     [anchor.utils.bytes.utf8.encode("originator"), callerOriginator.publicKey.toBuffer()],
@@ -111,7 +113,6 @@ describe("Offer", () => {
       program.programId
     );
     
-    console.log("CREATE INVESTOR")
     await program.methods
       .createInvestor("Investidor 1")
       .accounts({
@@ -150,7 +151,7 @@ describe("Offer", () => {
         offerId,
         "Offer Name",
         "Offer Description",
-        new BN(Date.now()),
+        new BN(deadline),
         new BN(100),
         new BN(50),
         1.5,
@@ -168,7 +169,6 @@ describe("Offer", () => {
       })
       .signers([payer, callerOriginator])
       .rpc()
-      .catch((e) => console.error(e));
 
     await program.methods
       .createOffer(
@@ -193,7 +193,6 @@ describe("Offer", () => {
       })
       .signers([payer, callerOriginator2])
       .rpc()
-      .catch((e) => console.error("ERROR NA CRIAÇÂO DA OFFER 2", e));
 
     const mint = await getAccount(anchor.getProvider().connection, vaultPubKey);
   });
@@ -366,6 +365,15 @@ describe("Offer", () => {
         [anchor.utils.bytes.utf8.encode("offer_vault"), offer2.toBuffer()],
         program.programId
       );
+
+      while (true) {
+        const currentSlot = await program.provider.connection.getSlot()
+        const currentBlocktime = await program.provider.connection.getBlockTime(currentSlot)
+        if (currentBlocktime > deadline) {
+           break
+        }
+        sleep(1000)
+     }
 
     await program.methods
       .withdrawInvestments()
