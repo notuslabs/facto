@@ -1,5 +1,4 @@
 use crate::CreateOffer;
-use crate::CreditScore;
 use crate::OfferStatus;
 use crate::{Invest, WithdrawInvestments};
 use anchor_lang::prelude::*;
@@ -9,34 +8,36 @@ use anchor_spl::token::{MintTo, Transfer};
 pub fn create_offer(
     ctx: Context<CreateOffer>,
     id: String,
-    name: String,
     description: String,
     deadline_date: i64,
     goal_amount: u64,
+    start_date: Option<i64>,
     min_amount_invest: u64,
     interest_rate_percent: f32,
     installments_total: u8,
-    installments_start_date: Option<u64>,
+    installments_start_date: Option<i64>,
 ) -> Result<()> {
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
-    offer.name = name;
     offer.description = description;
-    offer.deadline_date = deadline_date;
-    offer.goal_amount = goal_amount;
+    offer.discriminator = ctx.accounts.originator.total_offers;
     offer.interest_rate_percent = interest_rate_percent;
+    offer.goal_amount = goal_amount;
+    offer.deadline_date = deadline_date;
+    offer.acquired_amount = (Clock::get()?.unix_timestamp % goal_amount as i64) as u64;
+    offer.originator = ctx.accounts.originator.key();
     offer.installments_total = installments_total;
-    offer.installments_paid = 0;
     offer.installments_start_date = installments_start_date;
-    offer.installment_amount = 0.0; // TODO: calculate the installment amount
-    offer.credit_score = CreditScore::A; // TODO: in the future we'll have a system to set the credit score
+    offer.min_amount_invest = min_amount_invest;
+    offer.start_date = start_date;
+    offer.credit_score = (Clock::get()?.unix_timestamp % 1000) as u16;
     offer.created_at = Clock::get()?.unix_timestamp; // TODO: find a better way to get the timestamp
+
     offer.bump = *ctx.bumps.get("offer").unwrap();
     offer.token_bump = *ctx.bumps.get("token").unwrap();
     offer.vault_bump = *ctx.bumps.get("vault").unwrap();
-    offer.min_amount_invest = min_amount_invest;
-    offer.originator = ctx.accounts.originator.key();
-    offer.acquired_amount = 0;
+
+    ctx.accounts.originator.total_offers += 1;
     Ok(())
 }
 

@@ -5,8 +5,13 @@ import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
 import { createMint, mintTo, getAccount, getOrCreateAssociatedTokenAccount, Account } from "@solana/spl-token";
-import { expect } from "chai";
 import { sleep } from "./utils";
+import chai from "chai";
+import chaiSubset from "chai-subset";
+
+chai.use(chaiSubset);
+
+const { expect } = chai;
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
@@ -86,7 +91,7 @@ describe("Offer", () => {
     externalStableOriginatorTokenAccount = await getOrCreateAssociatedTokenAccount(anchor.getProvider().connection, payer, stableTokenPubKey, callerOriginator.publicKey)
 
     await program.methods
-      .createOriginator("test", "description")
+      .createOriginator("test", "description", "teste")
       .accounts({
         originator,
         caller: callerOriginator.publicKey,
@@ -96,7 +101,7 @@ describe("Offer", () => {
       .rpc();
 
     await program.methods
-      .createOriginator("test 2", "description 2")
+      .createOriginator("test 2", "description 2", "test")
       .accounts({
         originator: originator2,
         caller: callerOriginator2.publicKey,
@@ -149,10 +154,10 @@ describe("Offer", () => {
     const tx = await program.methods
       .createOffer(
         offerId,
-        "Offer Name",
         "Offer Description",
         new BN(deadline),
         new BN(100),
+        null,
         new BN(50),
         1.5,
         3,
@@ -173,10 +178,10 @@ describe("Offer", () => {
     await program.methods
       .createOffer(
         offerId2,
-        "Offer Name 2",
-        "Offer Description 2",
-        new BN(1664996800),
+        "Offer Description",
+        new BN(deadline),
         new BN(100),
+        null,
         new BN(50),
         1.5,
         3,
@@ -191,10 +196,25 @@ describe("Offer", () => {
         stableToken: stableTokenPubKey,
         vault: vaultPubKey2,
       })
-      .signers([payer, callerOriginator2])
-      .rpc()
+      .signers([callerOriginator2, payer])
+      .rpc({ commitment: "processed" })
+      .catch((e) => console.log(e));
 
-    const mint = await getAccount(anchor.getProvider().connection, vaultPubKey);
+    const offerAccount = await program.account.offer.fetch(offer);
+
+    expect(offerAccount).to.containSubset({
+      id: offerId,
+      description: "Offer Description",
+      discriminator: 0,
+      interestRatePercent: 1.5,
+      goalAmount: new BN(100),
+      originator,
+      installmentsTotal: 3,
+      installmentsStartDate: null,
+      minAmountInvest: new BN(50),
+      startDate: null,
+    });
+    expect(offerAccount.deadlineDate.toString()).to.equal("1664996800");
   });
 
   it("should be able to deposit in the offer", async () => {

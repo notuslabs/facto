@@ -43,9 +43,9 @@ export function useWithdrawal() {
           investor: investorPubKey,
           investorTokenAccount: investorTokenAccountPubKey,
           toTokenAccount: toTokenAccount,
-          mint: FAKE_MINT,
+          stableCoin: FAKE_MINT,
           payer: loggedUserWallet.publicKey,
-          owner: loggedUserWallet.publicKey,
+          caller: loggedUserWallet.publicKey,
         })
         .rpc()
         .catch((e) => console.log(e));
