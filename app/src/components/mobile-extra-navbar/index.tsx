@@ -18,19 +18,19 @@ export default function MobileExtraNavbar() {
       key: 1,
       name: t("transactions"),
       href: "/transactions",
-      icon: <CircleDollarSign size={16} />,
+      icon: <CircleDollarSign size={20} />,
     },
     {
       key: 2,
       name: t("my-investments"),
       href: "/investments",
-      icon: <HelpingHand size={16} />,
+      icon: <HelpingHand size={20} />,
     },
     {
       key: 3,
       name: t("receivables"),
       href: "/receivables",
-      icon: <Receipt size={16} />,
+      icon: <Receipt size={20} />,
     },
   ];
 
