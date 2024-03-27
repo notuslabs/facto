@@ -1,9 +1,14 @@
 import * as anchor from '@coral-xyz/anchor';
 import type { Hackathon } from '../target/types/hackathon';
 import { PublicKey } from '@solana/web3.js';
-import { createMint, getAccount } from '@solana/spl-token';
+import {
+  createMint,
+  getAccount,
+  getOrCreateAssociatedTokenAccount,
+} from '@solana/spl-token';
 import { airdropSol } from './utils';
 import { BN } from 'bn.js';
+import { expect } from 'chai';
 
 describe('Investor', () => {
   anchor.setProvider(anchor.AnchorProvider.env());
@@ -17,7 +22,7 @@ describe('Investor', () => {
     program.programId
   );
 
-  const [investorTokenAccount] = PublicKey.findProgramAddressSync(
+  const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
     [
       anchor.utils.bytes.utf8.encode('investor_token_account'),
       investorPubKey.toBuffer(),
@@ -37,19 +42,47 @@ describe('Investor', () => {
     );
   });
 
-  it('should be able to create an investor', async () => {
+  it('should be able to become an investor', async () => {
     await program.methods
-      .createInvestor('Nicholas')
+      .createInvestor('Investor 1')
       .accounts({
         investor: investorPubKey,
-        investorTokenAccount: investorTokenAccount,
+        investorTokenAccount: investorTokenAccountPubKey,
+        caller: caller.publicKey,
+        payer: caller.publicKey,
+        stableCoin: tokenPublicKey,
+      })
+      .signers([caller])
+      .rpc();
+
+    const investorTokenAccount = await getAccount(
+      anchor.getProvider().connection,
+      investorTokenAccountPubKey
+    );
+
+    const investorInfo = await program.account.investor.fetch(investorPubKey);
+
+    expect(investorTokenAccount).not.to.be.undefined;
+    expect(investorTokenAccount).not.to.be.null;
+    expect(parseFloat(investorTokenAccount.amount.toString())).to.equal(0);
+    expect(investorInfo.name).to.equal('Investor 1');
+  });
+
+  it('Should be able to edit the investor name', async () => {
+    await program.methods
+      .editInvestor('Investor 2')
+      .accounts({
+        investor: investorPubKey,
         owner: caller.publicKey,
         payer: caller.publicKey,
-        mint: tokenPublicKey,
       })
       .signers([caller])
       .rpc()
       .catch((e) => console.log(e));
+
+    const investorInfo = await program.account.investor.fetch(investorPubKey);
+
+    expect(investorInfo.name).to.equal('Investor 2');
   });
 
   it('Should be able to deposit', async () => {
@@ -57,18 +90,63 @@ describe('Investor', () => {
       .depositTokens(new BN(20))
       .accounts({
         investor: investorPubKey,
-        investorTokenAccount: investorTokenAccount,
-        owner: caller.publicKey,
+        investorTokenAccount: investorTokenAccountPubKey,
+        caller: caller.publicKey,
         payer: caller.publicKey,
-        mint: tokenPublicKey,
+        stableCoin: tokenPublicKey,
       })
       .signers([caller])
       .rpc()
       .catch((e) => console.log(e));
 
-    const userTokenAccount = await getAccount(
+    const investorTokenAccount = await getAccount(
       anchor.getProvider().connection,
-      investorTokenAccount
+      investorTokenAccountPubKey
     );
+
+    expect(parseFloat(investorTokenAccount.amount.toString())).to.equal(20);
+  });
+
+  it('Should be able to withdraw', async () => {
+    let caller_token_account = await getOrCreateAssociatedTokenAccount(
+      anchor.getProvider().connection,
+      caller,
+      tokenPublicKey,
+      caller.publicKey
+    );
+
+    let investorTokenAccount = await getAccount(
+      anchor.getProvider().connection,
+      investorTokenAccountPubKey
+    );
+
+    await program.methods
+      .withdrawTokens(new BN(20))
+      .accounts({
+        investor: investorPubKey,
+        investorTokenAccount: investorTokenAccount.address,
+        toTokenAccount: caller_token_account.address,
+        caller: caller.publicKey,
+        payer: caller.publicKey,
+        stableCoin: tokenPublicKey,
+      })
+      .signers([caller])
+      .rpc()
+      .catch((e) => console.log(e));
+
+    investorTokenAccount = await getAccount(
+      anchor.getProvider().connection,
+      investorTokenAccountPubKey
+    );
+
+    caller_token_account = await getOrCreateAssociatedTokenAccount(
+      anchor.getProvider().connection,
+      caller,
+      tokenPublicKey,
+      caller.publicKey
+    );
+
+    expect(parseFloat(investorTokenAccount.amount.toString())).to.equal(0);
+    expect(parseFloat(caller_token_account.amount.toString())).to.equal(20);
   });
 });

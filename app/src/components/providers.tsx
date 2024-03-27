@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { AuthProvider } from "./auth-provider";
 import { Provider } from "jotai";
 import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
+import { TanStackQueryProvider } from "./tanstack-query-provider";
 
 type ProvidersProps = {
   children?: ReactNode | undefined;
@@ -12,9 +13,11 @@ type ProvidersProps = {
 export function Providers({ children, locale, messages }: ProvidersProps) {
   return (
     <Provider>
-      <NextIntlClientProvider locale={locale} messages={messages}>
-        <AuthProvider>{children}</AuthProvider>
-      </NextIntlClientProvider>
+      <TanStackQueryProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <AuthProvider>{children}</AuthProvider>
+        </NextIntlClientProvider>
+      </TanStackQueryProvider>
     </Provider>
   );
 }

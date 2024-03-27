@@ -2,57 +2,46 @@ use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token::{Mint, Token, TokenAccount}};
 
 #[account]
+#[derive(InitSpace)]
 pub struct Investor {
+    #[max_len(30)]
     pub name: String,
-    pub owner: Pubkey,
-}
-
-#[account]
-pub struct Empty {}
-
-impl Investor {
-    const LENGTH: usize = 8 + 4 + 32 + 32; // default length + (string prefix length + investor name length) + owner pubkey length
+    pub bump: u8,
+    pub token_account_bump: u8,
 }
 
 #[derive(Accounts)]
 pub struct CreateInvestor<'info> {
-    #[account(init, payer = payer, space = Investor::LENGTH, seeds = [b"investor", owner.key().as_ref()], bump)]
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+
+    #[account(init, payer = payer, space = Investor::INIT_SPACE, seeds = [b"investor", caller.key().as_ref()], bump)]
     pub investor: Account<'info, Investor>,
     #[account(
         init,
         payer = payer, 
-        token::mint = mint,
+        token::mint = stable_coin,
         token::authority = investor,
         seeds = [b"investor_token_account", investor.key().as_ref()],
         bump
     )]
     pub investor_token_account: Account<'info, TokenAccount>,
-    
+
     #[account(mut)]
-    pub payer: Signer<'info>,
-    #[account(mut)]
-    pub mint: Account<'info, Mint>,
+    // TODO: Restrict the stable coin later
+    pub stable_coin: Account<'info, Mint>,
+
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
-    #[account(mut)]
-    pub owner: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
-pub struct DepositTokens<'info> {
+pub struct EditInvestor<'info> {
+    #[account(mut, seeds = [b"investor", owner.key().as_ref()], bump = investor.bump)]
     pub investor: Account<'info, Investor>,
-    #[account(
-        mut,
-        token::mint = mint,
-        token::authority = investor,
-        seeds = [b"investor_token_account", investor.key().as_ref()],
-        bump
-    )]
-    pub investor_token_account: Account<'info, TokenAccount>,
-
-    #[account(mut)]
-    pub mint: Account<'info, Mint>,
 
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -60,5 +49,62 @@ pub struct DepositTokens<'info> {
     #[account(mut)]
     pub owner: Signer<'info>, // owner of the token account
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct DepositTokens<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>, // caller of the token account
+
+    #[account(mut, seeds = [b"investor", caller.key().as_ref()], bump = investor.bump)]
+    pub investor: Account<'info, Investor>,
+    #[account(
+        mut,
+        token::mint = stable_coin,
+        token::authority = investor,
+        seeds = [b"investor_token_account", investor.key().as_ref()],
+        bump = investor.token_account_bump
+    )]
+    pub investor_token_account: Account<'info, TokenAccount>,
+
+    #[account(mut)]
+    // TODO: Restrict the stable coin later
+    pub stable_coin: Account<'info, Mint>,
+
+    pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
 }
+
+#[derive(Accounts)]
+pub struct WithdrawTokens<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>, // caller of the token account
+
+    #[account(mut, seeds = [b"investor", caller.key().as_ref()], bump = investor.bump)]
+    pub investor: Account<'info, Investor>,
+    #[account(
+        mut,
+        token::mint = stable_coin,
+        token::authority = investor,
+        seeds = [b"investor_token_account", investor.key().as_ref()],
+        bump = investor.token_account_bump
+    )]
+    pub investor_token_account: Account<'info, TokenAccount>,
+    #[account(
+        mut,
+        token::mint = stable_coin,
+        token::authority = caller,
+    )]
+    pub to_token_account: Account<'info, TokenAccount>,
+
+    #[account(mut)]
+    // TODO: Restrict the stable coin later
+    pub stable_coin: Account<'info, Mint>,
+
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
+}   
