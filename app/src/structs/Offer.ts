@@ -16,16 +16,16 @@ export class Offer {
     this.interestRatePercent = raw.interestRatePercent;
     this.goalAmount = raw.goalAmount;
     this.originator = rawOriginator;
-    this.deadlineDate = new Date(raw.deadlineDate.toString());
+    this.deadlineDate = new Date(raw.deadlineDate.toNumber());
     this.acquiredAmount = raw.acquiredAmount;
     this.installmentsTotal = raw.installmentsTotal;
     this.installmentsStartDate = raw.installmentsStartDate
-      ? new Date(raw.installmentsStartDate.toString())
+      ? new Date(raw.installmentsStartDate.toNumber())
       : undefined;
     this.minAmountInvest = raw.minAmountInvest;
-    this.startDate = raw.startDate ? new Date(raw.startDate.toString()) : undefined;
+    this.startDate = raw.startDate ? new Date(raw.startDate.toNumber()) : undefined;
     this.creditScore = raw.creditScore;
-    this.createdAt = new Date(raw.createdAt.toString());
+    this.createdAt = new Date(raw.createdAt.toNumber());
   }
 
   public id: string;
@@ -69,6 +69,8 @@ export class Offer {
       originatorsPubKeys,
     )) as Account<"originator">[];
 
-    return raw.map((raw, index) => new Offer(raw.account, originators[index]));
+    return raw
+      .map((raw, index) => new Offer(raw.account, originators[index]))
+      .sort((a, b) => b.discriminator - a.discriminator);
   }
 }
