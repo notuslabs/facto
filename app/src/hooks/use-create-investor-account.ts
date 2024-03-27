@@ -37,8 +37,8 @@ export function useCreateInvestorAccount() {
           investor: investorPubKey,
           investorTokenAccount: investorTokenAccountPubKey,
           payer: loggedUserWallet.publicKey,
-          owner: loggedUserWallet.publicKey,
-          mint: FAKE_MINT,
+          caller: loggedUserWallet.publicKey,
+          stableCoin: FAKE_MINT,
         })
         .signers([loggedUserWallet])
         .rpc()

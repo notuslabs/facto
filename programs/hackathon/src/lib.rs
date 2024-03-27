@@ -14,29 +14,30 @@ pub mod hackathon {
         ctx: Context<CreateOriginator>,
         name: String,
         description: String,
+        token_slug: String,
     ) -> Result<()> {
-        instructions::create_originator(ctx, name, description)
+        instructions::create_originator(ctx, name, description, token_slug)
     }
 
     pub fn create_offer(
         ctx: Context<CreateOffer>,
         id: String,
-        name: String,
         description: String,
-        deadline_date: u64,
+        deadline_date: i64,
         goal_amount: u64,
+        start_date: Option<i64>,
         min_amount_invest: u64,
         interest_rate_percent: f32,
         installments_total: u8,
-        installments_start_date: Option<u64>,
+        installments_start_date: Option<i64>,
     ) -> Result<()> {
         instructions::create_offer(
             ctx,
             id,
-            name,
             description,
             deadline_date,
             goal_amount,
+            start_date,
             min_amount_invest,
             interest_rate_percent,
             installments_total,
@@ -52,7 +53,11 @@ pub mod hackathon {
         instructions::withdraw_investments(ctx)
     }
 
-    pub fn edit_originator(ctx: Context<EditOriginator>, name: String, description: String) -> Result<()> {
+    pub fn edit_originator(
+        ctx: Context<EditOriginator>,
+        name: String,
+        description: String,
+    ) -> Result<()> {
         instructions::edit_originator(ctx, name, description)
     }
 
@@ -64,11 +69,11 @@ pub mod hackathon {
         instructions::edit_investor(ctx, name)
     }
 
-    pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> { 
+    pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
         instructions::deposit_tokens(ctx, amount)
     }
 
-    pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> { 
+    pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> {
         instructions::withdraw_tokens(ctx, amount)
     }
 }
