@@ -117,13 +117,13 @@ describe("Offer", () => {
       .createOffer(
         offerId,
         "Offer Description",
-        new BN(1664996800),
+        new BN(new Date().getTime() + 1000 * 60 * 60 * 24 * 30),
         new BN(100),
         null,
         new BN(50),
         1.5,
         3,
-        null
+        new BN(1664996800)
       )
       .accounts({
         caller: caller.publicKey,

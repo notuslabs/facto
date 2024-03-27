@@ -46,7 +46,7 @@ pub fn edit_originator(
 }
 
 #[error_code]
-pub enum ValidationError {
+enum ValidationError {
     #[msg("Max name length exceeded. Maximum length is 30")]
     MaxNameLengthExceeded,
     #[msg("Max description length exceeded. Maximum length is 500")]

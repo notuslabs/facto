@@ -44,7 +44,7 @@ pub struct Offer {
     pub acquired_amount: u64,
     pub originator: Pubkey,
     pub installments_total: u8,
-    pub installments_start_date: Option<i64>,
+    pub installments_start_date: i64,
     pub min_amount_invest: u64,
     pub credit_score: u16,
     pub created_at: i64,

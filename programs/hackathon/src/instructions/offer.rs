@@ -15,8 +15,51 @@ pub fn create_offer(
     min_amount_invest: u64,
     interest_rate_percent: f32,
     installments_total: u8,
-    installments_start_date: Option<i64>,
+    installments_start_date: i64,
 ) -> Result<()> {
+    require!(id.len() <= 16, ValidationError::MaxIdLengthExceeded);
+    require!(
+        description.len() <= 500,
+        ValidationError::MaxDescriptionLengthExceeded
+    );
+    require!(
+        deadline_date >= Clock::get()?.unix_timestamp,
+        ValidationError::DeadlineDateMustBeInTheFuture
+    );
+    require!(
+        goal_amount >= 1,
+        ValidationError::GoalAmountMustBeEqualToOrGreaterThanOne
+    );
+    require!(
+        goal_amount <= 15_000_000,
+        ValidationError::GoalAmountExceeded
+    );
+    if start_date.is_some() {
+        require!(
+            start_date.unwrap() >= Clock::get()?.unix_timestamp,
+            ValidationError::StartDateMustBeInTheFuture
+        );
+    }
+    require!(
+        min_amount_invest >= 1,
+        ValidationError::MinAmountMustBeEqualToOrGreaterThanOne
+    );
+    require!(
+        interest_rate_percent >= 0.01,
+        ValidationError::InterestRatePercentMustBeGreaterThanZero
+    );
+    require!(
+        installments_total >= 1,
+        ValidationError::InstallmentsTotalMustBeGreaterThanOne
+    );
+
+    // TODO: add check for max installment start date
+    // should also check if the start date is less than the monthly period from now
+    require!(
+        installments_start_date >= Clock::get()?.unix_timestamp + 2592000, // 30 days
+        ValidationError::InstallmentsStartDateMustBeThirtyDaysFromNow
+    );
+
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
     offer.description = description;
@@ -44,15 +87,15 @@ pub fn create_offer(
 pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
     require!(
         amount >= ctx.accounts.offer.min_amount_invest,
-        OfferErrors::MinAmountRequired
+        ValidationError::InvestmentAmountMustBeGreaterThanOfferMinAmount
     );
     require!(
         (ctx.accounts.vault_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
-        OfferErrors::GoalAmountExceeded
+        ValidationError::InvestmentExceedsGoalAmount
     );
     require!(
         ctx.accounts.offer.status() == OfferStatus::Open,
-        OfferErrors::OfferIsNotOpen
+        ValidationError::OfferIsNotOpen
     );
 
     ctx.accounts.offer.acquired_amount += amount;
@@ -112,11 +155,31 @@ pub fn withdraw_investments(_ctx: Context<WithdrawInvestments>) -> Result<()> {
 }
 
 #[error_code]
-pub enum OfferErrors {
-    #[msg("Min amount required")]
-    MinAmountRequired,
-    #[msg("Goal amount exceeded")]
-    GoalAmountExceeded,
-    #[msg("The Offer is not open")]
+enum ValidationError {
+    #[msg("Investment amount must be greater than offer min amount")]
+    InvestmentAmountMustBeGreaterThanOfferMinAmount,
+    #[msg("Investment exceeds goal amount")]
+    InvestmentExceedsGoalAmount,
+    #[msg("Offer is not open")]
     OfferIsNotOpen,
+    #[msg("Max ID length exceeded. Maximum length is 16")]
+    MaxIdLengthExceeded,
+    #[msg("Max description length exceeded. Maximum length is 500")]
+    MaxDescriptionLengthExceeded,
+    #[msg("Deadline date must be in the future")]
+    DeadlineDateMustBeInTheFuture,
+    #[msg("Goal amount must be equal to or greater than one")]
+    GoalAmountMustBeEqualToOrGreaterThanOne,
+    #[msg("Goal amount exceeded. Maximum amount is 15,000,000")]
+    GoalAmountExceeded,
+    #[msg("Min amount must be equal to or greater than one")]
+    MinAmountMustBeEqualToOrGreaterThanOne,
+    #[msg("Start date must be in the future")]
+    StartDateMustBeInTheFuture,
+    #[msg("Interest rate percent must be greater than zero")]
+    InterestRatePercentMustBeGreaterThanZero,
+    #[msg("Installments total must be greater than one")]
+    InstallmentsTotalMustBeGreaterThanOne,
+    #[msg("Installments start date must be thirty days from now")]
+    InstallmentsStartDateMustBeThirtyDaysFromNow,
 }
