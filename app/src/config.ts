@@ -24,13 +24,13 @@ export const pathnames = {
     en: "/become/originator",
     "pt-br": "/become/originator",
   },
-  "/offers/[id]": {
-    en: "/offers/[id]",
-    "pt-br": "/offers/[id]",
-  },
   "/offers/create": {
     en: "/offers/create",
     "pt-br": "/offers/create",
+  },
+  "/offers/[id]": {
+    en: "/offers/[id]",
+    "pt-br": "/offers/[id]",
   },
 } satisfies Pathnames<typeof locales>;
 
