@@ -4,8 +4,14 @@ import { AnchorError, BN } from "@coral-xyz/anchor";
 import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
-import { createMint, mintTo, getAccount, getOrCreateAssociatedTokenAccount, Account } from "@solana/spl-token";
-import { sleep } from "./utils";
+import {
+  createMint,
+  mintTo,
+  getAccount,
+  getOrCreateAssociatedTokenAccount,
+  Account,
+} from "@solana/spl-token";
+import { advanceTime } from "./utils";
 import chai from "chai";
 import chaiSubset from "chai-subset";
 
@@ -34,7 +40,7 @@ async function confirmTransaction(tx: string) {
   });
 }
 
-describe("Offer", () => {
+describe.only("Offer", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
@@ -45,24 +51,40 @@ describe("Offer", () => {
   const factoOwner = anchor.web3.Keypair.generate();
   const payer = anchor.web3.Keypair.generate();
   const deadline = Math.floor(Date.now() / 1000 + 10);
+  const installmentsStartDate = deadline + 10;
+  const now = Date.now() / 1000
+
+  const goalAmount = 100
+  const installmentsTotalAmount = 150
+  const installmentsTotal = 2;
+  const interestRatePercent = ((Math.pow(installmentsTotalAmount / goalAmount, 1 / installmentsTotal) - 1) * 100).toFixed(2);
 
   const [originator] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("originator"), callerOriginator.publicKey.toBuffer()],
+    [
+      anchor.utils.bytes.utf8.encode("originator"),
+      callerOriginator.publicKey.toBuffer(),
+    ],
     program.programId
   );
   const [originator2] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("originator"), callerOriginator2.publicKey.toBuffer()],
+    [
+      anchor.utils.bytes.utf8.encode("originator"),
+      callerOriginator2.publicKey.toBuffer(),
+    ],
     program.programId
   );
   const [investor] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("investor"), callerInvestor.publicKey.toBuffer()],
+    [
+      anchor.utils.bytes.utf8.encode("investor"),
+      callerInvestor.publicKey.toBuffer(),
+    ],
     program.programId
   );
   const offerId = nanoid(16);
   const [offer] = PublicKey.findProgramAddressSync(
     [
       anchor.utils.bytes.utf8.encode("offer"),
-      anchor.utils.bytes.utf8.encode(offerId)
+      anchor.utils.bytes.utf8.encode(offerId),
     ],
     program.programId
   );
@@ -70,17 +92,33 @@ describe("Offer", () => {
   const [offer2] = PublicKey.findProgramAddressSync(
     [
       anchor.utils.bytes.utf8.encode("offer"),
-      anchor.utils.bytes.utf8.encode(offerId2)
+      anchor.utils.bytes.utf8.encode(offerId2),
     ],
     program.programId
   );
+  const [offerTokenPublicKey] = PublicKey.findProgramAddressSync(
+    [anchor.utils.bytes.utf8.encode("offer_token"), offer.toBuffer()],
+    program.programId
+  );
+  const [vaultPaymentTokenAccount] = PublicKey.findProgramAddressSync(
+    [anchor.utils.bytes.utf8.encode("offer_payment_vault"), offer.toBuffer()],
+    program.programId
+  );
+  const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
+    [
+      anchor.utils.bytes.utf8.encode("investor_offer_token_account"),
+      investor.toBuffer(),
+    ],
+    program.programId
+  );
+
   let stableTokenPubKey: PublicKey;
   let investorTokenAccountPubKey: PublicKey;
-  let externalStableOriginatorTokenAccount: Account
-  
+  let externalStableOriginatorTokenAccount: Account;
+
   before(async () => {
     await airdropSol(payer.publicKey, 30);
-    
+
     stableTokenPubKey = await createMint(
       anchor.getProvider().connection,
       payer,
@@ -88,7 +126,13 @@ describe("Offer", () => {
       factoOwner.publicKey,
       9
     );
-    externalStableOriginatorTokenAccount = await getOrCreateAssociatedTokenAccount(anchor.getProvider().connection, payer, stableTokenPubKey, callerOriginator.publicKey)
+    externalStableOriginatorTokenAccount =
+      await getOrCreateAssociatedTokenAccount(
+        anchor.getProvider().connection,
+        payer,
+        stableTokenPubKey,
+        callerOriginator.publicKey
+      );
 
     await program.methods
       .createOriginator("test", "description", "teste")
@@ -117,7 +161,7 @@ describe("Offer", () => {
       ],
       program.programId
     );
-    
+
     await program.methods
       .createInvestor("Investidor 1")
       .accounts({
@@ -129,7 +173,6 @@ describe("Offer", () => {
       })
       .signers([payer, callerInvestor])
       .rpc()
-      .catch(console.error);
   });
 
   it("should be able to create an offer", async () => {
@@ -156,12 +199,12 @@ describe("Offer", () => {
         offerId,
         "Offer Description",
         new BN(deadline),
-        new BN(100),
-        null,
+        new BN(goalAmount),
+        new BN(now),
         new BN(50),
-        1.5,
-        3,
-        null
+        2,
+        new BN(installmentsTotalAmount),
+        new BN(installmentsStartDate)
       )
       .accounts({
         caller: callerOriginator.publicKey,
@@ -173,7 +216,7 @@ describe("Offer", () => {
         vault: vaultPubKey,
       })
       .signers([payer, callerOriginator])
-      .rpc()
+      .rpc();
 
     await program.methods
       .createOffer(
@@ -181,11 +224,11 @@ describe("Offer", () => {
         "Offer Description",
         new BN(deadline),
         new BN(100),
-        null,
+        new BN(now),
         new BN(50),
-        1.5,
         3,
-        null
+        new BN(installmentsTotalAmount),
+        new BN(installmentsStartDate)
       )
       .accounts({
         caller: callerOriginator2.publicKey,
@@ -198,7 +241,6 @@ describe("Offer", () => {
       })
       .signers([callerOriginator2, payer])
       .rpc({ commitment: "processed" })
-      .catch((e) => console.log(e));
 
     const offerAccount = await program.account.offer.fetch(offer);
 
@@ -206,13 +248,13 @@ describe("Offer", () => {
       id: offerId,
       description: "Offer Description",
       discriminator: 0,
-      interestRatePercent: 1.5,
-      goalAmount: new BN(100),
+      goalAmount: new BN(goalAmount),
       originator,
-      installmentsTotal: 3,
-      installmentsStartDate: null,
+      installmentsCount: installmentsTotal,
+      installmentsTotalAmount: new BN(installmentsTotalAmount), 
+      installmentsNextPaymentDate: new BN(installmentsStartDate),
       minAmountInvest: new BN(50),
-      startDate: null,
+      startDate: new BN(now),
     });
     expect(offerAccount.deadlineDate.toString()).to.equal(deadline.toString());
   });
@@ -232,24 +274,11 @@ describe("Offer", () => {
       investorTokenAccountPubKey,
       factoOwner,
       100
-    ).catch(console.error);
+    )
 
     const initialInvestorTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
       investorTokenAccountPubKey
-    );
-
-    const [offerTokenPublicKey] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode("offer_token"), offer.toBuffer()],
-      program.programId
-    );
-
-    const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
-      [
-        anchor.utils.bytes.utf8.encode("investor_offer_token_account"),
-        investor.toBuffer(),
-      ],
-      program.programId
     );
 
     try {
@@ -300,7 +329,7 @@ describe("Offer", () => {
       );
     }
 
-    const tx1 = await program.methods
+    await program.methods
       .invest(new anchor.BN(investAmount.toString()))
       .accounts({
         vaultTokenAccount,
@@ -314,7 +343,6 @@ describe("Offer", () => {
       })
       .signers([payer, callerInvestor])
       .rpc()
-      .catch(console.error);
 
     let investorOfferTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
@@ -351,7 +379,6 @@ describe("Offer", () => {
       })
       .signers([payer, callerInvestor])
       .rpc()
-      .catch(console.error);
 
     investorOfferTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
@@ -379,39 +406,246 @@ describe("Offer", () => {
     const [vaultTokenAccount] = PublicKey.findProgramAddressSync(
       [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
       program.programId
-      );
+    );
 
-      const [vaultPubKey2] = PublicKey.findProgramAddressSync(
-        [anchor.utils.bytes.utf8.encode("offer_vault"), offer2.toBuffer()],
-        program.programId
-      );
+    const [vaultPubKey2] = PublicKey.findProgramAddressSync(
+      [anchor.utils.bytes.utf8.encode("offer_vault"), offer2.toBuffer()],
+      program.programId
+    );
 
-      while (true) {
-        const currentSlot = await program.provider.connection.getSlot()
-        const currentBlocktime = await program.provider.connection.getBlockTime(currentSlot)
-        if (currentBlocktime > deadline) {
-           break
-        }
-        sleep(1000)
-     }
+    await advanceTime<Hackathon>(program, deadline);
 
     await program.methods
       .withdrawInvestments()
       .accounts({
         vaultTokenAccount: vaultTokenAccount,
-        originatorStableTokenAccount: externalStableOriginatorTokenAccount.address,
+        originatorStableTokenAccount:
+          externalStableOriginatorTokenAccount.address,
         offer: offer,
         payer: payer.publicKey,
         originator: originator,
-        caller: callerOriginator.publicKey
+        caller: callerOriginator.publicKey,
       })
       .signers([payer, callerOriginator])
-      .rpc().then(_=> expect(true).true)
-      .catch(err => {
-        console.error(err)
-        expect(false).true
-      });
+      .rpc()
 
-    expect((await getAccount(anchor.getProvider().connection, externalStableOriginatorTokenAccount.address)).amount === 100n)
+    expect(
+      (
+        await getAccount(
+          anchor.getProvider().connection,
+          externalStableOriginatorTokenAccount.address
+        )
+      ).amount === BigInt(goalAmount)
+    );
   });
+
+  it("should be able originator pay first installment", async () => {
+    try {
+      await program.methods
+        .payInstallment()
+        .accounts({
+          payer: payer.publicKey,
+          offer,
+          originatorPaymentTokenAccount:
+            externalStableOriginatorTokenAccount.address,
+          stableToken: stableTokenPubKey,
+          vaultPaymentTokenAccount,
+        })
+        .signers([payer])
+        .rpc();
+
+      expect(false, "should've failed but didn't ").true;
+    } catch (err) {
+      expect(err).to.be.instanceOf(AnchorError);
+      expect((err as AnchorError).error.errorMessage).to.equal(
+        "The Offer is not on track"
+      );
+    }
+
+    await advanceTime(program, installmentsStartDate);
+
+    await program.methods
+      .payInstallment()
+      .accounts({
+        payer: payer.publicKey,
+        caller: callerOriginator.publicKey,
+        offer,
+        originatorPaymentTokenAccount:
+          externalStableOriginatorTokenAccount.address,
+          vaultPaymentTokenAccount,
+        stableToken: stableTokenPubKey,
+      })
+      .signers([payer, callerOriginator])
+      .rpc()
+
+    let externalOrignatorTokenAccountInfo = await getAccount(anchor.getProvider().connection, externalStableOriginatorTokenAccount.address);
+    const installmentAmount = installmentsTotalAmount / installmentsTotal
+    let _offer = await program.account.offer.fetch(offer.toString())
+
+    expect(externalOrignatorTokenAccountInfo.amount.toString() === (goalAmount - installmentAmount).toString()).true
+    expect(_offer.totalInstallmentsPaid === 1).true
+  });
+
+  it("should investor withdraw your first installment", async () => {
+    const [investorInstallment] = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("investor_installment"),
+        offer.toBuffer(),
+        investor.toBuffer(),
+      ],
+      program.programId
+    );
+
+    let investorOfferTokenAccountInitial = await getAccount(anchor.getProvider().connection, investorOfferTokenAccount);
+    await program.methods.withdrawInstallment().accounts({
+      payer: payer.publicKey,
+      ownerInvestor: callerInvestor.publicKey,
+      investorInstallment,
+      investor,
+      investorOfferTokenAccount,
+      investorTokenAccount: investorTokenAccountPubKey,
+      vaultPaymentTokenAccount,
+      offerToken: offerTokenPublicKey,
+      offer,
+    }).signers([payer]).rpc()
+
+    let investorOfferTokenAccountInfo = await getAccount(anchor.getProvider().connection, investorOfferTokenAccount);
+    expect(investorOfferTokenAccountInitial.amount - 50n === investorOfferTokenAccountInfo.amount).true
+
+    try {
+      await program.methods.withdrawInstallment().accounts({
+        payer: payer.publicKey,
+        ownerInvestor: callerInvestor.publicKey,
+        investorInstallment,
+        investor,
+        investorOfferTokenAccount,
+        investorTokenAccount: investorTokenAccountPubKey,
+        vaultPaymentTokenAccount,
+        offerToken: offerTokenPublicKey,
+        offer,
+      }).signers([payer]).rpc()
+    } catch (err) {
+      expect(err).to.be.instanceOf(AnchorError);
+      expect((err as AnchorError).error.errorMessage).to.equal(
+        "Investor has no installment to receive"
+      );
+    }
+  })
+  
+  it("should be able originator pay last installment", async () => {
+    await mintTo(
+      anchor.getProvider().connection,
+      payer,
+      stableTokenPubKey,
+      externalStableOriginatorTokenAccount.address,
+      factoOwner,
+      50
+    )
+
+
+    await program.methods
+    .payInstallment()
+    .accounts({
+      payer: payer.publicKey,
+      caller: callerOriginator.publicKey,
+      offer,
+      originatorPaymentTokenAccount:
+        externalStableOriginatorTokenAccount.address,
+        vaultPaymentTokenAccount,
+      stableToken: stableTokenPubKey,
+    })
+    .signers([payer, callerOriginator])
+    .rpc({
+      commitment: "processed"
+    })
+    
+
+    const _offer = await program.account.offer.fetch(offer.toString())
+
+    const externalOrignatorTokenAccountInfo = await getAccount(anchor.getProvider().connection, externalStableOriginatorTokenAccount.address);
+    
+    expect(_offer.totalInstallmentsPaid === 2, "total paid").true
+    expect(externalOrignatorTokenAccountInfo.amount.toString() === "0").true
+
+    await mintTo(
+      anchor.getProvider().connection,
+      payer,
+      stableTokenPubKey,
+      externalStableOriginatorTokenAccount.address,
+      factoOwner,
+      75
+    )
+    
+    try {
+      await program.methods
+      .payInstallment()
+      .accounts({
+        payer: payer.publicKey,
+        caller: callerOriginator.publicKey,
+        offer,
+        originatorPaymentTokenAccount:
+        externalStableOriginatorTokenAccount.address,
+        vaultPaymentTokenAccount,
+        stableToken: stableTokenPubKey,
+      })
+      .signers([payer, callerOriginator])
+      .rpc({
+        commitment: "processed"
+      })
+      expect(false, "should've failed but didn't ").true;
+    } catch (err) {
+      expect(err).to.be.instanceOf(AnchorError);
+      expect((err as AnchorError).error.errorMessage).to.equal(
+        "The Offer is not on track"
+      );
+    }
+  });
+
+  it("should investor withdraw your last installment", async () => {
+    const [investorInstallment] = PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("investor_installment"),
+        offer.toBuffer(),
+        investor.toBuffer(),
+      ],
+      program.programId
+    );
+
+    const investorOfferTokenAccountInitial = await getAccount(anchor.getProvider().connection, investorOfferTokenAccount);
+
+    await program.methods.withdrawInstallment().accounts({
+      payer: payer.publicKey,
+      ownerInvestor: callerInvestor.publicKey,
+      investorInstallment,
+      investor,
+      investorOfferTokenAccount,
+      investorTokenAccount: investorTokenAccountPubKey,
+      vaultPaymentTokenAccount,
+      offerToken: offerTokenPublicKey,
+      offer,
+    }).signers([payer]).rpc()
+
+    
+    const investorOfferTokenAccountInfo = await getAccount(anchor.getProvider().connection, investorOfferTokenAccount);
+    expect(investorOfferTokenAccountInitial.amount - 50n === investorOfferTokenAccountInfo.amount).true
+
+    try {
+      await program.methods.withdrawInstallment().accounts({
+        payer: payer.publicKey,
+        ownerInvestor: callerInvestor.publicKey,
+        investorInstallment,
+        investor,
+        investorOfferTokenAccount,
+        investorTokenAccount: investorTokenAccountPubKey,
+        vaultPaymentTokenAccount,
+        offerToken: offerTokenPublicKey,
+        offer,
+      }).signers([payer]).rpc()
+    } catch (err) {
+      expect(err).to.be.instanceOf(AnchorError);
+      expect((err as AnchorError).error.errorMessage).to.equal(
+        "Investor has no installment to receive"
+      );
+    }
+  })
 });
