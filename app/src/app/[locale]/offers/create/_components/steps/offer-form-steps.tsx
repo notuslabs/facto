@@ -17,7 +17,6 @@ import {
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFormContext } from "react-hook-form";
-import { CreateOfferFormSchema, creditScoreOptions, paymentFrequencyOptions } from "../offer-form";
 import { useFormatter, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
@@ -27,6 +26,11 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { AutoCalculatedCard } from "./auto-calculated-card";
 import { format as formatDate, add as addDate } from "date-fns";
+import {
+  CreateOfferFormSchema,
+  creditScoreOptions,
+  paymentFrequencyOptions,
+} from "../offer-form-validation";
 
 type FormStepProps = {
   isAllowedToCreate: boolean;

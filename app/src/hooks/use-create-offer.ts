@@ -7,10 +7,10 @@ import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
-import { CreateOfferFormSchema } from "@/app/[locale]/offers/create/_components/offer-form";
 import { useRouter } from "@/navigation";
 import { createOffer } from "@/services/create-offer";
 import { useAccounts } from "./use-accounts";
+import { CreateOfferFormSchema } from "@/app/[locale]/offers/create/_components/offer-form-validation";
 
 class OriginatorAccountNotFound extends Error {
   constructor() {
