@@ -1,5 +1,5 @@
-import * as anchor from '@coral-xyz/anchor';
-import { type PublicKey } from '@solana/web3.js';
+import * as anchor from "@coral-xyz/anchor";
+import { type PublicKey } from "@solana/web3.js";
 
 async function confirmTransaction(tx: string) {
   const latestBlockHash = await anchor
