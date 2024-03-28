@@ -1,20 +1,24 @@
-import { useEffect, useState } from "react";
-import { Hackathon, IDL } from "@/lib/idl";
 import idl from "@/lib/idl/idl-json.json";
-import { Program, AnchorProvider } from "@coral-xyz/anchor";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "./use-session";
 import { PublicKey, Keypair } from "@solana/web3.js";
-import { useSession } from "@/components/auth-provider";
+import { AnchorProvider, Program } from "@coral-xyz/anchor";
+import { Hackathon, IDL } from "@/lib/idl";
 import { useConnection } from "./use-connection";
 
-export function useProgram() {
-  const { solanaWallet } = useSession();
+export function useProgram2() {
   const { connection } = useConnection();
-  const [program, setProgram] = useState<Program<Hackathon> | null>(null);
-  const [keypair, setKeypair] = useState<Keypair | null>(null);
+  const { data } = useSession();
 
-  useEffect(() => {
-    const setupProgram = async () => {
+  const solanaWallet = data?.solanaWallet;
+
+  return useQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: ["program", solanaWallet?.provider.chainId.toString()],
+    queryFn: async () => {
       if (!solanaWallet) return;
+      let keypair = null;
+      let program = null;
 
       let privateKey: string = "";
       try {
@@ -27,13 +31,12 @@ export function useProgram() {
 
       if (!privateKey) return;
 
-      const keyPair = Keypair.fromSecretKey(Buffer.from(privateKey, "hex"));
-      setKeypair(keyPair);
+      keypair = Keypair.fromSecretKey(Buffer.from(privateKey, "hex"));
 
       const provider = new AnchorProvider(
         connection,
         {
-          publicKey: keyPair.publicKey,
+          publicKey: keypair.publicKey,
           signAllTransactions: async (...params) => {
             return solanaWallet.signAllTransactions(...params);
           },
@@ -44,16 +47,12 @@ export function useProgram() {
         {},
       );
 
-      setProgram(new Program<Hackathon>(IDL, new PublicKey(idl.metadata.address), provider));
-    };
+      program = new Program<Hackathon>(IDL, new PublicKey(idl.metadata.address), provider);
 
-    setupProgram();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [solanaWallet]);
-
-  return {
-    program,
-    keypair,
-  };
+      return {
+        program,
+        keypair,
+      };
+    },
+  });
 }

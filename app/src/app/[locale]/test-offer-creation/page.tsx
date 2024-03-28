@@ -1,14 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useProgram } from "@/hooks/use-program";
+import { useProgram2 } from "@/hooks/use-program";
+import { Hackathon } from "@/lib/idl";
 import { createOffer } from "@/services/create-offer";
 import { createOriginator } from "@/services/create-originator";
 import { Program } from "@coral-xyz/anchor";
 import { Keypair } from "@solana/web3.js";
-import BN from "bn.js";
 
 export default function TestOfferCreation() {
-  const { keypair, program } = useProgram();
+  const { data: programData } = useProgram2();
+
+  const keypair = programData?.keypair;
+  const program = programData?.program;
 
   return (
     <div className="container">
@@ -24,8 +27,6 @@ export default function TestOfferCreation() {
             caller: keypair as Keypair,
             program: program as unknown as Program,
           });
-
-          console.log(tx);
         }}
       >
         Create Originator
@@ -35,13 +36,13 @@ export default function TestOfferCreation() {
           const tx = await createOffer({
             description: "Test",
             deadlineDate: new Date(),
-            goalAmount: new BN(100),
+            goalAmount: 100,
             startDate: new Date(),
-            minAmountInvest: new BN(10),
+            minAmountInvest: 10,
             interestRatePercent: 1,
             installmentsTotal: 3,
             installmentsStartDate: new Date(),
-            program: program as unknown as Program,
+            program: program as unknown as Program<Hackathon>,
             caller: keypair as Keypair,
           });
 

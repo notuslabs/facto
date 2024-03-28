@@ -1,8 +1,6 @@
 "use client";
 
-import { useSession } from "@/components/auth-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useProgram } from "./use-program";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
@@ -11,6 +9,8 @@ import { useRouter } from "@/navigation";
 import { createOffer } from "@/services/create-offer";
 import { useAccounts } from "./use-accounts";
 import { CreateOfferFormSchema } from "@/app/[locale]/offers/create/_components/offer-form-validation";
+import { useSession } from "./use-session";
+import { useProgram2 } from "./use-program";
 
 class OriginatorAccountNotFound extends Error {
   constructor() {
@@ -20,11 +20,14 @@ class OriginatorAccountNotFound extends Error {
 
 export function useCreateOffer() {
   const queryClient = useQueryClient();
-  const { solanaWallet } = useSession();
-  const { program } = useProgram();
+  const { data } = useSession();
+  const { data: programData } = useProgram2();
   const { data: accounts } = useAccounts();
   const t = useTranslations("create-offer-page");
   const router = useRouter();
+
+  const solanaWallet = data?.solanaWallet;
+  const program = programData?.program;
 
   return useMutation({
     mutationFn: async ({

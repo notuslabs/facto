@@ -39,7 +39,7 @@ describe('Originator', () => {
 
   it('should be able to become an originator', async () => {
     await program.methods
-      .createOriginator('Test', 'description')
+      .createOriginator('Test', 'description', 'SLUG')
       .accounts({
         originator: originatorPubKey,
         originatorTokenAccount: originatorTokenAccountPubKey,

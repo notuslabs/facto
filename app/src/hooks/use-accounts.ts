@@ -1,15 +1,19 @@
 "use client";
 
-import { useSession } from "@/components/auth-provider";
-import { useProgram } from "@/hooks/use-program";
 import { utils } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
+import { useSession } from "./use-session";
+import { useProgram2 } from "./use-program";
 
 export function useAccounts() {
-  const { program } = useProgram();
-  const { solanaWallet, address } = useSession();
+  const { data: programData } = useProgram2();
+  const { data } = useSession();
+
+  const solanaWallet = data?.solanaWallet;
+  const address = data?.address;
+  const program = programData?.program;
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps

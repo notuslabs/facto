@@ -1,11 +1,14 @@
-import { useProgram } from "@/hooks/use-program";
 import { PublicKey } from "@solana/web3.js";
 import { Button } from "./ui/button";
 import { Keypair } from "@solana/web3.js";
 import { utils } from "@coral-xyz/anchor";
+import { useProgram2 } from "@/hooks/use-program";
 
 export function ContractInteractTestButton() {
-  const { program, keypair } = useProgram();
+  const { data: programData } = useProgram2();
+
+  const keypair = programData?.keypair;
+  const program = programData?.program;
 
   async function interact() {
     if (!program || !keypair) {

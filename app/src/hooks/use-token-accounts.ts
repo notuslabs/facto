@@ -1,7 +1,5 @@
 "use client";
 
-import { useSession } from "@/components/auth-provider";
-import { useProgram } from "@/hooks/use-program";
 import { config } from "@/lib/web3AuthService";
 import { utils } from "@coral-xyz/anchor";
 import { getAccount, getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
@@ -9,10 +7,16 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { FAKE_MINT } from "@/lib/constants";
+import { useSession } from "./use-session";
+import { useProgram2 } from "./use-program";
 
 export function useTokenAccounts() {
-  const { program } = useProgram();
-  const { solanaWallet, address } = useSession();
+  const { data: programData } = useProgram2();
+  const { data } = useSession();
+
+  const program = programData?.program;
+  const solanaWallet = data?.solanaWallet;
+  const address = data?.address;
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps

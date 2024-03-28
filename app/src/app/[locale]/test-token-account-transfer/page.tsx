@@ -2,7 +2,6 @@
 
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import Big from "big.js";
-import { useSession } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import { createMint } from "@solana/spl-token";
@@ -14,7 +13,7 @@ import { useTokenAccounts } from "@/hooks/use-token-accounts";
 import { useCreateInvestorAccount } from "@/hooks/use-create-investor-account";
 import { useDeposit } from "@/hooks/use-deposit";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
-import { env } from "@/env";
+import { useSession } from "@/hooks/use-session";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -44,7 +43,7 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
 
 export default function TestTokenAccountTransfer() {
   const withdrawRef = useRef<HTMLInputElement>(null);
-  const { solanaWallet, address } = useSession();
+  const { data } = useSession();
   const { mutate: deposit, isPending: isDepositing } = useDeposit();
   const { mutate: createInvestorAccount, isPending: isCreatingInvestorAccount } =
     useCreateInvestorAccount();
@@ -137,10 +136,10 @@ export default function TestTokenAccountTransfer() {
 
         <Button
           onClick={async () => {
-            if (!solanaWallet) return;
+            if (!data?.solanaWallet) return;
             const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
 
-            const privateKey = await getPrivateKey(solanaWallet);
+            const privateKey = await getPrivateKey(data.solanaWallet);
             const wallet = getKeypairFromPrivateKey(privateKey);
 
             const mint = await createFakeMintToken(connection, wallet);

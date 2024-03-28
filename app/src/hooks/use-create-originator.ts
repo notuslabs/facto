@@ -1,15 +1,15 @@
 "use client";
 
 import { PublicKey } from "@solana/web3.js";
-import { useSession } from "@/components/auth-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useProgram } from "./use-program";
 import { utils } from "@coral-xyz/anchor";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useTokenAccounts } from "./use-token-accounts";
 import { FAKE_MINT } from "@/lib/constants";
+import { useSession } from "./use-session";
+import { useProgram2 } from "./use-program";
 
 class AlreadyRegisteredError extends Error {
   constructor(message?: string) {
@@ -19,10 +19,13 @@ class AlreadyRegisteredError extends Error {
 
 export function useCreateOriginator() {
   const queryClient = useQueryClient();
-  const { solanaWallet } = useSession();
-  const { program } = useProgram();
+  const { data } = useSession();
+  const { data: programData } = useProgram2();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.originator");
+
+  const solanaWallet = data?.solanaWallet;
+  const program = programData?.program;
 
   return useMutation({
     mutationFn: async ({ name, description }: { name: string; description: string }) => {
@@ -44,6 +47,8 @@ export function useCreateOriginator() {
         [utils.bytes.utf8.encode("originator_token_account"), originatorPubKey.toBuffer()],
         program.programId,
       );
+
+      console.log(program.programId.toString());
 
       await program.methods
         .createOriginator(name, description, "SLUG")
