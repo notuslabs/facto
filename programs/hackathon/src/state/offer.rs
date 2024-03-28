@@ -164,8 +164,8 @@ pub struct WithdrawInvestments<'info> {
 
     #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
     pub vault_token_account: Account<'info, TokenAccount>,
-    #[account(mut)]
-    pub originator_stable_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
+    pub originator_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
     pub originator: Account<'info, Originator>,
     #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
@@ -195,8 +195,10 @@ pub struct PayInstallment<'info> {
         bump
     )]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
-    #[account(mut)]
-    pub originator_payment_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
+    pub originator_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump = originator.bump)]
+    pub originator: Account<'info, Originator>,
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,

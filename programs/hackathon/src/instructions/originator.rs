@@ -14,7 +14,8 @@ pub fn create_originator(
     originator.token_slug = token_slug;
 
     originator.bump = *ctx.bumps.get("originator").unwrap();
-
+    originator.token_account_bump = *ctx.bumps.get("originator_token_account").unwrap();
+    
     Ok(())
 }
 
