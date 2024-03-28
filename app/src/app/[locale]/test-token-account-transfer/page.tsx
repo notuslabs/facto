@@ -44,7 +44,7 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
 
 export default function TestTokenAccountTransfer() {
   const withdrawRef = useRef<HTMLInputElement>(null);
-  const { solanaWallet } = useSession();
+  const { solanaWallet, address } = useSession();
   const { mutate: deposit, isPending: isDepositing } = useDeposit();
   const { mutate: createInvestorAccount, isPending: isCreatingInvestorAccount } =
     useCreateInvestorAccount();

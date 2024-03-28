@@ -232,6 +232,14 @@
         "placeholder": "Defina uma data"
       }
     },
+    "fill-all-fields-before-proceeding": "Preencha todos os campos antes de prosseguir",
+    "fill-goal-amount-and-interest-rate": "Preencha o valor total a ser recebido e a taxa de juros",
+    "fill-goal-amount-and-interest-rate-and-installments": "Preencha o valor total a ser recebido, a taxa de juros e o número de parcelas",
+    "fill-installment-start-date-and-installments-total": "Preencha a data da primeira parcela e o número de parcelas",
+    "last-installment-date": "Data da última parcela",
+    "each-installment": "Valor de cada parcela",
+    "total-with-interest": "Valor total a ser pago",
+    "total-interest": "Total em juros ($)",
     "not-authenticated": "Você precisa estar autenticado para criar uma oferta",
     "continue-button": "Continuar",
     "submit-button": "Criar oferta",

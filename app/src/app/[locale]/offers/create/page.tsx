@@ -21,10 +21,10 @@ export default function CreateOfferPage() {
   //   notOriginator,
   // });
 
-  console.log({
-    isAccountsLoading,
-    accounts,
-  });
+  // console.log({
+  //   isAccountsLoading,
+  //   accounts,
+  // });
 
   useEffect(() => {
     if (notOriginator) {

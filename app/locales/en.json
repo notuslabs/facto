@@ -203,7 +203,7 @@
       },
       "interest-rate": {
         "label": "Borrowing Fee",
-        "left-text": "% ao ano",
+        "left-text": "% each year",
         "placeholder": "0.00"
       },
       "start-date": {
@@ -232,6 +232,14 @@
         "placeholder": "Define a date"
       }
     },
+    "fill-all-fields-before-proceeding": "Fill all fields before proceeding",
+    "fill-goal-amount-and-interest-rate": "Fill the total to be received and the interest rate",
+    "fill-goal-amount-and-interest-rate-and-installments": "Fill the total to be received, the interest rate and the number of installments",
+    "fill-installment-start-date-and-installments-total": "Fill the installment start date and the number of installments",
+    "last-installment-date": "Last installment date",
+    "each-installment": "Each installment value",
+    "total-with-interest": "Total to be paid",
+    "total-interest": "Total interest ($)",
     "not-authenticated": "You need to be authenticated to create an offer",
     "continue-button": "Continue",
     "submit-button": "Create offer",

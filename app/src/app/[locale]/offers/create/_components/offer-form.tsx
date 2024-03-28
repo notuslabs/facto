@@ -1,57 +1,111 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Form } from "@/components/ui/form";
 import { Progress } from "@/components/ui/progress";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useCreateOffer } from "@/hooks/use-create-offer";
 import { useGenerateNewOfferName } from "@/hooks/use-generate-new-offer-name";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { ArrowLeft, ArrowRight, CalendarIcon, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { MouseEvent, useState } from "react";
-import { useForm, useFormContext } from "react-hook-form";
+import { MouseEvent, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { OfferFormStep1, OfferFormStep2, OfferFormStep3 } from "./steps/offer-form-steps";
+import { toast } from "sonner";
+import { flushSync } from "react-dom";
+import { isBefore, isSameDay } from "date-fns";
 
-const creditScoreOptions = ["AAA", "AA", "A", "BBB", "BB", "B", "CCC", "CC", "C", "D"] as const;
-const paymentFrequencyOptions = ["monthly"] as const;
+export const creditScoreOptions = [
+  "AAA",
+  "AA",
+  "A",
+  "BBB",
+  "BB",
+  "B",
+  "CCC",
+  "CC",
+  "C",
+  "D",
+] as const;
+export const paymentFrequencyOptions = ["monthly"] as const;
 
-export const CreateOfferFormSchema = z.object({
-  // step-1
-  name: z.string().min(2).max(30),
-  description: z.string().min(2).max(500),
-  creditScore: z.enum(creditScoreOptions),
-  // step-2
-  goalAmount: z.number().positive().min(1),
-  interestRatePercent: z.number().min(1),
-  // step-3
-  startDate: z.date(),
-  deadlineDate: z.date(),
-  payment_frequency: z.enum(paymentFrequencyOptions),
-  installmentsStartDate: z.date(),
-  installmentsTotal: z.number().int().positive().min(1),
-  minAmountInvest: z.number().int().positive().min(1),
-});
+export const CreateOfferFormSchema = z
+  .object({
+    // step-1
+    name: z.string().min(2).max(30),
+    description: z.string().min(2).max(500),
+    creditScore: z.enum(creditScoreOptions),
+    // step-2
+    goalAmount: z.number().positive().min(1),
+    interestRatePercent: z.number().min(1),
+    // step-3
+    startDate: z.date().refine((date) => {
+      console.log({
+        isBefore: isBefore(new Date(), date),
+        isSameDay: isSameDay(new Date(), date),
+        result: isBefore(new Date(), date) || isSameDay(new Date(), date),
+      });
+
+      return isBefore(new Date(), date) || isSameDay(new Date(), date);
+    }, "Start date must be the same or after current date"),
+    deadlineDate: z
+      .date()
+      .refine(
+        (date) => isBefore(new Date(), date) || isSameDay(new Date(), date),
+        "Start date must be the same or after current date",
+      ),
+    payment_frequency: z.enum(paymentFrequencyOptions),
+    installmentsStartDate: z
+      .date()
+      .refine(
+        (date) => isBefore(new Date(), date) || isSameDay(new Date(), date),
+        "Start date must be the same or after current date",
+      ),
+    installmentsTotal: z.number().int().positive().min(1),
+    minAmountInvest: z.number().int().positive().min(1),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      isBefore(data.startDate, data.deadlineDate) ||
+      isSameDay(data.startDate, data.deadlineDate)
+    ) {
+      return true;
+    }
+
+    ctx.addIssue({
+      code: "custom",
+      message: "Deadline date must be the same or after start date",
+      path: ["startDate"],
+    });
+
+    ctx.addIssue({
+      code: "custom",
+      message: "Deadline date must be the same or after start date",
+      path: ["deadlineDate"],
+    });
+  })
+  .superRefine((data, ctx) => {
+    if (
+      isBefore(data.deadlineDate, data.installmentsStartDate) ||
+      isSameDay(data.deadlineDate, data.installmentsStartDate)
+    ) {
+      return true;
+    }
+
+    ctx.addIssue({
+      code: "custom",
+      message: "Installments start date must be them same or after deadline date",
+      path: ["installmentsStartDate"],
+    });
+
+    ctx.addIssue({
+      code: "custom",
+      message: "Installments start date must be them same or after deadline date",
+      path: ["deadlineDate"],
+    });
+  });
 
 type OfferFormProps = {
   isLoading: boolean;
@@ -59,6 +113,7 @@ type OfferFormProps = {
 };
 
 export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
+  const formRef = useRef<HTMLFormElement>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const { mutate: createOffer, isPending: isCreatingOffer } = useCreateOffer();
   const { data: offerName, isPending: isGeneratingNewOfferName } = useGenerateNewOfferName();
@@ -74,13 +129,25 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
     },
   });
 
-  console.log(form.formState.errors);
-
   form.setValue("name", offerName ?? "");
 
-  function onSubmit(values: z.infer<typeof CreateOfferFormSchema>) {
-    console.log("Here");
+  const firstStepErrors =
+    form.formState.errors.name ||
+    form.formState.errors.description ||
+    form.formState.errors.creditScore;
 
+  const secondStepErrors =
+    form.formState.errors.goalAmount ||
+    form.formState.errors.interestRatePercent ||
+    form.formState.errors.installmentsTotal;
+
+  const thirdStepErrors =
+    form.formState.errors.installmentsStartDate ||
+    form.formState.errors.minAmountInvest ||
+    form.formState.errors.deadlineDate ||
+    form.formState.errors.startDate;
+
+  function onSubmit(values: z.infer<typeof CreateOfferFormSchema>) {
     createOffer(values);
   }
 
@@ -92,13 +159,98 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
     }
   }
 
-  function goNextStepOrSubmit(e: MouseEvent<HTMLButtonElement>) {
-    if (currentStep === 3) {
+  async function goNextStepOrSubmit(e: MouseEvent<HTMLButtonElement>) {
+    function nextPage() {
+      setCurrentStep((prev) => prev + 1);
+    }
+
+    function requestSubmit() {
+      flushSync(() => {
+        formRef.current?.requestSubmit();
+      });
+    }
+
+    const {
+      name,
+      description,
+      creditScore,
+      goalAmount,
+      interestRatePercent,
+      installmentsTotal,
+      installmentsStartDate,
+      minAmountInvest,
+      deadlineDate,
+      payment_frequency,
+      startDate,
+    } = form.getValues();
+
+    const filledFirstStep = name && description && creditScore;
+    const filledSecondStep = goalAmount && interestRatePercent && installmentsTotal;
+    const filledThirdStep = installmentsStartDate && minAmountInvest && deadlineDate && startDate;
+
+    if (currentStep === 1) {
+      if (!filledFirstStep) {
+        toast.error(t("fill-all-fields-before-proceeding"));
+        return;
+      }
+
+      const valid = await Promise.all([
+        form.trigger("name", {
+          shouldFocus: true,
+        }),
+        form.trigger("description", {
+          shouldFocus: true,
+        }),
+        form.trigger("creditScore", {
+          shouldFocus: true,
+        }),
+      ]).then((arr) => arr.every((val) => val === true));
+
+      if (valid) {
+        nextPage();
+        return;
+      }
+
       return;
     }
 
-    e.preventDefault();
-    setCurrentStep((prev) => prev + 1);
+    if (currentStep === 2) {
+      if (!filledSecondStep) {
+        toast.error(t("fill-all-fields-before-proceeding"));
+        e.preventDefault();
+        return;
+      }
+
+      const valid = await Promise.all([
+        form.trigger("goalAmount", {
+          shouldFocus: true,
+        }),
+        form.trigger("interestRatePercent", {
+          shouldFocus: true,
+        }),
+        form.trigger("installmentsTotal", {
+          shouldFocus: true,
+        }),
+      ]).then((arr) => arr.every((val) => val === true));
+
+      if (valid) {
+        nextPage();
+        return;
+      }
+
+      return;
+    }
+
+    if (currentStep === 3) {
+      if (!filledThirdStep) {
+        toast.error(t("fill-all-fields-before-proceeding"));
+        return;
+      }
+
+      requestSubmit();
+
+      return;
+    }
   }
 
   return (
@@ -127,6 +279,7 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
             "relative flex w-full flex-col items-center justify-start",
             isLoading && "animate-pulse",
           )}
+          ref={formRef}
         >
           <OfferFormStep1
             isAllowedToCreate={isAllowedToCreate}
@@ -154,7 +307,7 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
               <ArrowLeft size={16} />
             </Button>
             <Button
-              type={currentStep === 3 ? "submit" : "button"}
+              type="button"
               disabled={isCreatingOffer || !isAllowedToCreate || isGeneratingNewOfferName}
               onClick={goNextStepOrSubmit}
             >
@@ -168,388 +321,6 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
           </div>
         </form>
       </Form>
-    </div>
-  );
-}
-
-type FormStepProps = {
-  isAllowedToCreate: boolean;
-  isCreatingInvestor: boolean;
-  currentStep: number;
-};
-
-function OfferFormStep1({
-  isAllowedToCreate,
-  isCreatingInvestor,
-  isGeneratingNewOfferName,
-  currentStep,
-}: FormStepProps & {
-  isGeneratingNewOfferName: boolean;
-}) {
-  const form = useFormContext<z.infer<typeof CreateOfferFormSchema>>();
-  const t = useTranslations("create-offer-page");
-  const description = form.watch("description");
-  const isCurrentStep = currentStep === 1;
-
-  return (
-    <div
-      className={cn(
-        "flex w-full max-w-[741px] flex-col gap-8 py-[118px] transition-all duration-500",
-        currentStep === 2 && "absolute top-0 z-[-1] opacity-0",
-        currentStep === 3 && "absolute top-0 z-[-1] opacity-0",
-      )}
-    >
-      <FormField
-        control={form.control}
-        name="name"
-        render={({ field }) => {
-          const [name, number] = field.value.split("#");
-
-          return (
-            <FormItem>
-              <FormLabel required>{t("form-fields.name.label")}</FormLabel>
-              <FormDescription>{t("form-fields.name.description")}</FormDescription>
-              <FormControl>
-                {isGeneratingNewOfferName && !name && !number ? (
-                  <Skeleton className="h-10 w-full" />
-                ) : (
-                  <div className="flex items-center justify-start">
-                    <span className="flex h-10 items-center justify-center whitespace-nowrap rounded-l-md border-y border-l border-input-border bg-background px-2 text-muted-foreground">
-                      {name}#
-                    </span>
-                    <Input disabled={true} value={number} className="rounded-l-none" />
-                  </div>
-                )}
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          );
-        }}
-      />
-      <FormField
-        control={form.control}
-        name="description"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel required>{t("form-fields.description.label")}</FormLabel>
-            <FormDescription
-              data-exceeded-chars={description.length > 500 ? "true" : "false"}
-              className="data-[exceeded-chars=true]:text-error-foreground"
-            >
-              {t("form-fields.description.description", {
-                chars: description.length,
-                maxChars: 500,
-              })}
-            </FormDescription>
-            <FormControl>
-              <Input
-                placeholder={t("form-fields.description.placeholder")}
-                disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                {...field}
-              />
-            </FormControl>
-
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="creditScore"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel required>{t("form-fields.credit-score.label")}</FormLabel>
-            <Select
-              disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-              onValueChange={field.onChange}
-              defaultValue={field.value}
-            >
-              <FormControl>
-                <SelectTrigger className={cn(!field.value && "text-muted-foreground")}>
-                  <SelectValue placeholder={t("form-fields.credit-score.placeholder")} />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {creditScoreOptions.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
-  );
-}
-
-function OfferFormStep2({ isAllowedToCreate, isCreatingInvestor, currentStep }: FormStepProps) {
-  const form = useFormContext<z.infer<typeof CreateOfferFormSchema>>();
-  const t = useTranslations("create-offer-page");
-  const isCurrentStep = currentStep === 2;
-
-  return (
-    <div
-      data-testid="What"
-      className={cn(
-        "flex w-full max-w-[741px] flex-col gap-8 py-[118px] transition-all duration-500",
-        currentStep === 1 && "absolute top-0 z-[-1] opacity-0",
-        currentStep === 3 && "absolute top-0 z-[-1] opacity-0",
-      )}
-    >
-      <FormField
-        control={form.control}
-        name="goalAmount"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel required>{t("form-fields.goal-amount.label")}</FormLabel>
-            <FormControl>
-              <div className="flex items-center justify-start">
-                <span className="flex h-10 items-center justify-center whitespace-nowrap rounded-l-md border-y border-l border-input-border bg-background px-2 text-muted-foreground">
-                  {t("form-fields.goal-amount.left-text")}
-                </span>
-                <Input
-                  disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                  type="number"
-                  placeholder={t("form-fields.goal-amount.placeholder")}
-                  className="rounded-l-none"
-                />
-              </div>
-            </FormControl>
-
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="interestRatePercent"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel required>{t("form-fields.interest-rate.label")}</FormLabel>
-            <FormControl>
-              <div className="flex items-center justify-start">
-                <span className="flex h-10 items-center justify-center whitespace-nowrap rounded-l-md border-y border-l border-input-border bg-background px-2 text-muted-foreground">
-                  {t("form-fields.interest-rate.left-text")}
-                </span>
-                <Input
-                  disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                  type="number"
-                  placeholder={t("form-fields.interest-rate.placeholder")}
-                  className="rounded-l-none"
-                />
-              </div>
-            </FormControl>
-
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
-  );
-}
-
-function OfferFormStep3({ isAllowedToCreate, isCreatingInvestor, currentStep }: FormStepProps) {
-  const form = useFormContext<z.infer<typeof CreateOfferFormSchema>>();
-  const t = useTranslations("create-offer-page");
-  const isCurrentStep = currentStep === 3;
-
-  return (
-    <div
-      className={cn(
-        "flex w-full max-w-[741px] flex-col gap-8 py-[118px] transition-all duration-500",
-        currentStep === 1 && "absolute top-0 z-[-1] opacity-0",
-        currentStep === 2 && "absolute top-0 z-[-1] opacity-0",
-      )}
-    >
-      <div className="grid grid-cols-2 gap-8">
-        <FormField
-          control={form.control}
-          name="startDate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>{t("form-fields.start-date.label")}</FormLabel>
-
-              <FormDescription>{t("form-fields.start-date.description")}</FormDescription>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start pl-3 text-left font-normal hover:bg-background",
-                        !field.value && "text-muted-foreground hover:text-muted-foreground",
-                      )}
-                    >
-                      <CalendarIcon className="h-5 w-5 opacity-50" />
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>{t("form-fields.start-date.placeholder")}</span>
-                      )}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="deadlineDate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>{t("form-fields.deadline-date.label")}</FormLabel>
-
-              <FormDescription>{t("form-fields.deadline-date.description")}</FormDescription>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start pl-3 text-left font-normal hover:bg-background",
-                        !field.value && "text-muted-foreground hover:text-muted-foreground",
-                      )}
-                    >
-                      <CalendarIcon className="h-5 w-5 opacity-50" />
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>{t("form-fields.start-date.placeholder")}</span>
-                      )}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-      <div className="grid grid-cols-3 gap-8">
-        <FormField
-          control={form.control}
-          name="payment_frequency"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>{t("form-fields.payment-frequency.label")}</FormLabel>
-              <Select
-                disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger className={cn(!field.value && "text-muted-foreground")}>
-                    <SelectValue placeholder={t("form-fields.payment-frequency.placeholder")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {paymentFrequencyOptions.map((option) => (
-                    <SelectItem key={option} value={option}>
-                      {t(`form-fields.payment-frequency.options.${option}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="installmentsTotal"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>{t("form-fields.installments-total.label")}</FormLabel>
-              <FormControl>
-                <div className="flex items-center justify-start">
-                  <Input
-                    disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                    type="number"
-                    placeholder={t("form-fields.installments-total.placeholder")}
-                  />
-                </div>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="installmentsStartDate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel required>{t("form-fields.installments-start-date.label")}</FormLabel>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      disabled={isCreatingInvestor || !isAllowedToCreate || !isCurrentStep}
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start pl-3 text-left font-normal hover:bg-background",
-                        !field.value && "text-muted-foreground hover:text-muted-foreground",
-                      )}
-                    >
-                      <CalendarIcon className="h-5 w-5 opacity-50" />
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>{t("form-fields.installments-start-date.placeholder")}</span>
-                      )}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
     </div>
   );
 }
