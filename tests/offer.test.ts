@@ -40,8 +40,7 @@ async function confirmTransaction(tx: string) {
   });
 }
 
-describe.only("Offer", () => {
-  // Configure the client to use the local cluster.
+describe("Offer", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Hackathon as Program<Hackathon>;
@@ -111,6 +110,20 @@ describe.only("Offer", () => {
     ],
     program.programId
   );
+  const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+    [
+      anchor.utils.bytes.utf8.encode('originator_token_account'),
+      originator.toBuffer(),
+    ],
+    program.programId
+  );
+  const [originatorTokenAccountPubKey2] = PublicKey.findProgramAddressSync(
+    [
+      anchor.utils.bytes.utf8.encode('originator_token_account'),
+      originator2.toBuffer(),
+    ],
+    program.programId
+  );
 
   let stableTokenPubKey: PublicKey;
   let investorTokenAccountPubKey: PublicKey;
@@ -138,6 +151,8 @@ describe.only("Offer", () => {
       .createOriginator("test", "description", "teste")
       .accounts({
         originator,
+        originatorTokenAccount: originatorTokenAccountPubKey,
+        stableCoin: stableTokenPubKey,
         caller: callerOriginator.publicKey,
         payer: payer.publicKey,
       })
@@ -148,6 +163,8 @@ describe.only("Offer", () => {
       .createOriginator("test 2", "description 2", "test")
       .accounts({
         originator: originator2,
+        originatorTokenAccount: originatorTokenAccountPubKey2,
+        stableCoin: stableTokenPubKey,
         caller: callerOriginator2.publicKey,
         payer: payer.publicKey,
       })
