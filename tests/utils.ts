@@ -24,3 +24,14 @@ export async function airdropSol(publicKey: PublicKey, amount: number) {
 
 export const sleep = async (ms: number) =>
   new Promise((r) => setTimeout(r, ms));
+
+export async function advanceTime<T extends anchor.Idl>(program: anchor.Program<T>, goalTime: number) {
+  while (true) {
+    const currentSlot = await program.provider.connection.getSlot()
+    const currentBlocktime = await program.provider.connection.getBlockTime(currentSlot)
+    if (currentBlocktime > goalTime) {
+       break
+    }
+    sleep(1000)
+ }
+}
