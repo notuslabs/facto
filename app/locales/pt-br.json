@@ -138,6 +138,19 @@
     "status": "Status",
     "from-offers": "De {offers} ofertas"
   },
+  "transactions-page": {
+    "title": "",
+    "welcome": "Bem-vindo",
+    "description": "Seus investimentos crescem mais rápido com a",
+    "your-balance": "Seu saldo para investimento",
+    "withdrawal": "Saque",
+    "deposit": "Depósito"
+  },
+  "deposit-page": {
+    "deposit-value": "Valor do depósito",
+    "your-balance": "Seu saldo em conta é de ",
+    "disclaimer": "Disclaimer aqui"
+  },
   "score-card": {
     "bad": "Ruim",
     "regular": "Regular",

@@ -17,7 +17,7 @@ export function NavbarDepositButton() {
       className="hidden gap-2 rounded-md bg-secondary text-secondary-foreground transition-opacity hover:opacity-50 lg:flex"
     >
       {t("deposit")}
-      <PlusSquare size={20} />
+      <PlusSquare size={20} className="text-facto-primary" />
     </Button>
   );
 }

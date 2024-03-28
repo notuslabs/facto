@@ -23,7 +23,7 @@ export default function LocaleSwitcher() {
   }
 
   const locale = useLocale();
-  const otherLocale = locale === "en" ? "pt-br" : "en";
+  const otherLocale = locale === "en" ? "pt-BR" : "en";
   return (
     <Button
       className="flex gap-1 transition-opacity hover:opacity-50"

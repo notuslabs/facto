@@ -138,6 +138,19 @@
     "status": "Status",
     "from-offers": "From {offers} offers"
   },
+  "transactions-page": {
+    "title": "",
+    "welcome": "Welcome",
+    "description": "Your investments grow faster with",
+    "your-balance": "Your balance for investments",
+    "withdrawal": "Withdrawal",
+    "deposit": "Deposit"
+  },
+  "deposit-page": {
+    "deposit-value": "Deposit value",
+    "your-balance": "Your in account balance is ",
+    "disclaimer": "Disclaimer here"
+  },
   "score-card": {
     "bad": "Bad",
     "regular": "Regular",

@@ -17,7 +17,7 @@ export function NavbarWithdrawalButton() {
       className="hidden gap-2 rounded-md transition-opacity hover:opacity-50 lg:flex"
     >
       {t("withdrawal")}
-      <ArrowUpSquare size={20} />
+      <ArrowUpSquare size={20} className="text-facto-primary" />
     </Button>
   );
 }
