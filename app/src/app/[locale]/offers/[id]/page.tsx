@@ -44,16 +44,20 @@ export default function OfferPage({ params }: OfferPageProps) {
   ];
 
   return (
-    <main className="container flex flex-col gap-[72px]">
+    <main className="flex flex-col gap-8 p-4 md:container lg:gap-[4.5rem]">
+      <div className="md:hidden">
+        <LateralCard />
+      </div>
+
       <Header title="Agiotagem" description="Nicholas Mariano Style" score={999} id={params.id} />
 
-      <div className="flex gap-8">
-        <div className="flex w-1/2 flex-col gap-8 pb-8">
-          <div className="flex flex-col items-start gap-4">
-            <div className="inline-flex h-11 items-center justify-center gap-2 p-1 dark:border-border-hover dark:text-primary">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
+        <div className="flex w-full flex-col gap-8 pb-8">
+          <div className="flex flex-col items-start gap-6">
+            <div className="grid w-full grid-cols-1 items-center justify-center gap-2 p-1 dark:border-border-hover dark:text-primary sm:grid-cols-2 lg:flex lg:w-fit">
               {tabs.map((tab) => (
                 <a
-                  className={`inline-flex items-center justify-center whitespace-nowrap rounded-full border p-3 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab === tab.name ? "bg-primary text-on-color-foreground" : "dark:text-primary"}`}
+                  className={`inline-flex items-center justify-center whitespace-nowrap rounded-full border p-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-3 ${activeTab === tab.name ? "bg-primary text-on-color-foreground" : "dark:text-primary"}`}
                   href={`#${tab.name}`}
                   key={tab.name}
                   onClick={() => setActiveTab(tab.name)}
@@ -62,7 +66,6 @@ export default function OfferPage({ params }: OfferPageProps) {
                 </a>
               ))}
             </div>
-
             {tabs.map((tab) => (
               <div className="w-full" id={tab.name} key={tab.name}>
                 {tab.content}
@@ -71,7 +74,7 @@ export default function OfferPage({ params }: OfferPageProps) {
           </div>
         </div>
 
-        <div className="-mt-40 w-1/2">
+        <div className="hidden w-full md:mt-[4.5rem] md:block lg:-mt-40">
           <LateralCard />
         </div>
       </div>

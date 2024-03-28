@@ -39,7 +39,7 @@ export function ScoreBadge({ score }: ScoreBadgeProps) {
   return (
     <Badge
       variant="outline"
-      className={`text-foreground ${colorClass} rounded-md hover:${colorClass} h-7`}
+      className={`text-foreground ${colorClass} rounded-md hover:${colorClass} h-6`}
     >
       {code}
     </Badge>

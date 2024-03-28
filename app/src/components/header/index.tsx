@@ -24,7 +24,7 @@ export function Header({ title, description, score, id }: HeaderProps) {
         <p>{description}</p>
       </div>
 
-      <div className="flex gap-1">
+      <div className="flex flex-wrap gap-2">
         <ScoreBadge score={score} />
         <Badge className="flex gap-1" variant="gray">
           <HelpingHand size={14} />

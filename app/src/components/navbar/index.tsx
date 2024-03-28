@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import LocaleSwitcher from "../locale-switcher";
 import { useLocale, useTranslations } from "next-intl";
 import { Smile } from "lucide-react";
 import { usePathname } from "@/navigation";
@@ -19,22 +18,23 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="h-[153px] w-full pt-8 dark:bg-background">
-      <div className="container flex items-center justify-between">
+    <nav className="w-full p-4 dark:bg-background md:h-[153px] md:pt-8">
+      <div className="flex items-center justify-between md:container">
         <div className="flex items-center gap-12">
           <Link href="/" className="flex items-center justify-start gap-2">
             <Smile size={40} />
-            <span className="text-4xl font-bold">LOGO</span>
+            <span className="hidden text-xl font-bold md:inline-flex">LOGO</span>
           </Link>
-          <div className="flex gap-4 text-sm font-medium text-disabled-foreground dark:text-muted-foreground">
+
+          <div className="hidden gap-4 text-sm font-medium text-disabled-foreground dark:text-muted-foreground md:flex">
             <Link
-              className={cn(pathname === "/investments" ? "text-primary" : "", "transition-colors")}
+              className={cn(pathname === "/investments" && "text-primary", "transition-colors")}
               href={`/${locale}/investments`}
             >
               {t("my-investments")}
             </Link>
             <Link
-              className={cn(pathname === "/receivables" ? "text-primary" : "", "transition-colors")}
+              className={cn(pathname === "/receivables" && "text-primary", "transition-colors")}
               href={`/${locale}/receivables`}
             >
               {t("receivables")}
@@ -42,16 +42,13 @@ export function Navbar() {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-8">
-          <LocaleSwitcher />
-          <div className="flex gap-3">
-            <NavbarCreateAccountButton />
-            <NavbarWithdrawalButton />
-            <NavbarDepositButton />
-            <NavbarBalance />
-            <NavbarUserButton />
-            <NavbarSignInButton />
-          </div>
+        <div className="flex items-center justify-end gap-3">
+          <NavbarCreateAccountButton />
+          <NavbarWithdrawalButton />
+          <NavbarDepositButton />
+          <NavbarBalance />
+          <NavbarUserButton />
+          <NavbarSignInButton />
         </div>
       </div>
     </nav>

@@ -1,12 +1,15 @@
 {
     "scripts": {
+        "build": "node ./scripts/pre-build.js && anchor build && node ./scripts/post-build.js",
+        "deploy": "npm run build && anchor deploy",
         "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
         "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
     },
     "dependencies": {
         "@coral-xyz/anchor": "^0.29.0",
         "@solana/spl-token": "^0.4.1",
-        "nanoid": "^3.3.7"
+        "nanoid": "^3.3.7",
+        "tweetnacl": "^1.0.3"
     },
     "devDependencies": {
         "@biomejs/biome": "^1.6.1",

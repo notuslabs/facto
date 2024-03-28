@@ -12,6 +12,10 @@ export const pathnames = {
     en: "/receivables",
     "pt-br": "/receivables",
   },
+  "/transactions": {
+    en: "/transactions",
+    "pt-br": "/transactions",
+  },
 } satisfies Pathnames<typeof locales>;
 
 // Use the default: `always`

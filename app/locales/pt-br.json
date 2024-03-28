@@ -11,7 +11,9 @@
     "create-account": "Criar conta",
     "withdrawal": "Saque",
     "deposit": "Depósito",
-    "balance": "Meu Saldo"
+    "balance": "Meu Saldo",
+    "user": "Usuário",
+    "transactions": "Transações"
   },
   "header": {
     "people-invested": "{peopleNumber} pessoas investiram",
@@ -26,6 +28,7 @@
       "title": "Oportunidades para investir",
       "search-input-placeholder": "Buscar ofertas, originadores",
       "offer-stage": "Etapa da oferta",
+      "filter": "Filtrar",
       "card": {
         "header": {
           "time-period": "ao ano",
@@ -109,7 +112,7 @@
     "title": "Meus investimentos",
     "all-status": "Todos status",
     "exhibiting": "Exibindo",
-    "offers": "ofertas",
+    "offers": "{offerNumber} ofertas",
     "offer-name": "Oferta",
     "raised-value": "Valor captado",
     "offer-total": "Total da oferta",
@@ -119,18 +122,21 @@
     "installment-number": "Receberá em",
     "visualize": "Visualizar",
     "status": "Status",
-    "see-offer": "Ver oferta"
+    "see-offer": "Ver oferta",
+    "installments": "parcelas",
+    "per-year": "ao ano"
   },
   "receivables-page": {
     "title": "Parcelas a receber",
     "exhibiting": "Exibindo",
     "all-status": "Todos status",
-    "installments-to-receive": "Parcelas a receber de {installments} ofertas",
+    "installments-to-receive": "Parcelas a receber de {offers} ofertas",
     "offer-name": "Oferta",
     "date": "Data",
     "installment": "Parcela",
     "installment-value": "Valor da parcela",
-    "status": "Status"
+    "status": "Status",
+    "from-offers": "De {offers} ofertas"
   },
   "score-card": {
     "bad": "Ruim",

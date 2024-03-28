@@ -11,7 +11,9 @@
     "create-account": "Create account",
     "withdrawal": "Withdrawal",
     "deposit": "Deposit",
-    "balance": "My Balance"
+    "balance": "My Balance",
+    "user": "User",
+    "transactions": "Transactions"
   },
   "header": {
     "people-invested": "{peopleNumber} people invested",
@@ -26,6 +28,7 @@
       "title": "Opportunities to invest",
       "search-input-placeholder": "Search for offers, originators",
       "offer-stage": "Offer stage",
+      "filter": "Filter",
       "card": {
         "header": {
           "time-period": "per year",
@@ -109,7 +112,7 @@
     "title": "My investments",
     "all-status": "All status",
     "exhibiting": "Exhibiting",
-    "offers": "offers",
+    "offers": "{offerNumber} offers",
     "offer-name": "Offer",
     "raised-value": "Raised value",
     "offer-total": "Offer total",
@@ -119,18 +122,21 @@
     "installment-number": "Installments number",
     "visualize": "Visualize",
     "status": "Status",
-    "see-offer": "See offer"
+    "see-offer": "See offer",
+    "installments": "installments",
+    "per-year": "per year"
   },
   "receivables-page": {
     "title": "Outstanding receivables",
     "exhibiting": "Exhibiting",
     "all-status": "All status",
-    "installments-to-receive": "Installments to receive from {installments} offers",
+    "installments-to-receive": "Installments to receive from {offers} offers",
     "offer-name": "Offer",
     "date": "Date",
     "installment": "Installment",
     "installment-value": "Installment value",
-    "status": "Status"
+    "status": "Status",
+    "from-offers": "From {offers} offers"
   },
   "score-card": {
     "bad": "Bad",
