@@ -61,12 +61,6 @@ export const CreateOfferFormSchema = z
     ctx.addIssue({
       code: "custom",
       message: "Deadline date must be the same or after start date",
-      path: ["startDate"],
-    });
-
-    ctx.addIssue({
-      code: "custom",
-      message: "Deadline date must be the same or after start date",
       path: ["deadlineDate"],
     });
   })
@@ -80,13 +74,7 @@ export const CreateOfferFormSchema = z
 
     ctx.addIssue({
       code: "custom",
-      message: "Installments start date must be them same or after deadline date",
+      message: "Installments start date must be the same or after deadline date",
       path: ["installmentsStartDate"],
-    });
-
-    ctx.addIssue({
-      code: "custom",
-      message: "Installments start date must be them same or after deadline date",
-      path: ["deadlineDate"],
     });
   });
