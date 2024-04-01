@@ -194,6 +194,7 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
         ctx.accounts.offer.get_installment_amount(),
         ctx.accounts.stable_token.decimals,
     )?;
+    
     ctx.accounts.offer.total_installments_paid += 1;
 
     Ok(())

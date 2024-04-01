@@ -370,10 +370,9 @@ export type Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -424,6 +423,10 @@ export type Hackathon = {
         }
       ],
       "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        },
         {
           "name": "amount",
           "type": "u64"
@@ -514,10 +517,9 @@ export type Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -538,7 +540,12 @@ export type Hackathon = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        }
+      ]
     },
     {
       "name": "payInstallment",
@@ -565,10 +572,9 @@ export type Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -587,7 +593,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "offer_payment_vault"
+                "value": "vault_payment_token_account"
               },
               {
                 "kind": "account",
@@ -648,7 +654,12 @@ export type Hackathon = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        }
+      ]
     },
     {
       "name": "withdrawInstallment",
@@ -757,7 +768,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "offer_payment_vault"
+                "value": "vault_payment_token_account"
               },
               {
                 "kind": "account",
@@ -790,10 +801,9 @@ export type Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -809,7 +819,12 @@ export type Hackathon = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        }
+      ]
     },
     {
       "name": "createInvestor",
@@ -1288,6 +1303,10 @@ export type Hackathon = {
           },
           {
             "name": "vaultBump",
+            "type": "u8"
+          },
+          {
+            "name": "vaultPaymentBump",
             "type": "u8"
           }
         ]
@@ -1781,10 +1800,9 @@ export const IDL: Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -1835,6 +1853,10 @@ export const IDL: Hackathon = {
         }
       ],
       "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        },
         {
           "name": "amount",
           "type": "u64"
@@ -1925,10 +1947,9 @@ export const IDL: Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -1949,7 +1970,12 @@ export const IDL: Hackathon = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        }
+      ]
     },
     {
       "name": "payInstallment",
@@ -1976,10 +2002,9 @@ export const IDL: Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -1998,7 +2023,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "offer_payment_vault"
+                "value": "vault_payment_token_account"
               },
               {
                 "kind": "account",
@@ -2059,7 +2084,12 @@ export const IDL: Hackathon = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        }
+      ]
     },
     {
       "name": "withdrawInstallment",
@@ -2168,7 +2198,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "offer_payment_vault"
+                "value": "vault_payment_token_account"
               },
               {
                 "kind": "account",
@@ -2201,10 +2231,9 @@ export const IDL: Hackathon = {
                 "value": "offer"
               },
               {
-                "kind": "account",
+                "kind": "arg",
                 "type": "string",
-                "account": "Offer",
-                "path": "offer.id"
+                "path": "offer_id"
               }
             ]
           }
@@ -2220,7 +2249,12 @@ export const IDL: Hackathon = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "offerId",
+          "type": "string"
+        }
+      ]
     },
     {
       "name": "createInvestor",
@@ -2699,6 +2733,10 @@ export const IDL: Hackathon = {
           },
           {
             "name": "vaultBump",
+            "type": "u8"
+          },
+          {
+            "name": "vaultPaymentBump",
             "type": "u8"
           }
         ]

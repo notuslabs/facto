@@ -89,7 +89,7 @@ describe("Offer", { timeout: 500000 }, () => {
     program.programId
   );
   const [vaultPaymentTokenAccount] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("offer_payment_vault"), offer.toBuffer()],
+    [anchor.utils.bytes.utf8.encode("vault_payment_token_account"), offer.toBuffer()],
     program.programId
   );
   const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
@@ -281,7 +281,7 @@ describe("Offer", { timeout: 500000 }, () => {
 
     try {
       await program.methods
-        .invest(new anchor.BN("49"))
+        .invest(offerId, new anchor.BN("49"))
         .accounts({
           vaultStableTokenAccount,
           caller: callerInvestor.publicKey,
@@ -306,7 +306,7 @@ describe("Offer", { timeout: 500000 }, () => {
 
     try {
       await program.methods
-        .invest(new anchor.BN("101"))
+        .invest(offerId, new anchor.BN("101"))
         .accounts({
           vaultStableTokenAccount,
           caller: callerInvestor.publicKey,
@@ -332,7 +332,7 @@ describe("Offer", { timeout: 500000 }, () => {
     await advanceTime<Hackathon>(program, now + 2);
 
     await program.methods
-      .invest(new anchor.BN(investAmount.toString()))
+      .invest(offerId, new anchor.BN(investAmount.toString()))
       .accounts({
         vaultStableTokenAccount,
         caller: callerInvestor.publicKey,
@@ -369,7 +369,7 @@ describe("Offer", { timeout: 500000 }, () => {
     expect(vaultTokenAccountInfo.amount === investAmount).true;
 
     await program.methods
-      .invest(new anchor.BN(investAmount.toString()))
+      .invest(offerId, new anchor.BN(investAmount.toString()))
       .accounts({
         vaultStableTokenAccount,
         caller: callerInvestor.publicKey,
@@ -420,7 +420,7 @@ describe("Offer", { timeout: 500000 }, () => {
     await advanceTime<Hackathon>(program, deadline);
 
     await program.methods
-      .withdrawInvestments()
+      .withdrawInvestments(offerId)
       .accounts({
         vaultStableTokenAccount,
         originatorTokenAccount: originatorTokenAccountPubKey,
@@ -446,7 +446,7 @@ describe("Offer", { timeout: 500000 }, () => {
   it("should be able originator pay first installment", async () => {
     try {
       await program.methods
-        .payInstallment()
+        .payInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           caller: callerOriginator.publicKey,
@@ -470,7 +470,7 @@ describe("Offer", { timeout: 500000 }, () => {
     await advanceTime(program, installmentsStartDate);
 
     await program.methods
-      .payInstallment()
+      .payInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         caller: callerOriginator.publicKey,
@@ -512,7 +512,7 @@ describe("Offer", { timeout: 500000 }, () => {
       investorOfferTokenAccount
     );
     await program.methods
-      .withdrawInstallment()
+      .withdrawInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         ownerInvestor: callerInvestor.publicKey,
@@ -539,7 +539,7 @@ describe("Offer", { timeout: 500000 }, () => {
 
     try {
       await program.methods
-        .withdrawInstallment()
+        .withdrawInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           ownerInvestor: callerInvestor.publicKey,
@@ -573,7 +573,7 @@ describe("Offer", { timeout: 500000 }, () => {
     );
 
     await program.methods
-      .payInstallment()
+      .payInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         caller: callerOriginator.publicKey,
@@ -597,7 +597,7 @@ describe("Offer", { timeout: 500000 }, () => {
 
     try {
       await program.methods
-        .payInstallment()
+        .payInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           caller: callerOriginator.publicKey,
@@ -634,7 +634,7 @@ describe("Offer", { timeout: 500000 }, () => {
     );
 
     await program.methods
-      .withdrawInstallment()
+      .withdrawInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         ownerInvestor: callerInvestor.publicKey,
@@ -661,7 +661,7 @@ describe("Offer", { timeout: 500000 }, () => {
 
     try {
       await program.methods
-        .withdrawInstallment()
+        .withdrawInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           ownerInvestor: callerInvestor.publicKey,
