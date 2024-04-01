@@ -10,7 +10,7 @@ import { createOffer } from "@/services/create-offer";
 import { useAccounts } from "./use-accounts";
 import { CreateOfferFormSchema } from "@/app/[locale]/offers/create/_components/offer-form-validation";
 import { useSession } from "./use-session";
-import { useProgram2 } from "./use-program";
+import { useProgram } from "./use-program";
 
 class OriginatorAccountNotFound extends Error {
   constructor() {
@@ -21,7 +21,7 @@ class OriginatorAccountNotFound extends Error {
 export function useCreateOffer() {
   const queryClient = useQueryClient();
   const { data } = useSession();
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
   const { data: accounts } = useAccounts();
   const t = useTranslations("create-offer-page");
   const router = useRouter();

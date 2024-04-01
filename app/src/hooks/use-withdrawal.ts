@@ -7,12 +7,12 @@ import { utils } from "@coral-xyz/anchor";
 import { BN } from "bn.js";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
-import { useProgram2 } from "./use-program";
+import { useProgram } from "./use-program";
 
 export function useWithdrawal() {
   const queryClient = useQueryClient();
   const { data } = useSession();
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
 
   const solanaWallet = data?.solanaWallet;
   const program = programData?.program;

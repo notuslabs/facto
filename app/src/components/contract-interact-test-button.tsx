@@ -2,10 +2,10 @@ import { PublicKey } from "@solana/web3.js";
 import { Button } from "./ui/button";
 import { Keypair } from "@solana/web3.js";
 import { utils } from "@coral-xyz/anchor";
-import { useProgram2 } from "@/hooks/use-program";
+import { useProgram } from "@/hooks/use-program";
 
 export function ContractInteractTestButton() {
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
 
   const keypair = programData?.keypair;
   const program = programData?.program;

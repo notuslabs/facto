@@ -6,12 +6,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { utils } from "@coral-xyz/anchor";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
-import { useProgram2 } from "./use-program";
+import { useProgram } from "./use-program";
 
 export function useCreateInvestorAccount() {
   const queryClient = useQueryClient();
   const { data } = useSession();
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
 
   const userInfo = data?.userInfo;
   const solanaWallet = data?.solanaWallet;

@@ -5,10 +5,10 @@ import { PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { useSession } from "./use-session";
-import { useProgram2 } from "./use-program";
+import { useProgram } from "./use-program";
 
 export function useAccounts() {
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
   const { data } = useSession();
 
   const solanaWallet = data?.solanaWallet;

@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useProgram2 } from "@/hooks/use-program";
+import { useProgram } from "@/hooks/use-program";
 import { Hackathon } from "@/lib/idl";
 import { createOffer } from "@/services/create-offer";
 import { createOriginator } from "@/services/create-originator";
@@ -8,7 +8,7 @@ import { Program } from "@coral-xyz/anchor";
 import { Keypair } from "@solana/web3.js";
 
 export default function TestOfferCreation() {
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
 
   const keypair = programData?.keypair;
   const program = programData?.program;

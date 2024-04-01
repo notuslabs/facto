@@ -6,7 +6,7 @@ import { useConnection } from "./use-connection";
 import { useSession } from "./use-session";
 import { useQuery } from "@tanstack/react-query";
 
-export function useProgram2() {
+export function useProgram() {
   const { connection } = useConnection();
   const { data } = useSession();
 

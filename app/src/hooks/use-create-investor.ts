@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 import { useTokenAccounts } from "./use-token-accounts";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
-import { useProgram2 } from "./use-program";
+import { useProgram } from "./use-program";
 
 class AlreadyRegisteredError extends Error {
   constructor(message?: string) {
@@ -20,7 +20,7 @@ class AlreadyRegisteredError extends Error {
 export function useCreateInvestor() {
   const queryClient = useQueryClient();
   const { data } = useSession();
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.investor");
 

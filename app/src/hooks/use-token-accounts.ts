@@ -8,10 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
-import { useProgram2 } from "./use-program";
+import { useProgram } from "./use-program";
 
 export function useTokenAccounts() {
-  const { data: programData } = useProgram2();
+  const { data: programData } = useProgram();
   const { data } = useSession();
 
   const program = programData?.program;
