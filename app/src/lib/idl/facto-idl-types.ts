@@ -1233,35 +1233,6 @@ export type Hackathon = {
   ],
   "types": [
     {
-      "name": "OfferErrors",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "MinAmountRequired"
-          },
-          {
-            "name": "GoalAmountExceeded"
-          },
-          {
-            "name": "OfferIsNotOpen"
-          },
-          {
-            "name": "OfferIsNotFunded"
-          },
-          {
-            "name": "OfferIsNotOnTrack"
-          },
-          {
-            "name": "InvalidOriginatorSigner"
-          },
-          {
-            "name": "InstallmentAlreadyPaid"
-          }
-        ]
-      }
-    },
-    {
       "name": "OfferStatus",
       "type": {
         "kind": "enum",
@@ -2577,35 +2548,6 @@ export const IDL: Hackathon = {
     }
   ],
   "types": [
-    {
-      "name": "OfferErrors",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "MinAmountRequired"
-          },
-          {
-            "name": "GoalAmountExceeded"
-          },
-          {
-            "name": "OfferIsNotOpen"
-          },
-          {
-            "name": "OfferIsNotFunded"
-          },
-          {
-            "name": "OfferIsNotOnTrack"
-          },
-          {
-            "name": "InvalidOriginatorSigner"
-          },
-          {
-            "name": "InstallmentAlreadyPaid"
-          }
-        ]
-      }
-    },
     {
       "name": "OfferStatus",
       "type": {

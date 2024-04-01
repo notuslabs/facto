@@ -7,8 +7,6 @@ export function useAuth() {
   const { mutate: login, isPending: isLoggingIn } = useMutation({
     mutationFn: async () => {
       const provider = await web3auth.connect();
-      console.log(provider);
-      console.log("Logging in");
       queryClient.refetchQueries({
         queryKey: ["session"],
       });
