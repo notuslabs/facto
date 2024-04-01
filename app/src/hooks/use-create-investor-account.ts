@@ -52,6 +52,10 @@ export function useCreateInvestorAccount() {
       queryClient.invalidateQueries({
         queryKey: ["token-accounts"],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     },
   });
 }

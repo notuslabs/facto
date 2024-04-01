@@ -75,7 +75,7 @@ export function useCreateOffer() {
       toast.success(t("success-toast-message"));
 
       queryClient.invalidateQueries({
-        queryKey: ["token-accounts"],
+        queryKey: ["offers"],
       });
 
       router.push({
