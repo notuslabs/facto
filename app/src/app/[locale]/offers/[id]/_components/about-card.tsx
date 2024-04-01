@@ -53,14 +53,14 @@ export function AboutCard() {
     },
   ];
   return (
-    <div className="rounded-2xl dark:bg-primary-foreground dark:text-primary">
+    <div className="rounded-2xl bg-primary-foreground text-primary">
       <div className="flex flex-col gap-4 p-6 md:px-8 md:py-6">
         <h2 className="pb-2 text-xl font-bold">{t("title")}</h2>
-        <Separator className="dark:bg-secondary" />
+        <Separator className="bg-secondary" />
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between ">
             <div className="flex items-center gap-2">
-              <div className="size-8 rounded-md border dark:border-primary"></div>
+              <div className="size-8 rounded-md border border-primary"></div>
               <div className="flex flex-col text-sm">
                 <span className="font-bold">Agiotagem</span>
                 <span className="text-xs text-muted-foreground">Tipo, Categoria ou nicho</span>
@@ -77,7 +77,7 @@ export function AboutCard() {
           </div>
 
           <div className="flex gap-4">
-            <Separator orientation="vertical" className="dark:bg-secondary" />
+            <Separator orientation="vertical" className="bg-secondary" />
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">{t("loss")}</span>
               <span>66.6%</span>
@@ -85,7 +85,7 @@ export function AboutCard() {
           </div>
 
           <div className="flex gap-4">
-            <Separator orientation="vertical" className="dark:bg-secondary" />
+            <Separator orientation="vertical" className="bg-secondary" />
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">{t("total-raised")}</span>
               <span>$69.420,00</span>
@@ -94,7 +94,7 @@ export function AboutCard() {
         </div>
       </div>
       <Table>
-        <TableHeader className="text-sm dark:bg-primary-foreground">
+        <TableHeader className="bg-primary-foreground text-sm">
           <TableRow>
             <TableHead className="w-1/4 text-foreground">{t("date")}</TableHead>
             <TableHead className="w-1/4 text-foreground">{t("installment-number")}</TableHead>
@@ -104,7 +104,7 @@ export function AboutCard() {
         </TableHeader>
         <TableBody>
           {tableData.map((tableData) => (
-            <TableRow className="border-b text-sm  dark:border-secondary" key={tableData.data}>
+            <TableRow className="border-b border-secondary text-sm" key={tableData.data}>
               <TableCell>{tableData.offer}</TableCell>
               <TableCell>{tableData.totalAmount}</TableCell>
               <TableCell>{tableData.data}</TableCell>

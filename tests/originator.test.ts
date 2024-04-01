@@ -11,15 +11,16 @@ import {
   createAccount,
 } from "@solana/spl-token";
 
-describe("Originator", () => {
+describe('Originator', () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
+  let tokenPublicKey: anchor.web3.PublicKey;
   const program = anchor.workspace.Hackathon as anchor.Program<Hackathon>;
   const caller = anchor.web3.Keypair.generate();
   let token: PublicKey;
 
   const [originatorPubKey] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("originator"), caller.publicKey.toBuffer()],
+    [anchor.utils.bytes.utf8.encode('originator'), caller.publicKey.toBuffer()],
     program.programId
   );
 
@@ -31,10 +32,11 @@ describe("Originator", () => {
     program.programId
   );
 
-  before(async () => {
+
+  beforeAll(async () => {
     await airdropSol(caller.publicKey, 1);
 
-    token = await createMint(
+    tokenPublicKey = await createMint(
       anchor.getProvider().connection,
       caller,
       caller.publicKey,
@@ -43,11 +45,13 @@ describe("Originator", () => {
     );
   });
 
-  it("should be able to become an originator", async () => {
+  it('should be able to become an originator', async () => {
     await program.methods
       .createOriginator("Test", "description", "test")
       .accounts({
         originator: originatorPubKey,
+        originatorTokenAccount: originatorTokenAccountPubKey,
+        stableCoin: tokenPublicKey,
         payer: caller.publicKey,
         originatorTokenAccount: originatorTokenAccountPubKey,
         stableCoin: token,
@@ -61,15 +65,26 @@ describe("Originator", () => {
       originatorPubKey
     );
 
+    const originatorTokenAccountInfo = await getAccount(
+      anchor.getProvider().connection,
+      originatorTokenAccountPubKey
+    );
+
     expect(originatorInfo).not.to.be.undefined;
     expect(originatorInfo).not.to.be.null;
-    expect(originatorInfo.name).to.equal("Test");
-    expect(originatorInfo.description).to.equal("description");
+    expect(originatorInfo.name).to.equal('Test');
+    expect(originatorInfo.description).to.equal('description');
+
+    expect(originatorTokenAccountInfo).not.to.be.undefined;
+    expect(originatorTokenAccountInfo).not.to.be.null;
+    expect(parseFloat(originatorTokenAccountInfo.amount.toString())).to.equal(
+      0
+    );
   });
 
-  it("should be able to edit an originator", async () => {
+  it('should be able to edit an originator', async () => {
     await program.methods
-      .editOriginator("Test 2", "description 2")
+      .editOriginator('Test 2', 'description 2')
       .accounts({
         originator: originatorPubKey,
         payer: caller.publicKey,
@@ -85,8 +100,8 @@ describe("Originator", () => {
 
     expect(originatorInfo).not.to.be.undefined;
     expect(originatorInfo).not.to.be.null;
-    expect(originatorInfo.name).to.equal("Test 2");
-    expect(originatorInfo.description).to.equal("description 2");
+    expect(originatorInfo.name).to.equal('Test 2');
+    expect(originatorInfo.description).to.equal('description 2');
   });
 
   it("should be able to withdraw all tokens", async () => {
