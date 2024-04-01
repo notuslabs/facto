@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, MintTo, Transfer};
+use anchor_spl::token::{self, MintTo, TransferChecked};
 
 use crate::{CreateInvestor, DepositTokens, EditInvestor, WithdrawTokens};
 
@@ -39,15 +39,24 @@ pub fn edit_investor(ctx: Context<EditInvestor>, name: String) -> Result<()> {
 
 pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> {
     let investor_token_account = &mut ctx.accounts.investor_token_account;
+    let stable_token = &ctx.accounts.stable_coin;
 
-    token::transfer(
+    require!(
+        amount <= investor_token_account.amount,
+        ValidationErrors::InsufficientBalance
+    );
+
+    let transfer = TransferChecked {
+        from: investor_token_account.to_account_info(),
+        to: ctx.accounts.to_token_account.to_account_info(),
+        authority: ctx.accounts.investor.to_account_info(),
+        mint: stable_token.to_account_info(),
+    };
+
+    let transfer_result = token::transfer_checked(
         CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
-            Transfer {
-                from: investor_token_account.to_account_info(),
-                to: ctx.accounts.to_token_account.to_account_info(),
-                authority: ctx.accounts.investor.to_account_info(),
-            },
+            transfer,
             &[&[
                 b"investor",
                 ctx.accounts.caller.key().as_ref(),
@@ -55,8 +64,23 @@ pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> 
             ]],
         ),
         amount,
-    )
-    .unwrap();
+        stable_token.decimals,
+    );
 
-    Ok(())
+    match transfer_result {
+        Ok(_) => Ok(()),
+        Err(error) => {
+            msg!("Transfer failed. Err: {}", error);
+
+            err!(ValidationErrors::TransferFailedUnknown)
+        }
+    }
+}
+
+#[error_code]
+enum ValidationErrors {
+    #[msg("Insufficient Balance")]
+    InsufficientBalance,
+    #[msg("Transfer failed with an unknown error.")]
+    TransferFailedUnknown,
 }
