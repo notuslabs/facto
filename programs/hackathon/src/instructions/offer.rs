@@ -83,7 +83,7 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
         ValidationError::InvestmentAmountMustBeGreaterThanOfferMinAmount
     );
     require!(
-        (ctx.accounts.vault_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
+        (ctx.accounts.vault_stable_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
         ValidationError::InvestmentExceedsGoalAmount
     );
     require!(
@@ -95,7 +95,7 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
 
     let transfer = Transfer {
         from: ctx.accounts.investor_token_account.to_account_info(),
-        to: ctx.accounts.vault_token_account.to_account_info(),
+        to: ctx.accounts.vault_stable_token_account.to_account_info(),
         authority: ctx.accounts.investor.to_account_info(),
     };
     let cpi_program = ctx.accounts.token_program.to_account_info();
@@ -147,7 +147,7 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
 
     let transfer = Transfer {
         authority: ctx.accounts.offer.to_account_info(),
-        from: ctx.accounts.vault_token_account.to_account_info(),
+        from: ctx.accounts.vault_stable_token_account.to_account_info(),
         to: ctx.accounts.originator_token_account.to_account_info(),
     };
 
@@ -161,7 +161,7 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
                 &[ctx.accounts.offer.bump],
             ]],
         ),
-        ctx.accounts.vault_token_account.amount,
+        ctx.accounts.vault_stable_token_account.amount,
     )?;
 
     Ok(())

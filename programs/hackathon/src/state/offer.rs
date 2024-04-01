@@ -140,7 +140,7 @@ pub struct Invest<'info> {
     )]
     pub investor_offer_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
-    pub vault_token_account: Account<'info, TokenAccount>,
+    pub vault_stable_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"investor_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
     pub investor_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
@@ -163,7 +163,7 @@ pub struct WithdrawInvestments<'info> {
     pub caller: Signer<'info>,
 
     #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
-    pub vault_token_account: Account<'info, TokenAccount>,
+    pub vault_stable_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
     pub originator_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
