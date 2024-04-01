@@ -1,15 +1,16 @@
-import { useSession } from "@/components/auth-provider";
-
-import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import { CustomChainConfig } from "@web3auth/base";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import { useConnection } from "./use-connection";
+import { useSession } from "./use-session";
 
 export function useBalance() {
-  const { userInfo, solanaWallet } = useSession();
+  const { data } = useSession();
   const { connection } = useConnection();
   const [balance, setBalance] = useState<number>();
   const [isLoading, setIsLoading] = useState(true);
+
+  const userInfo = data?.userInfo;
+  const solanaWallet = data?.solanaWallet;
 
   const getBalance = async () => {
     if (!userInfo) {
@@ -22,11 +23,6 @@ export function useBalance() {
     }
 
     const accounts = await solanaWallet.requestAccounts();
-
-    const connectionConfig = await solanaWallet.request<string[], CustomChainConfig>({
-      method: "solana_provider_config",
-      params: [],
-    });
 
     const balance = await connection.getBalance(new PublicKey(accounts[0]));
 

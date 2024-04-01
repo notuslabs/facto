@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::{Mint, Token, TokenAccount};
 
-use crate::{Investor, Originator};
+use crate::{Investor, InvestorInstallments, Originator};
 
 #[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace, PartialEq)]
 pub enum OfferStatus {
@@ -32,6 +32,7 @@ pub enum CreditScore {
 #[account]
 #[derive(InitSpace)]
 pub struct Offer {
+    pub originator: Pubkey,
     #[max_len(16)]
     pub id: String,
     #[max_len(500)]
@@ -39,13 +40,14 @@ pub struct Offer {
     pub discriminator: u32,
     pub interest_rate_percent: f32,
     pub goal_amount: u64,
-    pub start_date: Option<i64>,
     pub deadline_date: i64,
     pub acquired_amount: u64,
-    pub originator: Pubkey,
-    pub installments_total: u8,
-    pub installments_start_date: i64,
+    pub installments_count: u8,
+    pub installments_total_amount: u64,
+    pub total_installments_paid: u8,
+    pub installments_next_payment_date: i64,
     pub min_amount_invest: u64,
+    pub start_date: i64,
     pub credit_score: u16,
     pub created_at: i64,
     pub bump: u8,
@@ -53,17 +55,38 @@ pub struct Offer {
     pub vault_bump: u8,
 }
 
+pub trait OfferInterface {
+    fn get_status(&self) -> OfferStatus;
+}
+
 impl<'info> Offer {
-    // Função que calcula o status com base em alguma lógica
-    pub fn status(&self) -> OfferStatus {
+    pub fn get_status(&self) -> OfferStatus {
         let clock = Clock::get().unwrap();
         let current_timestamp = clock.unix_timestamp;
 
-        if current_timestamp < self.start_date.unwrap() && self.acquired_amount < self.goal_amount {
+        if current_timestamp < self.deadline_date
+            && current_timestamp >= self.start_date
+            && self.acquired_amount < self.goal_amount
+        {
             OfferStatus::Open
+        } else if self.acquired_amount == self.goal_amount
+            && current_timestamp >= self.deadline_date
+        {
+            if self.total_installments_paid == self.installments_count {
+                return OfferStatus::Finished;
+            }
+            if current_timestamp >= self.installments_next_payment_date {
+                return OfferStatus::OnTrack;
+            }
+
+            OfferStatus::Funded
         } else {
-            OfferStatus::Finished
+            OfferStatus::Failed
         }
+    }
+
+    pub fn get_installment_amount(&self) -> u64 {
+        self.installments_total_amount / self.installments_count as u64
     }
 }
 
@@ -143,6 +166,79 @@ pub struct Invest<'info> {
 pub struct WithdrawInvestments<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+
+    #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
+    pub vault_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
+    pub originator_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
+    pub originator: Account<'info, Originator>,
+    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    pub offer: Account<'info, Offer>,
+
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
+}
+
+#[derive(Accounts)]
+pub struct PayInstallment<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
+
+    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    pub offer: Account<'info, Offer>,
+    #[account()]
+    pub stable_token: Account<'info, Mint>,
+    #[account(
+        init_if_needed,
+        payer = payer,
+        token::mint = stable_token,
+        token::authority = offer,
+        seeds=[b"offer_payment_vault", offer.key().as_ref()],
+        bump
+    )]
+    pub vault_payment_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
+    pub originator_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump = originator.bump)]
+    pub originator: Account<'info, Originator>,
+
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
+}
+
+#[derive(Accounts)]
+pub struct WithdrawInstallment<'info> {
+    #[account(mut)]
+    payer: Signer<'info>,
+
+    #[account(
+        init_if_needed,
+        payer = payer,
+        space = 8 + InvestorInstallments::INIT_SPACE,
+        seeds = [b"investor_installment", offer.key().as_ref(), investor.key().as_ref()],
+        bump
+    )]
+    pub investor_installment: Account<'info, InvestorInstallments>,
+    /// CHECK:
+    pub owner_investor: AccountInfo<'info>,
+    #[account(mut, seeds=[b"investor", owner_investor.key().as_ref()], bump=investor.bump)]
+    pub investor: Account<'info, Investor>,
+    #[account(mut, seeds=[b"investor_offer_token_account", investor.key().as_ref()], bump)]
+    pub investor_offer_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"investor_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
+    pub investor_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"offer_payment_vault", offer.key().as_ref()], bump)]
+    pub vault_payment_token_account: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub offer_token: Account<'info, Mint>,
+    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    pub offer: Account<'info, Offer>,
+
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
 }

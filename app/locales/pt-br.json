@@ -3,7 +3,7 @@
     "title": "Hackathon Solana",
     "description": "Projeto da Hackathon Solana"
   },
-  "navbar" : {
+  "navbar": {
     "login": "Entrar",
     "logout": "Sair",
     "my-investments": "Meus investimentos",
@@ -20,11 +20,11 @@
     "money-raised": "{moneyRaised} - captados"
   },
   "home": {
-    "hero" : {
+    "hero": {
       "title": "Comece a investir",
       "description": "Alguma descrição de apoio sobre a proposta de valor do projeto e trazer mais"
     },
-    "offers" : {
+    "offers": {
       "title": "Oportunidades para investir",
       "search-input-placeholder": "Buscar ofertas, originadores",
       "offer-stage": "Etapa da oferta",
@@ -59,7 +59,7 @@
       "income-schedule": {
         "title": "Cronograma de recebimento"
       },
-      "about-originator":  {
+      "about-originator": {
         "title": "Sobre o originador"
       },
       "credit-score": {
@@ -73,14 +73,14 @@
       "months": "meses",
       "description": "Junte-se a nós na construção do Sonho Verde, um condomínio residencial ecologicamente sustentável, onde o conforto se une à preservação ambiental. Com sua contribuição através do nosso crowdfunding, podemos transformar esse projeto em realidade, oferecendo espaços verdes, tecnologias eco-friendly e qualidade de vida incomparável. Cada doação conta! Participe agora e faça parte dessa comunidade que valoriza o futuro do planeta e o bem-estar de todos os seus habitantes."
     },
-    "income-schedule" : {
+    "income-schedule": {
       "title": "Cronograma de recebimento",
       "date": "Data",
       "installment-number": "Nº Parcela",
       "amount": "Valor",
       "status": "Status"
     },
-    "about-originator" : {
+    "about-originator": {
       "title": "Sobre o originador",
       "description": "Como Agiotagem, o mentor por trás deste projeto residencial ecológico, estou comprometido em promover uma mudança positiva na construção civil. Com vasta experiência e uma visão sustentável, cada contribuição é valorizada e investida com integridade e transparência. Juntos, estamos construindo mais do que simples casas; estamos criando um santuário para aqueles que valorizam o meio ambiente e a qualidade de vida. Agradeço imensamente por se juntar a nós nesta jornada rumo a um futuro mais sustentável e próspero para todos.",
       "offers": "Ofertas",
@@ -173,5 +173,110 @@
     "deposit-value": "Valor do depósito",
     "withdrawal-value": "Valor do saque",
     "your-balance": "Seu saldo em conta é de "
+  },
+  "become": {
+    "investor": {
+      "title": "Vamos criar sua conta",
+      "form-fields": {
+        "name": "Nome",
+        "name-description": "{chars}/{maxChars} caracteres max",
+        "name-placeholder": "Nome de Investidor"
+      },
+      "submit-button": "Continuar",
+      "success-toast-message": "Sua conta foi criada com sucesso",
+      "error-toast-message": "Ocorreu um erro ao criar sua conta",
+      "already-registered-toast-message": "Já existe uma conta de investidor vinculada à sua conta.",
+      "not-authenticated": "Você precisa estar autenticado para se tornar um investidor"
+    },
+    "originator": {
+      "title": "Vamos criar sua conta",
+      "form-fields": {
+        "name": "Nome de Originador",
+        "name-description": "{chars}/{maxChars} caracteres max",
+        "name-placeholder": "Nome de Investidor",
+        "description": "Descrição",
+        "description-description": "{chars}/{maxChars} caracteres max",
+        "description-placeholder": "Breve descrição sobre seu perfil"
+      },
+      "submit-button": "Continuar",
+      "success-toast-message": "Sua conta foi criada com sucesso",
+      "error-toast-message": "Ocorreu um erro ao criar sua conta",
+      "already-registered-toast-message": "Já existe uma conta de originador vinculada à sua conta.",
+      "not-authenticated": "Você precisa estar autenticado para se tornar um originador"
+    }
+  },
+  "create-offer-page": {
+    "header": {
+      "title": "Nova oferta"
+    },
+    "steps": {
+      "step-1": "Sobre a oferta - 1/3",
+      "step-2": "Rendimento - 2/3",
+      "step-3": "Prazos - 3/3"
+    },
+    "form-fields": {
+      "name": {
+        "label": "Nome da oferta",
+        "description": "Gerado automaticamente a partir do token e número total de ofertas do originador"
+      },
+      "description": {
+        "label": "Descrição",
+        "description": "{chars}/{maxChars} caracteres max",
+        "placeholder": "Descreva a oferta"
+      },
+      "credit-score": {
+        "label": "Score de crédito",
+        "placeholder": "Selecione uma opção"
+      },
+      "goal-amount": {
+        "label": "Valor total a ser captado",
+        "left-text": "USD",
+        "placeholder": "0,0"
+      },
+      "interest-rate": {
+        "label": "Taxa de empréstimo / Borrowing Fee",
+        "left-text": "% ao ano",
+        "placeholder": "0,0"
+      },
+      "start-date": {
+        "label": "Quando começa a oferta",
+        "description": "A partir de quando a oferta poderá receber recursos",
+        "placeholder": "Defina uma data"
+      },
+      "deadline-date": {
+        "label": "Data limite para captação",
+        "description": "Até quando a oferta poderá receber recursos",
+        "placeholder": "Defina uma data"
+      },
+      "payment-frequency": {
+        "label": "Frequência de pagamento",
+        "placeholder": "Selecione uma opção",
+        "options": {
+          "monthly": "Mensal"
+        }
+      },
+      "installments-total": {
+        "label": "Número de parcelas a pagar",
+        "placeholder": "ex: 1"
+      },
+      "installments-start-date": {
+        "label": "Data da primeira parcela",
+        "placeholder": "Defina uma data"
+      }
+    },
+    "fill-all-fields-before-proceeding": "Preencha todos os campos antes de prosseguir",
+    "fill-goal-amount-and-interest-rate": "Preencha o valor total a ser recebido e a taxa de juros",
+    "fill-goal-amount-and-interest-rate-and-installments": "Preencha o valor total a ser recebido, a taxa de juros e o número de parcelas",
+    "fill-installment-start-date-and-installments-total": "Preencha a data da primeira parcela e o número de parcelas",
+    "last-installment-date": "Data da última parcela",
+    "each-installment": "Valor de cada parcela",
+    "total-with-interest": "Valor total a ser pago",
+    "total-interest": "Total em juros ($)",
+    "not-authenticated": "Você precisa estar autenticado para criar uma oferta",
+    "continue-button": "Continuar",
+    "submit-button": "Criar oferta",
+    "not-an-originator": "Você não é um originador, para criar uma oferta você precisa ser um originador",
+    "success-toast-message": "Sua oferta foi criada com sucesso",
+    "error-toast-message": "Ocorreu um erro ao criar sua oferta"
   }
 }

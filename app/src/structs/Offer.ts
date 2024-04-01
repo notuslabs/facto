@@ -1,5 +1,5 @@
-import { BN, IdlAccounts } from "@coral-xyz/anchor";
-import { IDL } from "@/lib/idl";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
@@ -14,16 +14,15 @@ export class Offer {
     this.description = raw.description;
     this.discriminator = raw.discriminator;
     this.interestRatePercent = raw.interestRatePercent;
-    this.goalAmount = raw.goalAmount;
+    this.goalAmount = raw.goalAmount.toNumber();
     this.originator = rawOriginator;
     this.deadlineDate = new Date(raw.deadlineDate.toNumber());
-    this.acquiredAmount = raw.acquiredAmount;
-    this.installmentsTotal = raw.installmentsTotal;
-    this.installmentsStartDate = raw.installmentsStartDate
-      ? new Date(raw.installmentsStartDate.toNumber())
-      : undefined;
-    this.minAmountInvest = raw.minAmountInvest;
-    this.startDate = raw.startDate ? new Date(raw.startDate.toNumber()) : undefined;
+    this.acquiredAmount = raw.acquiredAmount.toNumber();
+    this.installmentsCount = raw.installmentsCount;
+    this.installmentsTotalAmount = raw.installmentsTotalAmount.toNumber();
+    this.installmentsStartDate = new Date(raw.installmentsNextPaymentDate.toNumber());
+    this.minAmountInvest = raw.minAmountInvest.toNumber();
+    this.startDate = new Date(raw.startDate.toNumber());
     this.creditScore = raw.creditScore;
     this.createdAt = new Date(raw.createdAt.toNumber());
   }
@@ -37,21 +36,22 @@ export class Offer {
   public description: string;
   public discriminator: number;
   public interestRatePercent: number;
-  public goalAmount: BN;
+  public goalAmount: number;
 
   public get status(): OfferStatus {
     return OfferStatus.Open;
   }
 
   public deadlineDate: Date;
-  public acquiredAmount: BN;
+  public acquiredAmount: number;
   public originator: Account<"originator">;
-  public installmentsTotal: number;
+  public installmentsCount: number;
   public installmentsStartDate?: Date;
-  public minAmountInvest: BN;
-  public startDate?: Date;
+  public minAmountInvest: number;
+  public startDate: Date;
   public creditScore: number;
   public createdAt: Date;
+  public installmentsTotalAmount: number;
 
   toJSON() {
     return {

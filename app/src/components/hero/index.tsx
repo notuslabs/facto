@@ -1,3 +1,6 @@
+"use client";
+
+import { useAuth } from "@/hooks/use-auth";
 import { useTranslations } from "next-intl";
 
 export function Hero() {

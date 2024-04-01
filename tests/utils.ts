@@ -1,5 +1,5 @@
-import * as anchor from '@coral-xyz/anchor';
-import { type PublicKey } from '@solana/web3.js';
+import * as anchor from "@coral-xyz/anchor";
+import { type PublicKey } from "@solana/web3.js";
 
 async function confirmTransaction(tx: string) {
   const latestBlockHash = await anchor
@@ -20,4 +20,18 @@ export async function airdropSol(publicKey: PublicKey, amount: number) {
       amount * anchor.web3.LAMPORTS_PER_SOL
     );
   await confirmTransaction(airdropTx);
+}
+
+export const sleep = async (ms: number) =>
+  new Promise((r) => setTimeout(r, ms));
+
+export async function advanceTime<T extends anchor.Idl>(program: anchor.Program<T>, goalTime: number) {
+  while (true) {
+    const currentSlot = await program.provider.connection.getSlot()
+    const currentBlocktime = await program.provider.connection.getBlockTime(currentSlot)
+    if (currentBlocktime > goalTime) {
+       break
+    }
+    sleep(1000)
+ }
 }

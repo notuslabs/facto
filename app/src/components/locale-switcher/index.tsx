@@ -2,7 +2,7 @@
 
 import { Globe } from "lucide-react";
 import { useLocale } from "next-intl";
-import { useParams } from "next/navigation";
+import { useParams, usePathname as useNextPathname } from "next/navigation";
 import { useTransition } from "react";
 import { Button } from "../ui/button";
 import { useRouter, usePathname } from "../../navigation";
@@ -12,17 +12,18 @@ export default function LocaleSwitcher() {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   const params = useParams();
-  function changeLocale(locale: string) {
+  const locale = useLocale();
+
+  function changeLocale(localeParam: string) {
     startTransition(() => {
       router.replace(
         // @ts-expect-error -- TypeScript will validate that only known `params`
         { pathname, params },
-        { locale: locale },
+        { locale: localeParam },
       );
     });
   }
 
-  const locale = useLocale();
   const otherLocale = locale === "en" ? "pt-BR" : "en";
   return (
     <Button

@@ -1,16 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { useSession } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useTranslations } from "next-intl";
+import { useSession } from "@/hooks/use-session";
+import { useAuth } from "@/hooks/use-auth";
 import LocaleSwitcher from "@/components/locale-switcher";
 import { Separator } from "@/components/ui/separator";
 
 export function NavbarUserButton() {
-  const { userInfo, logout } = useSession();
+  const { data } = useSession();
+  const { logout } = useAuth();
   const t = useTranslations("navbar");
+  const userInfo = data?.userInfo;
 
   if (!userInfo) return null;
 
@@ -37,7 +40,7 @@ export function NavbarUserButton() {
       <PopoverContent className="flex w-36 flex-col gap-2 border-0 pt-1">
         <LocaleSwitcher />
         <Separator />
-        <Button size="sm" variant="secondary" onClick={logout}>
+        <Button size="sm" variant="secondary" onClick={() => logout()}>
           {t("logout")}
         </Button>
       </PopoverContent>

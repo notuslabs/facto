@@ -1,13 +1,13 @@
-import { useSession } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/hooks/use-session";
 import { useLocale, useTranslations } from "next-intl";
 
 export function NavbarCreateAccountButton() {
-  const { userInfo } = useSession();
+  const { data } = useSession();
   const t = useTranslations("navbar");
   const locale = useLocale();
 
-  if (userInfo) return null;
+  if (data?.userInfo) return null;
 
   return (
     <Button variant="defaultGradient">

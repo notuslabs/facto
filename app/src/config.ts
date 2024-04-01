@@ -26,19 +26,19 @@ export const pathnames = {
   },
   "/become/investor": {
     en: "/become/investor",
-    "pt-br": "/become/investor",
+    "pt-BR": "/become/investor",
   },
   "/become/originator": {
     en: "/become/originator",
-    "pt-br": "/become/originator",
+    "pt-BR": "/become/originator",
   },
   "/offers/create": {
     en: "/offers/create",
-    "pt-br": "/offers/create",
+    "pt-BR": "/offers/create",
   },
   "/offers/[id]": {
     en: "/offers/[id]",
-    "pt-br": "/offers/[id]",
+    "pt-BR": "/offers/[id]",
   },
 } satisfies Pathnames<typeof locales>;
 

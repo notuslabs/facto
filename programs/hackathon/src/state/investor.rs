@@ -10,6 +10,13 @@ pub struct Investor {
     pub token_account_bump: u8,
 }
 
+#[account]
+#[derive(InitSpace)]
+pub struct InvestorInstallments {
+    pub count_received: u8,
+    pub bump: u8
+}
+
 #[derive(Accounts)]
 pub struct CreateInvestor<'info> {
     #[account(mut)]
@@ -97,7 +104,6 @@ pub struct WithdrawTokens<'info> {
     #[account(
         mut,
         token::mint = stable_coin,
-        token::authority = caller,
     )]
     pub to_token_account: Account<'info, TokenAccount>,
 
