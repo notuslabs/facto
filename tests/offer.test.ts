@@ -92,6 +92,10 @@ describe("Offer", { timeout: 500000 }, () => {
     [anchor.utils.bytes.utf8.encode("vault_payment_token_account"), offer.toBuffer()],
     program.programId
   );
+  const [vaultPaymentTokenAccount2] = PublicKey.findProgramAddressSync(
+    [anchor.utils.bytes.utf8.encode("vault_payment_token_account"), offer2.toBuffer()],
+    program.programId
+  );
   const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
     [
       anchor.utils.bytes.utf8.encode("investor_offer_token_account"),
@@ -212,6 +216,7 @@ describe("Offer", { timeout: 500000 }, () => {
         token: tokenPubKey,
         stableToken: stableTokenPubKey,
         vault: vaultPubKey,
+        vaultPaymentTokenAccount
       })
       .signers([payer, callerOriginator])
       .rpc();
@@ -236,6 +241,7 @@ describe("Offer", { timeout: 500000 }, () => {
         token: tokenPubKey2,
         stableToken: stableTokenPubKey,
         vault: vaultPubKey2,
+        vaultPaymentTokenAccount: vaultPaymentTokenAccount2
       })
       .signers([callerOriginator2, payer])
       .rpc({ commitment: "processed" });
