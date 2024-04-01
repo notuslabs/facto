@@ -38,19 +38,19 @@ export default function MobileExtraNavbar() {
   if (!userInfo) return null;
 
   return (
-    <div className="sticky bottom-0 flex items-start justify-between bg-primary p-4 text-xs dark:bg-primary-foreground md:hidden">
+    <div className="sticky bottom-0 flex items-start justify-between bg-primary-foreground p-4 text-xs md:hidden">
       {options.map((option) => (
         <Link
           href={option.href}
           className={cn(
             pathname === option.href && "!text-primary",
-            "flex w-1/3 flex-col items-center gap-2 text-center text-disabled-foreground transition-colors dark:text-muted-foreground",
+            "flex w-1/3 flex-col items-center gap-2 text-center text-muted-foreground transition-colors",
           )}
           key={option.key}
         >
           <span
             className={cn(
-              pathname === option.href ? "rounded-full bg-strong dark:bg-muted" : "bg-transparent",
+              pathname === option.href ? "rounded-full bg-muted" : "bg-transparent",
               "px-3 py-1",
             )}
           >

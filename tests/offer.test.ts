@@ -4,20 +4,8 @@ import { AnchorError, BN } from '@coral-xyz/anchor';
 import type { Hackathon } from '../target/types/hackathon';
 import { nanoid } from 'nanoid';
 import { PublicKey } from '@solana/web3.js';
-import {
-  createMint,
-  mintTo,
-  getAccount,
-  getOrCreateAssociatedTokenAccount,
-  Account,
-} from '@solana/spl-token';
+import { createMint, mintTo, getAccount } from '@solana/spl-token';
 import { advanceTime } from './utils';
-import chai from 'chai';
-import chaiSubset from 'chai-subset';
-
-chai.use(chaiSubset);
-
-const { expect } = chai;
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
@@ -128,7 +116,7 @@ describe('Offer', () => {
   let stableTokenPubKey: PublicKey;
   let investorTokenAccountPubKey: PublicKey;
 
-  before(async () => {
+  beforeAll(async () => {
     await airdropSol(payer.publicKey, 30);
 
     stableTokenPubKey = await createMint(

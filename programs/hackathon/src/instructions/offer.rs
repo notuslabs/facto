@@ -20,6 +20,43 @@ pub fn create_offer(
     installments_total_amount: u64,
     installments_next_payment_date: i64,
 ) -> Result<()> {
+    require!(id.len() <= 16, ValidationError::MaxIdLengthExceeded);
+    require!(
+        description.len() <= 500,
+        ValidationError::MaxDescriptionLengthExceeded
+    );
+    require!(
+        deadline_date >= Clock::get()?.unix_timestamp,
+        ValidationError::DeadlineDateMustBeInTheFuture
+    );
+    require!(
+        goal_amount >= 1,
+        ValidationError::GoalAmountMustBeEqualToOrGreaterThanOne
+    );
+    require!(
+        goal_amount <= 15_000_000,
+        ValidationError::GoalAmountExceeded
+    );
+    require!(
+        start_date >= Clock::get()?.unix_timestamp,
+        ValidationError::StartDateMustBeInTheFuture
+    );
+    require!(
+        min_amount_invest >= 1,
+        ValidationError::MinAmountMustBeEqualToOrGreaterThanOne
+    );
+    require!(
+        installments_count >= 1,
+        ValidationError::InstallmentsTotalMustBeGreaterThanOne
+    );
+
+    // TODO: add check for max installment start date
+    // should also check if the start date is less than the monthly period from now
+    require!(
+        installments_next_payment_date >= Clock::get()?.unix_timestamp + 2592000, // 30 days
+        ValidationError::InstallmentsStartDateMustBeThirtyDaysFromNow
+    );
+
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
     offer.description = description;
@@ -48,15 +85,15 @@ pub fn create_offer(
 pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
     require!(
         amount >= ctx.accounts.offer.min_amount_invest,
-        OfferErrors::MinAmountRequired
+        ValidationError::InvestmentAmountMustBeGreaterThanOfferMinAmount
     );
     require!(
         (ctx.accounts.vault_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
-        OfferErrors::GoalAmountExceeded
+        ValidationError::InvestmentExceedsGoalAmount
     );
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::Open,
-        OfferErrors::OfferIsNotOpen
+        ValidationError::OfferIsNotOpen
     );
 
     ctx.accounts.offer.acquired_amount += amount;
@@ -106,11 +143,11 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
 pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
     require!(
         ctx.accounts.offer.originator == ctx.accounts.originator.key(),
-        OfferErrors::InvalidOriginatorSigner
+        ValidationError::InvalidOriginatorSigner
     );
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::Funded,
-        OfferErrors::OfferIsNotFunded
+        ValidationError::OfferIsNotFunded
     );
 
     let transfer = Transfer {
@@ -138,7 +175,7 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
 pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::OnTrack,
-        OfferErrors::OfferIsNotOnTrack
+        ValidationError::OfferIsNotOnTrack
     );
 
     let transfer = Transfer {
@@ -167,7 +204,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
     require!(
         ctx.accounts.investor_installment.count_received
             < ctx.accounts.offer.total_installments_paid,
-        OfferErrors::InstallmentAlreadyPaid
+        ValidationError::InstallmentAlreadyPaid
     );
 
     let amount_to_burn = ctx.accounts.investor_offer_token_account.amount
@@ -218,12 +255,12 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
 }
 
 #[error_code]
-pub enum OfferErrors {
-    #[msg("Min amount required")]
-    MinAmountRequired,
-    #[msg("Goal amount exceeded")]
-    GoalAmountExceeded,
-    #[msg("The Offer is not open")]
+enum ValidationError {
+    #[msg("Investment amount must be greater than offer min amount")]
+    InvestmentAmountMustBeGreaterThanOfferMinAmount,
+    #[msg("Investment exceeds goal amount")]
+    InvestmentExceedsGoalAmount,
+    #[msg("Offer is not open")]
     OfferIsNotOpen,
     #[msg("The Offer is not funded")]
     OfferIsNotFunded,
@@ -233,4 +270,22 @@ pub enum OfferErrors {
     InvalidOriginatorSigner,
     #[msg("Investor has no installment to receive")]
     InstallmentAlreadyPaid,
+    #[msg("Max ID length exceeded. Maximum length is 16")]
+    MaxIdLengthExceeded,
+    #[msg("Max description length exceeded. Maximum length is 500")]
+    MaxDescriptionLengthExceeded,
+    #[msg("Deadline date must be in the future")]
+    DeadlineDateMustBeInTheFuture,
+    #[msg("Goal amount must be equal to or greater than one")]
+    GoalAmountMustBeEqualToOrGreaterThanOne,
+    #[msg("Goal amount exceeded. Maximum amount is 15,000,000")]
+    GoalAmountExceeded,
+    #[msg("Min amount must be equal to or greater than one")]
+    MinAmountMustBeEqualToOrGreaterThanOne,
+    #[msg("Start date must be in the future")]
+    StartDateMustBeInTheFuture,
+    #[msg("Installments total must be greater than one")]
+    InstallmentsTotalMustBeGreaterThanOne,
+    #[msg("Installments start date must be thirty days from now")]
+    InstallmentsStartDateMustBeThirtyDaysFromNow,
 }

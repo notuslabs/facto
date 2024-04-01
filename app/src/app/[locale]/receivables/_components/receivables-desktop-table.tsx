@@ -28,7 +28,7 @@ export default function ReceivablesDesktopTable({ data }: ReceivableDesktopTable
       {data.map((tableData) => (
         <Table className="rounded-2xl bg-secondary p-4" key={tableData.offerName}>
           <>
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableRow>
                 <TableHead className="h-4 w-[1/9] pt-3">{t("offer-name")}</TableHead>
                 <TableHead className="h-4 w-[1/9] pt-3">{t("date")}</TableHead>

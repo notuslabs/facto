@@ -4,6 +4,7 @@ use anchor_spl::token::{self, MintTo, TransferChecked};
 use crate::{CreateInvestor, DepositTokens, EditInvestor, WithdrawTokens};
 
 pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()> {
+    require!(name.len() < 30, ValidationError::MaxNameLengthExceeded);
     let investor = &mut ctx.accounts.investor;
     investor.name = name;
     investor.bump = *ctx.bumps.get("investor").unwrap();
@@ -12,6 +13,10 @@ pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()>
 }
 
 pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
+    require!(
+        amount >= 1,
+        ValidationError::AmountMustBeEqualToOrGreaterThanOne
+    );
     let investor_token_account = &mut ctx.accounts.investor_token_account;
 
     token::mint_to(
@@ -31,6 +36,7 @@ pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
 }
 
 pub fn edit_investor(ctx: Context<EditInvestor>, name: String) -> Result<()> {
+    require!(name.len() < 30, ValidationError::MaxNameLengthExceeded);
     let investor = &mut ctx.accounts.investor;
     investor.name = name;
 
@@ -83,4 +89,14 @@ enum ValidationErrors {
     InsufficientBalance,
     #[msg("Transfer failed with an unknown error.")]
     TransferFailedUnknown,
+}
+
+#[error_code]
+enum ValidationError {
+    #[msg("Max name length exceeded. Maximum length is 30")]
+    MaxNameLengthExceeded,
+    #[msg("Amount must be equal to or greater than 1")]
+    AmountMustBeEqualToOrGreaterThanOne,
+    #[msg("Insufficient balance")]
+    InsufficientBalance,
 }
