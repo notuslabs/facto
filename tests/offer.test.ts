@@ -260,7 +260,7 @@ describe("Offer", { timeout: 500000 }, () => {
   it("should be able to deposit in the offer", async () => {
     const investAmount = 50n;
 
-    const [vaultTokenAccount] = PublicKey.findProgramAddressSync(
+    const [vaultStableTokenAccount] = PublicKey.findProgramAddressSync(
       [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
       program.programId
     );
@@ -283,14 +283,15 @@ describe("Offer", { timeout: 500000 }, () => {
       await program.methods
         .invest(new anchor.BN("49"))
         .accounts({
-          vaultTokenAccount,
+          vaultStableTokenAccount,
           caller: callerInvestor.publicKey,
           investorOfferTokenAccount,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           payer: payer.publicKey,
           offerToken: offerTokenPublicKey,
           offer,
           investor,
+          stableToken: stableTokenPubKey
         })
         .signers([payer, callerInvestor])
         .rpc();
@@ -307,14 +308,15 @@ describe("Offer", { timeout: 500000 }, () => {
       await program.methods
         .invest(new anchor.BN("101"))
         .accounts({
-          vaultTokenAccount,
+          vaultStableTokenAccount,
           caller: callerInvestor.publicKey,
           investorOfferTokenAccount,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           payer: payer.publicKey,
           offerToken: offerTokenPublicKey,
           offer,
           investor,
+          stableToken: stableTokenPubKey
         })
         .signers([payer, callerInvestor])
         .rpc();
@@ -332,14 +334,15 @@ describe("Offer", { timeout: 500000 }, () => {
     await program.methods
       .invest(new anchor.BN(investAmount.toString()))
       .accounts({
-        vaultTokenAccount,
+        vaultStableTokenAccount,
         caller: callerInvestor.publicKey,
         investorOfferTokenAccount,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         payer: payer.publicKey,
         offerToken: offerTokenPublicKey,
         offer,
         investor,
+        stableToken: stableTokenPubKey
       })
       .signers([payer, callerInvestor])
       .rpc();
@@ -350,7 +353,7 @@ describe("Offer", { timeout: 500000 }, () => {
     );
     let vaultTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
-      vaultTokenAccount
+      vaultStableTokenAccount
     );
 
     let investorTokenAccountInfo = await getAccount(
@@ -368,14 +371,15 @@ describe("Offer", { timeout: 500000 }, () => {
     await program.methods
       .invest(new anchor.BN(investAmount.toString()))
       .accounts({
-        vaultTokenAccount,
+        vaultStableTokenAccount,
         caller: callerInvestor.publicKey,
         investorOfferTokenAccount,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         payer: payer.publicKey,
         offerToken: offerTokenPublicKey,
         offer,
         investor,
+        stableToken: stableTokenPubKey
       })
       .signers([payer, callerInvestor])
       .rpc();
@@ -386,7 +390,7 @@ describe("Offer", { timeout: 500000 }, () => {
     );
     vaultTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
-      vaultTokenAccount
+      vaultStableTokenAccount
     );
 
     investorTokenAccountInfo = await getAccount(
@@ -403,7 +407,7 @@ describe("Offer", { timeout: 500000 }, () => {
   });
 
   it("should be able originator withdraw balance of the vault", async () => {
-    const [vaultTokenAccount] = PublicKey.findProgramAddressSync(
+    const [vaultStableTokenAccount] = PublicKey.findProgramAddressSync(
       [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
       program.programId
     );
@@ -418,12 +422,13 @@ describe("Offer", { timeout: 500000 }, () => {
     await program.methods
       .withdrawInvestments()
       .accounts({
-        vaultTokenAccount: vaultTokenAccount,
+        vaultStableTokenAccount,
         originatorTokenAccount: originatorTokenAccountPubKey,
         offer: offer,
         payer: payer.publicKey,
         originator: originator,
         caller: callerOriginator.publicKey,
+        stableToken: stableTokenPubKey
       })
       .signers([payer, callerOriginator])
       .rpc();
@@ -518,6 +523,7 @@ describe("Offer", { timeout: 500000 }, () => {
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
+        stableToken: stableTokenPubKey
       })
       .signers([payer])
       .rpc();
@@ -544,6 +550,7 @@ describe("Offer", { timeout: 500000 }, () => {
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,
+          stableToken: stableTokenPubKey
         })
         .signers([payer])
         .rpc();
@@ -638,6 +645,7 @@ describe("Offer", { timeout: 500000 }, () => {
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
+        stableToken: stableTokenPubKey
       })
       .signers([payer])
       .rpc();
@@ -664,6 +672,7 @@ describe("Offer", { timeout: 500000 }, () => {
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,
+          stableToken: stableTokenPubKey
         })
         .signers([payer])
         .rpc();

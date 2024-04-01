@@ -108,37 +108,17 @@ export type Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "payer",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "originator_token_account"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
-              }
-            ]
-          }
+          "isSigner": true
         },
         {
-          "name": "stableCoin",
-          "isMut": false,
-          "isSigner": false
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
         },
         {
           "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -339,7 +319,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "vaultTokenAccount",
+          "name": "vaultStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -359,7 +339,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -400,6 +380,11 @@ export type Hackathon = {
         },
         {
           "name": "offerToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "stableToken",
           "isMut": true,
           "isSigner": false
         },
@@ -459,7 +444,7 @@ export type Hackathon = {
           "isSigner": true
         },
         {
-          "name": "vaultTokenAccount",
+          "name": "vaultStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -536,6 +521,11 @@ export type Hackathon = {
               }
             ]
           }
+        },
+        {
+          "name": "stableToken",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -777,6 +767,11 @@ export type Hackathon = {
               }
             ]
           }
+        },
+        {
+          "name": "stableToken",
+          "isMut": false,
+          "isSigner": false
         },
         {
           "name": "offerToken",
@@ -1403,16 +1398,6 @@ export type Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MaxNameLengthExceeded",
-      "msg": "Max name length exceeded. Maximum length is 30"
-    },
-    {
-      "code": 6001,
-      "name": "AmountMustBeEqualToOrGreaterThanOne",
-      "msg": "Amount must be equal to or greater than 1"
-    },
-    {
-      "code": 6002,
       "name": "InsufficientBalance",
       "msg": "Insufficient Balance"
     },
@@ -1534,37 +1519,17 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "payer",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "originator_token_account"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
-              }
-            ]
-          }
+          "isSigner": true
         },
         {
-          "name": "stableCoin",
-          "isMut": false,
-          "isSigner": false
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
         },
         {
           "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -1765,7 +1730,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "vaultTokenAccount",
+          "name": "vaultStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1785,7 +1750,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1826,6 +1791,11 @@ export const IDL: Hackathon = {
         },
         {
           "name": "offerToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "stableToken",
           "isMut": true,
           "isSigner": false
         },
@@ -1885,7 +1855,7 @@ export const IDL: Hackathon = {
           "isSigner": true
         },
         {
-          "name": "vaultTokenAccount",
+          "name": "vaultStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1962,6 +1932,11 @@ export const IDL: Hackathon = {
               }
             ]
           }
+        },
+        {
+          "name": "stableToken",
+          "isMut": true,
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -2203,6 +2178,11 @@ export const IDL: Hackathon = {
               }
             ]
           }
+        },
+        {
+          "name": "stableToken",
+          "isMut": false,
+          "isSigner": false
         },
         {
           "name": "offerToken",
@@ -2829,16 +2809,6 @@ export const IDL: Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MaxNameLengthExceeded",
-      "msg": "Max name length exceeded. Maximum length is 30"
-    },
-    {
-      "code": 6001,
-      "name": "AmountMustBeEqualToOrGreaterThanOne",
-      "msg": "Amount must be equal to or greater than 1"
-    },
-    {
-      "code": 6002,
       "name": "InsufficientBalance",
       "msg": "Insufficient Balance"
     },
