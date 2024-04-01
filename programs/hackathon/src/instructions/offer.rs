@@ -4,9 +4,7 @@ use crate::PayInstallment;
 use crate::WithdrawInstallment;
 use crate::{Invest, WithdrawInvestments};
 use anchor_lang::prelude::*;
-use anchor_spl::token;
-use anchor_spl::token::Burn;
-use anchor_spl::token::{MintTo, Transfer};
+use anchor_spl::token::{self, Burn, MintTo, TransferChecked};
 
 pub fn create_offer(
     ctx: Context<CreateOffer>,
@@ -50,12 +48,6 @@ pub fn create_offer(
         ValidationError::InstallmentsTotalMustBeGreaterThanOne
     );
 
-    // TODO: add check for max installment start date
-    // should also check if the start date is less than the monthly period from now
-    require!(
-        installments_next_payment_date >= Clock::get()?.unix_timestamp + 2592000, // 30 days
-        ValidationError::InstallmentsStartDateMustBeThirtyDaysFromNow
-    );
 
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
@@ -77,6 +69,7 @@ pub fn create_offer(
     offer.bump = *ctx.bumps.get("offer").unwrap();
     offer.token_bump = *ctx.bumps.get("token").unwrap();
     offer.vault_bump = *ctx.bumps.get("vault").unwrap();
+    offer.vault_payment_bump = *ctx.bumps.get("vault_payment_token_account").unwrap();
 
     ctx.accounts.originator.total_offers += 1;
     Ok(())
@@ -88,7 +81,7 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
         ValidationError::InvestmentAmountMustBeGreaterThanOfferMinAmount
     );
     require!(
-        (ctx.accounts.vault_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
+        (ctx.accounts.vault_stable_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
         ValidationError::InvestmentExceedsGoalAmount
     );
     require!(
@@ -98,14 +91,15 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
 
     ctx.accounts.offer.acquired_amount += amount;
 
-    let transfer = Transfer {
-        from: ctx.accounts.investor_token_account.to_account_info(),
-        to: ctx.accounts.vault_token_account.to_account_info(),
+    let transfer = TransferChecked {
+        from: ctx.accounts.investor_stable_token_account.to_account_info(),
+        to: ctx.accounts.vault_stable_token_account.to_account_info(),
         authority: ctx.accounts.investor.to_account_info(),
+        mint: ctx.accounts.stable_token.to_account_info(),
     };
     let cpi_program = ctx.accounts.token_program.to_account_info();
 
-    token::transfer(
+    token::transfer_checked(
         CpiContext::new_with_signer(
             cpi_program,
             transfer,
@@ -116,6 +110,7 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
             ]],
         ),
         amount,
+        ctx.accounts.stable_token.decimals,
     )?;
 
     let mint_to = MintTo {
@@ -150,13 +145,14 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
         ValidationError::OfferIsNotFunded
     );
 
-    let transfer = Transfer {
+    let transfer = TransferChecked {
         authority: ctx.accounts.offer.to_account_info(),
-        from: ctx.accounts.vault_token_account.to_account_info(),
+        from: ctx.accounts.vault_stable_token_account.to_account_info(),
         to: ctx.accounts.originator_token_account.to_account_info(),
+        mint: ctx.accounts.stable_token.to_account_info(),
     };
 
-    token::transfer(
+    token::transfer_checked(
         CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
             transfer,
@@ -166,7 +162,8 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
                 &[ctx.accounts.offer.bump],
             ]],
         ),
-        ctx.accounts.vault_token_account.amount,
+        ctx.accounts.vault_stable_token_account.amount,
+        ctx.accounts.stable_token.decimals,
     )?;
 
     Ok(())
@@ -178,12 +175,13 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
         ValidationError::OfferIsNotOnTrack
     );
 
-    let transfer = Transfer {
+    let transfer = TransferChecked {
         from: ctx.accounts.originator_token_account.to_account_info(),
         to: ctx.accounts.vault_payment_token_account.to_account_info(),
         authority: ctx.accounts.originator.to_account_info(),
+        mint: ctx.accounts.stable_token.to_account_info(),
     };
-    token::transfer(
+    token::transfer_checked(
         CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
             transfer,
@@ -194,7 +192,9 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
             ]],
         ),
         ctx.accounts.offer.get_installment_amount(),
+        ctx.accounts.stable_token.decimals,
     )?;
+    
     ctx.accounts.offer.total_installments_paid += 1;
 
     Ok(())
@@ -229,14 +229,15 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
         amount_to_burn,
     )?;
 
-    let transfer_accounts = Transfer {
+    let transfer_accounts = TransferChecked {
         from: ctx.accounts.vault_payment_token_account.to_account_info(),
         to: ctx.accounts.investor_token_account.to_account_info(),
         authority: ctx.accounts.offer.to_account_info(),
+        mint: ctx.accounts.stable_token.to_account_info(),
     };
     let rate = ctx.accounts.offer.installments_total_amount / ctx.accounts.offer.goal_amount;
     let amount_transfer = amount_to_burn * rate;
-    token::transfer(
+    token::transfer_checked(
         CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),
             transfer_accounts,
@@ -247,6 +248,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
             ]],
         ),
         amount_transfer,
+        ctx.accounts.stable_token.decimals,
     )?;
 
     ctx.accounts.investor_installment.count_received += 1;
@@ -286,6 +288,4 @@ enum ValidationError {
     StartDateMustBeInTheFuture,
     #[msg("Installments total must be greater than one")]
     InstallmentsTotalMustBeGreaterThanOne,
-    #[msg("Installments start date must be thirty days from now")]
-    InstallmentsStartDateMustBeThirtyDaysFromNow,
 }

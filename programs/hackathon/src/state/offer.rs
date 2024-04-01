@@ -53,6 +53,7 @@ pub struct Offer {
     pub bump: u8,
     pub token_bump: u8,
     pub vault_bump: u8,
+    pub vault_payment_bump: u8,
 }
 
 pub trait OfferInterface {
@@ -124,6 +125,15 @@ pub struct CreateOffer<'info> {
         token::authority = offer
       )]
     pub vault: Box<Account<'info, TokenAccount>>,
+    #[account(
+        init,
+        payer = payer,
+        token::mint = stable_token,
+        token::authority = offer,
+        seeds=[b"vault_payment_token_account", offer.key().as_ref()],
+        bump
+    )]
+    pub vault_payment_token_account: Account<'info, TokenAccount>,
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
@@ -131,6 +141,7 @@ pub struct CreateOffer<'info> {
 }
 
 #[derive(Accounts)]
+#[instruction(offer_id: String)]
 pub struct Invest<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -147,13 +158,15 @@ pub struct Invest<'info> {
     )]
     pub investor_offer_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
-    pub vault_token_account: Account<'info, TokenAccount>,
+    pub vault_stable_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"investor_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
-    pub investor_token_account: Account<'info, TokenAccount>,
-    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    pub investor_stable_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
     #[account(mut)]
     pub offer_token: Account<'info, Mint>,
+    #[account(mut)] // TODO: add constraint
+    pub stable_token: Account<'info, Mint>,
     #[account(mut, seeds=[b"investor", caller.key().as_ref()], bump=investor.bump)]
     pub investor: Account<'info, Investor>,
 
@@ -163,6 +176,7 @@ pub struct Invest<'info> {
 }
 
 #[derive(Accounts)]
+#[instruction(offer_id: String)]
 pub struct WithdrawInvestments<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -170,37 +184,33 @@ pub struct WithdrawInvestments<'info> {
     pub caller: Signer<'info>,
 
     #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
-    pub vault_token_account: Account<'info, TokenAccount>,
+    pub vault_stable_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
     pub originator_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
     pub originator: Account<'info, Originator>,
-    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
+    #[account(mut)] // TODO: add constraint
+    pub stable_token: Account<'info, Mint>,
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
 }
 
 #[derive(Accounts)]
+#[instruction(offer_id: String)]
 pub struct PayInstallment<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
     #[account(mut)]
     pub caller: Signer<'info>,
 
-    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
-    #[account()]
+    #[account()] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
-    #[account(
-        init_if_needed,
-        payer = payer,
-        token::mint = stable_token,
-        token::authority = offer,
-        seeds=[b"offer_payment_vault", offer.key().as_ref()],
-        bump
-    )]
+    #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump=offer.vault_payment_bump)]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
     pub originator_token_account: Account<'info, TokenAccount>,
@@ -212,6 +222,7 @@ pub struct PayInstallment<'info> {
 }
 
 #[derive(Accounts)]
+#[instruction(offer_id: String)]
 pub struct WithdrawInstallment<'info> {
     #[account(mut)]
     payer: Signer<'info>,
@@ -232,11 +243,13 @@ pub struct WithdrawInstallment<'info> {
     pub investor_offer_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"investor_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
     pub investor_token_account: Account<'info, TokenAccount>,
-    #[account(mut, seeds=[b"offer_payment_vault", offer.key().as_ref()], bump)]
+    #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump=offer.vault_payment_bump)]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
+    #[account()] // TODO: add constraint
+    pub stable_token: Account<'info, Mint>,
     #[account(mut)]
     pub offer_token: Account<'info, Mint>,
-    #[account(mut, seeds=[b"offer", offer.id.as_bytes()], bump=offer.bump)]
+    #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
 
     pub system_program: Program<'info, System>,
