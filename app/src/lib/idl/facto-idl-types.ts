@@ -6,6 +6,89 @@ export type Hackathon = {
       "name": "createOriginator",
       "accounts": [
         {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
+        },
+        {
+          "name": "originatorTokenAccount",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stableCoin",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "tokenSlug",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "editOriginator",
+      "accounts": [
+        {
           "name": "originator",
           "isMut": true,
           "isSigner": false,
@@ -47,10 +130,6 @@ export type Hackathon = {
         },
         {
           "name": "description",
-          "type": "string"
-        },
-        {
-          "name": "tokenSlug",
           "type": "string"
         }
       ]
@@ -380,9 +459,24 @@ export type Hackathon = {
           }
         },
         {
-          "name": "originatorStableTokenAccount",
+          "name": "originatorTokenAccount",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
         },
         {
           "name": "originator",
@@ -495,9 +589,43 @@ export type Hackathon = {
           }
         },
         {
-          "name": "originatorPaymentTokenAccount",
+          "name": "originatorTokenAccount",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
         },
         {
           "name": "systemProgram",
@@ -667,55 +795,6 @@ export type Hackathon = {
         }
       ],
       "args": []
-    },
-    {
-      "name": "editOriginator",
-      "accounts": [
-        {
-          "name": "originator",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "originator"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "caller"
-              }
-            ]
-          }
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "caller",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        }
-      ]
     },
     {
       "name": "createInvestor",
@@ -1143,12 +1222,45 @@ export type Hackathon = {
           {
             "name": "bump",
             "type": "u8"
+          },
+          {
+            "name": "tokenAccountBump",
+            "type": "u8"
           }
         ]
       }
     }
   ],
   "types": [
+    {
+      "name": "OfferErrors",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "MinAmountRequired"
+          },
+          {
+            "name": "GoalAmountExceeded"
+          },
+          {
+            "name": "OfferIsNotOpen"
+          },
+          {
+            "name": "OfferIsNotFunded"
+          },
+          {
+            "name": "OfferIsNotOnTrack"
+          },
+          {
+            "name": "InvalidOriginatorSigner"
+          },
+          {
+            "name": "InstallmentAlreadyPaid"
+          }
+        ]
+      }
+    },
     {
       "name": "OfferStatus",
       "type": {
@@ -1220,38 +1332,13 @@ export type Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MinAmountRequired",
-      "msg": "Min amount required"
+      "name": "InsufficientBalance",
+      "msg": "Insufficient Balance"
     },
     {
       "code": 6001,
-      "name": "GoalAmountExceeded",
-      "msg": "Goal amount exceeded"
-    },
-    {
-      "code": 6002,
-      "name": "OfferIsNotOpen",
-      "msg": "The Offer is not open"
-    },
-    {
-      "code": 6003,
-      "name": "OfferIsNotFunded",
-      "msg": "The Offer is not funded"
-    },
-    {
-      "code": 6004,
-      "name": "OfferIsNotOnTrack",
-      "msg": "The Offer is not on track"
-    },
-    {
-      "code": 6005,
-      "name": "InvalidOriginatorSigner",
-      "msg": "Caller is not the owner of the Originator"
-    },
-    {
-      "code": 6006,
-      "name": "InstallmentAlreadyPaid",
-      "msg": "Investor has no installment to receive"
+      "name": "TransferFailedUnknown",
+      "msg": "Transfer failed with an unknown error."
     }
   ]
 };
@@ -1264,6 +1351,89 @@ export const IDL: Hackathon = {
       "name": "createOriginator",
       "accounts": [
         {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
+        },
+        {
+          "name": "originatorTokenAccount",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stableCoin",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "tokenSlug",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "editOriginator",
+      "accounts": [
+        {
           "name": "originator",
           "isMut": true,
           "isSigner": false,
@@ -1305,10 +1475,6 @@ export const IDL: Hackathon = {
         },
         {
           "name": "description",
-          "type": "string"
-        },
-        {
-          "name": "tokenSlug",
           "type": "string"
         }
       ]
@@ -1638,9 +1804,24 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "originatorStableTokenAccount",
+          "name": "originatorTokenAccount",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
         },
         {
           "name": "originator",
@@ -1753,9 +1934,43 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "originatorPaymentTokenAccount",
+          "name": "originatorTokenAccount",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
         },
         {
           "name": "systemProgram",
@@ -1925,55 +2140,6 @@ export const IDL: Hackathon = {
         }
       ],
       "args": []
-    },
-    {
-      "name": "editOriginator",
-      "accounts": [
-        {
-          "name": "originator",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "originator"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "caller"
-              }
-            ]
-          }
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "caller",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        }
-      ]
     },
     {
       "name": "createInvestor",
@@ -2401,12 +2567,45 @@ export const IDL: Hackathon = {
           {
             "name": "bump",
             "type": "u8"
+          },
+          {
+            "name": "tokenAccountBump",
+            "type": "u8"
           }
         ]
       }
     }
   ],
   "types": [
+    {
+      "name": "OfferErrors",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "MinAmountRequired"
+          },
+          {
+            "name": "GoalAmountExceeded"
+          },
+          {
+            "name": "OfferIsNotOpen"
+          },
+          {
+            "name": "OfferIsNotFunded"
+          },
+          {
+            "name": "OfferIsNotOnTrack"
+          },
+          {
+            "name": "InvalidOriginatorSigner"
+          },
+          {
+            "name": "InstallmentAlreadyPaid"
+          }
+        ]
+      }
+    },
     {
       "name": "OfferStatus",
       "type": {
@@ -2478,38 +2677,13 @@ export const IDL: Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MinAmountRequired",
-      "msg": "Min amount required"
+      "name": "InsufficientBalance",
+      "msg": "Insufficient Balance"
     },
     {
       "code": 6001,
-      "name": "GoalAmountExceeded",
-      "msg": "Goal amount exceeded"
-    },
-    {
-      "code": 6002,
-      "name": "OfferIsNotOpen",
-      "msg": "The Offer is not open"
-    },
-    {
-      "code": 6003,
-      "name": "OfferIsNotFunded",
-      "msg": "The Offer is not funded"
-    },
-    {
-      "code": 6004,
-      "name": "OfferIsNotOnTrack",
-      "msg": "The Offer is not on track"
-    },
-    {
-      "code": 6005,
-      "name": "InvalidOriginatorSigner",
-      "msg": "Caller is not the owner of the Originator"
-    },
-    {
-      "code": 6006,
-      "name": "InstallmentAlreadyPaid",
-      "msg": "Investor has no installment to receive"
+      "name": "TransferFailedUnknown",
+      "msg": "Transfer failed with an unknown error."
     }
   ]
 };
