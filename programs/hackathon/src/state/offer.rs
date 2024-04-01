@@ -32,6 +32,7 @@ pub enum CreditScore {
 #[account]
 #[derive(InitSpace)]
 pub struct Offer {
+    pub originator: Pubkey,
     #[max_len(16)]
     pub id: String,
     #[max_len(500)]
@@ -41,7 +42,6 @@ pub struct Offer {
     pub goal_amount: u64,
     pub deadline_date: i64,
     pub acquired_amount: u64,
-    pub originator: Pubkey,
     pub installments_count: u8,
     pub installments_total_amount: u64,
     pub total_installments_paid: u8,
@@ -64,13 +64,20 @@ impl<'info> Offer {
         let clock = Clock::get().unwrap();
         let current_timestamp = clock.unix_timestamp;
 
-        if current_timestamp < self.deadline_date && current_timestamp >= self.start_date && self.acquired_amount < self.goal_amount {
+        if current_timestamp < self.deadline_date
+            && current_timestamp >= self.start_date
+            && self.acquired_amount < self.goal_amount
+        {
             OfferStatus::Open
         } else if self.acquired_amount == self.goal_amount
             && current_timestamp >= self.deadline_date
         {
-            if self.total_installments_paid == self.installments_count { return OfferStatus::Finished; }
-            if current_timestamp >= self.installments_next_payment_date { return OfferStatus::OnTrack; }
+            if self.total_installments_paid == self.installments_count {
+                return OfferStatus::Finished;
+            }
+            if current_timestamp >= self.installments_next_payment_date {
+                return OfferStatus::OnTrack;
+            }
 
             OfferStatus::Funded
         } else {
@@ -203,7 +210,6 @@ pub struct PayInstallment<'info> {
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
 }
-
 
 #[derive(Accounts)]
 pub struct WithdrawInstallment<'info> {
