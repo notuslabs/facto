@@ -1,17 +1,17 @@
+"use client";
+
 import { ChevronDown, ListFilter, Search } from "lucide-react";
 import { Card } from "../card";
 import { Input } from "../ui/input";
 import { OfferCard } from "../offer-card";
 import { useTranslations } from "next-intl";
 import { Button } from "../ui/button";
-import { Offer } from "@/structs/Offer";
+import { useOffers } from "@/hooks/use-offers";
 
-export type OffersProps = {
-  offers: Offer[];
-};
-
-export function Offers({ offers }: OffersProps) {
+export function Offers() {
+  const { data: offers } = useOffers();
   const t = useTranslations("home.offers");
+
   return (
     <>
       <div className="h-[168px] w-full bg-background" />
@@ -37,9 +37,7 @@ export function Offers({ offers }: OffersProps) {
           </h2>
 
           <div className="grid grid-cols-3 gap-10">
-            {offers.map((offer) => (
-              <OfferCard key={offer.id} offer={offer} />
-            ))}
+            {offers?.map((offer) => <OfferCard key={offer.id} offer={offer} />)}
           </div>
         </Card>
       </div>
