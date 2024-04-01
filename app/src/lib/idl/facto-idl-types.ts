@@ -56,7 +56,7 @@ export type Hackathon = {
         },
         {
           "name": "stableCoin",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -1055,6 +1055,86 @@ export type Hackathon = {
         },
         {
           "name": "stableCoin",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdrawOriginatorTokens",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
+        },
+        {
+          "name": "originatorTokenAccount",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stableToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -1372,7 +1452,7 @@ export const IDL: Hackathon = {
         },
         {
           "name": "stableCoin",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -2371,6 +2451,86 @@ export const IDL: Hackathon = {
         },
         {
           "name": "stableCoin",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdrawOriginatorTokens",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
+        },
+        {
+          "name": "originatorTokenAccount",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator_token_account"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Originator",
+                "path": "originator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "stableToken",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toTokenAccount",
           "isMut": true,
           "isSigner": false
         },
