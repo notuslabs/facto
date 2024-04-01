@@ -66,6 +66,9 @@ export function useCreateInvestor() {
       queryClient.invalidateQueries({
         queryKey: ["token-accounts"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     },
     onError: (error) => {
       console.error(error);

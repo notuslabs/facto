@@ -1,4 +1,4 @@
-import { formatBigNumber } from "@/lib/format-number";
+import { formatBigNumber, formatNumber } from "@/lib/format-number";
 import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -13,14 +13,14 @@ type OfferCardHeaderProps = {
   offerName: string;
   originatorName: string;
   period: string;
-  percent: number;
+  interestRate: number;
   secondaryText: string;
 };
 
 function OfferCardHeader({
   offerName,
   originatorName,
-  percent,
+  interestRate,
   period,
   secondaryText,
 }: OfferCardHeaderProps) {
@@ -29,7 +29,7 @@ function OfferCardHeader({
       <div className="flex items-center justify-between gap-2 text-primary">
         <h3 className="text-lg font-semibold">{offerName}</h3>
         <span className="font-bold">
-          {percent}% <span className="text-xs font-light">{period}</span>
+          {interestRate}% <span className="text-xs font-light">{period}</span>
         </span>
       </div>
       <div className="flex items-center justify-between gap-2 text-muted-foreground">
@@ -41,8 +41,8 @@ function OfferCardHeader({
 }
 
 type OfferCardBodyProps = {
-  amountAcquired: BN;
-  amountToBeAcquired: BN;
+  amountAcquired: number;
+  amountToBeAcquired: number;
   creditScore: number;
 };
 
@@ -58,15 +58,15 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
             <p className="text-xs font-semibold">{t("total")}</p>
           </div>
           <div className="flex items-center justify-between gap-2 font-medium dark:text-primary">
-            <p className="text-sm ">{formatBigNumber(amountAcquired)}</p>
-            <p className="text-sm">{formatBigNumber(amountToBeAcquired)}</p>
+            <p className="text-sm ">{formatNumber(amountAcquired)}</p>
+            <p className="text-sm">{formatNumber(amountToBeAcquired)}</p>
           </div>
         </div>
 
         <Progress
           indicatorColor="bg-success-strong"
           className="h-2.5 w-full rounded-full dark:bg-primary-foreground"
-          value={(amountAcquired.toNumber() / amountToBeAcquired.toNumber()) * 100}
+          value={(amountAcquired / amountToBeAcquired) * 100}
         />
       </div>
       <div className="flex items-center justify-between gap-2 border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
@@ -130,7 +130,7 @@ export function OfferCard({ offer }: OfferCardProps) {
       <OfferCardHeader
         offerName={offer.name}
         originatorName={offer.originator.name}
-        percent={offer.installmentsTotalAmount.toNumber() / offer.goalAmount.toNumber()}
+        interestRate={offer.installmentsTotalAmount / offer.goalAmount}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
