@@ -239,7 +239,7 @@ pub struct WithdrawInstallment<'info> {
     pub investor_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump=offer.vault_payment_bump)]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
-    #[account()]
+    #[account()] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
     #[account(mut)]
     pub offer_token: Account<'info, Mint>,
