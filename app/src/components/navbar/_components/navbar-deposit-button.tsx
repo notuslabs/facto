@@ -14,7 +14,7 @@ export function NavbarDepositButton() {
   return (
     <Button
       variant="secondary"
-      className="flex gap-2 rounded-md bg-secondary text-secondary-foreground"
+      className="hidden gap-2 rounded-md bg-secondary text-secondary-foreground transition-opacity hover:opacity-50 lg:flex"
     >
       {t("deposit")}
       <PlusSquare size={20} />

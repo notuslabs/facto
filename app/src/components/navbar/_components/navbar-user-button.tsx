@@ -6,6 +6,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useTranslations } from "next-intl";
 import { useSession } from "@/hooks/use-session";
 import { useAuth } from "@/hooks/use-auth";
+import LocaleSwitcher from "@/components/locale-switcher";
+import { Separator } from "@/components/ui/separator";
 
 export function NavbarUserButton() {
   const { data } = useSession();
@@ -17,9 +19,16 @@ export function NavbarUserButton() {
 
   return (
     <Popover>
-      <PopoverTrigger>
-        <Button variant="secondary" className="flex gap-2 rounded-full pl-3 pr-2">
-          <span className="text-xs font-medium">{userInfo?.name}</span>
+      <PopoverTrigger asChild>
+        <Button
+          variant="secondary"
+          className="flex gap-2 rounded-full pl-3 pr-2 transition-opacity hover:opacity-50"
+        >
+          {userInfo && (
+            <span className="text-xs font-medium">
+              {userInfo.name?.split(" ")[0] ?? `${t("user")}`}
+            </span>
+          )}
           {userInfo.profileImage && (
             <Image
               src={userInfo.profileImage}
@@ -31,8 +40,15 @@ export function NavbarUserButton() {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="mr-10 flex justify-end border-0 p-0">
-        <Button variant="secondary" onClick={() => logout()}>
+      <PopoverContent className="flex w-36 flex-col gap-2 border-0 pt-1">
+        <LocaleSwitcher />
+        <Separator />
+        <Button
+          size="sm"
+          variant="secondary"
+          className="transition-opacity hover:opacity-50"
+          onClick={() => logout()}
+        >
           {t("logout")}
         </Button>
       </PopoverContent>

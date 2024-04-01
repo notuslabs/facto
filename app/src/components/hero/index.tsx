@@ -2,18 +2,15 @@
 
 import { useAuth } from "@/hooks/use-auth";
 import { useTranslations } from "next-intl";
-import { Button } from "../ui/button";
 
 export function Hero() {
   const t = useTranslations("home.hero");
-  const { login } = useAuth();
 
   return (
-    <div className="flex h-[304px] w-full flex-col items-center justify-center dark:bg-background">
-      <div className="flex flex-col gap-2 text-primary ">
-        <h1 className="text-center text-5xl font-extrabold">{t("title")}</h1>
-        <p className="text-center text-lg font-medium">{t("description")}</p>
-        <Button onClick={() => login()}>Logar pai</Button>
+    <div className="flex w-full flex-col items-center justify-center px-4 py-10 dark:bg-background md:h-[304px]">
+      <div className="flex flex-col gap-2 text-primary">
+        <h1 className="text-center text-3xl font-extrabold md:text-5xl">{t("title")}</h1>
+        <p className="text-center text-sm font-medium md:text-lg">{t("description")}</p>
       </div>
     </div>
   );

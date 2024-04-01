@@ -34,11 +34,12 @@ export default function LocaleSwitcher() {
   const otherLocale = locale === "en" ? "pt-BR" : "en";
   return (
     <Button
-      className="flex gap-1 font-semibold"
-      variant="ghost"
+      className="flex gap-1 transition-opacity hover:opacity-50"
+      variant="secondary"
+      size="sm"
       onClick={() => changeLocale(otherLocale)}
     >
-      <Globe size={20} />
+      <Globe size={16} />
       {locale.toUpperCase()}
     </Button>
   );

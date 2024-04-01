@@ -9,6 +9,7 @@ import { getTranslations } from "next-intl/server";
 import { locales } from "../../config";
 import { useMessages } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
+import MobileExtraNavbar from "@/components/mobile-extra-navbar";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -41,6 +42,7 @@ export default function RootLayout({ children, params: { locale } }: Props) {
           <Navbar />
           {children}
           <Toaster position="top-right" />
+          <MobileExtraNavbar />
         </Providers>
       </body>
     </html>

@@ -1,10 +1,10 @@
-import idl from "@/lib/idl/idl-json.json";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "./use-session";
+import { Hackathon, IDL } from "@/lib/idl/facto-idl-types";
+import idl from "@/lib/idl/idl-facto.json";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
-import { Hackathon, IDL } from "@/lib/idl";
 import { useConnection } from "./use-connection";
+import { useSession } from "./use-session";
+import { useQuery } from "@tanstack/react-query";
 
 export function useProgram2() {
   const { connection } = useConnection();

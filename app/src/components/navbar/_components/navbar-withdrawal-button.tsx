@@ -12,7 +12,10 @@ export function NavbarWithdrawalButton() {
   if (!data?.userInfo) return null;
 
   return (
-    <Button variant="secondary" className="flex gap-2 rounded-md">
+    <Button
+      variant="secondary"
+      className="hidden gap-2 rounded-md transition-opacity hover:opacity-50 lg:flex"
+    >
       {t("withdrawal")}
       <ArrowUpSquare size={20} />
     </Button>
