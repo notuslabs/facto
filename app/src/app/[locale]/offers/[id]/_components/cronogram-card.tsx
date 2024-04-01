@@ -7,50 +7,74 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { addMonths, format } from "date-fns";
 import { useTranslations } from "next-intl";
 
-export function ReceptionCronogram() {
+type ReceptionCronogramProps = {
+  totalInstallmentsPaid: number;
+  installmentsCount: number;
+  installmentsStartDate: Date;
+  installmentsTotalAmount: number;
+};
+
+function genereateInstallmentsList({
+  installmentsCount,
+  installmentsStartDate,
+  installmentsTotalAmount,
+  totalInstallmentsPaid,
+}: {
+  installmentsCount: number;
+  installmentsStartDate: Date;
+  installmentsTotalAmount: number;
+  totalInstallmentsPaid: number;
+}): Array<{
+  date: Date;
+  installmentNumber: number;
+  amount: number;
+  status: "paid" | "anticipated";
+}> {
+  const installmentsList: Array<{
+    date: Date;
+    installmentNumber: number;
+    amount: number;
+    status: "paid" | "anticipated";
+  }> = [];
+
+  for (let i = 0; i < installmentsCount; i++) {
+    const date = addMonths(installmentsStartDate, i);
+    const installmentNumber = i + 1;
+    const amount = installmentsTotalAmount / installmentsCount;
+    const status = totalInstallmentsPaid >= installmentNumber ? "paid" : "anticipated";
+
+    installmentsList.push({
+      date: date,
+      installmentNumber: installmentNumber,
+      amount: amount,
+      status: status,
+    });
+  }
+
+  return installmentsList;
+}
+
+export function ReceptionCronogram({
+  installmentsCount,
+  installmentsStartDate,
+  totalInstallmentsPaid,
+  installmentsTotalAmount,
+}: ReceptionCronogramProps) {
   const t = useTranslations("offer-page.income-schedule");
   const tr = useTranslations("badges");
+  const installments = genereateInstallmentsList({
+    installmentsCount,
+    installmentsStartDate,
+    installmentsTotalAmount,
+    totalInstallmentsPaid,
+  }).map((installment) => ({
+    ...installment,
+    status: <Badge variant="secondary">{tr(installment.status)}</Badge>,
+  }));
 
-  const tableData = [
-    {
-      data: "16/04/2024",
-      paymentNumber: "1/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "2/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "3/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "4/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "5/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "6/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-  ];
   return (
     <div className="rounded-2xl bg-primary-foreground text-sm text-primary">
       <h2 className="p-6 text-xl font-bold md:px-8 md:py-6">{t("title")}</h2>
@@ -64,12 +88,12 @@ export function ReceptionCronogram() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tableData.map((tableData) => (
-            <TableRow className="border-b border-border" key={tableData.data}>
-              <TableCell>{tableData.data}</TableCell>
-              <TableCell>{tableData.paymentNumber}</TableCell>
-              <TableCell>{tableData.totalAmount}</TableCell>
-              <TableCell className="text-right">{tableData.paymentStatus}</TableCell>
+          {installments.map((tableData) => (
+            <TableRow className="border-b border-border" key={tableData.date.toString()}>
+              <TableCell>{format(tableData.date, "P")}</TableCell>
+              <TableCell>{tableData.installmentNumber}</TableCell>
+              <TableCell>{tableData.amount}</TableCell>
+              <TableCell className="text-right">{tableData.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -2,9 +2,14 @@ import { Separator } from "@/components/ui/separator";
 import { CalendarDays, HandCoins } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export function DetailsCard() {
+type DetailsCardProps = {
+  interestRate: number;
+  installmentsCount: number;
+  description: string;
+};
+
+export function DetailsCard({ interestRate, installmentsCount, description }: DetailsCardProps) {
   const t = useTranslations("offer-page.details-card");
-  const percentageYield = 2.5;
   return (
     <div className="flex flex-col gap-4 rounded-2xl bg-primary-foreground p-6 text-sm text-primary md:p-8">
       <div className="flex flex-col justify-between gap-1 pb-2 md:flex-row">
@@ -12,7 +17,7 @@ export function DetailsCard() {
           <HandCoins className="size-5 md:size-8" /> {t("title")}
         </div>
         <div>
-          <span className="text-2xl font-bold">{percentageYield}%</span> {t("per-year")}
+          <span className="text-2xl font-bold">{interestRate}%</span> {t("per-year")}
         </div>
       </div>
       <Separator className="bg-secondary" />
@@ -20,9 +25,11 @@ export function DetailsCard() {
         <div className="flex gap-2">
           <CalendarDays size={24} /> {t("loan-term")}
         </div>
-        <div className="font-semibold">6 {t("months")}</div>
+        <div className="font-semibold">
+          {installmentsCount} {t("months")}
+        </div>
       </div>
-      <p className="text-pretty ">{t("description")}</p>
+      <p className="text-pretty">{description}</p>
     </div>
   );
 }

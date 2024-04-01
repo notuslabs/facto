@@ -8,6 +8,7 @@ import { Progress } from "./ui/progress";
 import { Link } from "@/navigation";
 import { Offer } from "@/structs/Offer";
 import BN from "bn.js";
+import { getOfferInterestRate } from "@/lib/utils";
 
 type OfferCardHeaderProps = {
   offerName: string;
@@ -29,7 +30,7 @@ function OfferCardHeader({
       <div className="flex items-center justify-between gap-2 text-primary">
         <h3 className="text-lg font-semibold">{offerName}</h3>
         <span className="font-bold">
-          {interestRate}% <span className="text-xs font-light">{period}</span>
+          {interestRate.toFixed(2)}% <span className="text-xs font-light">{period}</span>
         </span>
       </div>
       <div className="flex items-center justify-between gap-2 text-muted-foreground">
@@ -130,7 +131,7 @@ export function OfferCard({ offer }: OfferCardProps) {
       <OfferCardHeader
         offerName={offer.name}
         originatorName={offer.originator.name}
-        interestRate={offer.installmentsTotalAmount / offer.goalAmount}
+        interestRate={getOfferInterestRate(offer.goalAmount, offer.installmentsTotalAmount)}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
@@ -142,7 +143,7 @@ export function OfferCard({ offer }: OfferCardProps) {
       />
       <OfferCardFooter
         installments={offer.installmentsCount}
-        endDate={offer.deadlineDate}
+        endDate={new Date(offer.installmentsEndDate)}
         offerId={offer.id}
       />
     </div>

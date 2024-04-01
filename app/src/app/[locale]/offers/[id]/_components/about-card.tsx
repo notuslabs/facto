@@ -8,9 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { User } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export function AboutCard() {
+type AboutCardProps = {
+  name: string;
+  description: string;
+};
+
+export function AboutCard({ name, description }: AboutCardProps) {
   const t = useTranslations("offer-page.about-originator");
   const tr = useTranslations("badges");
 
@@ -60,14 +66,16 @@ export function AboutCard() {
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between ">
             <div className="flex items-center gap-2">
-              <div className="size-8 rounded-md border border-primary"></div>
+              <div className="flex size-8 items-center justify-center rounded-md border border-primary">
+                <User size={16} />
+              </div>
               <div className="flex flex-col text-sm">
-                <span className="font-bold">Agiotagem</span>
-                <span className="text-xs text-muted-foreground">Tipo, Categoria ou nicho</span>
+                <span className="font-bold">{name}</span>
+                {/* <span className="text-xs text-muted-foreground">Tipo, Categoria ou nicho</span> */}
               </div>
             </div>
           </div>
-          <p className="text-sm">{t("description")}</p>
+          <p className="text-sm">{description}</p>
         </div>
 
         <div className="flex justify-between">
