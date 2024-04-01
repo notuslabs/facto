@@ -23,6 +23,14 @@ pub mod hackathon {
         instructions::create_originator(ctx, name, description, token_slug)
     }
 
+    pub fn edit_originator(
+        ctx: Context<EditOriginator>,
+        name: String,
+        description: String,
+    ) -> Result<()> {
+        instructions::edit_originator(ctx, name, description)
+    }
+
     pub fn create_offer(
         ctx: Context<CreateOffer>,
         id: String,
@@ -65,10 +73,6 @@ pub mod hackathon {
         instructions::withdraw_installments(ctx)
     }
 
-    pub fn edit_originator(ctx: Context<EditOriginator>, name: String, description: String) -> Result<()> {
-        instructions::edit_originator(ctx, name, description)
-    }
-
     pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()> {
         instructions::create_investor(ctx, name)
     }
@@ -83,5 +87,12 @@ pub mod hackathon {
 
     pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> {
         instructions::withdraw_tokens(ctx, amount)
+    }
+
+    pub fn withdraw_originator_tokens(
+        ctx: Context<WithdrawOriginatorTokens>,
+        amount: u64,
+    ) -> Result<()> {
+        instructions::withdraw_originator_tokens(ctx, amount)
     }
 }

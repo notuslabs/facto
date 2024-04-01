@@ -3,16 +3,19 @@ import { PublicKey } from "@solana/web3.js";
 
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "@/components/auth-provider";
 import { utils } from "@coral-xyz/anchor";
-import { useProgram } from "@/hooks/use-program";
 import { BN } from "bn.js";
-import { FAKE_MINT } from "../app/[locale]/test-token-account-transfer/page";
+import { FAKE_MINT } from "@/lib/constants";
+import { useSession } from "./use-session";
+import { useProgram } from "./use-program";
 
 export function useWithdrawal() {
   const queryClient = useQueryClient();
-  const { solanaWallet } = useSession();
-  const { program } = useProgram();
+  const { data } = useSession();
+  const { data: programData } = useProgram();
+
+  const solanaWallet = data?.solanaWallet;
+  const program = programData?.program;
 
   return useMutation({
     mutationFn: async ({

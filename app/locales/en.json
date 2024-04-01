@@ -3,7 +3,7 @@
     "title": "Hackathon Solana",
     "description": "Hackathon project for Solana"
   },
-  "navbar" : {
+  "navbar": {
     "login": "Login",
     "logout": "Logout",
     "my-investments": "My investments",
@@ -19,12 +19,12 @@
     "people-invested": "{peopleNumber} people invested",
     "money-raised": "{moneyRaised} - raised"
   },
-  "home" : {
-    "hero" : {
+  "home": {
+    "hero": {
       "title": "Start investing",
       "description": "A description here"
     },
-    "offers" : {
+    "offers": {
       "title": "Opportunities to invest",
       "search-input-placeholder": "Search for offers, originators",
       "offer-stage": "Offer stage",
@@ -73,7 +73,7 @@
       "months": "months",
       "description": "Join us in building the Green Dream, an environmentally sustainable residential condominium, where comfort meets environmental preservation. With your contribution through our crowdfunding, we can turn this project into reality, offering green spaces, eco-friendly technologies, and unparalleled quality of life. Every donation counts! Join now and be part of this community that values the future of the planet and the well-being of all its inhabitants."
     },
-    "income-schedule" : {
+    "income-schedule": {
       "title": "Income schedule",
       "date": "Date",
       "installment-number": "Installment nº",
@@ -147,5 +147,110 @@
   "badges": {
     "paid": "Paid",
     "anticipated": "Anticipated"
+  },
+  "become": {
+    "investor": {
+      "title": "Let's create your account",
+      "form-fields": {
+        "name": "Name",
+        "name-description": "{chars}/{maxChars} characters max",
+        "name-placeholder": "Investor Name"
+      },
+      "submit-button": "Continue",
+      "success-toast-message": "Your account was created successfully",
+      "error-toast-message": "An error occurred while creating your account",
+      "already-registered-toast-message": "There is already an investor account linked to your account.",
+      "not-authenticated": "You need to be authenticated to become an investor"
+    },
+    "originator": {
+      "title": "Let's create your account",
+      "form-fields": {
+        "name": "Originator Name",
+        "name-description": "{chars}/{maxChars} characteres max",
+        "name-placeholder": "Originator Name",
+        "description": "Description",
+        "description-description": "{chars}/{maxChars} characteres max",
+        "description-placeholder": "Short description about your profile"
+      },
+      "submit-button": "Continue",
+      "success-toast-message": "Your account was created successfully",
+      "error-toast-message": "An error occurred while creating your account",
+      "already-registered-toast-message": "There is already an originator account linked to your account.",
+      "not-authenticated": "You need to be authenticated to become an originator"
+    }
+  },
+  "create-offer-page": {
+    "header": {
+      "title": "New offer"
+    },
+    "steps": {
+      "step-1": "About the offer - 1/3",
+      "step-2": "Revenue - 2/3",
+      "step-3": "Deadlines - 3/3"
+    },
+    "form-fields": {
+      "name": {
+        "label": "Offer name",
+        "description": "Automatically generated using the token and the total amount of offers created by the originator"
+      },
+      "description": {
+        "label": "Description",
+        "description": "{chars}/{maxChars} characteres max",
+        "placeholder": "Describe the offer"
+      },
+      "credit-score": {
+        "label": "Credit score",
+        "placeholder": "Select an option"
+      },
+      "goal-amount": {
+        "label": "Total to be received",
+        "left-text": "USD",
+        "placeholder": "0,0"
+      },
+      "interest-rate": {
+        "label": "Borrowing Fee",
+        "left-text": "% each year",
+        "placeholder": "0.00"
+      },
+      "start-date": {
+        "label": "Offer start date",
+        "description": "From when the offer will be able to receive resources",
+        "placeholder": "Define a date"
+      },
+      "deadline-date": {
+        "label": "Deadline for receiving resources",
+        "description": "Until when the offer can receive resources",
+        "placeholder": "Define a date"
+      },
+      "payment-frequency": {
+        "label": "Payment frequency",
+        "placeholder": "Select an option",
+        "options": {
+          "monthly": "Monthly"
+        }
+      },
+      "installments-total": {
+        "label": "Total installments to pay",
+        "placeholder": "e.g: 1"
+      },
+      "installments-start-date": {
+        "label": "First installment date",
+        "placeholder": "Define a date"
+      }
+    },
+    "fill-all-fields-before-proceeding": "Fill all fields before proceeding",
+    "fill-goal-amount-and-interest-rate": "Fill the total to be received and the interest rate",
+    "fill-goal-amount-and-interest-rate-and-installments": "Fill the total to be received, the interest rate and the number of installments",
+    "fill-installment-start-date-and-installments-total": "Fill the installment start date and the number of installments",
+    "last-installment-date": "Last installment date",
+    "each-installment": "Each installment value",
+    "total-with-interest": "Total to be paid",
+    "total-interest": "Total interest ($)",
+    "not-authenticated": "You need to be authenticated to create an offer",
+    "continue-button": "Continue",
+    "submit-button": "Create offer",
+    "not-an-originator": "You're not an originator, to create an offer you need to be an originator",
+    "success-toast-message": "You offer has been created successfully",
+    "error-toast-message": "An error occurred while creating your offer"
   }
 }

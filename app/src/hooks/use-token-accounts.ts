@@ -1,23 +1,28 @@
 "use client";
 
-import { useSession } from "@/components/auth-provider";
-import { useProgram } from "@/hooks/use-program";
 import { config } from "@/lib/web3AuthService";
 import { utils } from "@coral-xyz/anchor";
 import { getAccount, getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
-import { FAKE_MINT } from "../app/[locale]/test-token-account-transfer/page";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
+import { FAKE_MINT } from "@/lib/constants";
+import { useSession } from "./use-session";
+import { useProgram } from "./use-program";
 
 export function useTokenAccounts() {
-  const { program } = useProgram();
-  const { solanaWallet, address } = useSession();
+  const { data: programData } = useProgram();
+  const { data } = useSession();
+
+  const program = programData?.program;
+  const solanaWallet = data?.solanaWallet;
+  const address = data?.address;
 
   return useQuery({
-    queryKey: ["token-accounts", address?.toString()],
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: ["token-accounts", address?.toString(), program?.programId.toString()],
     queryFn: async () => {
-      if (!solanaWallet || !program) return;
+      if (!solanaWallet || !program) return null;
 
       const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
       const privateKey = await getPrivateKey(solanaWallet);
@@ -33,6 +38,16 @@ export function useTokenAccounts() {
         program.programId,
       );
 
+      const [originatorPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("originator"), loggedUserWallet.publicKey.toBuffer()],
+        program.programId,
+      );
+
+      const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("originator_token_account"), originatorPubKey.toBuffer()],
+        program.programId,
+      );
+
       const userTokenAccount = await getOrCreateAssociatedTokenAccount(
         connection,
         loggedUserWallet,
@@ -40,14 +55,21 @@ export function useTokenAccounts() {
         loggedUserWallet.publicKey,
       ).catch((e) => console.log(e));
 
-      const investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey);
+      const investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey).catch(
+        console.error,
+      );
+
+      const originatorTokenAccount = await getAccount(
+        connection,
+        originatorTokenAccountPubKey,
+      ).catch(console.error);
 
       return {
         investorTokenAccount,
+        originatorTokenAccount,
         userTokenAccount,
       };
     },
     retry: 0,
-    enabled: !!solanaWallet && !!program && !!address,
   });
 }

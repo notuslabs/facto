@@ -1,30 +1,31 @@
 import BN from "bn.js";
 import { nanoid } from "nanoid";
 import { PublicKey, Keypair } from "@solana/web3.js";
-import { FAKE_MINT } from "@/app/[locale]/test-token-account-transfer/page";
 import { Program, utils } from "@coral-xyz/anchor";
+import { FAKE_MINT } from "@/lib/constants";
+import { Hackathon } from "@/lib/idl/facto-idl-types";
 
 export type CreateOfferParams = {
   description: string;
   deadlineDate: Date;
-  goalAmount: BN;
-  startDate?: Date;
-  minAmountInvest: BN;
-  interestRatePercent: number;
-  installmentsTotal: number;
-  installmentsStartDate?: Date;
+  goalAmount: number;
+  startDate: Date;
+  minAmountInvest: number;
+  installmentsTotalAmount: number;
+  installmentsCount: number;
+  installmentsStartDate: Date;
 
   caller: Keypair;
-  program: Program;
+  program: Program<Hackathon>;
 };
 
 export async function createOffer({
   deadlineDate,
   description,
   goalAmount,
-  interestRatePercent,
+  installmentsTotalAmount,
   installmentsStartDate,
-  installmentsTotal,
+  installmentsCount,
   minAmountInvest,
   startDate,
   caller,
@@ -49,17 +50,17 @@ export async function createOffer({
     program.programId,
   );
 
-  const tx = await program.methods
+  await program.methods
     .createOffer(
       id,
       description,
       new BN(deadlineDate.getTime()),
-      goalAmount,
-      startDate ? new BN(startDate.getTime()) : null,
-      minAmountInvest,
-      interestRatePercent,
-      installmentsTotal,
-      installmentsStartDate ? new BN(installmentsStartDate.getTime()) : null,
+      new BN(goalAmount),
+      new BN(startDate.getTime()),
+      new BN(minAmountInvest),
+      installmentsCount,
+      new BN(installmentsTotalAmount),
+      new BN(installmentsStartDate.getTime()),
     )
     .accounts({
       originator,
@@ -71,7 +72,11 @@ export async function createOffer({
       stableToken: FAKE_MINT,
     })
     .signers([caller])
-    .rpc({ commitment: "processed" });
+    .rpc({ commitment: "finalized" });
 
-  return tx;
+  return {
+    tx: offer.toString(),
+    id: id,
+    offerAddress: offer.toString(),
+  };
 }

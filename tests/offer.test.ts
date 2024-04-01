@@ -59,6 +59,7 @@ describe("Offer", { timeout: 500000 }, () => {
     ],
     program.programId
   );
+
   const [investor] = PublicKey.findProgramAddressSync(
     [
       anchor.utils.bytes.utf8.encode("investor"),

@@ -104,7 +104,6 @@ pub struct WithdrawTokens<'info> {
     #[account(
         mut,
         token::mint = stable_coin,
-        token::authority = caller,
     )]
     pub to_token_account: Account<'info, TokenAccount>,
 
