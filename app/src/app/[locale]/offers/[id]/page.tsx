@@ -30,13 +30,13 @@ export default async function OfferPage({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main className="flex flex-col gap-8 p-4 md:container lg:gap-[4.5rem]">
         <div className="md:hidden">
-          <LateralCard />
+          <LateralCard offer={offer} />
         </div>
 
         <Header
           name={offer.name}
           description={offer.description}
-          score={999}
+          score={offer.creditScore}
           acquiredAmount={offer.acquiredAmount}
         />
 
@@ -44,7 +44,7 @@ export default async function OfferPage({
           <OfferContent offerId={params.id} />
 
           <div className="hidden w-full md:mt-[4.5rem] md:block lg:-mt-40">
-            <LateralCard />
+            <LateralCard offer={offer} />
           </div>
         </div>
       </main>

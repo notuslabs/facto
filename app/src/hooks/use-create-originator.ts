@@ -10,8 +10,10 @@ import { useTokenAccounts } from "./use-token-accounts";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
+import { z } from "zod";
+import { OriginatorFormSchema } from "@/app/[locale]/become/originator/_components/originator-form";
 
-class AlreadyRegisteredError extends Error {
+class CustomError extends Error {
   constructor(message?: string) {
     super(message);
   }
@@ -28,11 +30,13 @@ export function useCreateOriginator() {
   const program = programData?.program;
 
   return useMutation({
-    mutationFn: async ({ name, description }: { name: string; description: string }) => {
-      if (!solanaWallet || !program) return;
+    mutationFn: async ({ name, description, tokenSlug }: z.infer<typeof OriginatorFormSchema>) => {
+      if (!solanaWallet || !program) {
+        throw new CustomError(t("not-authenticated"));
+      }
 
       if (!!tokenAccounts?.originatorTokenAccount) {
-        throw new AlreadyRegisteredError(t("already-registered-toast-message"));
+        throw new CustomError(t("already-registered-toast-message"));
       }
 
       const privateKey = await getPrivateKey(solanaWallet);
@@ -48,8 +52,8 @@ export function useCreateOriginator() {
         program.programId,
       );
 
-      await program.methods
-        .createOriginator(name, description, "SLUG")
+      const res = await program.methods
+        .createOriginator(name, description, tokenSlug)
         .accounts({
           originator: originatorPubKey,
           originatorTokenAccount: originatorTokenAccountPubKey,
@@ -58,8 +62,9 @@ export function useCreateOriginator() {
           caller: loggedUserWallet.publicKey,
         })
         .signers([loggedUserWallet])
-        .rpc()
-        .catch(console.error);
+        .rpc();
+
+      console.log({ res });
     },
     onSuccess: () => {
       toast.success(t("success-toast-message"));
@@ -74,7 +79,7 @@ export function useCreateOriginator() {
     onError: (error) => {
       console.error(error);
 
-      if (error instanceof AlreadyRegisteredError) {
+      if (error instanceof CustomError) {
         toast.error(error.message);
         return;
       }

@@ -1,8 +1,11 @@
+"use client";
+
 import { CircleDollarSign } from "lucide-react";
 import { ScoreBadge } from "../score-badge";
 import { Badge } from "../ui/badge";
 import { useTranslations } from "next-intl";
 import { formatNumber } from "@/lib/format-number";
+import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
 
 type HeaderProps = {
   name: string;
@@ -13,6 +16,8 @@ type HeaderProps = {
 
 export function Header({ name, description, score, acquiredAmount }: HeaderProps) {
   const t = useTranslations("header");
+  const scoreRange = useGetScoreRanges(score);
+
   return (
     <header className="flex flex-col gap-8 p-1">
       <div className="flex flex-col gap-1">
@@ -24,7 +29,7 @@ export function Header({ name, description, score, acquiredAmount }: HeaderProps
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <ScoreBadge score={score} />
+        {scoreRange != null && <ScoreBadge scoreRange={scoreRange} />}
         {/* <Badge className="flex gap-1" variant="gray">
           <HelpingHand size={14} />
           {t("people-invested", { peopleNumber })}

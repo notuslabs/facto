@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -8,56 +7,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatNumber } from "@/lib/format-number";
+import { Offer } from "@/structs/Offer";
+import { format } from "date-fns";
 import { User } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type AboutCardProps = {
+  offerId: string;
   name: string;
   description: string;
+  allOffers: Offer[];
 };
 
-export function AboutCard({ name, description }: AboutCardProps) {
+export function AboutCard({ offerId, name, description, allOffers }: AboutCardProps) {
   const t = useTranslations("offer-page.about-originator");
-  const tr = useTranslations("badges");
 
-  const tableData = [
-    {
-      data: "16/04/2024",
-      offer: "Agiotagem #1",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      offer: "Agiotagem #1",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="yellow">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      offer: "Agiotagem #1",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="red">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      offer: "Agiotagem #1",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      offer: "Agiotagem #1",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      offer: "Agiotagem #1",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-  ];
+  const otherOffers = allOffers.filter((offer) => offer.id !== offerId);
+
+  const totalAcquired = allOffers.reduce((acc, offer) => acc + offer.acquiredAmount, 0);
+
   return (
     <div className="rounded-2xl bg-primary-foreground text-primary">
       <div className="flex flex-col gap-4 p-6 md:px-8 md:py-6">
@@ -81,7 +50,7 @@ export function AboutCard({ name, description }: AboutCardProps) {
         <div className="flex justify-between">
           <div className="flex flex-col">
             <span className="text-xs text-muted-foreground">{t("offers")}</span>
-            <span className="text-2xl font-medium text-foreground">1</span>
+            <span className="text-2xl font-medium text-foreground">{allOffers.length}</span>
           </div>
 
           <div className="flex gap-4">
@@ -96,7 +65,7 @@ export function AboutCard({ name, description }: AboutCardProps) {
             <Separator orientation="vertical" className="bg-secondary" />
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">{t("total-raised")}</span>
-              <span>$69.420,00</span>
+              <span>{formatNumber(totalAcquired)}</span>
             </div>
           </div>
         </div>
@@ -104,19 +73,22 @@ export function AboutCard({ name, description }: AboutCardProps) {
       <Table>
         <TableHeader className="bg-primary-foreground text-sm">
           <TableRow>
-            <TableHead className="w-1/4 text-foreground">{t("date")}</TableHead>
-            <TableHead className="w-1/4 text-foreground">{t("installment-number")}</TableHead>
+            <TableHead className="w-1/4 text-foreground">{t("offer")}</TableHead>
             <TableHead className="w-1/4 text-foreground">{t("amount")}</TableHead>
+            <TableHead className="w-1/4 text-foreground">{t("date")}</TableHead>
             <TableHead className="w-1/4 text-right text-foreground">{t("status")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tableData.map((tableData) => (
-            <TableRow className="border-b border-secondary text-sm" key={tableData.data}>
-              <TableCell>{tableData.offer}</TableCell>
-              <TableCell>{tableData.totalAmount}</TableCell>
-              <TableCell>{tableData.data}</TableCell>
-              <TableCell className="text-right">{tableData.paymentStatus}</TableCell>
+          {otherOffers.map((offer) => (
+            <TableRow
+              className="border-b border-secondary text-sm"
+              key={offer.installmentsEndDate.toString()}
+            >
+              <TableCell>{offer.name}</TableCell>
+              <TableCell>{format(offer.installmentsEndDate, "P")}</TableCell>
+              <TableCell>{formatNumber(offer.goalAmount)}</TableCell>
+              <TableCell className="text-right">{offer.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,13 +1,19 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { formatNumber } from "@/lib/format-number";
+import { Offer } from "@/structs/Offer";
+import { format } from "date-fns";
 import { ChevronDown, HelpingHand, Smile } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export function LateralCard() {
+type LateralCardProps = {
+  offer: Offer;
+};
+
+export function LateralCard({ offer }: LateralCardProps) {
   const t = useTranslations("offer-page.lateral-card");
   const installments = 6;
-  const date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30);
 
   return (
     <aside className="flex flex-col rounded-lg bg-secondary text-primary">
@@ -52,28 +58,34 @@ export function LateralCard() {
       <div className="rounded-bl-lg rounded-br-lg border bg-primary-foreground">
         <div className="flex justify-between px-4 py-[14px] text-sm font-medium text-muted-foreground md:px-6">
           <p>{t("you-invested")}</p>
+          {/* TODO: get currently invested amount */}
           <span className="font-semibold">R$ 420,00</span>
         </div>
         <div className="flex justify-between px-4 pb-2 pt-4 md:px-6">
           <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">{t("raised-value")}</span>
-            <span className="font-semibold md:text-xl">R$ 666,69</span>
+            <span className="font-semibold md:text-xl">{formatNumber(offer.acquiredAmount)}</span>
           </div>
 
           <div className="flex flex-col gap-3">
             <span className="text-right text-sm font-medium">Total</span>
-            <span className="font-semibold md:text-xl">R$ 69.420</span>
+            <span className="font-semibold md:text-xl">{formatNumber(offer.goalAmount)}</span>
           </div>
         </div>
 
         <div className="p-4 md:px-6">
-          <Progress indicatorColor="bg-success-strong" value={33} />
+          <Progress
+            indicatorColor="bg-success-strong"
+            value={Math.round((offer.acquiredAmount / offer.goalAmount) * 100)}
+          />
         </div>
 
         <div className="flex justify-between border-b border-t px-4 py-[14px] text-sm md:px-6">
           <p>{t("offer-status")}</p>
           <Badge variant="secondary" className="rounded-md">
-            {t("in-fundraising")}
+            {/* TODO: use correct translation for status */}
+            {offer.status}
+            {/* {t("in-fundraising")} */}
           </Badge>
         </div>
 
@@ -84,7 +96,7 @@ export function LateralCard() {
 
         <div className="flex justify-between px-4 py-[14px] text-sm md:px-6">
           <p>{t("receive-in", { installments })}</p>
-          <span className="font-semibold">{t("date", { date })}</span>
+          <span className="font-semibold">{format(offer.installmentsEndDate, "P")}</span>
         </div>
       </div>
     </aside>

@@ -1,4 +1,4 @@
-import { formatBigNumber, formatNumber } from "@/lib/format-number";
+import { formatNumber } from "@/lib/format-number";
 import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -7,8 +7,8 @@ import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { Link } from "@/navigation";
 import { Offer } from "@/structs/Offer";
-import BN from "bn.js";
 import { getOfferInterestRate } from "@/lib/utils";
+import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
 
 type OfferCardHeaderProps = {
   offerName: string;
@@ -49,6 +49,7 @@ type OfferCardBodyProps = {
 
 function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: OfferCardBodyProps) {
   const t = useTranslations("home.offers.card.body");
+  const scoreRange = useGetScoreRanges(creditScore);
 
   return (
     <div className="flex w-full flex-col text-muted-foreground">
@@ -78,7 +79,7 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
       </div>
       <div className="flex items-center justify-between gap-2 border-b border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("credit-score")}</p>
-        <ScoreBadge score={creditScore} />
+        {scoreRange != null && <ScoreBadge scoreRange={scoreRange} />}
       </div>
       <div className="flex items-center justify-between gap-2 border-b border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("payment-frequency")}</p>

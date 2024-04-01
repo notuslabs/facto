@@ -83,10 +83,11 @@
     "about-originator": {
       "title": "Sobre o originador",
       "description": "Como Agiotagem, o mentor por trás deste projeto residencial ecológico, estou comprometido em promover uma mudança positiva na construção civil. Com vasta experiência e uma visão sustentável, cada contribuição é valorizada e investida com integridade e transparência. Juntos, estamos construindo mais do que simples casas; estamos criando um santuário para aqueles que valorizam o meio ambiente e a qualidade de vida. Agradeço imensamente por se juntar a nós nesta jornada rumo a um futuro mais sustentável e próspero para todos.",
+      "offer": "Oferta",
       "offers": "Ofertas",
       "loss": "Perda",
       "total-raised": "Total captado",
-      "date": "Data",
+      "date": "Data final",
       "installment-number": "Nº Parcela",
       "amount": "Valor",
       "status": "Status"
@@ -168,6 +169,9 @@
         "name": "Nome de Originador",
         "name-description": "{chars}/{maxChars} caracteres max",
         "name-placeholder": "Nome de Investidor",
+        "token": "Slug do Token",
+        "token-description": "{chars}/{maxChars} caracteres max",
+        "token-placeholder": "Ex: SLUG",
         "description": "Descrição",
         "description-description": "{chars}/{maxChars} caracteres max",
         "description-placeholder": "Breve descrição sobre seu perfil"
@@ -252,5 +256,17 @@
     "not-an-originator": "Você não é um originador, para criar uma oferta você precisa ser um originador",
     "success-toast-message": "Sua oferta foi criada com sucesso",
     "error-toast-message": "Ocorreu um erro ao criar sua oferta"
+  },
+  "credit-scores": {
+    "AAA": "Investimentos de qualidade excepcional. Menor risco de default. Representam a segurança máxima.",
+    "AA": "Investimentos de alta qualidade. Risco de default muito baixo. Muito seguros, mas um pouco menos que os AAA.",
+    "A": "Investimentos de boa qualidade. Risco de default baixo. São considerados seguros, mas com riscos ligeiramente maiores que os AA.",
+    "BBB": "Investimentos de qualidade média. Risco de default moderado. Marcando o limite entre investimentos de grau de investimento e especulativos.",
+    "BB": "Investimentos especulativos. Risco de default moderadamente alto. Menos seguro, com potencial de maior retorno.",
+    "B": "Investimentos altamente especulativos. Alto risco de default. Investidores devem estar preparados para possíveis perdas.",
+    "CCC": "Investimentos de qualidade muito pobre. Muito alto risco de default. Investimentos arriscados, com possibilidade de alto retorno ou perda total.",
+    "CC": "Investimentos extremamente especulativos. Risco de default extremamente alto. Muito arriscados e normalmente em situação de dificuldades financeiras.",
+    "C": "Investimentos precários. Próximos do default ou em default, mas ainda pagando. Para investidores que buscam apostas arriscadas.",
+    "D": "Default. O investimento falhou em cumprir com suas obrigações financeiras. A categoria mais baixa e arriscada."
   }
 }

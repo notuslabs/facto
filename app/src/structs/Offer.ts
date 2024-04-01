@@ -36,7 +36,7 @@ export class Offer {
     ).toISOString();
     this.installmentsEndDate = addMonths(
       this.installmentsStartDate,
-      this.installmentsCount,
+      this.installmentsCount - 1,
     ).toISOString();
   }
 

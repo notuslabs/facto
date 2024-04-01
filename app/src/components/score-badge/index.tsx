@@ -1,47 +1,27 @@
-import { useTranslations } from "next-intl";
 import { Badge } from "../ui/badge";
+import { RangeOption } from "@/app/[locale]/offers/[id]/_components/offer-content";
 
 type ScoreBadgeProps = {
-  score: number;
+  scoreRange: RangeOption;
 };
 
-export function ScoreBadge({ score }: ScoreBadgeProps) {
-  const t = useTranslations("score-card");
-  const scoreCodes = [
-    { range: [0, 250], info: { code: "C", text: t("bad") } },
-    { range: [250, 500], info: { code: "B", text: t("regular") } },
-    { range: [500, 750], info: { code: "A", text: t("good") } },
-    { range: [750, Infinity], info: { code: "AAA", text: t("excellent") } },
-  ];
-
-  const { code, text } = scoreCodes.find(({ range }) => score >= range[0] && score < range[1])
-    ?.info || { code: "N/A", text: "Unknown" };
-
-  let colorClass;
-
-  switch (code) {
-    case "C":
-      colorClass = "bg-red-500 border-red-300";
-      break;
-    case "B":
-      colorClass = "bg-yellow-600 border-yellow-300";
-      break;
-    case "A":
-      colorClass = "bg-green-500 border-green-300";
-      break;
-    case "AAA":
-      colorClass = "bg-info-muted text-info-strong border-blue-600";
-      break;
-    default:
-      colorClass = "bg-gray-500 border-gray-300";
-  }
-
+export function ScoreBadge({ scoreRange }: ScoreBadgeProps) {
   return (
     <Badge
-      variant="outline"
-      className={`text-foreground ${colorClass} rounded-md hover:${colorClass} h-6`}
+      variant={
+        scoreRange.info.code.includes("A")
+          ? "credit-score-a"
+          : scoreRange.info.code.includes("B")
+            ? "credit-score-b"
+            : scoreRange.info.code.includes("C")
+              ? "credit-score-c"
+              : scoreRange.info.code.includes("D")
+                ? "credit-score-d"
+                : "outline"
+      }
+      className="h-6 rounded-md text-foreground"
     >
-      {code}
+      {scoreRange.info.code}
     </Badge>
   );
 }

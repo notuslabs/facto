@@ -8,6 +8,15 @@ import { DetailsCard } from "./yield-card";
 import { useState } from "react";
 import { cn, getOfferInterestRate } from "@/lib/utils";
 import { useOffer } from "@/hooks/use-offer";
+import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
+
+export type RangeOption = {
+  range: [number, number];
+  info: {
+    code: string;
+    text: string;
+  };
+};
 
 type OfferContentProps = {
   offerId: string;
@@ -17,7 +26,9 @@ export function OfferContent({ offerId }: OfferContentProps) {
   const { data: offer } = useOffer(offerId);
   const [activeTab, setActiveTab] = useState("yield");
   const t = useTranslations("offer-page");
+  const scoreRange = useGetScoreRanges(offer?.creditScore ?? 0);
 
+  // This should never happen
   if (!offer) return null;
 
   const tabs = [
@@ -48,13 +59,18 @@ export function OfferContent({ offerId }: OfferContentProps) {
       name: "about-originator",
       display: t("tabs.about-originator.title"),
       content: (
-        <AboutCard name={offer.originator.name} description={offer.originator.description} />
+        <AboutCard
+          name={offer.originator.name}
+          offerId={offerId}
+          description={offer.originator.description}
+          allOffers={offer.originatorOffers}
+        />
       ),
     },
     {
       name: "credit-score",
       display: t("tabs.credit-score.title"),
-      content: <ScoreCard />,
+      content: <ScoreCard scoreRange={scoreRange} />,
     },
   ];
 

@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { genereateInstallmentsList } from "@/lib/offer-utils";
 import { addMonths, format } from "date-fns";
 import { useTranslations } from "next-intl";
 
@@ -16,46 +17,6 @@ type ReceptionCronogramProps = {
   installmentsStartDate: Date;
   installmentsTotalAmount: number;
 };
-
-function genereateInstallmentsList({
-  installmentsCount,
-  installmentsStartDate,
-  installmentsTotalAmount,
-  totalInstallmentsPaid,
-}: {
-  installmentsCount: number;
-  installmentsStartDate: Date;
-  installmentsTotalAmount: number;
-  totalInstallmentsPaid: number;
-}): Array<{
-  date: Date;
-  installmentNumber: number;
-  amount: number;
-  status: "paid" | "anticipated";
-}> {
-  const installmentsList: Array<{
-    date: Date;
-    installmentNumber: number;
-    amount: number;
-    status: "paid" | "anticipated";
-  }> = [];
-
-  for (let i = 0; i < installmentsCount; i++) {
-    const date = addMonths(installmentsStartDate, i);
-    const installmentNumber = i + 1;
-    const amount = installmentsTotalAmount / installmentsCount;
-    const status = totalInstallmentsPaid >= installmentNumber ? "paid" : "anticipated";
-
-    installmentsList.push({
-      date: date,
-      installmentNumber: installmentNumber,
-      amount: amount,
-      status: status,
-    });
-  }
-
-  return installmentsList;
-}
 
 export function ReceptionCronogram({
   installmentsCount,
@@ -91,7 +52,9 @@ export function ReceptionCronogram({
           {installments.map((tableData) => (
             <TableRow className="border-b border-border" key={tableData.date.toString()}>
               <TableCell>{format(tableData.date, "P")}</TableCell>
-              <TableCell>{tableData.installmentNumber}</TableCell>
+              <TableCell>
+                {tableData.installmentNumber}/{installmentsCount}
+              </TableCell>
               <TableCell>{tableData.amount}</TableCell>
               <TableCell className="text-right">{tableData.status}</TableCell>
             </TableRow>

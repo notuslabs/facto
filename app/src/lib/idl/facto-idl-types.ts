@@ -1200,6 +1200,10 @@ export type Hackathon = {
         "kind": "struct",
         "fields": [
           {
+            "name": "originator",
+            "type": "publicKey"
+          },
+          {
             "name": "id",
             "type": "string"
           },
@@ -1226,10 +1230,6 @@ export type Hackathon = {
           {
             "name": "acquiredAmount",
             "type": "u64"
-          },
-          {
-            "name": "originator",
-            "type": "publicKey"
           },
           {
             "name": "installmentsCount",
@@ -2596,6 +2596,10 @@ export const IDL: Hackathon = {
         "kind": "struct",
         "fields": [
           {
+            "name": "originator",
+            "type": "publicKey"
+          },
+          {
             "name": "id",
             "type": "string"
           },
@@ -2622,10 +2626,6 @@ export const IDL: Hackathon = {
           {
             "name": "acquiredAmount",
             "type": "u64"
-          },
-          {
-            "name": "originator",
-            "type": "publicKey"
           },
           {
             "name": "installmentsCount",
