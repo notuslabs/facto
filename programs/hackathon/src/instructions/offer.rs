@@ -48,7 +48,6 @@ pub fn create_offer(
         ValidationError::InstallmentsTotalMustBeGreaterThanOne
     );
 
-    // TODO: add check for max installment start date
 
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
