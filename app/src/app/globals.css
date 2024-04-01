@@ -271,7 +271,7 @@
     --accent: #27272a;
     --accent-foreground: #fafafa;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: #7f1d1d;
     --destructive-foreground: #fafafa;
 
     --border: #27272a;
@@ -291,7 +291,17 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }

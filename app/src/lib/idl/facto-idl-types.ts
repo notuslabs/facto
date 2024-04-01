@@ -86,6 +86,55 @@ export type Hackathon = {
       ]
     },
     {
+      "name": "editOriginator",
+      "accounts": [
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "createOffer",
       "accounts": [
         {
@@ -748,55 +797,6 @@ export type Hackathon = {
       "args": []
     },
     {
-      "name": "editOriginator",
-      "accounts": [
-        {
-          "name": "originator",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "originator"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "caller"
-              }
-            ]
-          }
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "caller",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        }
-      ]
-    },
-    {
       "name": "createInvestor",
       "accounts": [
         {
@@ -1383,18 +1383,13 @@ export type Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MaxNameLengthExceeded",
-      "msg": "Max name length exceeded. Maximum length is 30"
+      "name": "InsufficientBalance",
+      "msg": "Insufficient Balance"
     },
     {
       "code": 6001,
-      "name": "AmountMustBeEqualToOrGreaterThanOne",
-      "msg": "Amount must be equal to or greater than 1"
-    },
-    {
-      "code": 6002,
-      "name": "InsufficientBalance",
-      "msg": "Insufficient balance"
+      "name": "TransferFailedUnknown",
+      "msg": "Transfer failed with an unknown error."
     }
   ]
 };
@@ -1487,6 +1482,55 @@ export const IDL: Hackathon = {
       ]
     },
     {
+      "name": "editOriginator",
+      "accounts": [
+        {
+          "name": "originator",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "originator"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "caller"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "createOffer",
       "accounts": [
         {
@@ -2149,55 +2193,6 @@ export const IDL: Hackathon = {
       "args": []
     },
     {
-      "name": "editOriginator",
-      "accounts": [
-        {
-          "name": "originator",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "originator"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "caller"
-              }
-            ]
-          }
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "caller",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "description",
-          "type": "string"
-        }
-      ]
-    },
-    {
       "name": "createInvestor",
       "accounts": [
         {
@@ -2784,18 +2779,13 @@ export const IDL: Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MaxNameLengthExceeded",
-      "msg": "Max name length exceeded. Maximum length is 30"
+      "name": "InsufficientBalance",
+      "msg": "Insufficient Balance"
     },
     {
       "code": 6001,
-      "name": "AmountMustBeEqualToOrGreaterThanOne",
-      "msg": "Amount must be equal to or greater than 1"
-    },
-    {
-      "code": 6002,
-      "name": "InsufficientBalance",
-      "msg": "Insufficient balance"
+      "name": "TransferFailedUnknown",
+      "msg": "Transfer failed with an unknown error."
     }
   ]
 };

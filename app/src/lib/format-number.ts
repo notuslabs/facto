@@ -1,15 +1,15 @@
 import BN from "bn.js";
 
-export function formatNumber(value: number) {
-  return new Intl.NumberFormat("pt-BR", {
+export function formatNumber(value: number, locale = "pt-BR", currency = "BRL") {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
-    currency: "BRL",
+    currency: currency,
   }).format(value);
 }
 
-export function formatBigNumber(value: BN) {
-  return new Intl.NumberFormat("pt-BR", {
+export function formatBigNumber(value: BN, locale = "pt-BR", currency = "BRL") {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
-    currency: "BRL",
+    currency: currency,
   }).format(value.toNumber()); // TODO: this is not right, it'll overflow
 }

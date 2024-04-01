@@ -1,20 +1,22 @@
 "use client";
 
-import { useSession } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
+import { useSession } from "@/hooks/use-session";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function NavbarSignInButton() {
-  const { userInfo, login, isLoading } = useSession();
+  const { data, isLoading } = useSession();
+  const { login } = useAuth();
 
   const t = useTranslations("navbar");
 
-  if (userInfo) return;
+  if (!!data?.userInfo) return null;
 
   if (isLoading) {
     return <Loader2 size={16} className="animate-spin" />;
   }
 
-  return <Button onClick={login}>{t("login")}</Button>;
+  return <Button onClick={() => login()}>{t("login")}</Button>;
 }

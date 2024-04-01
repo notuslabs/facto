@@ -1,14 +1,15 @@
 "use client";
 
-import { pathnames } from "@/config";
+import { useSession } from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
 import { Link, usePathname } from "@/navigation";
 import { CircleDollarSign, HelpingHand, Receipt } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useSession } from "../auth-provider";
 
 export default function MobileExtraNavbar() {
-  const { userInfo } = useSession();
+  const { data } = useSession();
+
+  const userInfo = data?.userInfo;
 
   const t = useTranslations("navbar");
   const pathname = usePathname();
