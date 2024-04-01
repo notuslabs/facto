@@ -16,16 +16,6 @@ export default function CreateOfferPage() {
   const isAllowedToCreate = !isAccountsLoading && !!accounts?.originatorAccount;
   const notOriginator = !isAccountsLoading && !accounts?.originatorAccount;
 
-  // console.log({
-  //   notAuthed,
-  //   notOriginator,
-  // });
-
-  // console.log({
-  //   isAccountsLoading,
-  //   accounts,
-  // });
-
   useEffect(() => {
     if (notOriginator) {
       toast.error(t("not-an-originator"));

@@ -25,15 +25,12 @@ export const CreateOfferFormSchema = z
     goalAmount: z.number().positive().min(1),
     interestRatePercent: z.number().min(1),
     // step-3
-    startDate: z.date().refine((date) => {
-      console.log({
-        isBefore: isBefore(new Date(), date),
-        isSameDay: isSameDay(new Date(), date),
-        result: isBefore(new Date(), date) || isSameDay(new Date(), date),
-      });
-
-      return isBefore(new Date(), date) || isSameDay(new Date(), date);
-    }, "Start date must be the same or after current date"),
+    startDate: z
+      .date()
+      .refine(
+        (date) => isBefore(new Date(), date) || isSameDay(new Date(), date),
+        "Start date must be the same or after current date",
+      ),
     deadlineDate: z
       .date()
       .refine(
@@ -47,7 +44,7 @@ export const CreateOfferFormSchema = z
         (date) => isBefore(new Date(), date) || isSameDay(new Date(), date),
         "Start date must be the same or after current date",
       ),
-    installmentsTotal: z.number().int().positive().min(1),
+    installmentsCount: z.number().int().positive().min(1),
     minAmountInvest: z.number().int().positive().min(1),
   })
   .superRefine((data, ctx) => {

@@ -11,8 +11,8 @@ export type CreateOfferParams = {
   goalAmount: number;
   startDate: Date;
   minAmountInvest: number;
-  interestRatePercent: number;
-  installmentsTotal: number;
+  installmentsTotalAmount: number;
+  installmentsCount: number;
   installmentsStartDate: Date;
 
   caller: Keypair;
@@ -23,9 +23,9 @@ export async function createOffer({
   deadlineDate,
   description,
   goalAmount,
-  interestRatePercent,
+  installmentsTotalAmount,
   installmentsStartDate,
-  installmentsTotal,
+  installmentsCount,
   minAmountInvest,
   startDate,
   caller,
@@ -58,8 +58,8 @@ export async function createOffer({
       new BN(goalAmount),
       new BN(startDate.getTime()),
       new BN(minAmountInvest),
-      interestRatePercent,
-      new BN(installmentsTotal),
+      installmentsCount,
+      new BN(installmentsTotalAmount),
       new BN(installmentsStartDate.getTime()),
     )
     .accounts({

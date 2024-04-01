@@ -20,7 +20,7 @@ export default function TestOfferCreation() {
       <Button
         className="block"
         onClick={async () => {
-          const tx = await createOriginator({
+          await createOriginator({
             name: "Test",
             description: "Test",
             tokenSlug: "test",
@@ -33,20 +33,18 @@ export default function TestOfferCreation() {
       </Button>
       <Button
         onClick={async () => {
-          const tx = await createOffer({
+          await createOffer({
             description: "Test",
             deadlineDate: new Date(),
             goalAmount: 100,
             startDate: new Date(),
             minAmountInvest: 10,
-            interestRatePercent: 1,
-            installmentsTotal: 3,
+            installmentsTotalAmount: 1,
+            installmentsCount: 3,
             installmentsStartDate: new Date(),
             program: program as unknown as Program<Hackathon>,
             caller: keypair as Keypair,
           });
-
-          console.log(tx);
         }}
       >
         Create Offer

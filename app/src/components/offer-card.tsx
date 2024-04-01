@@ -127,7 +127,7 @@ export function OfferCard({ offer }: OfferCardProps) {
       <OfferCardHeader
         offerName={offer.name}
         originatorName={offer.originator.name}
-        percent={offer.interestRatePercent}
+        percent={offer.installmentsTotalAmount.toNumber() / offer.goalAmount.toNumber()}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
@@ -138,7 +138,7 @@ export function OfferCard({ offer }: OfferCardProps) {
         amountToBeAcquired={offer.goalAmount}
       />
       <OfferCardFooter
-        installments={offer.installmentsTotal}
+        installments={offer.installmentsCount}
         endDate={offer.deadlineDate}
         offerId={offer.id}
       />

@@ -160,11 +160,11 @@ export function OfferFormStep2({
 
   const toReceive = form.watch("goalAmount");
   const interestRate = form.watch("interestRatePercent");
-  const installmentsTotal = form.watch("installmentsTotal");
+  const installmentsCount = form.watch("installmentsCount");
 
   const totalInterest = toReceive * (interestRate / 100);
   const totalWithInterest = toReceive + totalInterest;
-  const eachInstallment = totalWithInterest / installmentsTotal;
+  const eachInstallment = totalWithInterest / installmentsCount;
 
   return (
     <div
@@ -230,7 +230,7 @@ export function OfferFormStep2({
         />
         <FormField
           control={form.control}
-          name="installmentsTotal"
+          name="installmentsCount"
           render={({ field }) => (
             <FormItem>
               <FormLabel required>{t("form-fields.installments-total.label")}</FormLabel>
@@ -304,11 +304,11 @@ export function OfferFormStep3({
   const isCurrentStep = currentStep === 3;
 
   const instalmentsStartDate = form.watch("installmentsStartDate");
-  const installmentsTotal = form.watch("installmentsTotal");
+  const installmentsCount = form.watch("installmentsCount");
   const lastInstallmentDate =
-    instalmentsStartDate && installmentsTotal
+    instalmentsStartDate && installmentsCount
       ? addDate(instalmentsStartDate, {
-          months: installmentsTotal - 1,
+          months: installmentsCount - 1,
         })
       : null;
 

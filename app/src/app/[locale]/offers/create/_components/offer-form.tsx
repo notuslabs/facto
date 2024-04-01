@@ -72,7 +72,7 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
       creditScore,
       goalAmount,
       interestRatePercent,
-      installmentsTotal,
+      installmentsCount,
       installmentsStartDate,
       minAmountInvest,
       deadlineDate,
@@ -81,7 +81,7 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
     } = form.getValues();
 
     const filledFirstStep = name && description && creditScore;
-    const filledSecondStep = goalAmount && interestRatePercent && installmentsTotal;
+    const filledSecondStep = goalAmount && interestRatePercent && installmentsCount;
     const filledThirdStep = installmentsStartDate && minAmountInvest && deadlineDate && startDate;
 
     if (currentStep === 1) {
@@ -124,7 +124,7 @@ export function OfferForm({ isLoading, isAllowedToCreate }: OfferFormProps) {
         form.trigger("interestRatePercent", {
           shouldFocus: true,
         }),
-        form.trigger("installmentsTotal", {
+        form.trigger("installmentsCount", {
           shouldFocus: true,
         }),
       ]).then((arr) => arr.every((val) => val === true));

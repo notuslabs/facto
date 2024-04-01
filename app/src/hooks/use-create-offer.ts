@@ -32,18 +32,17 @@ export function useCreateOffer() {
   return useMutation({
     mutationFn: async ({
       // step-1
-      name,
       description,
-      creditScore,
+      // creditScore,
       // step-2
       goalAmount,
       interestRatePercent,
       // step-3
       startDate,
       deadlineDate,
-      payment_frequency,
+      // payment_frequency,
       installmentsStartDate,
-      installmentsTotal,
+      installmentsCount,
       minAmountInvest,
     }: z.infer<typeof CreateOfferFormSchema>) => {
       if (!solanaWallet || !program) return null;
@@ -61,9 +60,9 @@ export function useCreateOffer() {
         deadlineDate,
         description,
         goalAmount,
-        interestRatePercent,
+        installmentsTotalAmount: goalAmount + goalAmount * (interestRatePercent / 100),
         installmentsStartDate,
-        installmentsTotal,
+        installmentsCount,
         minAmountInvest,
         startDate,
       });

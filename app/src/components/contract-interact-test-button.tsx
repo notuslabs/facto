@@ -33,11 +33,7 @@ export function ContractInteractTestButton() {
       .signers([keypair, originatorKeypair])
       .rpc();
 
-    const originatorInfo = await program.account.originator.fetch(originatorKeypair.publicKey);
-
-    console.log({
-      originatorInfo,
-    });
+    await program.account.originator.fetch(originatorKeypair.publicKey);
   }
   return (
     <div className="container">

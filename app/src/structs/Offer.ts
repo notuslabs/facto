@@ -18,10 +18,11 @@ export class Offer {
     this.originator = rawOriginator;
     this.deadlineDate = new Date(raw.deadlineDate.toNumber());
     this.acquiredAmount = raw.acquiredAmount;
-    this.installmentsTotal = raw.installmentsCount;
-    (this.installmentsStartDate = new Date(raw.installmentsNextPaymentDate.toNumber())),
-      (this.minAmountInvest = raw.minAmountInvest);
-    this.startDate = raw.startDate ? new Date(raw.startDate.toNumber()) : undefined;
+    this.installmentsCount = raw.installmentsCount;
+    this.installmentsTotalAmount = raw.installmentsTotalAmount;
+    this.installmentsStartDate = new Date(raw.installmentsNextPaymentDate.toNumber());
+    this.minAmountInvest = raw.minAmountInvest;
+    this.startDate = new Date(raw.startDate.toNumber());
     this.creditScore = raw.creditScore;
     this.createdAt = new Date(raw.createdAt.toNumber());
   }
@@ -44,12 +45,13 @@ export class Offer {
   public deadlineDate: Date;
   public acquiredAmount: BN;
   public originator: Account<"originator">;
-  public installmentsTotal: number;
+  public installmentsCount: number;
   public installmentsStartDate?: Date;
   public minAmountInvest: BN;
-  public startDate?: Date;
+  public startDate: Date;
   public creditScore: number;
   public createdAt: Date;
+  public installmentsTotalAmount: BN;
 
   toJSON() {
     return {

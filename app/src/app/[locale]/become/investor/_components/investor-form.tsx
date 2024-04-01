@@ -45,11 +45,6 @@ export function InvestorForm({ isLoading, isAllowedToCreate }: InvestorFormProps
     createInvestor(values.name);
   }
 
-  console.log({
-    isLoading,
-    isAllowedToCreate,
-  });
-
   return (
     <Form {...form}>
       <form

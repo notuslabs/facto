@@ -11,17 +11,10 @@ export default function LocaleSwitcher() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
-  const path = useNextPathname();
   const params = useParams();
   const locale = useLocale();
 
   function changeLocale(localeParam: string) {
-    console.log({
-      path,
-      pathname,
-      params,
-    });
-    const withoutLocale = path.replace(`/${locale}`, "");
     startTransition(() => {
       router.replace(
         // @ts-expect-error -- TypeScript will validate that only known `params`

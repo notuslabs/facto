@@ -48,8 +48,6 @@ export function useCreateOriginator() {
         program.programId,
       );
 
-      console.log(program.programId.toString());
-
       await program.methods
         .createOriginator(name, description, "SLUG")
         .accounts({

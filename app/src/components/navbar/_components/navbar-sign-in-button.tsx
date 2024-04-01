@@ -12,8 +12,6 @@ export function NavbarSignInButton() {
 
   const t = useTranslations("navbar");
 
-  console.log({ data });
-
   if (!!data?.userInfo) return null;
 
   if (isLoading) {
