@@ -14,7 +14,6 @@ import {
 describe("Originator", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  let tokenPublicKey: anchor.web3.PublicKey;
   const program = anchor.workspace.Hackathon as anchor.Program<Hackathon>;
   const caller = anchor.web3.Keypair.generate();
   let token: PublicKey;
@@ -35,7 +34,7 @@ describe("Originator", () => {
   beforeAll(async () => {
     await airdropSol(caller.publicKey, 1);
 
-    tokenPublicKey = await createMint(
+    token = await createMint(
       anchor.getProvider().connection,
       caller,
       caller.publicKey,
@@ -50,7 +49,7 @@ describe("Originator", () => {
       .accounts({
         originator: originatorPubKey,
         originatorTokenAccount: originatorTokenAccountPubKey,
-        stableCoin: tokenPublicKey,
+        stableCoin: token,
         payer: caller.publicKey,
         caller: caller.publicKey,
       })
