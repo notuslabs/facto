@@ -184,7 +184,7 @@ pub struct WithdrawInvestments<'info> {
     pub originator: Account<'info, Originator>,
     #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
-    #[account(mut)]
+    #[account(mut)] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
 
     pub system_program: Program<'info, System>,
