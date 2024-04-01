@@ -33,7 +33,7 @@ export default function InvestmentsDesktopTable({ data }: DesktopTableProps) {
       {data.map((tableData) => (
         <Table className="rounded-2xl bg-secondary p-4" key={tableData.offerName}>
           <>
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableRow>
                 <TableHead className="h-4 w-[1/9] pt-3">{t("offer-name")}</TableHead>
                 <TableHead className="h-4 w-[1/9] pt-3">{t("raised-value")}</TableHead>
@@ -60,10 +60,7 @@ export default function InvestmentsDesktopTable({ data }: DesktopTableProps) {
                   {tableData.installments} {t("installments")}
                 </TableCell>
                 <TableCell className="pb-3 pt-2">
-                  <a
-                    className="flex items-center gap-2 transition-opacity hover:opacity-50"
-                    href={tableData.link}
-                  >
+                  <a className="flex items-center gap-2" href={tableData.link}>
                     <ExternalLink size={20} />
                     <span className="underline underline-offset-2">{t("see-offer")}</span>
                   </a>
