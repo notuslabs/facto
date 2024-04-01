@@ -201,7 +201,7 @@ pub struct PayInstallment<'info> {
 
     #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
-    #[account()]
+    #[account()] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
     #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump=offer.vault_payment_bump)]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
