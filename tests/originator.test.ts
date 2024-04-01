@@ -2,7 +2,6 @@ import * as anchor from "@coral-xyz/anchor";
 import type { Hackathon } from "../target/types/hackathon";
 import { PublicKey } from "@solana/web3.js";
 import { airdropSol } from "./utils";
-import { expect } from "chai";
 
 describe("Originator", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
@@ -15,7 +14,7 @@ describe("Originator", () => {
     program.programId
   );
 
-  before(async () => {
+  beforeAll(async () => {
     await airdropSol(caller.publicKey, 1);
   });
 
