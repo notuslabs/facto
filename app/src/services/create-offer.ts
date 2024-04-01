@@ -3,17 +3,17 @@ import { nanoid } from "nanoid";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import { Program, utils } from "@coral-xyz/anchor";
 import { FAKE_MINT } from "@/lib/constants";
-import { Hackathon } from "@/lib/idl";
+import { Hackathon } from "@/lib/idl/facto-idl-types";
 
 export type CreateOfferParams = {
   description: string;
   deadlineDate: Date;
   goalAmount: number;
-  startDate?: Date;
+  startDate: Date;
   minAmountInvest: number;
   interestRatePercent: number;
   installmentsTotal: number;
-  installmentsStartDate?: Date;
+  installmentsStartDate: Date;
 
   caller: Keypair;
   program: Program<Hackathon>;
@@ -56,11 +56,11 @@ export async function createOffer({
       description,
       new BN(deadlineDate.getTime()),
       new BN(goalAmount),
-      startDate ? new BN(startDate.getTime()) : null,
+      new BN(startDate.getTime()),
       new BN(minAmountInvest),
       interestRatePercent,
-      installmentsTotal,
-      installmentsStartDate ? new BN(installmentsStartDate.getTime()) : null,
+      new BN(installmentsTotal),
+      new BN(installmentsStartDate.getTime()),
     )
     .accounts({
       originator,

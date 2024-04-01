@@ -1,14 +1,15 @@
 "use client";
 
-import { pathnames } from "@/config";
+import { useSession } from "@/hooks/use-session";
 import { cn } from "@/lib/utils";
 import { Link, usePathname } from "@/navigation";
 import { CircleDollarSign, HelpingHand, Receipt } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useSession } from "../auth-provider";
 
 export default function MobileExtraNavbar() {
-  const { userInfo } = useSession();
+  const { data } = useSession();
+
+  const userInfo = data?.userInfo;
 
   const t = useTranslations("navbar");
   const pathname = usePathname();
@@ -17,19 +18,19 @@ export default function MobileExtraNavbar() {
     {
       key: 1,
       name: t("transactions"),
-      href: "/transactions",
+      href: "/transactions" as const,
       icon: <CircleDollarSign size={20} />,
     },
     {
       key: 2,
       name: t("my-investments"),
-      href: "/investments",
+      href: "/investments" as const,
       icon: <HelpingHand size={20} />,
     },
     {
       key: 3,
       name: t("receivables"),
-      href: "/receivables",
+      href: "/receivables" as const,
       icon: <Receipt size={20} />,
     },
   ];
@@ -40,7 +41,7 @@ export default function MobileExtraNavbar() {
     <div className="sticky bottom-0 flex items-start justify-between bg-primary p-4 text-xs dark:bg-primary-foreground md:hidden">
       {options.map((option) => (
         <Link
-          href={option.href as keyof typeof pathnames}
+          href={option.href}
           className={cn(
             pathname === option.href && "!text-primary",
             "flex w-1/3 flex-col items-center gap-2 text-center text-disabled-foreground transition-colors dark:text-muted-foreground",

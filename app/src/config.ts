@@ -30,7 +30,7 @@ export const pathnames = {
   },
   "/transactions": {
     en: "/transactions",
-    "pt-br": "/transactions",
+    "pt-BR": "/transactions",
   },
 } satisfies Pathnames<typeof locales>;
 

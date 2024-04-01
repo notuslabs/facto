@@ -1,5 +1,5 @@
 import { BN, IdlAccounts } from "@coral-xyz/anchor";
-import { IDL } from "@/lib/idl";
+import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
@@ -18,11 +18,9 @@ export class Offer {
     this.originator = rawOriginator;
     this.deadlineDate = new Date(raw.deadlineDate.toNumber());
     this.acquiredAmount = raw.acquiredAmount;
-    this.installmentsTotal = raw.installmentsTotal;
-    this.installmentsStartDate = raw.installmentsStartDate
-      ? new Date(raw.installmentsStartDate.toNumber())
-      : undefined;
-    this.minAmountInvest = raw.minAmountInvest;
+    this.installmentsTotal = raw.installmentsCount;
+    (this.installmentsStartDate = new Date(raw.installmentsNextPaymentDate.toNumber())),
+      (this.minAmountInvest = raw.minAmountInvest);
     this.startDate = raw.startDate ? new Date(raw.startDate.toNumber()) : undefined;
     this.creditScore = raw.creditScore;
     this.createdAt = new Date(raw.createdAt.toNumber());
