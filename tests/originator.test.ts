@@ -1,9 +1,15 @@
-import * as anchor from '@coral-xyz/anchor';
-import type { Hackathon } from '../target/types/hackathon';
-import { PublicKey } from '@solana/web3.js';
-import { airdropSol } from './utils';
-import { expect } from 'chai';
-import { createMint, getAccount } from '@solana/spl-token';
+import * as anchor from "@coral-xyz/anchor";
+import type { Hackathon } from "../target/types/hackathon";
+import { PublicKey } from "@solana/web3.js";
+import { airdropSol } from "./utils";
+import { expect } from "chai";
+import { BN } from "bn.js";
+import {
+  createMint,
+  getAccount,
+  mintTo,
+  createAccount,
+} from "@solana/spl-token";
 
 describe('Originator', () => {
   anchor.setProvider(anchor.AnchorProvider.env());
@@ -11,6 +17,7 @@ describe('Originator', () => {
   let tokenPublicKey: anchor.web3.PublicKey;
   const program = anchor.workspace.Hackathon as anchor.Program<Hackathon>;
   const caller = anchor.web3.Keypair.generate();
+  let token: PublicKey;
 
   const [originatorPubKey] = PublicKey.findProgramAddressSync(
     [anchor.utils.bytes.utf8.encode('originator'), caller.publicKey.toBuffer()],
@@ -19,11 +26,12 @@ describe('Originator', () => {
 
   const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('originator_token_account'),
+      anchor.utils.bytes.utf8.encode("originator_token_account"),
       originatorPubKey.toBuffer(),
     ],
     program.programId
   );
+
 
   beforeAll(async () => {
     await airdropSol(caller.publicKey, 1);
@@ -39,12 +47,14 @@ describe('Originator', () => {
 
   it('should be able to become an originator', async () => {
     await program.methods
-      .createOriginator('Test', 'description', 'SLUG')
+      .createOriginator("Test", "description", "test")
       .accounts({
         originator: originatorPubKey,
         originatorTokenAccount: originatorTokenAccountPubKey,
         stableCoin: tokenPublicKey,
         payer: caller.publicKey,
+        originatorTokenAccount: originatorTokenAccountPubKey,
+        stableCoin: token,
         caller: caller.publicKey,
       })
       .signers([caller])
@@ -92,5 +102,60 @@ describe('Originator', () => {
     expect(originatorInfo).not.to.be.null;
     expect(originatorInfo.name).to.equal('Test 2');
     expect(originatorInfo.description).to.equal('description 2');
+  });
+
+  it("should be able to withdraw all tokens", async () => {
+    const receiverTokenAccountPubKey = await createAccount(
+      anchor.getProvider().connection,
+      caller,
+      token,
+      caller.publicKey
+    );
+
+    await mintTo(
+      anchor.getProvider().connection,
+      caller,
+      token,
+      originatorTokenAccountPubKey,
+      caller,
+      100
+    );
+
+    const [originatorTokenAccount, receiverTokenAccount] = await Promise.all([
+      getAccount(anchor.getProvider().connection, originatorTokenAccountPubKey),
+      getAccount(anchor.getProvider().connection, receiverTokenAccountPubKey),
+    ]);
+
+    expect(originatorTokenAccount.amount).to.equal(100n);
+    expect(receiverTokenAccount.amount).to.equal(0n);
+
+    const tx = await program.methods
+      .withdrawOriginatorTokens(new BN(10))
+      .accounts({
+        caller: caller.publicKey,
+        payer: caller.publicKey,
+        toTokenAccount: receiverTokenAccountPubKey,
+        originator: originatorPubKey,
+        originatorTokenAccount: originatorTokenAccountPubKey,
+        stableToken: token,
+      })
+      .signers([caller])
+      .rpc({ commitment: "processed" })
+      .catch((error) => {
+        console.log(error);
+        expect(false).to.equal(true);
+      });
+
+    const [originatorTokenAccountAfter, receiverTokenAccountAfter] =
+      await Promise.all([
+        getAccount(
+          anchor.getProvider().connection,
+          originatorTokenAccountPubKey
+        ),
+        getAccount(anchor.getProvider().connection, receiverTokenAccountPubKey),
+      ]);
+
+    expect(originatorTokenAccountAfter.amount).to.equal(90n);
+    expect(receiverTokenAccountAfter.amount).to.equal(10n);
   });
 });
