@@ -8,14 +8,14 @@ pub fn create_originator(
     description: String,
     token_slug: String,
 ) -> Result<()> {
-    require!(name.len() < 30, ValidationError::MaxNameLengthExceeded);
+    require!(name.len() < 30, ValidationErrors::MaxNameLengthExceeded);
     require!(
         description.len() < 500,
-        ValidationError::MaxDescriptionLengthExceeded
+        ValidationErrors::MaxDescriptionLengthExceeded
     );
     require!(
         token_slug.len() < 30,
-        ValidationError::MaxTokenSlugLengthExceeded
+        ValidationErrors::MaxTokenSlugLengthExceeded
     );
 
     let originator = &mut ctx.accounts.originator;
@@ -36,10 +36,10 @@ pub fn edit_originator(
     name: String,
     description: String,
 ) -> Result<()> {
-    require!(name.len() < 30, ValidationError::MaxNameLengthExceeded);
+    require!(name.len() < 30, ValidationErrors::MaxNameLengthExceeded);
     require!(
         description.len() < 500,
-        ValidationError::MaxDescriptionLengthExceeded
+        ValidationErrors::MaxDescriptionLengthExceeded
     );
     let originator = &mut ctx.accounts.originator;
     originator.name = name;
