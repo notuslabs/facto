@@ -8,8 +8,6 @@ import {
   createMint,
   mintTo,
   getAccount,
-  getOrCreateAssociatedTokenAccount,
-  Account,
 } from "@solana/spl-token";
 import { advanceTime } from "./utils";
 import chai from "chai";
@@ -127,7 +125,7 @@ describe("Offer", () => {
   let stableTokenPubKey: PublicKey;
   let investorTokenAccountPubKey: PublicKey;
 
-  before(async () => {
+  beforeAll(async () => {
     await airdropSol(payer.publicKey, 30);
 
     stableTokenPubKey = await createMint(

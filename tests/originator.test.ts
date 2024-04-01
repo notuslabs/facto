@@ -25,7 +25,7 @@ describe('Originator', () => {
     program.programId
   );
 
-  before(async () => {
+  beforeAll(async () => {
     await airdropSol(caller.publicKey, 1);
 
     tokenPublicKey = await createMint(
