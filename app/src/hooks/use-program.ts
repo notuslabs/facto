@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Hackathon, IDL } from "@/lib/idl";
-import idl from "@/lib/idl/idl-json.json";
+import { Hackathon, IDL } from "@/lib/idl/facto-idl-types";
+import idl from "@/lib/idl/idl-facto.json";
 import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import { useSession } from "@/components/auth-provider";
