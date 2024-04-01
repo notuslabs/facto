@@ -71,6 +71,6 @@ export class Offer {
 
     return raw
       .map((raw, index) => new Offer(raw.account, originators[index]))
-      .sort((a, b) => b.discriminator - a.discriminator);
+      .sort((a, b) => a.discriminator - b.discriminator);
   }
 }

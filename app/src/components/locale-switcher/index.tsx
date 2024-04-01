@@ -26,7 +26,7 @@ export default function LocaleSwitcher() {
   const otherLocale = locale === "en" ? "pt-BR" : "en";
   return (
     <Button
-      className="flex gap-1 transition-opacity hover:opacity-50"
+      className="flex gap-1"
       variant="secondary"
       size="sm"
       onClick={() => changeLocale(otherLocale)}

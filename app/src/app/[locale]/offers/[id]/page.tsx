@@ -8,6 +8,7 @@ import { ReceptionCronogram } from "./_components/cronogram-card";
 import { ScoreCard } from "./_components/score-card";
 import { DetailsCard } from "./_components/yield-card";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 type OfferPageProps = {
   params: {
@@ -54,10 +55,13 @@ export default function OfferPage({ params }: OfferPageProps) {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
         <div className="flex w-full flex-col gap-8 pb-8">
           <div className="flex flex-col items-start gap-6">
-            <div className="z-50 grid w-full grid-cols-1 items-center justify-center gap-2 border-border-hover bg-card p-1 text-primary sm:grid-cols-2 lg:flex lg:w-fit">
+            <div className="z-50 grid w-full grid-cols-1 items-center justify-center gap-2 border-border-hover p-1 text-primary sm:grid-cols-2 lg:flex lg:w-fit">
               {tabs.map((tab) => (
                 <a
-                  className={`inline-flex items-center justify-center whitespace-nowrap rounded-full border p-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-3 ${activeTab === tab.name ? "border-primary-border bg-primary text-on-color-foreground" : "dark:text-primary"}`}
+                  className={cn(
+                    "inline-flex items-center justify-center whitespace-nowrap rounded-full border p-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-3",
+                    activeTab === tab.name ? "bg-primary text-on-color-foreground" : "text-primary",
+                  )}
                   href={`#${tab.name}`}
                   key={tab.name}
                   onClick={() => setActiveTab(tab.name)}

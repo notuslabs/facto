@@ -24,6 +24,22 @@ export const pathnames = {
     en: "/transactions/withdrawal",
     "pt-BR": "/transactions/withdrawal",
   },
+  "/become/investor": {
+    en: "/become/investor",
+    "pt-br": "/become/investor",
+  },
+  "/become/originator": {
+    en: "/become/originator",
+    "pt-br": "/become/originator",
+  },
+  "/offers/create": {
+    en: "/offers/create",
+    "pt-br": "/offers/create",
+  },
+  "/offers/[id]": {
+    en: "/offers/[id]",
+    "pt-br": "/offers/[id]",
+  },
 } satisfies Pathnames<typeof locales>;
 
 // Use the default: `always`

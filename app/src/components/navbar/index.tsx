@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
-import { usePathname } from "@/navigation";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/navigation";
 import { cn } from "@/lib/utils";
 import { NavbarUserButton } from "./_components/navbar-user-button";
 import { NavbarSignInButton } from "./_components/navbar-sign-in-button";
@@ -17,7 +16,6 @@ import FactoLogo from "../svgs/facto-logo";
 
 export function Navbar() {
   const t = useTranslations("navbar");
-  const locale = useLocale();
   const pathname = usePathname();
   const { userInfo } = useSession();
 
@@ -34,13 +32,13 @@ export function Navbar() {
           <div className="z-20 hidden gap-4 text-sm font-medium text-disabled-foreground dark:text-muted-foreground md:flex">
             <Link
               className={cn(pathname === "/investments" && "text-primary", "transition-colors")}
-              href={`/${locale}/investments`}
+              href="/investments"
             >
               {t("my-investments")}
             </Link>
             <Link
               className={cn(pathname === "/receivables" && "text-primary", "transition-colors")}
-              href={`/${locale}/receivables`}
+              href="/receivables"
             >
               {t("receivables")}
             </Link>

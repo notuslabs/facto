@@ -33,7 +33,7 @@ export default function InvestmentsMobileTable({ data }: DesktopTableProps) {
       {data.map((tableData) => (
         <Table className="flex flex-col rounded-2xl bg-secondary" key={tableData.offerName}>
           <TableRow className="flex flex-col gap-1 border-b border-border-hover">
-            <TableHeader className="flex justify-between text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="flex justify-between text-xs text-placeholder-foreground">
               <TableHead className="h-4 pt-3">{t("offer-name")}</TableHead>
               <TableHead className="h-4 pt-3 text-right">{t("status")}</TableHead>
             </TableHeader>
@@ -43,17 +43,14 @@ export default function InvestmentsMobileTable({ data }: DesktopTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex flex-col gap-1 border-b border-border-hover">
-            <TableHeader className="flex justify-between text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="flex justify-between text-xs text-placeholder-foreground">
               <TableHead className="h-4 pt-3">{t("invested-amount")}</TableHead>
               <TableHead className="h-4 pt-3">{t("visualize")}</TableHead>
             </TableHeader>
             <TableBody className="flex justify-between text-sm font-medium">
               <TableCell>{tableData.investedAmt}</TableCell>
               <TableCell>
-                <a
-                  className="flex items-center gap-2 transition-opacity hover:opacity-50"
-                  href={tableData.link}
-                >
+                <a className="flex items-center gap-2" href={tableData.link}>
                   <ExternalLink size={20} />
                   <span className="underline underline-offset-2">{t("see-offer")}</span>
                 </a>
@@ -61,7 +58,7 @@ export default function InvestmentsMobileTable({ data }: DesktopTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex items-center justify-between border-b border-border-hover">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead>{t("offer-total")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
@@ -69,7 +66,7 @@ export default function InvestmentsMobileTable({ data }: DesktopTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex items-center justify-between border-b border-border-hover">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead>{t("raised-value")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
@@ -77,7 +74,7 @@ export default function InvestmentsMobileTable({ data }: DesktopTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex items-center justify-between border-b border-border-hover">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead>{t("return")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
@@ -87,7 +84,7 @@ export default function InvestmentsMobileTable({ data }: DesktopTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex flex-col gap-1">
-            <TableHeader className="flex justify-between text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="flex justify-between text-xs text-placeholder-foreground">
               <TableHead className="h-4 pt-3">{t("final-date")}</TableHead>
               <TableHead className="h-4 pt-3 text-right">{t("installment-number")}</TableHead>
             </TableHeader>

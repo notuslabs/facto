@@ -5,12 +5,6 @@ import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
 import { createMint, mintTo, getAccount } from "@solana/spl-token";
-import chai from "chai";
-import chaiSubset from "chai-subset";
-
-chai.use(chaiSubset);
-
-const { expect } = chai;
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
@@ -58,7 +52,7 @@ describe("Offer", () => {
   let stableTokenPubKey: PublicKey;
   let investorTokenAccountPubKey: PublicKey;
 
-  before(async () => {
+  beforeAll(async () => {
     await airdropSol(caller.publicKey, 30);
 
     stableTokenPubKey = await createMint(
@@ -113,17 +107,20 @@ describe("Offer", () => {
       program.programId
     );
 
+    const deadlineDate = new Date().getTime() + 1000 * 60 * 60 * 24 * 30;
+    const installmentsStartDate =
+      new Date().getTime() + 1000 * 60 * 60 * 24 * 30;
     await program.methods
       .createOffer(
         offerId,
         "Offer Description",
-        new BN(1664996800),
+        new BN(deadlineDate),
         new BN(100),
         null,
         new BN(50),
         1.5,
         3,
-        null
+        new BN(installmentsStartDate)
       )
       .accounts({
         caller: caller.publicKey,
@@ -148,11 +145,15 @@ describe("Offer", () => {
       goalAmount: new BN(100),
       originator,
       installmentsTotal: 3,
-      installmentsStartDate: null,
       minAmountInvest: new BN(50),
       startDate: null,
     });
-    expect(offerAccount.deadlineDate.toString()).to.equal("1664996800");
+    expect(offerAccount.deadlineDate.toString()).to.equal(
+      deadlineDate.toString()
+    );
+    expect(offerAccount.installmentsStartDate.toString()).to.equal(
+      installmentsStartDate.toString()
+    );
   });
 
   it("should be able to deposit in the offer", async () => {

@@ -12,10 +12,7 @@ export function NavbarDepositButton() {
   if (!userInfo) return null;
 
   return (
-    <Button
-      variant="secondary"
-      className="hidden gap-2 rounded-md bg-secondary text-secondary-foreground transition-opacity hover:opacity-50 lg:flex"
-    >
+    <Button variant="secondary" className="hidden gap-2 rounded-md lg:flex">
       {t("deposit")}
       <PlusSquare size={20} className="text-facto-primary" />
     </Button>
