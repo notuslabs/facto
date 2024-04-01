@@ -37,29 +37,23 @@ pub fn create_offer(
         goal_amount <= 15_000_000,
         ValidationError::GoalAmountExceeded
     );
-    if start_date.is_some() {
-        require!(
-            start_date.unwrap() >= Clock::get()?.unix_timestamp,
-            ValidationError::StartDateMustBeInTheFuture
-        );
-    }
+    require!(
+        start_date >= Clock::get()?.unix_timestamp,
+        ValidationError::StartDateMustBeInTheFuture
+    );
     require!(
         min_amount_invest >= 1,
         ValidationError::MinAmountMustBeEqualToOrGreaterThanOne
     );
     require!(
-        interest_rate_percent >= 0.01,
-        ValidationError::InterestRatePercentMustBeGreaterThanZero
-    );
-    require!(
-        installments_total >= 1,
+        installments_count >= 1,
         ValidationError::InstallmentsTotalMustBeGreaterThanOne
     );
 
     // TODO: add check for max installment start date
     // should also check if the start date is less than the monthly period from now
     require!(
-        installments_start_date >= Clock::get()?.unix_timestamp + 2592000, // 30 days
+        installments_next_payment_date >= Clock::get()?.unix_timestamp + 2592000, // 30 days
         ValidationError::InstallmentsStartDateMustBeThirtyDaysFromNow
     );
 
@@ -149,11 +143,11 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
 pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
     require!(
         ctx.accounts.offer.originator == ctx.accounts.originator.key(),
-        OfferErrors::InvalidOriginatorSigner
+        ValidationError::InvalidOriginatorSigner
     );
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::Funded,
-        OfferErrors::OfferIsNotFunded
+        ValidationError::OfferIsNotFunded
     );
 
     let transfer = Transfer {
@@ -181,7 +175,7 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
 pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::OnTrack,
-        OfferErrors::OfferIsNotOnTrack
+        ValidationError::OfferIsNotOnTrack
     );
 
     let transfer = Transfer {
@@ -210,7 +204,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
     require!(
         ctx.accounts.investor_installment.count_received
             < ctx.accounts.offer.total_installments_paid,
-        OfferErrors::InstallmentAlreadyPaid
+        ValidationError::InstallmentAlreadyPaid
     );
 
     let amount_to_burn = ctx.accounts.investor_offer_token_account.amount
@@ -290,8 +284,6 @@ enum ValidationError {
     MinAmountMustBeEqualToOrGreaterThanOne,
     #[msg("Start date must be in the future")]
     StartDateMustBeInTheFuture,
-    #[msg("Interest rate percent must be greater than zero")]
-    InterestRatePercentMustBeGreaterThanZero,
     #[msg("Installments total must be greater than one")]
     InstallmentsTotalMustBeGreaterThanOne,
     #[msg("Installments start date must be thirty days from now")]

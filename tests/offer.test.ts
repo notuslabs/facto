@@ -10,12 +10,6 @@ import {
   getAccount,
 } from "@solana/spl-token";
 import { advanceTime } from "./utils";
-import chai from "chai";
-import chaiSubset from "chai-subset";
-
-chai.use(chaiSubset);
-
-const { expect } = chai;
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
