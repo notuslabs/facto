@@ -22,8 +22,8 @@ export function Navbar() {
   const { userInfo } = useSession();
 
   return (
-    <nav className="w-full p-4 dark:bg-background md:h-[153px] md:px-0 md:pt-8">
-      <div className="absolute -left-[15%] -top-[35%] hidden size-[531px] rounded-full bg-facto-primary opacity-[18%] blur-3xl md:block" />
+    <nav className="relative w-full p-4 dark:bg-background md:h-[153px] md:px-0 md:pt-8">
+      <div className="absolute -left-[15%] -top-[225%] hidden size-[531px] rounded-full bg-facto-primary opacity-[18%] blur-3xl md:block 2xl:left-0" />
       <div className="flex items-center justify-between md:container">
         <div className="z-20 flex items-center gap-12">
           <Link href="/" className="flex items-center justify-start gap-2">
@@ -49,12 +49,12 @@ export function Navbar() {
 
         <div className="flex items-center justify-end gap-3">
           {!userInfo && <LocaleSwitcher />}
-          <NavbarCreateAccountButton />
           <NavbarWithdrawalButton />
           <NavbarDepositButton />
           <NavbarBalance />
           <NavbarUserButton />
           <NavbarSignInButton />
+          <NavbarCreateAccountButton />
         </div>
       </div>
     </nav>

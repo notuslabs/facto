@@ -16,5 +16,9 @@ export function NavbarSignInButton() {
     return <Loader2 size={16} className="animate-spin" />;
   }
 
-  return <Button onClick={login}>{t("login")}</Button>;
+  return (
+    <Button variant="ghost" onClick={login}>
+      {t("login")}
+    </Button>
+  );
 }

@@ -1,13 +1,15 @@
 "use client";
 
 import { useSession } from "@/components/auth-provider";
-import { WalletCards } from "lucide-react";
+import { useBalance } from "@/hooks/use-get-balance";
+import { formatNumber } from "@/lib/format-number";
+import { LoaderIcon, WalletCards } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function NavbarBalance() {
   const { userInfo } = useSession();
   const t = useTranslations("navbar");
-  const totalBalance = "42.190,11";
+  const { balance, isLoading } = useBalance();
 
   if (!userInfo) return null;
 
@@ -18,7 +20,8 @@ export function NavbarBalance() {
         <span className="font-regular text-start text-xs text-disabled-foreground dark:text-muted-foreground">
           {t("balance")}
         </span>
-        <span>R$ {totalBalance}</span>
+        {isLoading && <LoaderIcon className="animate-spin text-facto-primary" size={16} />}
+        {!isLoading && <span>{formatNumber(balance ?? 0)}</span>}
       </div>
     </span>
   );
