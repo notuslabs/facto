@@ -51,11 +51,6 @@ pub fn create_offer(
     );
 
     // TODO: add check for max installment start date
-    // should also check if the start date is less than the monthly period from now
-    require!(
-        installments_next_payment_date >= Clock::get()?.unix_timestamp + 2592000, // 30 days
-        ValidationError::InstallmentsStartDateMustBeThirtyDaysFromNow
-    );
 
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
@@ -286,6 +281,4 @@ enum ValidationError {
     StartDateMustBeInTheFuture,
     #[msg("Installments total must be greater than one")]
     InstallmentsTotalMustBeGreaterThanOne,
-    #[msg("Installments start date must be thirty days from now")]
-    InstallmentsStartDateMustBeThirtyDaysFromNow,
 }

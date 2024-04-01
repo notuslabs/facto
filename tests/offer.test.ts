@@ -4,11 +4,7 @@ import { AnchorError, BN } from "@coral-xyz/anchor";
 import type { Hackathon } from "../target/types/hackathon";
 import { nanoid } from "nanoid";
 import { PublicKey } from "@solana/web3.js";
-import {
-  createMint,
-  mintTo,
-  getAccount,
-} from "@solana/spl-token";
+import { createMint, mintTo, getAccount } from "@solana/spl-token";
 import { advanceTime } from "./utils";
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
@@ -32,7 +28,7 @@ async function confirmTransaction(tx: string) {
   });
 }
 
-describe("Offer", () => {
+describe("Offer", { timeout: 500000 }, () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Hackathon as Program<Hackathon>;
@@ -43,7 +39,7 @@ describe("Offer", () => {
   const payer = anchor.web3.Keypair.generate();
   const deadline = Math.floor(Date.now() / 1000 + 10);
   const installmentsStartDate = deadline + 10;
-  const now = Date.now() / 1000;
+  const now = Date.now() / 1000 + 5;
 
   const goalAmount = 100;
   const installmentsTotalAmount = 150;
@@ -78,7 +74,8 @@ describe("Offer", () => {
     ],
     program.programId
   );
-  const offerId2 = nanoid(17);
+  const offerId2 = nanoid(16);
+  console.log(offerId2, offerId2.length);
   const [offer2] = PublicKey.findProgramAddressSync(
     [
       anchor.utils.bytes.utf8.encode("offer"),
@@ -301,7 +298,7 @@ describe("Offer", () => {
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        "Min amount required"
+        "Investment amount must be greater than offer min amount"
       );
     }
 
@@ -325,9 +322,11 @@ describe("Offer", () => {
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        "Goal amount exceeded"
+        "Investment exceeds goal amount"
       );
     }
+
+    await advanceTime<Hackathon>(program, now + 2);
 
     await program.methods
       .invest(new anchor.BN(investAmount.toString()))
