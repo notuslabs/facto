@@ -16,7 +16,7 @@ export function NavbarBalance() {
       <WalletCards size={24} />
       <div className="flex flex-col">
         <span>R$ {totalBalance}</span>
-        <span className="font-regular text-start text-xs text-disabled-foreground dark:text-muted-foreground">
+        <span className="font-regular text-start text-xs text-muted-foreground">
           {t("balance")}
         </span>
       </div>

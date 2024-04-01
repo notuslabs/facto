@@ -1,11 +1,11 @@
 import { formatBigNumber } from "@/lib/format-number";
 import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ScoreBadge } from "./score-badge";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { Offer } from "@/structs/Offer";
 import BN from "bn.js";
 
@@ -26,7 +26,7 @@ function OfferCardHeader({
 }: OfferCardHeaderProps) {
   return (
     <div className="rounded-tl-lg rounded-tr-lg bg-subtle px-4 py-3">
-      <div className="flex items-center justify-between gap-2 dark:text-primary">
+      <div className="flex items-center justify-between gap-2 text-primary">
         <h3 className="text-lg font-semibold">{offerName}</h3>
         <span className="font-bold">
           {percent}% <span className="text-xs font-light">{period}</span>
@@ -50,8 +50,8 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
   const t = useTranslations("home.offers.card.body");
 
   return (
-    <div className="flex w-full flex-col dark:text-muted-foreground">
-      <div className="flex w-full flex-col gap-2 p-4 dark:bg-secondary">
+    <div className="flex w-full flex-col text-muted-foreground">
+      <div className="flex w-full flex-col gap-2 bg-secondary p-4">
         <div className="flex w-full flex-col gap-3">
           <div className="flex items-center justify-between gap-2">
             <p className="text-xs font-semibold">{t("raised-total")}</p>
@@ -69,19 +69,19 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
           value={(amountAcquired.toNumber() / amountToBeAcquired.toNumber()) * 100}
         />
       </div>
-      <div className="flex items-center justify-between gap-2 border-t px-4 py-[0.625rem] dark:border-border-hover dark:bg-secondary">
+      <div className="flex items-center justify-between gap-2 border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("project-status")}</p>
-        <Badge variant="secondary" className="rounded-md text-muted-foreground dark:bg-background">
+        <Badge variant="secondary" className="rounded-md bg-background text-muted-foreground">
           {t("in-fundraising")}
         </Badge>
       </div>
-      <div className="flex items-center justify-between gap-2 border-b border-t px-4 py-[0.625rem] dark:border-border-hover dark:bg-secondary">
+      <div className="flex items-center justify-between gap-2 border-b border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("credit-score")}</p>
         <ScoreBadge score={creditScore} />
       </div>
-      <div className="flex items-center justify-between gap-2 border-b px-4 py-[0.625rem] dark:border-border-hover dark:bg-secondary">
+      <div className="flex items-center justify-between gap-2 border-b border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("payment-frequency")}</p>
-        <span className="text-xs font-semibold dark:text-primary">{t("monthly")}</span>
+        <span className="text-xs font-semibold text-primary">{t("monthly")}</span>
       </div>
     </div>
   );
@@ -95,17 +95,20 @@ type OfferCardFooterProps = {
 
 function OfferCardFooter({ installments, endDate, offerId }: OfferCardFooterProps) {
   const t = useTranslations("home.offers.card.footer");
-  const locale = useLocale();
   return (
-    <div className="flex items-center justify-between gap-2 rounded-bl-lg rounded-br-lg px-4 pb-4 pt-3 dark:bg-secondary">
+    <div className="flex items-center justify-between gap-2 rounded-bl-lg rounded-br-lg bg-secondary px-4 pb-4 pt-3">
       <p className="flex flex-col gap-1 text-xs text-muted-foreground">
         {t("receive-in", { installments })}
-        <span className="block text-sm font-semibold dark:text-primary">
-          {t("date", { endDate })}
-        </span>
+        <span className="block text-sm font-semibold text-primary">{t("date", { endDate })}</span>
       </p>
 
-      <Link className="flex items-center gap-2" href={`${locale}/offers/${offerId}`}>
+      <Link
+        className="flex items-center gap-2"
+        href={{
+          pathname: "/offers/[id]",
+          params: { id: offerId },
+        }}
+      >
         <Button variant="default" size="sm">
           {t("invest")}
           <HelpingHand size={16} />
@@ -123,7 +126,7 @@ export function OfferCard({ offer }: OfferCardProps) {
   const t = useTranslations("home.offers.card.header");
 
   return (
-    <div className="rounded-lg border dark:border-border">
+    <div className="rounded-lg border border-border">
       <OfferCardHeader
         offerName={offer.name}
         originatorName={offer.originator.name}

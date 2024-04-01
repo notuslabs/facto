@@ -8,7 +8,9 @@ async function main() {
   await copyFile(join(__dirname, "..", "target/types/hackathon.ts"), join(__dirname, "..", "app/src/lib/idl/facto-idl-types.ts"))
   const dotenv = await readFile(join(__dirname, "..", ".env"), 'utf-8');
   const programId = dotenv.split("=")[1];
-  idl.metadata = programId
+  idl.metadata = {
+    address: programId
+  }
   await writeFile(join(__dirname, "..", "app/src/lib/idl/idl-facto.json"), JSON.stringify(idl));
 }
 

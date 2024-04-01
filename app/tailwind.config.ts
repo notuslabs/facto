@@ -23,6 +23,9 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
+        facto: {
+          primary: "var(--facto-primary-green)",
+        },
         success: {
           foreground: "var(--success-foreground)",
           strong: {

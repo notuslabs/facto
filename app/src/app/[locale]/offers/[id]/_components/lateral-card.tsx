@@ -10,9 +10,9 @@ export function LateralCard() {
   const date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30);
 
   return (
-    <aside className="flex flex-col rounded-lg dark:bg-secondary dark:text-primary">
+    <aside className="flex flex-col rounded-lg bg-secondary text-primary">
       <div className="p-4">
-        <Button className="flex gap-2 bg-primary text-muted-foreground dark:bg-subtle dark:text-placeholder-foreground md:hidden">
+        <Button className="flex gap-2 bg-subtle text-placeholder-foreground md:hidden">
           <div className="flex size-5 items-center justify-center rounded-full bg-black">
             <Smile className="text-purple-500" size={14} />
           </div>
@@ -23,15 +23,13 @@ export function LateralCard() {
 
       <div className="flex justify-between px-4 md:p-6">
         <div>
-          <p className="text-placeholder text-2xl font-semibold text-muted-foreground dark:text-placeholder-foreground">
-            $0
-          </p>
-          <p className="text-xs text-primary dark:text-primary">
+          <p className="text-placeholder text-2xl font-semibold text-placeholder-foreground">$0</p>
+          <p className="text-xs text-primary">
             {t("your-balance")}
             <span className="font-bold underline underline-offset-2">R$ 69.420,24</span>
           </p>
         </div>
-        <Button className="hidden gap-2 bg-primary text-muted-foreground dark:bg-subtle dark:text-placeholder-foreground md:flex">
+        <Button className="hidden gap-2 bg-subtle text-placeholder-foreground md:flex">
           <div className="flex size-5 items-center justify-center rounded-full bg-black">
             <Smile className="text-purple-500" size={14} />
           </div>
@@ -44,15 +42,15 @@ export function LateralCard() {
         <Button
           size="lg"
           variant="secondary"
-          className="w-full gap-2 bg-primary text-muted-foreground dark:bg-subtle dark:text-placeholder-foreground"
+          className="w-full gap-2 bg-subtle text-placeholder-foreground"
         >
           {t("invest-now")}
           <HelpingHand size={16} />
         </Button>
       </div>
 
-      <div className="rounded-bl-lg rounded-br-lg border dark:bg-primary-foreground">
-        <div className="flex justify-between px-4 py-[14px] text-sm font-medium text-disabled-foreground dark:text-muted-foreground md:px-6">
+      <div className="rounded-bl-lg rounded-br-lg border bg-primary-foreground">
+        <div className="flex justify-between px-4 py-[14px] text-sm font-medium text-muted-foreground md:px-6">
           <p>{t("you-invested")}</p>
           <span className="font-semibold">R$ 420,00</span>
         </div>

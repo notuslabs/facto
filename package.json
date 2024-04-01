@@ -2,6 +2,7 @@
     "scripts": {
         "build": "node ./scripts/pre-build.js && anchor build && node ./scripts/post-build.js",
         "deploy": "npm run build && anchor deploy",
+        "test": "node ./scripts/pre-build.js && anchor test && node ./scripts/post-build.js",
         "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
         "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
     },

@@ -1,6 +1,6 @@
 import { env } from "@/env";
-import { IDL } from "@/lib/idl";
-import idl from "@/lib/idl/idl-json.json";
+import { IDL } from "@/lib/idl/facto-idl-types";
+import idl from "@/lib/idl/idl-facto.json";
 import { Program } from "@coral-xyz/anchor";
 import { Connection } from "@solana/web3.js";
 

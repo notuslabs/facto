@@ -52,7 +52,7 @@ export function ReceptionCronogram() {
     },
   ];
   return (
-    <div className="rounded-2xl text-sm dark:bg-primary-foreground dark:text-primary">
+    <div className="rounded-2xl bg-primary-foreground text-sm text-primary">
       <h2 className="p-6 text-xl font-bold md:px-8 md:py-6">{t("title")}</h2>
       <Table>
         <TableHeader className="text-sm">
@@ -65,7 +65,7 @@ export function ReceptionCronogram() {
         </TableHeader>
         <TableBody>
           {tableData.map((tableData) => (
-            <TableRow className="border-b dark:border-border" key={tableData.data}>
+            <TableRow className="border-b border-border" key={tableData.data}>
               <TableCell>{tableData.data}</TableCell>
               <TableCell>{tableData.paymentNumber}</TableCell>
               <TableCell>{tableData.totalAmount}</TableCell>

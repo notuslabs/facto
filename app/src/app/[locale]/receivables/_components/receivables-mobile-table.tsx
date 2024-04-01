@@ -28,7 +28,7 @@ export default function ReceivablesMobileTable({ data }: MobileTableProps) {
       {data.map((tableData) => (
         <Table className="flex flex-col rounded-2xl bg-secondary" key={tableData.offerName}>
           <TableRow className="flex items-center justify-between border-b border-border-hover">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead>{t("offer-name")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
@@ -36,7 +36,7 @@ export default function ReceivablesMobileTable({ data }: MobileTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex items-center justify-between border-b border-border-hover">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead>{t("date")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
@@ -44,7 +44,7 @@ export default function ReceivablesMobileTable({ data }: MobileTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex items-center justify-between border-b border-border-hover">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead>{t("installment")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
@@ -52,7 +52,7 @@ export default function ReceivablesMobileTable({ data }: MobileTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex items-center justify-between border-b border-border-hover">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead className="h-4 pt-3">{t("installment-value")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
@@ -60,7 +60,7 @@ export default function ReceivablesMobileTable({ data }: MobileTableProps) {
             </TableBody>
           </TableRow>
           <TableRow className="flex items-center justify-between">
-            <TableHeader className="text-xs text-muted-foreground dark:text-placeholder-foreground">
+            <TableHeader className="text-xs text-placeholder-foreground">
               <TableHead className="h-4 pt-3 text-right">{t("status")}</TableHead>
             </TableHeader>
             <TableBody className="text-sm font-medium">
