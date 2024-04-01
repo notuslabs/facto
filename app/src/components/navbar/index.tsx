@@ -31,16 +31,35 @@ export function Navbar() {
 
           <div className="z-20 hidden gap-4 text-sm font-medium text-disabled-foreground dark:text-muted-foreground md:flex">
             <Link
-              className={cn(pathname === "/investments" && "text-primary", "transition-colors")}
+              className={cn(
+                pathname.startsWith("/investments") &&
+                  "border-facto-primary text-facto-primary underline decoration-facto-primary decoration-[3px] underline-offset-8",
+                "transition-colors",
+              )}
               href="/investments"
             >
               {t("my-investments")}
             </Link>
             <Link
-              className={cn(pathname === "/receivables" && "text-primary", "transition-colors")}
+              className={cn(
+                pathname.startsWith("/receivables") &&
+                  "border-facto-primary text-facto-primary underline decoration-facto-primary decoration-[3px] underline-offset-8",
+                "transition-colors",
+              )}
               href="/receivables"
             >
               {t("receivables")}
+            </Link>
+
+            <Link
+              className={cn(
+                pathname.startsWith("/transactions") &&
+                  "border-facto-primary text-facto-primary underline decoration-facto-primary decoration-[3px] underline-offset-8",
+                "transition-colors",
+              )}
+              href="/transactions"
+            >
+              {t("transactions")}
             </Link>
           </div>
         </div>
