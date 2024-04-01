@@ -29,11 +29,11 @@ pub mod hackathon {
         description: String,
         deadline_date: i64,
         goal_amount: u64,
-        start_date: Option<i64>,
+        start_date: i64,
         min_amount_invest: u64,
-        interest_rate_percent: f32,
-        installments_total: u8,
-        installments_start_date: i64,
+        installments_count: u8,
+        installments_total_amount: u64,
+        installments_next_payment_date: i64,
     ) -> Result<()> {
         instructions::create_offer(
             ctx,
@@ -43,9 +43,9 @@ pub mod hackathon {
             goal_amount,
             start_date,
             min_amount_invest,
-            interest_rate_percent,
-            installments_total,
-            installments_start_date,
+            installments_count,
+            installments_total_amount,
+            installments_next_payment_date,
         )
     }
 
@@ -57,11 +57,15 @@ pub mod hackathon {
         instructions::withdraw_investments(ctx)
     }
 
-    pub fn edit_originator(
-        ctx: Context<EditOriginator>,
-        name: String,
-        description: String,
-    ) -> Result<()> {
+    pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
+        instructions::pay_installment(ctx)
+    }
+
+    pub fn withdraw_installment(ctx: Context<WithdrawInstallment>) -> Result<()> {
+        instructions::withdraw_installments(ctx)
+    }
+
+    pub fn edit_originator(ctx: Context<EditOriginator>, name: String, description: String) -> Result<()> {
         instructions::edit_originator(ctx, name, description)
     }
 
