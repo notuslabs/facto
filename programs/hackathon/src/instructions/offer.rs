@@ -62,13 +62,9 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
     ctx.accounts.offer.acquired_amount += amount;
 
     let transfer = Transfer {
-        from: ctx
-            .accounts
-            .investor_token_account
-            .to_account_info()
-            .clone(),
-        to: ctx.accounts.vault_token_account.to_account_info().clone(),
-        authority: ctx.accounts.investor.to_account_info().clone(),
+        from: ctx.accounts.investor_token_account.to_account_info(),
+        to: ctx.accounts.vault_token_account.to_account_info(),
+        authority: ctx.accounts.investor.to_account_info(),
     };
     let cpi_program = ctx.accounts.token_program.to_account_info();
 
@@ -86,13 +82,9 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
     )?;
 
     let mint_to = MintTo {
-        mint: ctx.accounts.offer_token.to_account_info().clone(),
-        to: ctx
-            .accounts
-            .investor_offer_token_account
-            .to_account_info()
-            .clone(),
-        authority: ctx.accounts.offer.to_account_info().clone(),
+        mint: ctx.accounts.offer_token.to_account_info(),
+        to: ctx.accounts.investor_offer_token_account.to_account_info(),
+        authority: ctx.accounts.offer.to_account_info(),
     };
 
     token::mint_to(
@@ -122,13 +114,9 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
     );
 
     let transfer = Transfer {
-        authority: ctx.accounts.offer.to_account_info().clone(),
-        from: ctx.accounts.vault_token_account.to_account_info().clone(),
-        to: ctx
-            .accounts
-            .originator_token_account
-            .to_account_info()
-            .clone(),
+        authority: ctx.accounts.offer.to_account_info(),
+        from: ctx.accounts.vault_token_account.to_account_info(),
+        to: ctx.accounts.originator_token_account.to_account_info(),
     };
 
     token::transfer(
@@ -154,10 +142,7 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
     );
 
     let transfer = Transfer {
-        from: ctx
-            .accounts
-            .originator_token_account
-            .to_account_info(),
+        from: ctx.accounts.originator_token_account.to_account_info(),
         to: ctx.accounts.vault_payment_token_account.to_account_info(),
         authority: ctx.accounts.originator.to_account_info(),
     };
