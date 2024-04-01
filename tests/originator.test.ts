@@ -20,7 +20,7 @@ describe("Originator", () => {
 
   it("should be able to become an originator", async () => {
     await program.methods
-      .createOriginator("Test", "description")
+      .createOriginator("Test", "description", "test")
       .accounts({
         originator: originatorPubKey,
         payer: caller.publicKey,

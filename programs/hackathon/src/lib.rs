@@ -1,9 +1,13 @@
 use anchor_lang::prelude::*;
 use state::*;
 
-declare_id!("7sffxVRTvBY1CUezQcbWAC4J6Gp134tktjrzLExnsfcn");
+#[macro_use]
+extern crate dotenv_codegen;
+
+declare_id!(pubkey::str_to_pubkey(dotenv!("FACTO_PROGRAM_ID")));
 
 pub mod instructions;
+pub mod pubkey;
 pub mod state;
 
 #[program]
@@ -29,7 +33,7 @@ pub mod hackathon {
         min_amount_invest: u64,
         interest_rate_percent: f32,
         installments_total: u8,
-        installments_start_date: Option<i64>,
+        installments_start_date: i64,
     ) -> Result<()> {
         instructions::create_offer(
             ctx,
