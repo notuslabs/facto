@@ -1,7 +1,7 @@
 "use client";
 
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
-import Big from "big.js";
+import BN from "bn.js";
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import { createMint } from "@solana/spl-token";
@@ -22,7 +22,7 @@ type TokenAccountOverviewProps = {
 };
 
 function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewProps) {
-  const parsedBalance = Big(amount.toString()).div(1e9).toString();
+  const parsedBalance = new BN(amount.toString()).div(new BN(1e9)).toString();
 
   return (
     <div className="rounded-lg border border-border p-4">

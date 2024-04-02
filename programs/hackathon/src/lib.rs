@@ -57,19 +57,19 @@ pub mod hackathon {
         )
     }
 
-    pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
+    pub fn invest(ctx: Context<Invest>, _offer_id: String, amount: u64) -> Result<()> {
         instructions::invest(ctx, amount)
     }
 
-    pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
+    pub fn withdraw_investments(ctx: Context<WithdrawInvestments>, _offer_id: String) -> Result<()> {
         instructions::withdraw_investments(ctx)
     }
 
-    pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
+    pub fn pay_installment(ctx: Context<PayInstallment>, _offer_id: String) -> Result<()> {
         instructions::pay_installment(ctx)
     }
 
-    pub fn withdraw_installment(ctx: Context<WithdrawInstallment>) -> Result<()> {
+    pub fn withdraw_installment(ctx: Context<WithdrawInstallment>, _offer_id: String) -> Result<()> {
         instructions::withdraw_installments(ctx)
     }
 
