@@ -2,11 +2,16 @@ import { IdlAccounts } from "@coral-xyz/anchor";
 import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
 import { addMonths, subMonths } from "date-fns";
+import { getOfferInterestRate } from "@/lib/utils";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
 
 export enum OfferStatus {
   Open = "Open",
+  Finished = "Finished",
+  OnTrack = "OnTrack",
+  Funded = "Funded",
+  Failed = "Failed",
 }
 
 // Remember to only use JSON serializable types bc of nextjs and react-query caching
@@ -15,7 +20,11 @@ export class Offer {
     this.id = raw.id;
     this.description = raw.description;
     this.discriminator = raw.discriminator;
-    this.interestRatePercent = raw.interestRatePercent;
+    this.interestRatePercent = getOfferInterestRate(
+      raw.goalAmount.toNumber(),
+      raw.installmentsTotalAmount.toNumber(),
+      raw.installmentsCount,
+    );
     this.goalAmount = raw.goalAmount.toNumber();
     this.originator = rawOriginator;
     this.deadlineDate = new Date(raw.deadlineDate.toNumber()).toISOString();
@@ -28,11 +37,11 @@ export class Offer {
     this.minAmountInvest = raw.minAmountInvest.toNumber();
     this.startDate = new Date(raw.startDate.toNumber()).toISOString();
     this.creditScore = raw.creditScore;
-    this.createdAt = new Date(raw.createdAt.toNumber()).toISOString();
+    this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
     this.installmentsStartDate = subMonths(
       this.installmentsNextPaymentDate,
-      this.installmentsCount - 1,
+      this.totalInstallmentsPaid,
     ).toISOString();
     this.installmentsEndDate = addMonths(
       this.installmentsStartDate,
@@ -48,11 +57,34 @@ export class Offer {
 
   public description: string;
   public discriminator: number;
-  public interestRatePercent: number;
+  public interestRatePercent: string;
   public goalAmount: number;
 
   public get status(): OfferStatus {
-    return OfferStatus.Open;
+    const currentTime = new Date().getTime();
+    const deadlineTime = new Date(this.deadlineDate).getTime();
+    const startTime = new Date(this.startDate).getTime();
+
+    if (
+      currentTime < deadlineTime &&
+      currentTime >= startTime &&
+      this.acquiredAmount < this.goalAmount
+    ) {
+      return OfferStatus.Open;
+    } else if (this.acquiredAmount === this.goalAmount && currentTime >= deadlineTime) {
+      if (this.totalInstallmentsPaid === this.installmentsCount) {
+        return OfferStatus.Finished;
+      }
+
+      const nextPaymentTime = new Date(this.installmentsNextPaymentDate).getTime();
+      if (currentTime >= nextPaymentTime) {
+        return OfferStatus.OnTrack;
+      }
+
+      return OfferStatus.Funded;
+    }
+
+    return OfferStatus.Failed;
   }
 
   public deadlineDate: string;

@@ -11,11 +11,10 @@ import { useProgram } from "./use-program";
 
 export function useWithdrawal() {
   const queryClient = useQueryClient();
-  const { data } = useSession();
   const { data: programData } = useProgram();
 
-  const solanaWallet = data?.solanaWallet;
   const program = programData?.program;
+  const keypair = programData?.keypair;
 
   return useMutation({
     mutationFn: async ({
@@ -25,13 +24,10 @@ export function useWithdrawal() {
       amount: number;
       toTokenAccount: PublicKey;
     }) => {
-      if (!solanaWallet || !program) return;
-
-      const privateKey = await getPrivateKey(solanaWallet);
-      const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
+      if (!keypair || !program) return;
 
       const [investorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor"), loggedUserWallet.publicKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
@@ -47,8 +43,8 @@ export function useWithdrawal() {
           investorTokenAccount: investorTokenAccountPubKey,
           toTokenAccount: toTokenAccount,
           stableCoin: FAKE_MINT,
-          payer: loggedUserWallet.publicKey,
-          caller: loggedUserWallet.publicKey,
+          payer: keypair.publicKey,
+          caller: keypair.publicKey,
         })
         .rpc()
         .catch((e) => console.log(e));

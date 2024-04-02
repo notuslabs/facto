@@ -1,4 +1,3 @@
-import { formatNumber } from "@/lib/format-number";
 import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -7,14 +6,14 @@ import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { Link } from "@/navigation";
 import { Offer } from "@/structs/Offer";
-import { getOfferInterestRate } from "@/lib/utils";
 import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
+import { useFormatNumber } from "@/hooks/number-formatters";
 
 type OfferCardHeaderProps = {
   offerName: string;
   originatorName: string;
   period: string;
-  interestRate: number;
+  interestRate: string;
   secondaryText: string;
 };
 
@@ -30,7 +29,7 @@ function OfferCardHeader({
       <div className="flex items-center justify-between gap-2 text-primary">
         <h3 className="text-lg font-semibold">{offerName}</h3>
         <span className="font-bold">
-          {interestRate.toFixed(2)}% <span className="text-xs font-light">{period}</span>
+          {interestRate}% <span className="text-xs font-light">{period}</span>
         </span>
       </div>
       <div className="flex items-center justify-between gap-2 text-muted-foreground">
@@ -48,6 +47,7 @@ type OfferCardBodyProps = {
 };
 
 function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: OfferCardBodyProps) {
+  const formatNumber = useFormatNumber();
   const t = useTranslations("home.offers.card.body");
   const scoreRange = useGetScoreRanges(creditScore);
 
@@ -60,8 +60,8 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
             <p className="text-xs font-semibold">{t("total")}</p>
           </div>
           <div className="flex items-center justify-between gap-2 font-medium dark:text-primary">
-            <p className="text-sm ">{formatNumber(amountAcquired)}</p>
-            <p className="text-sm">{formatNumber(amountToBeAcquired)}</p>
+            <p className="text-sm ">{formatNumber({ value: amountAcquired })}</p>
+            <p className="text-sm">{formatNumber({ value: amountToBeAcquired })}</p>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export function OfferCard({ offer }: OfferCardProps) {
       <OfferCardHeader
         offerName={offer.name}
         originatorName={offer.originator.name}
-        interestRate={getOfferInterestRate(offer.goalAmount, offer.installmentsTotalAmount)}
+        interestRate={offer.interestRatePercent}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />

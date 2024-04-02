@@ -21,17 +21,16 @@ class CustomError extends Error {
 
 export function useCreateOriginator() {
   const queryClient = useQueryClient();
-  const { data } = useSession();
   const { data: programData } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.originator");
 
-  const solanaWallet = data?.solanaWallet;
   const program = programData?.program;
+  const keypair = programData?.keypair;
 
   return useMutation({
     mutationFn: async ({ name, description, tokenSlug }: z.infer<typeof OriginatorFormSchema>) => {
-      if (!solanaWallet || !program) {
+      if (!keypair || !program) {
         throw new CustomError(t("not-authenticated"));
       }
 
@@ -39,11 +38,8 @@ export function useCreateOriginator() {
         throw new CustomError(t("already-registered-toast-message"));
       }
 
-      const privateKey = await getPrivateKey(solanaWallet);
-      const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
-
       const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), loggedUserWallet.publicKey.toBuffer()],
+        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
@@ -58,10 +54,10 @@ export function useCreateOriginator() {
           originator: originatorPubKey,
           originatorTokenAccount: originatorTokenAccountPubKey,
           stableCoin: FAKE_MINT,
-          payer: loggedUserWallet.publicKey,
-          caller: loggedUserWallet.publicKey,
+          payer: keypair.publicKey,
+          caller: keypair.publicKey,
         })
-        .signers([loggedUserWallet])
+        .signers([keypair])
         .rpc();
 
       console.log({ res });

@@ -6,7 +6,7 @@ import { ReceptionCronogram } from "./cronogram-card";
 import { ScoreCard } from "./score-card";
 import { DetailsCard } from "./yield-card";
 import { useState } from "react";
-import { cn, getOfferInterestRate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useOffer } from "@/hooks/use-offer";
 import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
 
@@ -38,7 +38,7 @@ export function OfferContent({ offerId }: OfferContentProps) {
       content: (
         <DetailsCard
           installmentsCount={offer.installmentsCount}
-          interestRate={getOfferInterestRate(offer.goalAmount, offer.installmentsTotalAmount)}
+          interestRate={offer.interestRatePercent}
           description={offer.description}
         />
       ),

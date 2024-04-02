@@ -7,9 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { genereateInstallmentsList } from "@/lib/offer-utils";
-import { addMonths, format } from "date-fns";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 type ReceptionCronogramProps = {
   totalInstallmentsPaid: number;
@@ -24,6 +24,8 @@ export function ReceptionCronogram({
   totalInstallmentsPaid,
   installmentsTotalAmount,
 }: ReceptionCronogramProps) {
+  const format = useDateFormatter();
+  const locale = useLocale();
   const t = useTranslations("offer-page.income-schedule");
   const tr = useTranslations("badges");
   const installments = genereateInstallmentsList({

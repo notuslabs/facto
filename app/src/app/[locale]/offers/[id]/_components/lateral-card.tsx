@@ -1,9 +1,12 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { formatNumber } from "@/lib/format-number";
+import { useFormatNumber } from "@/hooks/number-formatters";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { useInvestedAmount } from "@/hooks/use-invested-amount";
 import { Offer } from "@/structs/Offer";
-import { format } from "date-fns";
 import { ChevronDown, HelpingHand, Smile } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -12,17 +15,17 @@ type LateralCardProps = {
 };
 
 export function LateralCard({ offer }: LateralCardProps) {
+  const { data: investedAmount } = useInvestedAmount(offer.id);
+  const formatNumber = useFormatNumber();
+  const format = useDateFormatter();
   const t = useTranslations("offer-page.lateral-card");
-  const installments = 6;
 
   return (
     <aside className="flex flex-col rounded-lg bg-secondary text-primary">
       <div className="p-4">
         <Button className="flex gap-2 bg-subtle text-placeholder-foreground md:hidden">
-          <div className="flex size-5 items-center justify-center rounded-full bg-black">
-            <Smile className="text-purple-500" size={14} />
-          </div>
-          Solana
+          <div className="flex size-5 items-center justify-center rounded-full bg-black"></div>
+          Fake Token
           <ChevronDown size={20} />
         </Button>
       </div>
@@ -36,10 +39,8 @@ export function LateralCard({ offer }: LateralCardProps) {
           </p>
         </div>
         <Button className="hidden gap-2 bg-subtle text-placeholder-foreground md:flex">
-          <div className="flex size-5 items-center justify-center rounded-full bg-black">
-            <Smile className="text-purple-500" size={14} />
-          </div>
-          Solana
+          <div className="flex size-5 items-center justify-center rounded-full bg-black"></div>
+          Fake Token
           <ChevronDown size={20} />
         </Button>
       </div>
@@ -58,18 +59,23 @@ export function LateralCard({ offer }: LateralCardProps) {
       <div className="rounded-bl-lg rounded-br-lg border bg-primary-foreground">
         <div className="flex justify-between px-4 py-[14px] text-sm font-medium text-muted-foreground md:px-6">
           <p>{t("you-invested")}</p>
-          {/* TODO: get currently invested amount */}
-          <span className="font-semibold">R$ 420,00</span>
+          {investedAmount != null && (
+            <span className="font-semibold">{formatNumber({ value: investedAmount })}</span>
+          )}
         </div>
         <div className="flex justify-between px-4 pb-2 pt-4 md:px-6">
           <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">{t("raised-value")}</span>
-            <span className="font-semibold md:text-xl">{formatNumber(offer.acquiredAmount)}</span>
+            <span className="font-semibold md:text-xl">
+              {formatNumber({ value: offer.acquiredAmount })}
+            </span>
           </div>
 
           <div className="flex flex-col gap-3">
             <span className="text-right text-sm font-medium">Total</span>
-            <span className="font-semibold md:text-xl">{formatNumber(offer.goalAmount)}</span>
+            <span className="font-semibold md:text-xl">
+              {formatNumber({ value: offer.goalAmount })}
+            </span>
           </div>
         </div>
 
@@ -95,7 +101,7 @@ export function LateralCard({ offer }: LateralCardProps) {
         </div>
 
         <div className="flex justify-between px-4 py-[14px] text-sm md:px-6">
-          <p>{t("receive-in", { installments })}</p>
+          <p>{t("receive-in", { installments: offer.installmentsCount })}</p>
           <span className="font-semibold">{format(offer.installmentsEndDate, "P")}</span>
         </div>
       </div>

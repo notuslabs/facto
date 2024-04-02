@@ -7,6 +7,13 @@ export function formatNumber(value: number, locale = "pt-BR", currency = "USD") 
   }).format(value);
 }
 
+export function formatPercent(value: number, locale = "pt-BR") {
+  return new Intl.NumberFormat(locale, {
+    style: "percent",
+    minimumFractionDigits: 2,
+  }).format(value);
+}
+
 export function formatBigNumber(value: BN, locale = "pt-BR", currency = "USD") {
   return new Intl.NumberFormat(locale, {
     style: "currency",

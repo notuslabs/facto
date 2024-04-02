@@ -4,8 +4,8 @@ import { CircleDollarSign } from "lucide-react";
 import { ScoreBadge } from "../score-badge";
 import { Badge } from "../ui/badge";
 import { useTranslations } from "next-intl";
-import { formatNumber } from "@/lib/format-number";
 import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
+import { useFormatNumber } from "@/hooks/number-formatters";
 
 type HeaderProps = {
   name: string;
@@ -15,6 +15,7 @@ type HeaderProps = {
 };
 
 export function Header({ name, description, score, acquiredAmount }: HeaderProps) {
+  const formatNumber = useFormatNumber();
   const t = useTranslations("header");
   const scoreRange = useGetScoreRanges(score);
 
@@ -36,7 +37,7 @@ export function Header({ name, description, score, acquiredAmount }: HeaderProps
         </Badge> */}
         <Badge className="flex gap-1" variant="gray">
           <CircleDollarSign size={14} />
-          {t("money-raised", { moneyRaised: formatNumber(acquiredAmount) })}
+          {t("money-raised", { moneyRaised: formatNumber({ value: acquiredAmount }) })}
         </Badge>
       </div>
     </header>

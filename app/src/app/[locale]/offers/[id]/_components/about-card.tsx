@@ -7,9 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatNumber } from "@/lib/format-number";
-import { Offer } from "@/structs/Offer";
-import { format } from "date-fns";
+import { useFormatNumber, useFormatPercent } from "@/hooks/number-formatters";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { Offer, OfferStatus } from "@/structs/Offer";
 import { User } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -21,11 +21,17 @@ type AboutCardProps = {
 };
 
 export function AboutCard({ offerId, name, description, allOffers }: AboutCardProps) {
+  const formatNumber = useFormatNumber();
+  const formatPercent = useFormatPercent();
+  const format = useDateFormatter();
   const t = useTranslations("offer-page.about-originator");
 
   const otherOffers = allOffers.filter((offer) => offer.id !== offerId);
 
-  const totalAcquired = allOffers.reduce((acc, offer) => acc + offer.acquiredAmount, 0);
+  const totalAcquired = allOffers.reduce(
+    (acc, offer) => (acc + offer.status === OfferStatus.Funded ? offer.goalAmount : 0),
+    0,
+  );
 
   return (
     <div className="rounded-2xl bg-primary-foreground text-primary">
@@ -57,7 +63,7 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
             <Separator orientation="vertical" className="bg-secondary" />
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">{t("loss")}</span>
-              <span>66.6%</span>
+              <span>{formatPercent({ value: 0.0 })}</span>
             </div>
           </div>
 
@@ -65,7 +71,7 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
             <Separator orientation="vertical" className="bg-secondary" />
             <div className="flex flex-col">
               <span className="text-xs text-muted-foreground">{t("total-raised")}</span>
-              <span>{formatNumber(totalAcquired)}</span>
+              <span>{formatNumber({ value: totalAcquired })}</span>
             </div>
           </div>
         </div>
@@ -86,8 +92,8 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
               key={offer.installmentsEndDate.toString()}
             >
               <TableCell>{offer.name}</TableCell>
+              <TableCell>{formatNumber({ value: offer.goalAmount })}</TableCell>
               <TableCell>{format(offer.installmentsEndDate, "P")}</TableCell>
-              <TableCell>{formatNumber(offer.goalAmount)}</TableCell>
               <TableCell className="text-right">{offer.status}</TableCell>
             </TableRow>
           ))}

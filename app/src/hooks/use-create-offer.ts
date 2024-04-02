@@ -20,14 +20,13 @@ class OriginatorAccountNotFound extends Error {
 
 export function useCreateOffer() {
   const queryClient = useQueryClient();
-  const { data } = useSession();
   const { data: programData } = useProgram();
   const { data: accounts } = useAccounts();
   const t = useTranslations("create-offer-page");
   const router = useRouter();
 
-  const solanaWallet = data?.solanaWallet;
   const program = programData?.program;
+  const keypair = programData?.keypair;
 
   return useMutation({
     mutationFn: async ({
@@ -45,18 +44,15 @@ export function useCreateOffer() {
       installmentsCount,
       minAmountInvest,
     }: z.infer<typeof CreateOfferFormSchema>) => {
-      if (!solanaWallet || !program) return null;
+      if (!keypair || !program) return null;
 
       if (!accounts?.originatorAccount) {
         throw new OriginatorAccountNotFound();
       }
 
-      const privateKey = await getPrivateKey(solanaWallet);
-      const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
-
       const { id } = await createOffer({
         program,
-        caller: loggedUserWallet,
+        caller: keypair,
         deadlineDate,
         description,
         goalAmount,
