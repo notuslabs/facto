@@ -10,7 +10,9 @@ export function useInvestorTokenAccount() {
   const program = programData?.program;
 
   return useQuery({
-    queryKey: ["investor-token-account"],
+    queryKey: ["investor-token-account", keypair?.publicKey.toString()],
+    staleTime: 0,
+    refetchInterval: 1000 * 20, // 20 seconds
     queryFn: async () => {
       if (!keypair || !program) {
         return null;

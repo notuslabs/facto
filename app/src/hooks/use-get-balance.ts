@@ -6,7 +6,7 @@ export function useBalance() {
   const { data, isPending } = useInvestorTokenAccount();
 
   return useQuery({
-    queryKey: ["balance", data?.investorTokenAccount],
+    queryKey: ["balance", data?.investorTokenAccount?.amount.toString()],
     queryFn: () => {
       if (isPending || !data) {
         return null;
