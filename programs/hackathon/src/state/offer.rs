@@ -99,7 +99,7 @@ pub struct CreateOffer<'info> {
     #[account(mut)]
     pub caller: Signer<'info>,
 
-    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump = originator.bump)]
+    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
     pub originator: Box<Account<'info, Originator>>,
     #[account(init, payer = payer, space = Offer::INIT_SPACE, seeds = [b"offer", id.as_bytes()], bump)]
     pub offer: Box<Account<'info, Offer>>,
@@ -133,7 +133,7 @@ pub struct CreateOffer<'info> {
         seeds=[b"vault_payment_token_account", offer.key().as_ref()],
         bump
     )]
-    pub vault_payment_token_account: Account<'info, TokenAccount>,
+    pub vault_payment_token_account: Box<Account<'info, TokenAccount>>,
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,

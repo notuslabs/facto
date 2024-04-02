@@ -1,45 +1,22 @@
-import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import { useEffect, useState } from "react";
-import { useConnection } from "./use-connection";
-import { useSession } from "./use-session";
+import { useQuery } from "@tanstack/react-query";
+import { formatUnits } from "@/lib/format-units";
+import { useInvestorTokenAccount } from "./use-investor-token-account";
 
 export function useBalance() {
-  const { data } = useSession();
-  const { connection } = useConnection();
-  const [balance, setBalance] = useState<number>();
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, isPending } = useInvestorTokenAccount();
 
-  const userInfo = data?.userInfo;
-  const solanaWallet = data?.solanaWallet;
+  return useQuery({
+    queryKey: ["balance", data?.investorTokenAccount],
+    queryFn: () => {
+      if (isPending || !data) {
+        return null;
+      }
 
-  const getBalance = async () => {
-    if (!userInfo) {
-      setBalance(undefined);
-      setIsLoading(false);
-      return;
-    }
-    if (!solanaWallet) {
-      return;
-    }
-
-    const accounts = await solanaWallet.requestAccounts();
-
-    const balance = await connection.getBalance(new PublicKey(accounts[0]));
-
-    setBalance(balance != null ? balance / LAMPORTS_PER_SOL : 0);
-    setIsLoading(false);
-
-    return balance / LAMPORTS_PER_SOL;
-  };
-
-  useEffect(() => {
-    getBalance();
-    // Every time the userInfo changes, we need to get the balance again
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userInfo]);
-
-  return {
-    balance,
-    isLoading,
-  };
+      return {
+        formattedBalance: data.investorTokenAccount
+          ? formatUnits(data.investorTokenAccount.amount, 9)
+          : null,
+      };
+    },
+  });
 }

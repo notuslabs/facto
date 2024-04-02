@@ -48,11 +48,10 @@ pub fn create_offer(
         ValidationError::InstallmentsTotalMustBeGreaterThanOne
     );
 
-
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
     offer.description = description;
-    offer.discriminator = ctx.accounts.originator.total_offers;
+    //offer.discriminator = ctx.accounts.originator.total_offers;
     offer.goal_amount = goal_amount;
     offer.deadline_date = deadline_date;
     offer.acquired_amount = 0;
@@ -71,7 +70,7 @@ pub fn create_offer(
     offer.vault_bump = *ctx.bumps.get("vault").unwrap();
     offer.vault_payment_bump = *ctx.bumps.get("vault_payment_token_account").unwrap();
 
-    ctx.accounts.originator.total_offers += 1;
+    //ctx.accounts.originator.total_offers += 1;
     Ok(())
 }
 
@@ -194,7 +193,7 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
         ctx.accounts.offer.get_installment_amount(),
         ctx.accounts.stable_token.decimals,
     )?;
-    
+
     ctx.accounts.offer.total_installments_paid += 1;
 
     Ok(())
