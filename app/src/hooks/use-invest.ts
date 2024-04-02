@@ -5,6 +5,7 @@ import { BN } from "bn.js";
 import { PublicKey } from "@solana/web3.js";
 import { utils } from "@coral-xyz/anchor";
 import { FAKE_MINT } from "@/lib/constants";
+import { parseUnits } from "@/lib/parse-units";
 
 class InvestError extends Error {
   constructor(message?: string) {
@@ -58,7 +59,7 @@ export function useInvest() {
       );
 
       const tx = await program.methods
-        .invest(offerId, new BN(amount))
+        .invest(offerId, new BN(parseUnits(amount, 8).toString()))
         .accounts({
           caller: keypair.publicKey,
           payer: keypair.publicKey,
@@ -69,6 +70,7 @@ export function useInvest() {
         })
         .signers([keypair])
         .rpc();
+      console.log(tx);
 
       return tx;
     },

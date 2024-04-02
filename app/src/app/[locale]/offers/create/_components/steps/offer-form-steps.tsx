@@ -31,6 +31,7 @@ import {
   creditScoreOptions,
   paymentFrequencyOptions,
 } from "../offer-form-validation";
+import { TimePickerDemo } from "@/components/ui/time-picker-demo";
 
 type FormStepProps = {
   isAllowedToCreate: boolean;
@@ -354,9 +355,11 @@ export function OfferFormStep3({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
                     initialFocus
                   />
+                  <div className="border-t border-border p-3">
+                    <TimePickerDemo setDate={field.onChange} date={field.value} />
+                  </div>
                 </PopoverContent>
               </Popover>
               <FormMessage />

@@ -38,10 +38,6 @@ export async function createOffer({
     program.programId,
   );
 
-  console.log({
-    startDate: Math.ceil((startDate.getTime() + 1000 * 60 * 2) / 1000),
-  });
-
   await program.methods
     .createOffer(
       id,
