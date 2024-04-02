@@ -52,8 +52,7 @@ pub struct Offer {
     pub created_at: i64,
     pub bump: u8,
     pub token_bump: u8,
-    pub vault_bump: u8,
-    pub vault_payment_bump: u8,
+    pub vault_bump: u8
 }
 
 pub trait OfferInterface {
@@ -125,15 +124,6 @@ pub struct CreateOffer<'info> {
         token::authority = offer
       )]
     pub vault: Box<Account<'info, TokenAccount>>,
-    #[account(
-        init,
-        payer = payer,
-        token::mint = stable_token,
-        token::authority = offer,
-        seeds=[b"vault_payment_token_account", offer.key().as_ref()],
-        bump
-    )]
-    pub vault_payment_token_account: Account<'info, TokenAccount>,
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
@@ -210,7 +200,14 @@ pub struct PayInstallment<'info> {
     pub offer: Account<'info, Offer>,
     #[account()] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
-    #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump=offer.vault_payment_bump)]
+    #[account(
+        init_if_needed,
+        payer = payer,
+        token::mint = stable_token,
+        token::authority = offer,
+        seeds=[b"vault_payment_token_account", offer.key().as_ref()],
+        bump
+    )]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
     pub originator_token_account: Account<'info, TokenAccount>,
@@ -243,7 +240,7 @@ pub struct WithdrawInstallment<'info> {
     pub investor_offer_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"investor_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
     pub investor_token_account: Account<'info, TokenAccount>,
-    #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump=offer.vault_payment_bump)]
+    #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump)]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
     #[account()] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,

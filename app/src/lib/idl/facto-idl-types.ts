@@ -231,26 +231,6 @@ export type Hackathon = {
           }
         },
         {
-          "name": "vaultPaymentTokenAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "vault_payment_token_account"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Offer",
-                "path": "offer"
-              }
-            ]
-          }
-        },
-        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -1670,26 +1650,6 @@ export const IDL: Hackathon = {
                 "kind": "const",
                 "type": "string",
                 "value": "offer_vault"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Offer",
-                "path": "offer"
-              }
-            ]
-          }
-        },
-        {
-          "name": "vaultPaymentTokenAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "vault_payment_token_account"
               },
               {
                 "kind": "account",

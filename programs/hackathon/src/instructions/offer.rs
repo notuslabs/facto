@@ -69,7 +69,6 @@ pub fn create_offer(
     offer.bump = *ctx.bumps.get("offer").unwrap();
     offer.token_bump = *ctx.bumps.get("token").unwrap();
     offer.vault_bump = *ctx.bumps.get("vault").unwrap();
-    offer.vault_payment_bump = *ctx.bumps.get("vault_payment_token_account").unwrap();
 
     ctx.accounts.originator.total_offers += 1;
     Ok(())
