@@ -54,10 +54,15 @@ export default function TransactionsForm({ type, balance, publicKey }: Transacti
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex items-center gap-1 text-2xl font-semibold">
-                  R$
+                <div className="relative text-2xl font-semibold">
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 py-2 text-placeholder-foreground"
+                  >
+                    $
+                  </div>
                   <Input
-                    className="bg-secondary pl-0 text-2xl font-semibold"
+                    className="bg-secondary pl-5 text-2xl font-semibold placeholder:text-placeholder-foreground"
                     type="number"
                     {...field}
                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
