@@ -126,7 +126,7 @@ export default function TestTokenAccountTransfer() {
           </Button>
 
           <Button
-            onClick={() => deposit(20)}
+            onClick={() => deposit(100)}
             disabled={!tokenAccounts?.investorTokenAccount || isDepositing}
           >
             {(isDepositing || isLoadingAccounts) && <Loader2 size={16} className="animate-spin" />}

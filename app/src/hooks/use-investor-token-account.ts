@@ -10,6 +10,7 @@ export function useInvestorTokenAccount() {
   const program = programData?.program;
 
   return useQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ["investor-token-account", keypair?.publicKey.toString()],
     staleTime: 1000 * 20,
     refetchInterval: 1000 * 20,
@@ -27,6 +28,10 @@ export function useInvestorTokenAccount() {
         [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
         program.programId,
       );
+
+      console.log({
+        investorTokenAccountPubKey: investorTokenAccountPubKey.toString(),
+      });
 
       const investorTokenAccount = await getAccount(
         programData.program.provider.connection,

@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useFormatNumber } from "@/hooks/number-formatters";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { useBalance } from "@/hooks/use-get-balance";
 import { useInvestedAmount } from "@/hooks/use-invested-amount";
 import { Offer } from "@/structs/Offer";
-import { ChevronDown, HelpingHand, Smile } from "lucide-react";
+import { ChevronDown, HelpingHand, Loader2, Smile } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type LateralCardProps = {
@@ -16,6 +17,7 @@ type LateralCardProps = {
 
 export function LateralCard({ offer }: LateralCardProps) {
   const { data: investedAmount } = useInvestedAmount(offer.id);
+  const { data: balance, isPending: isLoadingBalance, isError } = useBalance();
   const formatNumber = useFormatNumber();
   const format = useDateFormatter();
   const t = useTranslations("offer-page.lateral-card");
@@ -33,10 +35,22 @@ export function LateralCard({ offer }: LateralCardProps) {
       <div className="flex justify-between px-4 md:p-6">
         <div>
           <p className="text-placeholder text-2xl font-semibold text-placeholder-foreground">$0</p>
-          <p className="text-xs text-primary">
-            {t("your-balance")}
-            <span className="font-bold underline underline-offset-2">R$ 69.420,24</span>
-          </p>
+          {(isLoadingBalance || balance) && (
+            <p className="flex items-center gap-1 whitespace-nowrap text-xs text-primary">
+              {t("your-balance")}
+              {isLoadingBalance ? (
+                <span>
+                  <Loader2 strokeWidth={2} size={12} className="animate-spin" />
+                </span>
+              ) : (
+                balance && (
+                  <span className="font-bold underline underline-offset-2">
+                    {formatNumber({ value: balance?.formattedBalance ?? 0 })}
+                  </span>
+                )
+              )}
+            </p>
+          )}
         </div>
         <Button className="hidden gap-2 bg-subtle text-placeholder-foreground md:flex">
           <div className="flex size-5 items-center justify-center rounded-full bg-black"></div>

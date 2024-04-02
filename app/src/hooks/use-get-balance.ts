@@ -6,6 +6,7 @@ export function useBalance() {
   const { data, isPending } = useInvestorTokenAccount();
 
   return useQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ["balance", data?.investorTokenAccount?.amount.toString()],
     queryFn: () => {
       if (isPending || !data) {
