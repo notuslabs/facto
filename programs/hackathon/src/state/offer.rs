@@ -153,7 +153,7 @@ pub struct Invest<'info> {
     pub investor_stable_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
-    #[account(mut)]
+    #[account(mut, seeds=[b"offer_token", offer.key().as_ref()], bump=offer.token_bump)]
     pub offer_token: Account<'info, Mint>,
     #[account(mut)] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,

@@ -106,7 +106,9 @@
       "payment-frequency": "Frequência de pagamento",
       "monthly": "Mensal",
       "receive-in": "Receba em {installments} parcelas até",
-      "date": "{date, date}"
+      "date": "{date, date}",
+      "investment-success": "Seu investimento foi realizado com sucesso!",
+      "view-transaction": "Ver transação"
     }
   },
   "investments-page": {

@@ -380,7 +380,22 @@ export type Hackathon = {
         {
           "name": "offerToken",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "offer_token"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              }
+            ]
+          }
         },
         {
           "name": "stableToken",
@@ -1806,7 +1821,22 @@ export const IDL: Hackathon = {
         {
           "name": "offerToken",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "offer_token"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              }
+            ]
+          }
         },
         {
           "name": "stableToken",

@@ -106,7 +106,9 @@
       "payment-frequency": "Payment frequency",
       "monthly": "Monthly",
       "receive-in": "Receive in {installments} installments until",
-      "date": "{date, date}"
+      "date": "{date, date}",
+      "investment-success": "Your investment was successful!",
+      "view-transaction": "View transaction"
     }
   },
   "investments-page": {
