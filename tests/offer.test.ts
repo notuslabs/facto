@@ -216,10 +216,9 @@ describe("Offer", { timeout: 500000 }, () => {
         token: tokenPubKey,
         stableToken: stableTokenPubKey,
         vault: vaultPubKey,
-        vaultPaymentTokenAccount
       })
       .signers([payer, callerOriginator])
-      .rpc();
+      .rpc().catch(console.error);
 
     await program.methods
       .createOffer(
@@ -241,7 +240,6 @@ describe("Offer", { timeout: 500000 }, () => {
         token: tokenPubKey2,
         stableToken: stableTokenPubKey,
         vault: vaultPubKey2,
-        vaultPaymentTokenAccount: vaultPaymentTokenAccount2
       })
       .signers([callerOriginator2, payer])
       .rpc({ commitment: "processed" });

@@ -231,26 +231,6 @@ export type Hackathon = {
           }
         },
         {
-          "name": "vaultPaymentTokenAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "vault_payment_token_account"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Offer",
-                "path": "offer"
-              }
-            ]
-          }
-        },
-        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -1323,10 +1303,6 @@ export type Hackathon = {
           },
           {
             "name": "vaultBump",
-            "type": "u8"
-          },
-          {
-            "name": "vaultPaymentBump",
             "type": "u8"
           }
         ]
@@ -1681,26 +1657,6 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "vaultPaymentTokenAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "vault_payment_token_account"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Offer",
-                "path": "offer"
-              }
-            ]
-          }
-        },
-        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -2773,10 +2729,6 @@ export const IDL: Hackathon = {
           },
           {
             "name": "vaultBump",
-            "type": "u8"
-          },
-          {
-            "name": "vaultPaymentBump",
             "type": "u8"
           }
         ]
