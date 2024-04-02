@@ -11,8 +11,8 @@ export function useInvestorTokenAccount() {
 
   return useQuery({
     queryKey: ["investor-token-account", keypair?.publicKey.toString()],
-    staleTime: 0,
-    refetchInterval: 1000 * 20, // 20 seconds
+    staleTime: 1000 * 20,
+    refetchInterval: 1000 * 20,
     queryFn: async () => {
       if (!keypair || !program) {
         return null;
