@@ -9,12 +9,15 @@ import { useWithdrawal } from "@/hooks/use-withdrawal";
 import { useTranslations } from "next-intl";
 import { PublicKey } from "@solana/web3.js";
 import { Button } from "@/components/ui/button";
-import { ArrowUpSquare, PlusSquare } from "lucide-react";
+import { ArrowUpSquare, Link2, PlusSquare } from "lucide-react";
+import DisclaimerCard from "@/components/disclaimer-card";
+import { cn } from "@/lib/utils";
 
 interface TransactionsFormProps {
   type: "deposit" | "withdrawal";
-  balance: number | undefined;
+  balance: number | null | undefined;
   publicKey?: PublicKey | undefined;
+  isModal?: boolean;
 }
 
 const WithdrawalSchema = z.object({
@@ -25,7 +28,12 @@ const DepositSchema = z.object({
   amount: z.number().positive().int().max(20, "Max 20"),
 });
 
-export default function TransactionsForm({ type, balance, publicKey }: TransactionsFormProps) {
+export default function TransactionsForm({
+  type,
+  balance,
+  publicKey,
+  isModal,
+}: TransactionsFormProps) {
   const { mutate: withdrawal, isPending: isWithdrawalPending } = useWithdrawal();
   const { mutate: deposit, isPending: isDepositPending } = useDeposit();
   const schemaType = type === "deposit" ? DepositSchema : WithdrawalSchema;
@@ -36,6 +44,7 @@ export default function TransactionsForm({ type, balance, publicKey }: Transacti
     },
   });
   const t = useTranslations("transactions-form");
+  const contract = "00299277837662juijha88722099221443545656756889789345csdfsd23534523jkh34b5kuh2";
 
   function onSubmit(values: z.infer<typeof schemaType>) {
     if (type === "withdrawal") {
@@ -78,27 +87,54 @@ export default function TransactionsForm({ type, balance, publicKey }: Transacti
         </span>
       </form>
 
-      {type === "withdrawal" && (
-        <Button
-          className="fixed bottom-[84px] z-50 w-full"
-          onClick={form.handleSubmit(onSubmit)}
-          variant="defaultGradient"
-          disabled={isWithdrawalPending}
-        >
-          <ArrowUpSquare size={20} />
-          {t("withdrawal")}
-        </Button>
+      {isModal && (
+        <>
+          <div className="">
+            Your key
+            <Input
+              className="text-ellipsis"
+              type="text"
+              name="deposit-contract"
+              id="deposit-contract"
+              disabled
+              value={contract}
+              leftIcon={Link2}
+            />
+          </div>
+          <DisclaimerCard background={false} />
+        </>
       )}
-      {type === "deposit" && (
-        <Button
-          className="fixed bottom-[84px] z-50 w-full"
-          onClick={form.handleSubmit(onSubmit)}
-          variant="defaultGradient"
-          disabled={isDepositPending}
+
+      {type === "withdrawal" && (
+        <div
+          className={(cn("fixed bottom-[84px] left-0 z-50 w-full px-4"), isModal ? "bottom-0" : "")}
         >
-          <PlusSquare size={20} />
-          {t("deposit")}
-        </Button>
+          <Button
+            className="w-full"
+            onClick={form.handleSubmit(onSubmit)}
+            variant="defaultGradient"
+            disabled={isWithdrawalPending}
+          >
+            <ArrowUpSquare size={20} />
+            {t("withdrawal")}
+          </Button>
+        </div>
+      )}
+
+      {type === "deposit" && (
+        <div
+          className={(cn("fixed bottom-[84px] left-0 z-50 w-full px-4"), isModal ? "bottom-0" : "")}
+        >
+          <Button
+            className="w-full"
+            onClick={form.handleSubmit(onSubmit)}
+            variant="defaultGradient"
+            disabled={isDepositPending}
+          >
+            <PlusSquare size={20} />
+            {t("deposit")}
+          </Button>
+        </div>
       )}
     </Form>
   );

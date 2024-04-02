@@ -11,7 +11,7 @@ import TransactionsForm from "../_components/transactions-form";
 
 export default function TransactionsWithdrawalPage() {
   const t = useTranslations("withdrawal-page");
-  const { balance, isLoading } = useBalance();
+  const { data: balance, isLoading } = useBalance();
   const { data } = useProgram();
   const publicKey = data && data.keypair.publicKey;
   const contract = "00299277837662juijha88722099221443545656756889789345csdfsd23534523jkh34b5kuh2";
@@ -25,7 +25,11 @@ export default function TransactionsWithdrawalPage() {
             {t("withdrawal-value")}
             {isLoading && <Loader2Icon className="animate-spin text-facto-primary" size={24} />}
             {!isLoading && (
-              <TransactionsForm publicKey={publicKey} balance={balance} type="withdrawal" />
+              <TransactionsForm
+                publicKey={publicKey}
+                balance={balance?.formattedBalance}
+                type="withdrawal"
+              />
             )}
           </div>
           <Input
