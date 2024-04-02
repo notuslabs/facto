@@ -1,15 +1,22 @@
+"use client";
+
+import { useBalance } from "@/hooks/use-get-balance";
+import { formatNumber } from "@/lib/format-number";
 import { Link } from "@/navigation";
-import { ArrowUpSquare, PlusSquare } from "lucide-react";
+import { ArrowUpSquare, Loader2Icon, PlusSquare } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export default function TransactionsContent() {
   const t = useTranslations("transactions-page");
-  const balanceTotal = "439.238,13";
+  const { balance, isLoading } = useBalance();
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-1 text-center">
+    <div className="flex h-[582px] flex-col gap-8 rounded-t-3xl bg-primary-foreground px-4 pt-6">
+      <div className="flex flex-col items-center justify-center gap-1 text-center">
         <span className="text-xs text-muted-foreground">{t("your-balance")}</span>
-        <span className="text-3xl font-extrabold">R$ {balanceTotal}</span>
+        {isLoading && <Loader2Icon className="h-9 animate-spin text-facto-primary" size={24} />}
+        {!isLoading && (
+          <span className="text-3xl font-extrabold">{formatNumber(balance ?? 0)}</span>
+        )}
       </div>
 
       <div className="flex flex-col gap-4">

@@ -9,12 +9,8 @@ interface DisclamerCardProps {
 export default function DisclaimerCard({ background }: DisclamerCardProps) {
   const t = useTranslations("deposit-page");
   return (
-    <div
-      className={cn(
-        background && "from-#CAE5854D to-#313131 h-full rounded-3xl bg-gradient-to-r p-4",
-      )}
-    >
-      <div className="flex items-center gap-2 rounded-lg border border-facto-secondary bg-primary-foreground p-6 ">
+    <div className={cn(background && "h-full rounded-3xl bg-primary-foreground p-4")}>
+      <div className="flex items-center gap-2 rounded-lg border border-facto-secondary bg-gradient-to-r from-[#37373A] to-[#313131] p-6">
         <Info className="text-facto-primary" size={20} />
         <span className="text-xs text-muted-foreground">{t("disclaimer")}</span>
       </div>

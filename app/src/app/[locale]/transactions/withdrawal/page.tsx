@@ -1,22 +1,32 @@
 "use client";
 
-import BalanceInput from "@/components/balance-input";
 import DisclaimerCard from "@/components/disclaimer-card";
 import { Input } from "@/components/ui/input";
-import { Link2 } from "lucide-react";
+import { useBalance } from "@/hooks/use-get-balance";
+import { Link2, Loader2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useProgram } from "@/hooks/use-program";
+import GoBackButton from "../_components/go-back-button";
+import TransactionsForm from "../_components/transactions-form";
 
 export default function TransactionsWithdrawalPage() {
   const t = useTranslations("withdrawal-page");
-  const balanceAmount = 666123;
+  const { balance, isLoading } = useBalance();
+  const { data } = useProgram();
+  const publicKey = data && data.keypair.publicKey;
   const contract = "00299277837662juijha88722099221443545656756889789345csdfsd23534523jkh34b5kuh2";
+
   return (
     <div className="flex h-screen flex-col gap-6">
-      <div className="px-4 pt-4">
+      <GoBackButton title={t("withdrawal")} />
+      <div className="px-4">
         <div className="flex flex-col gap-6 rounded-2xl bg-secondary p-6">
           <div className="flex flex-col gap-3 text-xs">
             {t("withdrawal-value")}
-            <BalanceInput balanceAmount={balanceAmount} />
+            {isLoading && <Loader2Icon className="animate-spin text-facto-primary" size={24} />}
+            {!isLoading && (
+              <TransactionsForm publicKey={publicKey} balance={balance} type="withdrawal" />
+            )}
           </div>
           <Input
             className="text-ellipsis"

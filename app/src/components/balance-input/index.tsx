@@ -16,14 +16,6 @@ export default function BalanceInput({ balanceAmount }: BalanceInputProps) {
     setShowInput(true);
   }
 
-  function handleTransactionValueChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTransactionValue(parseFloat(event.target.value));
-  }
-
-  function handleInputBlur() {
-    setShowInput(false);
-  }
-
   function handleInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
       setShowInput(false);
@@ -37,14 +29,7 @@ export default function BalanceInput({ balanceAmount }: BalanceInputProps) {
         onClick={handleValueClick}
       >
         {showInput ? (
-          <Input
-            autoFocus
-            type="number"
-            value={transactionValue !== null ? transactionValue : ""}
-            onChange={handleTransactionValueChange}
-            onBlur={handleInputBlur}
-            onKeyDown={handleInputKeyDown}
-          />
+          <Input autoFocus type="number" onKeyDown={handleInputKeyDown} />
         ) : (
           formatNumber(transactionValue !== null ? transactionValue : 0)
         )}

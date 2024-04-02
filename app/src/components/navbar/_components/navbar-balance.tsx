@@ -2,7 +2,7 @@
 
 import { useBalance } from "@/hooks/use-get-balance";
 import { formatNumber } from "@/lib/format-number";
-import { LoaderIcon, WalletCards } from "lucide-react";
+import { Loader2Icon, WalletCards } from "lucide-react";
 import { useSession } from "@/hooks/use-session";
 import { useTranslations } from "next-intl";
 
@@ -20,7 +20,7 @@ export function NavbarBalance() {
         <span className="font-regular text-start text-xs text-muted-foreground">
           {t("balance")}
         </span>
-        {isLoading && <LoaderIcon className="animate-spin text-facto-primary" size={16} />}
+        {isLoading && <Loader2Icon className="animate-spin text-facto-primary" size={16} />}
         {!isLoading && <span>{formatNumber(balance ?? 0)}</span>}
       </div>
     </span>

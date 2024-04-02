@@ -149,12 +149,14 @@
   "deposit-page": {
     "deposit-value": "Deposit value",
     "your-balance": "Your in account balance is ",
-    "disclaimer": "Disclaimer here"
+    "disclaimer": "Disclaimer here",
+    "deposit": "Deposit"
   },
   "withdrawal-page": {
     "withdrawal-value": "Withdrawal value",
     "your-balance": "Your in account balance is ",
-    "disclaimer": "Disclaimer here"
+    "disclaimer": "Disclaimer here",
+    "withdrawal": "Withdrawal"
   },
   "score-card": {
     "bad": "Bad",
@@ -278,5 +280,10 @@
     "not-an-originator": "You're not an originator, to create an offer you need to be an originator",
     "success-toast-message": "You offer has been created successfully",
     "error-toast-message": "An error occurred while creating your offer"
+  },
+  "transactions-form": {
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "your-balance": "Your in account balance is "
   }
 }

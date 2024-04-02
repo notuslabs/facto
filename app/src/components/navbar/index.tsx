@@ -10,14 +10,14 @@ import { NavbarWithdrawalButton } from "./_components/navbar-withdrawal-button";
 import { NavbarBalance } from "./_components/navbar-balance";
 import { NavbarDepositButton } from "./_components/navbar-deposit-button";
 import LocaleSwitcher from "../locale-switcher";
-import { useSession } from "../auth-provider";
 import { FactoLogoText } from "../svgs/facto-logo-text";
 import FactoLogo from "../svgs/facto-logo";
+import { useSession } from "@/hooks/use-session";
 
 export function Navbar() {
   const t = useTranslations("navbar");
   const pathname = usePathname();
-  const { userInfo } = useSession();
+  const { data } = useSession();
 
   return (
     <nav className="relative w-full p-4 dark:bg-background md:h-[153px] md:px-0 md:pt-8">
@@ -51,6 +51,7 @@ export function Navbar() {
               {t("receivables")}
             </Link>
 
+            {/* This is only for testing. In prod, the transaction route is mobile only, so no need for this navbar link, it will use the button modals */}
             <Link
               className={cn(
                 pathname.startsWith("/transactions") &&
@@ -65,7 +66,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center justify-end gap-3">
-          {!userInfo && <LocaleSwitcher />}
+          {!data?.userInfo && <LocaleSwitcher />}
           <NavbarWithdrawalButton />
           <NavbarDepositButton />
           <NavbarBalance />
