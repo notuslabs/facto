@@ -99,6 +99,7 @@ describe("Offer", { timeout: 500000 }, () => {
   const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
     [
       anchor.utils.bytes.utf8.encode("investor_offer_token_account"),
+      offer.toBuffer(),
       investor.toBuffer(),
     ],
     program.programId
@@ -158,7 +159,7 @@ describe("Offer", { timeout: 500000 }, () => {
 
     [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
       [
-        anchor.utils.bytes.utf8.encode("investor_token_account"),
+        anchor.utils.bytes.utf8.encode("investor_stable_token_account"),
         investor.toBuffer(),
       ],
       program.programId
@@ -168,7 +169,7 @@ describe("Offer", { timeout: 500000 }, () => {
       .createInvestor("Investidor 1")
       .accounts({
         investor,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         caller: callerInvestor.publicKey,
         payer: payer.publicKey,
         stableCoin: stableTokenPubKey,
@@ -523,7 +524,7 @@ describe("Offer", { timeout: 500000 }, () => {
         investorInstallment,
         investor,
         investorOfferTokenAccount,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
@@ -550,7 +551,7 @@ describe("Offer", { timeout: 500000 }, () => {
           investorInstallment,
           investor,
           investorOfferTokenAccount,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,
@@ -645,7 +646,7 @@ describe("Offer", { timeout: 500000 }, () => {
         investorInstallment,
         investor,
         investorOfferTokenAccount,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
@@ -672,7 +673,7 @@ describe("Offer", { timeout: 500000 }, () => {
           investorInstallment,
           investor,
           investorOfferTokenAccount,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,

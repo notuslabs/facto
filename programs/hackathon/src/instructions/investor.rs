@@ -8,7 +8,7 @@ pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()>
     let investor = &mut ctx.accounts.investor;
     investor.name = name;
     investor.bump = *ctx.bumps.get("investor").unwrap();
-    investor.token_account_bump = *ctx.bumps.get("investor_token_account").unwrap();
+    investor.token_account_bump = *ctx.bumps.get("investor_stable_token_account").unwrap();
     Ok(())
 }
 
@@ -17,7 +17,7 @@ pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
         amount >= 1,
         ValidationError::AmountMustBeEqualToOrGreaterThanOne
     );
-    let investor_token_account = &mut ctx.accounts.investor_token_account;
+    let investor_token_account = &mut ctx.accounts.investor_stable_token_account;
 
     token::mint_to(
         CpiContext::new(
@@ -44,7 +44,7 @@ pub fn edit_investor(ctx: Context<EditInvestor>, name: String) -> Result<()> {
 }
 
 pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> {
-    let investor_token_account = &mut ctx.accounts.investor_token_account;
+    let investor_token_account = &mut ctx.accounts.investor_stable_token_account;
     let stable_token = &ctx.accounts.stable_coin;
 
     require!(
