@@ -1304,10 +1304,6 @@ export type Hackathon = {
           {
             "name": "vaultBump",
             "type": "u8"
-          },
-          {
-            "name": "vaultPaymentBump",
-            "type": "u8"
           }
         ]
       }
@@ -2733,10 +2729,6 @@ export const IDL: Hackathon = {
           },
           {
             "name": "vaultBump",
-            "type": "u8"
-          },
-          {
-            "name": "vaultPaymentBump",
             "type": "u8"
           }
         ]

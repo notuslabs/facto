@@ -52,7 +52,7 @@ pub struct Offer {
     pub created_at: i64,
     pub bump: u8,
     pub token_bump: u8,
-    pub vault_bump: u8
+    pub vault_bump: u8,
 }
 
 pub trait OfferInterface {
@@ -98,7 +98,7 @@ pub struct CreateOffer<'info> {
     #[account(mut)]
     pub caller: Signer<'info>,
 
-    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump = originator.bump)]
+    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
     pub originator: Box<Account<'info, Originator>>,
     #[account(init, payer = payer, space = Offer::INIT_SPACE, seeds = [b"offer", id.as_bytes()], bump)]
     pub offer: Box<Account<'info, Offer>>,

@@ -33,20 +33,8 @@ export async function createOffer({
 }: CreateOfferParams) {
   const id = nanoid(16);
 
-  const [originator] = PublicKey.findProgramAddressSync(
-    [utils.bytes.utf8.encode("originator"), caller.publicKey.toBuffer()],
-    program.programId,
-  );
   const [offer] = PublicKey.findProgramAddressSync(
     [utils.bytes.utf8.encode("offer"), utils.bytes.utf8.encode(id)],
-    program.programId,
-  );
-  const [vault] = PublicKey.findProgramAddressSync(
-    [utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
-    program.programId,
-  );
-  const [token] = PublicKey.findProgramAddressSync(
-    [utils.bytes.utf8.encode("offer_token"), offer.toBuffer()],
     program.programId,
   );
 
@@ -63,12 +51,9 @@ export async function createOffer({
       new BN(installmentsStartDate.getTime()),
     )
     .accounts({
-      originator,
       payer: caller.publicKey,
       caller: caller.publicKey,
       offer,
-      vault,
-      token,
       stableToken: FAKE_MINT,
     })
     .signers([caller])
