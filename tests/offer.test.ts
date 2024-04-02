@@ -1,11 +1,11 @@
-import * as anchor from '@coral-xyz/anchor';
-import type { Program } from '@coral-xyz/anchor';
-import { AnchorError, BN } from '@coral-xyz/anchor';
-import type { Hackathon } from '../target/types/hackathon';
-import { nanoid } from 'nanoid';
-import { PublicKey } from '@solana/web3.js';
-import { createMint, mintTo, getAccount } from '@solana/spl-token';
-import { advanceTime } from './utils';
+import * as anchor from "@coral-xyz/anchor";
+import type { Program } from "@coral-xyz/anchor";
+import { AnchorError, BN } from "@coral-xyz/anchor";
+import type { Hackathon } from "../target/types/hackathon";
+import { nanoid } from "nanoid";
+import { PublicKey } from "@solana/web3.js";
+import { createMint, mintTo, getAccount } from "@solana/spl-token";
+import { advanceTime } from "./utils";
 
 async function airdropSol(publicKey: PublicKey, amount: number) {
   const airdropTx = await anchor
@@ -28,7 +28,7 @@ async function confirmTransaction(tx: string) {
   });
 }
 
-describe('Offer', () => {
+describe("Offer", { timeout: 500000 }, () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Hackathon as Program<Hackathon>;
@@ -39,7 +39,7 @@ describe('Offer', () => {
   const payer = anchor.web3.Keypair.generate();
   const deadline = Math.floor(Date.now() / 1000 + 10);
   const installmentsStartDate = deadline + 10;
-  const now = Date.now() / 1000;
+  const now = Date.now() / 1000 + 5;
 
   const goalAmount = 100;
   const installmentsTotalAmount = 150;
@@ -47,14 +47,14 @@ describe('Offer', () => {
 
   const [originator] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('originator'),
+      anchor.utils.bytes.utf8.encode("originator"),
       callerOriginator.publicKey.toBuffer(),
     ],
     program.programId
   );
   const [originator2] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('originator'),
+      anchor.utils.bytes.utf8.encode("originator"),
       callerOriginator2.publicKey.toBuffer(),
     ],
     program.programId
@@ -62,7 +62,7 @@ describe('Offer', () => {
 
   const [investor] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('investor'),
+      anchor.utils.bytes.utf8.encode("investor"),
       callerInvestor.publicKey.toBuffer(),
     ],
     program.programId
@@ -70,44 +70,49 @@ describe('Offer', () => {
   const offerId = nanoid(16);
   const [offer] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('offer'),
+      anchor.utils.bytes.utf8.encode("offer"),
       anchor.utils.bytes.utf8.encode(offerId),
     ],
     program.programId
   );
-  const offerId2 = nanoid(17);
+  const offerId2 = nanoid(16);
+  console.log(offerId2, offerId2.length);
   const [offer2] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('offer'),
+      anchor.utils.bytes.utf8.encode("offer"),
       anchor.utils.bytes.utf8.encode(offerId2),
     ],
     program.programId
   );
   const [offerTokenPublicKey] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode('offer_token'), offer.toBuffer()],
+    [anchor.utils.bytes.utf8.encode("offer_token"), offer.toBuffer()],
     program.programId
   );
   const [vaultPaymentTokenAccount] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode('offer_payment_vault'), offer.toBuffer()],
+    [anchor.utils.bytes.utf8.encode("vault_payment_token_account"), offer.toBuffer()],
+    program.programId
+  );
+  const [vaultPaymentTokenAccount2] = PublicKey.findProgramAddressSync(
+    [anchor.utils.bytes.utf8.encode("vault_payment_token_account"), offer2.toBuffer()],
     program.programId
   );
   const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('investor_offer_token_account'),
+      anchor.utils.bytes.utf8.encode("investor_offer_token_account"),
       investor.toBuffer(),
     ],
     program.programId
   );
   const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('originator_token_account'),
+      anchor.utils.bytes.utf8.encode("originator_token_account"),
       originator.toBuffer(),
     ],
     program.programId
   );
   const [originatorTokenAccountPubKey2] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('originator_token_account'),
+      anchor.utils.bytes.utf8.encode("originator_token_account"),
       originator2.toBuffer(),
     ],
     program.programId
@@ -128,7 +133,7 @@ describe('Offer', () => {
     );
 
     await program.methods
-      .createOriginator('test', 'description', 'teste')
+      .createOriginator("test", "description", "teste")
       .accounts({
         originator,
         originatorTokenAccount: originatorTokenAccountPubKey,
@@ -140,7 +145,7 @@ describe('Offer', () => {
       .rpc();
 
     await program.methods
-      .createOriginator('test 2', 'description 2', 'test')
+      .createOriginator("test 2", "description 2", "test")
       .accounts({
         originator: originator2,
         originatorTokenAccount: originatorTokenAccountPubKey2,
@@ -153,14 +158,14 @@ describe('Offer', () => {
 
     [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
       [
-        anchor.utils.bytes.utf8.encode('investor_token_account'),
+        anchor.utils.bytes.utf8.encode("investor_token_account"),
         investor.toBuffer(),
       ],
       program.programId
     );
 
     await program.methods
-      .createInvestor('Investidor 1')
+      .createInvestor("Investidor 1")
       .accounts({
         investor,
         investorTokenAccount: investorTokenAccountPubKey,
@@ -172,29 +177,29 @@ describe('Offer', () => {
       .rpc();
   });
 
-  it('should be able to create an offer', async () => {
+  it("should be able to create an offer", async () => {
     const [tokenPubKey] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode('offer_token'), offer.toBuffer()],
+      [anchor.utils.bytes.utf8.encode("offer_token"), offer.toBuffer()],
       program.programId
     );
     const [tokenPubKey2] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode('offer_token'), offer2.toBuffer()],
+      [anchor.utils.bytes.utf8.encode("offer_token"), offer2.toBuffer()],
       program.programId
     );
     const [vaultPubKey] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode('offer_vault'), offer.toBuffer()],
+      [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
       program.programId
     );
 
     const [vaultPubKey2] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode('offer_vault'), offer2.toBuffer()],
+      [anchor.utils.bytes.utf8.encode("offer_vault"), offer2.toBuffer()],
       program.programId
     );
 
     const tx = await program.methods
       .createOffer(
         offerId,
-        'Offer Description',
+        "Offer Description",
         new BN(deadline),
         new BN(goalAmount),
         new BN(now),
@@ -213,12 +218,12 @@ describe('Offer', () => {
         vault: vaultPubKey,
       })
       .signers([payer, callerOriginator])
-      .rpc();
+      .rpc().catch(console.error);
 
     await program.methods
       .createOffer(
         offerId2,
-        'Offer Description',
+        "Offer Description",
         new BN(deadline),
         new BN(100),
         new BN(now),
@@ -237,13 +242,13 @@ describe('Offer', () => {
         vault: vaultPubKey2,
       })
       .signers([callerOriginator2, payer])
-      .rpc({ commitment: 'processed' });
+      .rpc({ commitment: "processed" });
 
     const offerAccount = await program.account.offer.fetch(offer);
 
     expect(offerAccount).to.containSubset({
       id: offerId,
-      description: 'Offer Description',
+      description: "Offer Description",
       discriminator: 0,
       goalAmount: new BN(goalAmount),
       originator,
@@ -256,11 +261,11 @@ describe('Offer', () => {
     expect(offerAccount.deadlineDate.toString()).to.equal(deadline.toString());
   });
 
-  it('should be able to deposit in the offer', async () => {
+  it("should be able to deposit in the offer", async () => {
     const investAmount = 50n;
 
-    const [vaultTokenAccount] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode('offer_vault'), offer.toBuffer()],
+    const [vaultStableTokenAccount] = PublicKey.findProgramAddressSync(
+      [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
       program.programId
     );
 
@@ -280,16 +285,17 @@ describe('Offer', () => {
 
     try {
       await program.methods
-        .invest(new anchor.BN('49'))
+        .invest(offerId, new anchor.BN("49"))
         .accounts({
-          vaultTokenAccount,
+          vaultStableTokenAccount,
           caller: callerInvestor.publicKey,
           investorOfferTokenAccount,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           payer: payer.publicKey,
           offerToken: offerTokenPublicKey,
           offer,
           investor,
+          stableToken: stableTokenPubKey
         })
         .signers([payer, callerInvestor])
         .rpc();
@@ -298,22 +304,23 @@ describe('Offer', () => {
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        'Min amount required'
+        "Investment amount must be greater than offer min amount"
       );
     }
 
     try {
       await program.methods
-        .invest(new anchor.BN('101'))
+        .invest(offerId, new anchor.BN("101"))
         .accounts({
-          vaultTokenAccount,
+          vaultStableTokenAccount,
           caller: callerInvestor.publicKey,
           investorOfferTokenAccount,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           payer: payer.publicKey,
           offerToken: offerTokenPublicKey,
           offer,
           investor,
+          stableToken: stableTokenPubKey
         })
         .signers([payer, callerInvestor])
         .rpc();
@@ -322,21 +329,24 @@ describe('Offer', () => {
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        'Goal amount exceeded'
+        "Investment exceeds goal amount"
       );
     }
 
+    await advanceTime<Hackathon>(program, now + 2);
+
     await program.methods
-      .invest(new anchor.BN(investAmount.toString()))
+      .invest(offerId, new anchor.BN(investAmount.toString()))
       .accounts({
-        vaultTokenAccount,
+        vaultStableTokenAccount,
         caller: callerInvestor.publicKey,
         investorOfferTokenAccount,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         payer: payer.publicKey,
         offerToken: offerTokenPublicKey,
         offer,
         investor,
+        stableToken: stableTokenPubKey
       })
       .signers([payer, callerInvestor])
       .rpc();
@@ -347,7 +357,7 @@ describe('Offer', () => {
     );
     let vaultTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
-      vaultTokenAccount
+      vaultStableTokenAccount
     );
 
     let investorTokenAccountInfo = await getAccount(
@@ -363,16 +373,17 @@ describe('Offer', () => {
     expect(vaultTokenAccountInfo.amount === investAmount).true;
 
     await program.methods
-      .invest(new anchor.BN(investAmount.toString()))
+      .invest(offerId, new anchor.BN(investAmount.toString()))
       .accounts({
-        vaultTokenAccount,
+        vaultStableTokenAccount,
         caller: callerInvestor.publicKey,
         investorOfferTokenAccount,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         payer: payer.publicKey,
         offerToken: offerTokenPublicKey,
         offer,
         investor,
+        stableToken: stableTokenPubKey
       })
       .signers([payer, callerInvestor])
       .rpc();
@@ -383,7 +394,7 @@ describe('Offer', () => {
     );
     vaultTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
-      vaultTokenAccount
+      vaultStableTokenAccount
     );
 
     investorTokenAccountInfo = await getAccount(
@@ -399,28 +410,29 @@ describe('Offer', () => {
     ).true;
   });
 
-  it('should be able originator withdraw balance of the vault', async () => {
-    const [vaultTokenAccount] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode('offer_vault'), offer.toBuffer()],
+  it("should be able originator withdraw balance of the vault", async () => {
+    const [vaultStableTokenAccount] = PublicKey.findProgramAddressSync(
+      [anchor.utils.bytes.utf8.encode("offer_vault"), offer.toBuffer()],
       program.programId
     );
 
     const [vaultPubKey2] = PublicKey.findProgramAddressSync(
-      [anchor.utils.bytes.utf8.encode('offer_vault'), offer2.toBuffer()],
+      [anchor.utils.bytes.utf8.encode("offer_vault"), offer2.toBuffer()],
       program.programId
     );
 
     await advanceTime<Hackathon>(program, deadline);
 
     await program.methods
-      .withdrawInvestments()
+      .withdrawInvestments(offerId)
       .accounts({
-        vaultTokenAccount: vaultTokenAccount,
+        vaultStableTokenAccount,
         originatorTokenAccount: originatorTokenAccountPubKey,
         offer: offer,
         payer: payer.publicKey,
         originator: originator,
         caller: callerOriginator.publicKey,
+        stableToken: stableTokenPubKey
       })
       .signers([payer, callerOriginator])
       .rpc();
@@ -435,10 +447,10 @@ describe('Offer', () => {
     ).true;
   });
 
-  it('should be able originator pay first installment', async () => {
+  it("should be able originator pay first installment", async () => {
     try {
       await program.methods
-        .payInstallment()
+        .payInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           caller: callerOriginator.publicKey,
@@ -455,14 +467,14 @@ describe('Offer', () => {
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        'The Offer is not on track'
+        "The Offer is not on track"
       );
     }
 
     await advanceTime(program, installmentsStartDate);
 
     await program.methods
-      .payInstallment()
+      .payInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         caller: callerOriginator.publicKey,
@@ -489,10 +501,10 @@ describe('Offer', () => {
     expect(_offer.totalInstallmentsPaid === 1).true;
   });
 
-  it('should investor withdraw your first installment', async () => {
+  it("should investor withdraw your first installment", async () => {
     const [investorInstallment] = PublicKey.findProgramAddressSync(
       [
-        anchor.utils.bytes.utf8.encode('investor_installment'),
+        anchor.utils.bytes.utf8.encode("investor_installment"),
         offer.toBuffer(),
         investor.toBuffer(),
       ],
@@ -504,7 +516,7 @@ describe('Offer', () => {
       investorOfferTokenAccount
     );
     await program.methods
-      .withdrawInstallment()
+      .withdrawInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         ownerInvestor: callerInvestor.publicKey,
@@ -515,6 +527,7 @@ describe('Offer', () => {
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
+        stableToken: stableTokenPubKey
       })
       .signers([payer])
       .rpc();
@@ -530,7 +543,7 @@ describe('Offer', () => {
 
     try {
       await program.methods
-        .withdrawInstallment()
+        .withdrawInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           ownerInvestor: callerInvestor.publicKey,
@@ -541,18 +554,19 @@ describe('Offer', () => {
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,
+          stableToken: stableTokenPubKey
         })
         .signers([payer])
         .rpc();
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        'Investor has no installment to receive'
+        "Investor has no installment to receive"
       );
     }
   });
 
-  it('should be able originator pay last installment', async () => {
+  it("should be able originator pay last installment", async () => {
     await mintTo(
       anchor.getProvider().connection,
       payer,
@@ -563,7 +577,7 @@ describe('Offer', () => {
     );
 
     await program.methods
-      .payInstallment()
+      .payInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         caller: callerOriginator.publicKey,
@@ -582,12 +596,12 @@ describe('Offer', () => {
       originatorTokenAccountPubKey
     );
 
-    expect(_offer.totalInstallmentsPaid === 2, 'total paid').true;
-    expect(originatorTokenAccountInfo.amount.toString() === '0').true;
+    expect(_offer.totalInstallmentsPaid === 2, "total paid").true;
+    expect(originatorTokenAccountInfo.amount.toString() === "0").true;
 
     try {
       await program.methods
-        .payInstallment()
+        .payInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           caller: callerOriginator.publicKey,
@@ -603,15 +617,15 @@ describe('Offer', () => {
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        'The Offer is not on track'
+        "The Offer is not on track"
       );
     }
   });
 
-  it('should investor withdraw your last installment', async () => {
+  it("should investor withdraw your last installment", async () => {
     const [investorInstallment] = PublicKey.findProgramAddressSync(
       [
-        anchor.utils.bytes.utf8.encode('investor_installment'),
+        anchor.utils.bytes.utf8.encode("investor_installment"),
         offer.toBuffer(),
         investor.toBuffer(),
       ],
@@ -624,7 +638,7 @@ describe('Offer', () => {
     );
 
     await program.methods
-      .withdrawInstallment()
+      .withdrawInstallment(offerId)
       .accounts({
         payer: payer.publicKey,
         ownerInvestor: callerInvestor.publicKey,
@@ -635,6 +649,7 @@ describe('Offer', () => {
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
+        stableToken: stableTokenPubKey
       })
       .signers([payer])
       .rpc();
@@ -650,7 +665,7 @@ describe('Offer', () => {
 
     try {
       await program.methods
-        .withdrawInstallment()
+        .withdrawInstallment(offerId)
         .accounts({
           payer: payer.publicKey,
           ownerInvestor: callerInvestor.publicKey,
@@ -661,13 +676,14 @@ describe('Offer', () => {
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,
+          stableToken: stableTokenPubKey
         })
         .signers([payer])
         .rpc();
     } catch (err) {
       expect(err).to.be.instanceOf(AnchorError);
       expect((err as AnchorError).error.errorMessage).to.equal(
-        'Investor has no installment to receive'
+        "Investor has no installment to receive"
       );
     }
   });

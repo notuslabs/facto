@@ -1,3 +1,5 @@
+import { FAKE_MINT } from "@/lib/constants";
+import { Hackathon } from "@/lib/idl/facto-idl-types";
 import { Program, utils } from "@coral-xyz/anchor";
 import { PublicKey, Keypair } from "@solana/web3.js";
 
@@ -7,7 +9,7 @@ export type CreateOriginatorParams = {
   tokenSlug: string;
 
   caller: Keypair;
-  program: Program;
+  program: Program<Hackathon>;
 };
 
 export async function createOriginator({
@@ -17,16 +19,11 @@ export async function createOriginator({
   caller,
   program,
 }: CreateOriginatorParams) {
-  const [originator] = PublicKey.findProgramAddressSync(
-    [utils.bytes.utf8.encode("originator"), caller.publicKey.toBuffer()],
-    program.programId,
-  );
-
   const tx = await program.methods
     .createOriginator(name, description, tokenSlug)
     .accounts({
-      originator,
       payer: caller.publicKey,
+      stableCoin: FAKE_MINT,
       caller: caller.publicKey,
     })
     .signers([caller])
