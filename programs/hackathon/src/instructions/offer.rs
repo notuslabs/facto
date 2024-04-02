@@ -51,7 +51,7 @@ pub fn create_offer(
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
     offer.description = description;
-    //offer.discriminator = ctx.accounts.originator.total_offers;
+    offer.discriminator = ctx.accounts.originator.total_offers;
     offer.goal_amount = goal_amount;
     offer.deadline_date = deadline_date;
     offer.acquired_amount = 0;
@@ -69,7 +69,7 @@ pub fn create_offer(
     offer.token_bump = *ctx.bumps.get("token").unwrap();
     offer.vault_bump = *ctx.bumps.get("vault").unwrap();
 
-    //ctx.accounts.originator.total_offers += 1;
+    ctx.accounts.originator.total_offers += 1;
     Ok(())
 }
 
