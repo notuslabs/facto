@@ -43,14 +43,16 @@ export default function MobileExtraNavbar() {
         <Link
           href={option.href}
           className={cn(
-            pathname === option.href && "!text-primary",
+            pathname === option.href && "!text-facto-primary",
             "flex w-1/3 flex-col items-center gap-2 text-center text-muted-foreground transition-colors",
           )}
           key={option.key}
         >
           <span
             className={cn(
-              pathname === option.href ? "rounded-full bg-muted" : "bg-transparent",
+              pathname === option.href
+                ? "rounded-full bg-muted text-facto-primary"
+                : "bg-transparent",
               "px-3 py-1",
             )}
           >

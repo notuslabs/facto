@@ -141,6 +141,9 @@
     --facto-primary-green: #A3DE10;
 
     --radius: 0.5rem;
+
+    --facto-primary-green: #A3DE10;
+    --facto-secondary-green: #E0FF92;
   }
 
   .dark {
@@ -283,7 +286,8 @@
     --input-hover-border: #3f3f46;
     --ring: #3b82f6;
 
-    --facto-primary-green: #A3DE10
+    --facto-primary-green: #A3DE10;
+    --facto-secondary-green: #E0FF92;
   }
 }
 

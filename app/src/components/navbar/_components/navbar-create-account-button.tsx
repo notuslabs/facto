@@ -10,7 +10,7 @@ export function NavbarCreateAccountButton() {
   if (data?.userInfo) return null;
 
   return (
-    <Button variant={"ghost"}>
+    <Button variant="defaultGradient">
       <a href={`/${locale}/create-account`}>{t("create-account")}</a>
     </Button>
   );

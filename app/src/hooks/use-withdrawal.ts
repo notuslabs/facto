@@ -32,7 +32,7 @@ export function useWithdrawal() {
       );
 
       const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
         program.programId,
       );
 
@@ -40,7 +40,7 @@ export function useWithdrawal() {
         .withdrawTokens(new BN(amount * 10 ** 9))
         .accounts({
           investor: investorPubKey,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           toTokenAccount: toTokenAccount,
           stableCoin: FAKE_MINT,
           payer: keypair.publicKey,

@@ -230,7 +230,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
 
     let transfer_accounts = TransferChecked {
         from: ctx.accounts.vault_payment_token_account.to_account_info(),
-        to: ctx.accounts.investor_token_account.to_account_info(),
+        to: ctx.accounts.investor_stable_token_account.to_account_info(),
         authority: ctx.accounts.offer.to_account_info(),
         mint: ctx.accounts.stable_token.to_account_info(),
     };

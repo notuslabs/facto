@@ -56,7 +56,7 @@ export function LateralCard({ offer }: LateralCardProps) {
 
         <div className="p-4 md:px-6">
           <Progress
-            indicatorColor="bg-success-strong"
+            indicatorColor="bg-facto-primary"
             value={Math.round((offer.acquiredAmount / offer.goalAmount) * 100)}
           />
         </div>
