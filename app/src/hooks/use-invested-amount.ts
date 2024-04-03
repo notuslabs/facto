@@ -21,13 +21,22 @@ export function useInvestedAmount(offerId: string) {
 
       const connection = getConnection();
 
+      const [offerPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("offer"), utils.bytes.utf8.encode(offerId)],
+        program.programId,
+      );
+
       const [investorPubKey] = PublicKey.findProgramAddressSync(
         [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
       const [investorOfferTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_offer_token_account"), investorPubKey.toBuffer()],
+        [
+          utils.bytes.utf8.encode("investor_offer_token_account"),
+          offerPubKey.toBuffer(),
+          investorPubKey.toBuffer(),
+        ],
         program.programId,
       );
 
