@@ -28,14 +28,7 @@ const CreateDepositOfferFormSchema = ({
       .number()
       .positive("Invesment amount must be greater than 0")
       .refine((val) => val <= (balance ?? 0), "You can't deposit more than your balance")
-      .refine((val) => {
-        console.log({
-          val,
-          offerRemaining,
-        });
-
-        return val <= offerRemaining;
-      }, "You can't deposit more than needed for offer to end")
+      .refine((val) => val <= offerRemaining, "You can't deposit more than needed for offer to end")
       .refine((val) => val >= minAmountInvest, "You can't deposit less than the minimum amount"),
   });
 
@@ -57,8 +50,6 @@ export function LateralCardForm({
   const { mutate: invest, isPending: isInvesting } = useInvest();
   const formatNumber = useFormatNumber();
   const t = useTranslations("offer-page.lateral-card");
-
-  console.log(offerRemaining);
 
   const DepositOfferFormSchema = CreateDepositOfferFormSchema({
     balance,
