@@ -95,6 +95,10 @@ export class Offer {
     return OfferStatus.Failed;
   }
 
+  public get remainingAmount(): number {
+    return this.goalAmount - this.acquiredAmount;
+  }
+  
   public deadlineDate: string;
   public acquiredAmount: number;
   public originator: Account<"originator">;
