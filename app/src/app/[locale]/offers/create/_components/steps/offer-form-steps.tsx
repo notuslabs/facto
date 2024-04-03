@@ -31,6 +31,8 @@ import {
   creditScoreOptions,
   paymentFrequencyOptions,
 } from "../offer-form-validation";
+import { TimePicker } from "@/components/ui/time-picker";
+import { resetDate } from "@/lib/reset-date";
 
 type FormStepProps = {
   isAllowedToCreate: boolean;
@@ -354,9 +356,14 @@ export function OfferFormStep3({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
+                    disabled={(date) =>
+                      resetDate(date).getTime() <= resetDate(new Date()).getTime() - 1000
+                    }
                     initialFocus
                   />
+                  <div className="border-t border-border p-3">
+                    <TimePicker setDate={field.onChange} date={field.value} />
+                  </div>
                 </PopoverContent>
               </Popover>
               <FormMessage />
@@ -396,7 +403,9 @@ export function OfferFormStep3({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
+                    disabled={(date) =>
+                      resetDate(date).getTime() <= resetDate(new Date()).getTime() - 1000
+                    }
                     initialFocus
                   />
                 </PopoverContent>
@@ -468,7 +477,9 @@ export function OfferFormStep3({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
+                    disabled={(date) =>
+                      resetDate(date).getTime() <= resetDate(new Date()).getTime() - 1000
+                    }
                     initialFocus
                   />
                 </PopoverContent>

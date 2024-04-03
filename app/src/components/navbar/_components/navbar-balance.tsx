@@ -1,10 +1,12 @@
 "use client";
 
+import { useFormatNumber } from "@/hooks/number-formatters";
 import { useBalance } from "@/hooks/use-get-balance";
 import { Loader2Icon, WalletCards } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function NavbarBalance() {
+  const formatNumber = useFormatNumber();
   const { data, isPending } = useBalance();
   const t = useTranslations("navbar");
 
@@ -20,7 +22,7 @@ export function NavbarBalance() {
         {isPending ? (
           <Loader2Icon className="animate-spin text-facto-primary" size={16} />
         ) : (
-          <span>$ {data.formattedBalance ?? "0.00"}</span>
+          <span>{formatNumber({ value: data?.formattedBalance ?? 0 })}</span>
         )}
       </div>
     </span>

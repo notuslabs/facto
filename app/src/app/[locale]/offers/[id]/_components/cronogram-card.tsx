@@ -7,50 +7,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { InstallmentsList } from "@/structs/Offer";
 import { useTranslations } from "next-intl";
 
-export function ReceptionCronogram() {
+type ReceptionCronogramProps = {
+  installmentsCount: number;
+  installmentsList: InstallmentsList;
+};
+
+export function ReceptionCronogram({
+  installmentsCount,
+  installmentsList,
+}: ReceptionCronogramProps) {
+  const format = useDateFormatter();
   const t = useTranslations("offer-page.income-schedule");
   const tr = useTranslations("badges");
+  const installments = installmentsList.map((installment) => ({
+    ...installment,
+    status: <Badge variant="secondary">{tr(installment.status)}</Badge>,
+  }));
 
-  const tableData = [
-    {
-      data: "16/04/2024",
-      paymentNumber: "1/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "2/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "3/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "4/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "5/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      data: "16/04/2024",
-      paymentNumber: "6/6",
-      totalAmount: "R$250.00",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-  ];
   return (
     <div className="rounded-2xl bg-primary-foreground text-sm text-primary">
       <h2 className="p-6 text-xl font-bold md:px-8 md:py-6">{t("title")}</h2>
@@ -64,12 +41,17 @@ export function ReceptionCronogram() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tableData.map((tableData) => (
-            <TableRow className="border-b border-border" key={tableData.data}>
-              <TableCell>{tableData.data}</TableCell>
-              <TableCell>{tableData.paymentNumber}</TableCell>
-              <TableCell>{tableData.totalAmount}</TableCell>
-              <TableCell className="text-right">{tableData.paymentStatus}</TableCell>
+          {installments.map((tableData) => (
+            <TableRow
+              className="border-b border-border"
+              key={`${tableData.installmentNumber}/${installmentsCount}`}
+            >
+              <TableCell>{format(tableData.date, "P")}</TableCell>
+              <TableCell>
+                {tableData.installmentNumber}/{installmentsCount}
+              </TableCell>
+              <TableCell>{tableData.amount}</TableCell>
+              <TableCell className="text-right">{tableData.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -42,13 +42,13 @@ export async function createOffer({
     .createOffer(
       id,
       description,
-      new BN(deadlineDate.getTime()),
+      new BN(Math.ceil(deadlineDate.getTime() / 1000)),
       new BN(goalAmount),
-      new BN(startDate.getTime()),
+      new BN(Math.ceil(startDate.getTime() / 1000)),
       new BN(minAmountInvest),
       installmentsCount,
       new BN(installmentsTotalAmount),
-      new BN(installmentsStartDate.getTime()),
+      new BN(Math.ceil(installmentsStartDate.getTime() / 1000)),
     )
     .accounts({
       payer: caller.publicKey,

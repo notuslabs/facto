@@ -56,5 +56,7 @@ export function useSession() {
         address,
       };
     },
+    enabled: !!web3auth.provider?.chainId,
+    retry: 0,
   });
 }

@@ -47,6 +47,8 @@ export default function TransactionsForm({
   const contract = "00299277837662juijha88722099221443545656756889789345csdfsd23534523jkh34b5kuh2";
 
   function onSubmit(values: z.infer<typeof schemaType>) {
+    if (!publicKey) return;
+
     if (type === "withdrawal") {
       withdrawal({ amount: values.amount, toTokenAccount: publicKey });
     } else {

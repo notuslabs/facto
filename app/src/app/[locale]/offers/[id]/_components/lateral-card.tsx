@@ -1,78 +1,71 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { ChevronDown, HelpingHand, Smile } from "lucide-react";
-import { useTranslations } from "next-intl";
+"use client";
 
-export function LateralCard() {
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { useFormatNumber } from "@/hooks/number-formatters";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { useBalance } from "@/hooks/use-get-balance";
+import { useInvestedAmount } from "@/hooks/use-invested-amount";
+import { Offer } from "@/structs/Offer";
+import { useTranslations } from "next-intl";
+import { LateralCardForm } from "./lateral-card-form";
+
+type LateralCardProps = {
+  offer: Offer;
+};
+
+export function LateralCard({ offer }: LateralCardProps) {
+  const { data: investedAmount } = useInvestedAmount(offer.id);
+  const { data: balance, isPending: isLoadingBalance } = useBalance();
+  const formatNumber = useFormatNumber();
+  const format = useDateFormatter();
   const t = useTranslations("offer-page.lateral-card");
-  const installments = 6;
-  const date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30);
+  const offerStatusT = useTranslations("offer-status");
 
   return (
     <aside className="flex flex-col rounded-lg bg-secondary text-primary">
-      <div className="p-4">
-        <Button className="flex gap-2 bg-subtle text-placeholder-foreground md:hidden">
-          <div className="flex size-5 items-center justify-center rounded-full bg-black">
-            <Smile className="text-purple-500" size={14} />
-          </div>
-          Solana
-          <ChevronDown size={20} />
-        </Button>
-      </div>
-      <div className="flex justify-between px-4 md:p-6">
-        <div>
-          <p className="text-placeholder text-2xl font-semibold text-placeholder-foreground">$0</p>
-          <p className="text-xs text-primary">
-            {t("your-balance")}
-            <span className="font-bold underline underline-offset-2">R$ 69.420,24</span>
-          </p>
-        </div>
-        <Button className="hidden gap-2 bg-subtle text-placeholder-foreground md:flex">
-          <div className="flex size-5 items-center justify-center rounded-full bg-black">
-            <Smile className="text-purple-500" size={14} />
-          </div>
-          Solana
-          <ChevronDown size={20} />
-        </Button>
-      </div>
-
-      <div className="p-4 md:p-6">
-        <Button
-          size="lg"
-          variant="secondary"
-          className="w-full gap-2 bg-subtle text-placeholder-foreground"
-        >
-          {t("invest-now")}
-          <HelpingHand size={16} />
-        </Button>
-      </div>
+      <LateralCardForm
+        offerId={offer.id}
+        balance={balance?.formattedBalance}
+        isLoadingBalance={isLoadingBalance}
+        offerRemaining={offer.remainingAmount}
+        minAmountInvest={offer.minAmountInvest}
+      />
 
       <div className="rounded-bl-lg rounded-br-lg border bg-primary-foreground">
         <div className="flex justify-between px-4 py-[14px] text-sm font-medium text-muted-foreground md:px-6">
           <p>{t("you-invested")}</p>
-          <span className="font-semibold">R$ 420,00</span>
+          {investedAmount != null && (
+            <span className="font-semibold">{formatNumber({ value: investedAmount })}</span>
+          )}
         </div>
         <div className="flex justify-between px-4 pb-2 pt-4 md:px-6">
           <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">{t("raised-value")}</span>
-            <span className="font-semibold md:text-xl">R$ 666,69</span>
+            <span className="font-semibold md:text-xl">
+              {formatNumber({ value: offer.acquiredAmount })}
+            </span>
           </div>
 
           <div className="flex flex-col gap-3">
             <span className="text-right text-sm font-medium">Total</span>
-            <span className="font-semibold md:text-xl">R$ 69.420</span>
+            <span className="font-semibold md:text-xl">
+              {formatNumber({ value: offer.goalAmount })}
+            </span>
           </div>
         </div>
 
         <div className="p-4 md:px-6">
-          <Progress indicatorColor="bg-facto-primary" value={33} />
+          <Progress
+            indicatorColor="bg-facto-primary"
+            value={Math.round((offer.acquiredAmount / offer.goalAmount) * 100)}
+          />
         </div>
 
         <div className="flex justify-between border-b border-t px-4 py-[14px] text-sm md:px-6">
           <p>{t("offer-status")}</p>
           <Badge variant="secondary" className="rounded-md">
-            {t("in-fundraising")}
+            {offerStatusT(offer.status)}
           </Badge>
         </div>
 
@@ -82,8 +75,8 @@ export function LateralCard() {
         </div>
 
         <div className="flex justify-between px-4 py-[14px] text-sm md:px-6">
-          <p>{t("receive-in", { installments })}</p>
-          <span className="font-semibold">{t("date", { date })}</span>
+          <p>{t("receive-in", { installments: offer.installmentsCount })}</p>
+          <span className="font-semibold">{format(offer.installmentsEndDate, "P")}</span>
         </div>
       </div>
     </aside>

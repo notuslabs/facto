@@ -78,10 +78,11 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
         amount >= ctx.accounts.offer.min_amount_invest,
         ValidationError::InvestmentAmountMustBeGreaterThanOfferMinAmount
     );
-    require!(
-        (ctx.accounts.vault_stable_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
+    /*require!(
+        (ctx.accounts.vault_stable_token_account.amount + amount)
+            <= ctx.accounts.offer.goal_amount,
         ValidationError::InvestmentExceedsGoalAmount
-    );
+    );*/
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::Open,
         ValidationError::OfferIsNotOpen
