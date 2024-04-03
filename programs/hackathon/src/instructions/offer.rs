@@ -28,11 +28,11 @@ pub fn create_offer(
         ValidationError::DeadlineDateMustBeInTheFuture
     );
     require!(
-        goal_amount >= 1,
+        goal_amount >= 1000000,
         ValidationError::GoalAmountMustBeEqualToOrGreaterThanOne
     );
     require!(
-        goal_amount <= 15_000_000,
+        goal_amount <= 15000000000000,
         ValidationError::GoalAmountExceeded
     );
     require!(
@@ -40,12 +40,16 @@ pub fn create_offer(
         ValidationError::StartDateMustBeInTheFuture
     );
     require!(
-        min_amount_invest >= 1,
+        min_amount_invest >= 1000000,
         ValidationError::MinAmountMustBeEqualToOrGreaterThanOne
     );
     require!(
         installments_count >= 1,
         ValidationError::InstallmentsTotalMustBeGreaterThanOne
+    );
+    require!(
+        installments_total_amount > goal_amount,
+        ValidationError::InstallmentsTotalAmountMustBeGreaterThanGoalAmount
     );
 
     let offer = &mut ctx.accounts.offer;
@@ -290,4 +294,6 @@ enum ValidationError {
     StartDateMustBeInTheFuture,
     #[msg("Installments total must be greater than one")]
     InstallmentsTotalMustBeGreaterThanOne,
+    #[msg("Installments total amount must be greater than goal amount")]
+    InstallmentsTotalAmountMustBeGreaterThanGoalAmount,
 }

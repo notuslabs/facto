@@ -117,11 +117,12 @@ pub struct CreateOffer<'info> {
         bump,
         payer = payer,
         mint::authority = offer,
-        mint::decimals = 9,
+        mint::decimals = 6,
     )]
     pub token: Box<Account<'info, Mint>>,
 
-    #[account()] // TODO: add constraint to ensure that the token is a stablecoin
+    #[account(mut, mint::decimals = 6)]
+    // TODO: add constraint to ensure that the token is a stablecoin
     pub stable_token: Box<Account<'info, Mint>>,
 
     #[account(
@@ -164,7 +165,7 @@ pub struct Invest<'info> {
     pub offer: Account<'info, Offer>,
     #[account(mut, seeds = [b"offer_token", offer.key().as_ref()], bump=offer.token_bump)]
     pub offer_token: Account<'info, Mint>,
-    #[account(mut)] // TODO: add constraint
+    #[account(mut, mint::decimals = 6)] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
     #[account(mut, seeds=[b"investor", caller.key().as_ref()], bump=investor.bump)]
     pub investor: Account<'info, Investor>,
@@ -190,7 +191,7 @@ pub struct WithdrawInvestments<'info> {
     pub originator: Account<'info, Originator>,
     #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
-    #[account(mut)] // TODO: add constraint
+    #[account(mut, mint::decimals = 6)] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
 
     pub system_program: Program<'info, System>,
@@ -207,7 +208,7 @@ pub struct PayInstallment<'info> {
 
     #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
-    #[account()] // TODO: add constraint
+    #[account(mut, mint::decimals = 6)] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
     #[account(
         init_if_needed,
@@ -251,7 +252,7 @@ pub struct WithdrawInstallment<'info> {
     pub investor_stable_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump)]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
-    #[account()] // TODO: add constraint
+    #[account(mut, mint::decimals = 6)] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
     #[account(mut, seeds = [b"offer_token", offer.key().as_ref()], bump=offer.token_bump)]
     pub offer_token: Account<'info, Mint>,

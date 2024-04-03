@@ -10,8 +10,10 @@ import { useTokenAccounts } from "./use-token-accounts";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
+import { z } from "zod";
+import { OriginatorFormSchema } from "@/app/[locale]/become/originator/_components/originator-form";
 
-class AlreadyRegisteredError extends Error {
+class CustomError extends Error {
   constructor(message?: string) {
     super(message);
   }
@@ -19,27 +21,25 @@ class AlreadyRegisteredError extends Error {
 
 export function useCreateOriginator() {
   const queryClient = useQueryClient();
-  const { data } = useSession();
   const { data: programData } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.originator");
 
-  const solanaWallet = data?.solanaWallet;
   const program = programData?.program;
+  const keypair = programData?.keypair;
 
   return useMutation({
-    mutationFn: async ({ name, description }: { name: string; description: string }) => {
-      if (!solanaWallet || !program) return;
-
-      if (!!tokenAccounts?.originatorTokenAccount) {
-        throw new AlreadyRegisteredError(t("already-registered-toast-message"));
+    mutationFn: async ({ name, description, tokenSlug }: z.infer<typeof OriginatorFormSchema>) => {
+      if (!keypair || !program) {
+        throw new CustomError(t("not-authenticated"));
       }
 
-      const privateKey = await getPrivateKey(solanaWallet);
-      const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
+      if (!!tokenAccounts?.originatorTokenAccount) {
+        throw new CustomError(t("already-registered-toast-message"));
+      }
 
       const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), loggedUserWallet.publicKey.toBuffer()],
+        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
@@ -48,18 +48,19 @@ export function useCreateOriginator() {
         program.programId,
       );
 
-      await program.methods
-        .createOriginator(name, description, "SLUG")
+      const res = await program.methods
+        .createOriginator(name, description, tokenSlug)
         .accounts({
           originator: originatorPubKey,
           originatorTokenAccount: originatorTokenAccountPubKey,
           stableCoin: FAKE_MINT,
-          payer: loggedUserWallet.publicKey,
-          caller: loggedUserWallet.publicKey,
+          payer: keypair.publicKey,
+          caller: keypair.publicKey,
         })
-        .signers([loggedUserWallet])
-        .rpc()
-        .catch(console.error);
+        .signers([keypair])
+        .rpc();
+
+      console.log({ res });
     },
     onSuccess: () => {
       toast.success(t("success-toast-message"));
@@ -74,12 +75,14 @@ export function useCreateOriginator() {
     onError: (error) => {
       console.error(error);
 
-      if (error instanceof AlreadyRegisteredError) {
-        toast.error(error.message);
-        return;
-      }
+      // if (error instanceof CustomError) {
+      //   toast.error(error.message);
+      //   return;
+      // }
 
-      toast.error(t("error-toast-message"));
+      toast.error(error.message);
+
+      // toast.error(t("error-toast-message"));
     },
   });
 }

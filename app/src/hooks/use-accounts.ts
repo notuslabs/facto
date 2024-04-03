@@ -3,34 +3,27 @@
 import { utils } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
-import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
-import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
 
 export function useAccounts() {
   const { data: programData } = useProgram();
-  const { data } = useSession();
 
-  const solanaWallet = data?.solanaWallet;
-  const address = data?.address;
   const program = programData?.program;
+  const keypair = programData?.keypair;
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["accounts", address?.toString(), program?.programId.toString()],
+    queryKey: ["accounts", keypair?.publicKey.toString(), program?.programId.toString()],
     queryFn: async () => {
-      if (!solanaWallet || !program) return null;
-
-      const privateKey = await getPrivateKey(solanaWallet);
-      const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
+      if (!keypair || !program) return null;
 
       const [investorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor"), loggedUserWallet.publicKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
       const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), loggedUserWallet.publicKey.toBuffer()],
+        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
@@ -47,6 +40,6 @@ export function useAccounts() {
       };
     },
     retry: 0,
-    enabled: !!solanaWallet && !!program,
+    enabled: !!keypair && !!program,
   });
 }

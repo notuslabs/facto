@@ -1,38 +1,38 @@
-import { CircleDollarSign, HelpingHand } from "lucide-react";
+"use client";
+
+import { CircleDollarSign } from "lucide-react";
 import { ScoreBadge } from "../score-badge";
 import { Badge } from "../ui/badge";
 import { useTranslations } from "next-intl";
+import { useFormatNumber } from "@/hooks/number-formatters";
+import { RangeOption } from "@/structs/Offer";
 
 type HeaderProps = {
-  title: string;
+  name: string;
   description: string;
-  score: number;
-  id: string;
+  score: RangeOption;
+  acquiredAmount: number;
 };
 
-export function Header({ title, description, score, id }: HeaderProps) {
+export function Header({ name, description, score, acquiredAmount }: HeaderProps) {
+  const formatNumber = useFormatNumber();
   const t = useTranslations("header");
-  const moneyRaised = 666.69;
-  const peopleNumber = 420;
+
   return (
     <header className="flex flex-col gap-8 p-1">
       <div className="flex flex-col gap-1">
         <h1 className="flex items-center gap-2 text-4xl font-medium">
           <span className="size-[30px] rounded-md bg-white"></span>
-          {title} #{id}
+          {name}
         </h1>
         <p>{description}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <ScoreBadge score={score} />
-        <Badge className="flex gap-1" variant="gray">
-          <HelpingHand size={14} />
-          {t("people-invested", { peopleNumber })}
-        </Badge>
+        {score != null && <ScoreBadge scoreRange={score} />}
         <Badge className="flex gap-1" variant="gray">
           <CircleDollarSign size={14} />
-          R$ {t("money-raised", { moneyRaised })}
+          {t("money-raised", { moneyRaised: formatNumber({ value: acquiredAmount }) })}
         </Badge>
       </div>
     </header>

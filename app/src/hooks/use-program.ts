@@ -47,7 +47,7 @@ export function useProgram() {
         {},
       );
 
-      program = new Program<Hackathon>(IDL, new PublicKey(idl.metadata.address), provider);
+      program = new Program<Hackathon>(IDL, idl.metadata.address, provider);
 
       return {
         program,
