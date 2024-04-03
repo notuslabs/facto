@@ -8,32 +8,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
-import { genereateInstallmentsList } from "@/lib/offer-utils";
-import { useLocale, useTranslations } from "next-intl";
+import { InstallmentsList } from "@/structs/Offer";
+import { useTranslations } from "next-intl";
 
 type ReceptionCronogramProps = {
-  totalInstallmentsPaid: number;
   installmentsCount: number;
-  installmentsStartDate: Date;
-  installmentsTotalAmount: number;
+  installmentsList: InstallmentsList;
 };
 
 export function ReceptionCronogram({
   installmentsCount,
-  installmentsStartDate,
-  totalInstallmentsPaid,
-  installmentsTotalAmount,
+  installmentsList,
 }: ReceptionCronogramProps) {
   const format = useDateFormatter();
-  const locale = useLocale();
   const t = useTranslations("offer-page.income-schedule");
   const tr = useTranslations("badges");
-  const installments = genereateInstallmentsList({
-    installmentsCount,
-    installmentsStartDate,
-    installmentsTotalAmount,
-    totalInstallmentsPaid,
-  }).map((installment) => ({
+  const installments = installmentsList.map((installment) => ({
     ...installment,
     status: <Badge variant="secondary">{tr(installment.status)}</Badge>,
   }));
@@ -52,7 +42,10 @@ export function ReceptionCronogram({
         </TableHeader>
         <TableBody>
           {installments.map((tableData) => (
-            <TableRow className="border-b border-border" key={tableData.date.toString()}>
+            <TableRow
+              className="border-b border-border"
+              key={`${tableData.installmentNumber}/${installmentsCount}`}
+            >
               <TableCell>{format(tableData.date, "P")}</TableCell>
               <TableCell>
                 {tableData.installmentNumber}/{installmentsCount}

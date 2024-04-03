@@ -65,14 +65,15 @@ export function useCreateInvestor() {
       });
     },
     onError: (error) => {
-      console.error(error);
+      console.error(error.message);
+      // if (error instanceof AlreadyRegisteredError) {
+      //   toast.error(error.message);
+      //   return;
+      // }
 
-      if (error instanceof AlreadyRegisteredError) {
-        toast.error(error.message);
-        return;
-      }
+      toast.error(error.message);
 
-      toast.error(t("error-toast-message"));
+      // toast.error(t("error-toast-message"));
     },
   });
 }

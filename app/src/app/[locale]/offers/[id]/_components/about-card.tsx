@@ -87,10 +87,7 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
         </TableHeader>
         <TableBody>
           {otherOffers.map((offer) => (
-            <TableRow
-              className="border-b border-secondary text-sm"
-              key={offer.installmentsEndDate.toString()}
-            >
+            <TableRow className="border-b border-secondary text-sm" key={offer.id}>
               <TableCell>{offer.name}</TableCell>
               <TableCell>{formatNumber({ value: offer.goalAmount })}</TableCell>
               <TableCell>{format(offer.installmentsEndDate, "P")}</TableCell>

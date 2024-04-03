@@ -11,7 +11,7 @@ export function useInvestorTokenAccount() {
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["investor_stable_token_account", keypair?.publicKey.toString()],
+    queryKey: ["investor-stable-token-account", keypair?.publicKey.toString()],
     staleTime: 1000 * 20,
     refetchInterval: 1000 * 20,
     queryFn: async () => {

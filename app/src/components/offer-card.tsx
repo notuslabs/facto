@@ -5,8 +5,7 @@ import { ScoreBadge } from "./score-badge";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { Link } from "@/navigation";
-import { Offer } from "@/structs/Offer";
-import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
+import { Offer, RangeOption } from "@/structs/Offer";
 import { useFormatNumber } from "@/hooks/number-formatters";
 
 type OfferCardHeaderProps = {
@@ -43,13 +42,12 @@ function OfferCardHeader({
 type OfferCardBodyProps = {
   amountAcquired: number;
   amountToBeAcquired: number;
-  creditScore: number;
+  scoreRange: RangeOption;
 };
 
-function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: OfferCardBodyProps) {
+function OfferCardBody({ amountAcquired, amountToBeAcquired, scoreRange }: OfferCardBodyProps) {
   const formatNumber = useFormatNumber();
   const t = useTranslations("home.offers.card.body");
-  const scoreRange = useGetScoreRanges(creditScore);
 
   return (
     <div className="flex w-full flex-col text-muted-foreground">
@@ -132,13 +130,13 @@ export function OfferCard({ offer }: OfferCardProps) {
       <OfferCardHeader
         offerName={offer.name}
         originatorName={offer.originator.name}
-        interestRate={offer.interestRatePercent}
+        interestRate={offer.interestRate}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
 
       <OfferCardBody
-        creditScore={offer.creditScore}
+        scoreRange={offer.creditScore}
         amountAcquired={offer.acquiredAmount}
         amountToBeAcquired={offer.goalAmount}
       />

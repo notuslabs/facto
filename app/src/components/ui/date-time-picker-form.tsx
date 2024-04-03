@@ -12,8 +12,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { toast } from "@/components/ui/use-toast";
-
 const formSchema = z.object({
   dateTime: z.date(),
 });
@@ -26,14 +24,14 @@ export function DateTimePickerForm() {
   });
 
   function onSubmit(data: FormSchemaType) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre>
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    // toast({
+    //   title: "You submitted the following values:",
+    //   description: (
+    //     <pre>
+    //       <code>{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
   }
 
   return (

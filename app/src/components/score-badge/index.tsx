@@ -1,5 +1,5 @@
+import { RangeOption } from "@/structs/Offer";
 import { Badge } from "../ui/badge";
-import { RangeOption } from "@/app/[locale]/offers/[id]/_components/offer-content";
 
 type ScoreBadgeProps = {
   scoreRange: RangeOption;

@@ -6,6 +6,7 @@ import { utils } from "@coral-xyz/anchor";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
+import { toast } from "sonner";
 
 export function useCreateInvestorAccount() {
   const queryClient = useQueryClient();
@@ -52,6 +53,10 @@ export function useCreateInvestorAccount() {
       queryClient.invalidateQueries({
         queryKey: ["accounts"],
       });
+    },
+    onError: (error) => {
+      console.error(error.message);
+      toast.error(error.message);
     },
   });
 }

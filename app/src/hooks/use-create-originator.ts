@@ -75,12 +75,14 @@ export function useCreateOriginator() {
     onError: (error) => {
       console.error(error);
 
-      if (error instanceof CustomError) {
-        toast.error(error.message);
-        return;
-      }
+      // if (error instanceof CustomError) {
+      //   toast.error(error.message);
+      //   return;
+      // }
 
-      toast.error(t("error-toast-message"));
+      toast.error(error.message);
+
+      // toast.error(t("error-toast-message"));
     },
   });
 }

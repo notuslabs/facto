@@ -78,14 +78,14 @@ export function useCreateOffer() {
       });
     },
     onError: (error) => {
-      console.error(error);
+      console.error(error.message);
+      // if (error instanceof OriginatorAccountNotFound) {
+      //   toast.error(t("not-an-originator"));
+      //   return;
+      // }
 
-      if (error instanceof OriginatorAccountNotFound) {
-        toast.error(t("not-an-originator"));
-        return;
-      }
-
-      toast.error(t("error-toast-message"));
+      toast.error(error.message);
+      // toast.error(t("error-toast-message"));
     },
   });
 }
