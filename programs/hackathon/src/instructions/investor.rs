@@ -49,7 +49,7 @@ pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> 
 
     require!(
         amount <= investor_token_account.amount,
-        ValidationErrors::InsufficientBalance
+        ValidationError::InsufficientBalance
     );
 
     let transfer = TransferChecked {
@@ -78,17 +78,9 @@ pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> 
         Err(error) => {
             msg!("Transfer failed. Err: {}", error);
 
-            err!(ValidationErrors::TransferFailedUnknown)
+            err!(ValidationError::TransferFailedUnknown)
         }
     }
-}
-
-#[error_code]
-enum ValidationErrors {
-    #[msg("Insufficient Balance")]
-    InsufficientBalance,
-    #[msg("Transfer failed with an unknown error.")]
-    TransferFailedUnknown,
 }
 
 #[error_code]
@@ -97,6 +89,8 @@ enum ValidationError {
     MaxNameLengthExceeded,
     #[msg("Amount must be equal to or greater than 1")]
     AmountMustBeEqualToOrGreaterThanOne,
-    #[msg("Insufficient balance")]
+    #[msg("Insufficient Balance")]
     InsufficientBalance,
+    #[msg("Transfer failed with an unknown error.")]
+    TransferFailedUnknown,
 }
