@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { TimePickerDemo } from "./time-picker-demo";
+import { TimePicker } from "./time-picker";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -66,7 +66,7 @@ export function DateTimePickerForm() {
                     initialFocus
                   />
                   <div className="border-t border-border p-3">
-                    <TimePickerDemo setDate={field.onChange} date={field.value} />
+                    <TimePicker setDate={field.onChange} date={field.value} />
                   </div>
                 </PopoverContent>
               </Popover>

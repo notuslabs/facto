@@ -20,6 +20,7 @@ export function LateralCard({ offer }: LateralCardProps) {
   const formatNumber = useFormatNumber();
   const format = useDateFormatter();
   const t = useTranslations("offer-page.lateral-card");
+  const offerStatusT = useTranslations("offer-status");
 
   return (
     <aside className="flex flex-col rounded-lg bg-secondary text-primary">
@@ -64,9 +65,7 @@ export function LateralCard({ offer }: LateralCardProps) {
         <div className="flex justify-between border-b border-t px-4 py-[14px] text-sm md:px-6">
           <p>{t("offer-status")}</p>
           <Badge variant="secondary" className="rounded-md">
-            {/* TODO: use correct translation for status */}
-            {offer.status}
-            {/* {t("in-fundraising")} */}
+            {offerStatusT(offer.status)}
           </Badge>
         </div>
 

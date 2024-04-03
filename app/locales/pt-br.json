@@ -303,5 +303,19 @@
     "CC": "Investimentos extremamente especulativos. Risco de default extremamente alto. Muito arriscados e normalmente em situação de dificuldades financeiras.",
     "C": "Investimentos precários. Próximos do default ou em default, mas ainda pagando. Para investidores que buscam apostas arriscadas.",
     "D": "Default. O investimento falhou em cumprir com suas obrigações financeiras. A categoria mais baixa e arriscada."
+  },
+  "offer-status": {
+    "StartingSoon": "Em breve",
+    "Open": "Aberto",
+    "Funded": "Fundado",
+    "OnTrack": "Em andamento",
+    "Finished": "Concluído",
+    "Delinquent": "Delinquente",
+    "Failed": "Falhou"
+  },
+  "time-picker": {
+    "hours": "Horas",
+    "minutes": "Minutos",
+    "seconds": "Segundos"
   }
 }

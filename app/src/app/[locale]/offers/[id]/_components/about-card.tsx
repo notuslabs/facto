@@ -46,7 +46,6 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
               </div>
               <div className="flex flex-col text-sm">
                 <span className="font-bold">{name}</span>
-                {/* <span className="text-xs text-muted-foreground">Tipo, Categoria ou nicho</span> */}
               </div>
             </div>
           </div>
