@@ -74,18 +74,18 @@ export function useInvest() {
           vaultStableTokenAccount: vaultStableTokenAccountPubKey,
         })
         .signers([keypair])
-        .rpc();
+        .rpc({ commitment: "finalized" });
 
       return {
         offerId: offerId,
         tx: tx,
       };
     },
-    onSuccess: async ({ offerId }) => {
-      await queryClient.invalidateQueries({
+    onSuccess: ({ offerId }) => {
+      queryClient.invalidateQueries({
         queryKey: ["investor-stable-token-account"],
       });
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["offer", offerId],
       });
       queryClient.invalidateQueries({
