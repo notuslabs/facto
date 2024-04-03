@@ -355,6 +355,7 @@ export function OfferFormStep3({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
+                    disabled={(date) => date < new Date()}
                     initialFocus
                   />
                   <div className="border-t border-border p-3">
@@ -399,7 +400,7 @@ export function OfferFormStep3({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
+                    disabled={(date) => date < new Date()}
                     initialFocus
                   />
                 </PopoverContent>
@@ -471,7 +472,7 @@ export function OfferFormStep3({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date("1900-01-01")}
+                    disabled={(date) => date < new Date()}
                     initialFocus
                   />
                 </PopoverContent>

@@ -31,10 +31,6 @@ export function Header({ name, description, score, acquiredAmount }: HeaderProps
 
       <div className="flex flex-wrap gap-2">
         {scoreRange != null && <ScoreBadge scoreRange={scoreRange} />}
-        {/* <Badge className="flex gap-1" variant="gray">
-          <HelpingHand size={14} />
-          {t("people-invested", { peopleNumber })}
-        </Badge> */}
         <Badge className="flex gap-1" variant="gray">
           <CircleDollarSign size={14} />
           {t("money-raised", { moneyRaised: formatNumber({ value: acquiredAmount }) })}

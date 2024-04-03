@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProgram } from "./use-program";
 import { toast } from "sonner";
 import { BN } from "bn.js";
@@ -19,6 +19,7 @@ type InvestParams = {
 };
 
 export function useInvest() {
+  const queryClient = useQueryClient();
   const { data: programData } = useProgram();
 
   const program = programData?.program;
@@ -44,12 +45,16 @@ export function useInvest() {
         program.programId,
       );
       const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
         program.programId,
       );
 
       const [investorOfferTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_offer_token_account"), investorPubKey.toBuffer()],
+        [
+          utils.bytes.utf8.encode("investor_offer_token_account"),
+          offerPubKey.toBuffer(),
+          investorPubKey.toBuffer(),
+        ],
         program.programId,
       );
 
@@ -70,15 +75,23 @@ export function useInvest() {
         })
         .signers([keypair])
         .rpc();
-      console.log(tx);
 
-      return tx;
+      return {
+        offerId: offerId,
+        tx: tx,
+      };
+    },
+    onSuccess: ({ offerId }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["investor-stable-token-account"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["offer", offerId],
+      });
     },
     onError: (error) => {
-      console.error(error);
-      if (error instanceof InvestError) {
-        toast.error(error.message);
-      }
+      console.error(error.message);
+      toast.error(error.message);
     },
   });
 }

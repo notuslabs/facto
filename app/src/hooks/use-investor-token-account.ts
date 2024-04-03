@@ -11,7 +11,7 @@ export function useInvestorTokenAccount() {
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["investor_stable_token_account", keypair?.publicKey.toString()],
+    queryKey: ["investor-stable-token-account", keypair?.publicKey.toString()],
     staleTime: 1000 * 20,
     refetchInterval: 1000 * 20,
     queryFn: async () => {
@@ -28,10 +28,6 @@ export function useInvestorTokenAccount() {
         [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
         program.programId,
       );
-
-      console.log({
-        investorTokenAccountPubKey: investorTokenAccountPubKey.toString(),
-      });
 
       const investorTokenAccount = await getAccount(
         programData.program.provider.connection,

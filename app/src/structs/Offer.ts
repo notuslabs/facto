@@ -98,7 +98,7 @@ export class Offer {
   public get remainingAmount(): number {
     return this.goalAmount - this.acquiredAmount;
   }
-  
+
   public deadlineDate: string;
   public acquiredAmount: number;
   public originator: Account<"originator">;
@@ -116,6 +116,7 @@ export class Offer {
   toJSON() {
     return {
       ...this,
+      remainingAmount: this.remainingAmount,
       name: this.name,
       status: this.status,
     };
