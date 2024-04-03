@@ -150,13 +150,17 @@
     "deposit-value": "Valor do depósito",
     "your-balance": "Seu saldo em conta é de ",
     "disclaimer": "Disclaimer aqui",
-    "deposit": "Depósito"
+    "deposit": "Depósito",
+    "address": "Endereço da transação",
+    "address-copied": "Endereço copiado"
   },
   "withdrawal-page": {
     "withdrawal-value": "Valor do saque",
     "your-balance": "Seu saldo em conta é de ",
     "disclaimer": "Disclaimer aqui",
-    "withdrawal": "Saque"
+    "withdrawal": "Saque",
+    "address": "Endereço da transação",
+    "address-copied": "Endereço copiado"
   },
   "score-card": {
     "bad": "Ruim",
@@ -174,7 +178,9 @@
     "description": "Adicione saldo em sua conta para investir",
     "deposit-value": "Valor do depósito",
     "withdrawal-value": "Valor do saque",
-    "your-balance": "Seu saldo em conta é de "
+    "your-balance": "Seu saldo em conta é de ",
+    "address": "Endereço da transação",
+    "address-copied":"Endereço copiado"
   },
   "become": {
     "investor": {
@@ -285,5 +291,14 @@
     "deposit": "Depósito",
     "withdrawal": "Saque",
     "your-balance": "Seu saldo em conta é de "
+  },
+  "success": {
+    "title-deposit": "Depósito realizado com sucesso",
+    "title-withdrawal": "Saque realizado com sucesso",
+    "amount-deposit": "Valor do depósito",
+    "amount-withdrawal": "Valor do saque",
+    "hash": "Hash da transação",
+    "hash-copied": "Hash copiado",
+    "see-on": "Ver na blockchain"
   }
 }
