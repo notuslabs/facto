@@ -9,7 +9,7 @@ import GoBackButton from "../_components/go-back-button";
 import TransactionsForm from "../_components/transactions-form";
 
 export default function TransactionsDepositPage() {
-  const { data, isLoading } = useBalance();
+  const { data, isPending } = useBalance();
   const t = useTranslations("deposit-page");
 
   const contract =
@@ -22,8 +22,11 @@ export default function TransactionsDepositPage() {
         <div className="flex flex-col gap-6 rounded-2xl bg-secondary p-6">
           <div className="flex flex-col gap-3 text-xs">
             {t("deposit-value")}
-            {isLoading && <Loader2Icon className="animate-spin text-facto-primary" size={24} />}
-            {!isLoading && <TransactionsForm type="deposit" balance={data?.formattedBalance} />}
+            {isPending ? (
+              <Loader2Icon className="animate-spin text-facto-primary" size={24} />
+            ) : (
+              <TransactionsForm type="deposit" balance={data?.formattedBalance} />
+            )}
             <Input
               className="text-ellipsis"
               type="text"

@@ -7,14 +7,14 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function NavbarSignInButton() {
-  const { data, isLoading } = useSession();
+  const { data, isPending } = useSession();
   const { login } = useAuth();
 
   const t = useTranslations("navbar");
 
   if (!!data?.userInfo) return null;
 
-  if (isLoading) {
+  if (isPending) {
     return <Loader2 size={16} className="animate-spin" />;
   }
 

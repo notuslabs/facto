@@ -10,7 +10,7 @@ interface TransactionModalProps {
 
 export default function TransactionModal({ type }: TransactionModalProps) {
   const t = useTranslations("transactions-modal");
-  const { data: balance, isLoading, isPending } = useBalance();
+  const { data: balance } = useBalance();
   const { data } = useProgram();
   const publicKey = data && data.keypair.publicKey;
 

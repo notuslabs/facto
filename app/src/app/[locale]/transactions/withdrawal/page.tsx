@@ -11,7 +11,7 @@ import TransactionsForm from "../_components/transactions-form";
 
 export default function TransactionsWithdrawalPage() {
   const t = useTranslations("withdrawal-page");
-  const { data: balance, isLoading } = useBalance();
+  const { data: balance, isPending } = useBalance();
   const { data } = useProgram();
   const publicKey = data && data.keypair.publicKey;
   const contract = "00299277837662juijha88722099221443545656756889789345csdfsd23534523jkh34b5kuh2";
@@ -23,8 +23,9 @@ export default function TransactionsWithdrawalPage() {
         <div className="flex flex-col gap-6 rounded-2xl bg-secondary p-6">
           <div className="flex flex-col gap-3 text-xs">
             {t("withdrawal-value")}
-            {isLoading && <Loader2Icon className="animate-spin text-facto-primary" size={24} />}
-            {!isLoading && (
+            {isPending ? (
+              <Loader2Icon className="animate-spin text-facto-primary" size={24} />
+            ) : (
               <TransactionsForm
                 publicKey={publicKey}
                 balance={balance?.formattedBalance}

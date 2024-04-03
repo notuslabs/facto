@@ -7,13 +7,14 @@ import { useTranslations } from "next-intl";
 
 export default function TransactionsContent() {
   const t = useTranslations("transactions-page");
-  const { data, isLoading } = useBalance();
+  const { data, isPending } = useBalance();
   return (
     <div className="flex h-[582px] flex-col gap-8 rounded-t-3xl bg-primary-foreground px-4 pt-6">
       <div className="flex flex-col items-center justify-center gap-1 text-center">
         <span className="text-xs text-muted-foreground">{t("your-balance")}</span>
-        {isLoading && <Loader2Icon className="h-9 animate-spin text-facto-primary" size={24} />}
-        {!isLoading && (
+        {isPending ? (
+          <Loader2Icon className="animate-spin text-facto-primary" size={24} />
+        ) : (
           <span className="text-3xl font-extrabold">$ {data?.formattedBalance ?? "0.00"}</span>
         )}
       </div>
