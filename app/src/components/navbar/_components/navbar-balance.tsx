@@ -9,7 +9,7 @@ export function NavbarBalance() {
   const formatNumber = useFormatNumber();
   const { data, isPending } = useBalance();
   const t = useTranslations("navbar");
-
+  //
   if (!data) return null;
 
   return (
