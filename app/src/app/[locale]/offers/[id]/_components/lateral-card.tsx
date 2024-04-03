@@ -6,21 +6,31 @@ import { useFormatNumber } from "@/hooks/number-formatters";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { useBalance } from "@/hooks/use-get-balance";
 import { useInvestedAmount } from "@/hooks/use-invested-amount";
-import { Offer } from "@/structs/Offer";
 import { useTranslations } from "next-intl";
 import { LateralCardForm } from "./lateral-card-form";
+import { useQuery } from "@tanstack/react-query";
+import { getOffer } from "@/services/get-offer";
 
 type LateralCardProps = {
-  offer: Offer;
+  offerId: string;
 };
 
-export function LateralCard({ offer }: LateralCardProps) {
-  const { data: investedAmount } = useInvestedAmount(offer.id);
+export function LateralCard({ offerId }: LateralCardProps) {
+  const { data: offer } = useQuery({
+    queryKey: ["offer", offerId],
+    queryFn: () => getOffer(offerId),
+  });
+
+  const { data: investedAmount } = useInvestedAmount(offerId);
   const { data: balance, isPending: isLoadingBalance } = useBalance();
   const formatNumber = useFormatNumber();
   const format = useDateFormatter();
   const t = useTranslations("offer-page.lateral-card");
   const offerStatusT = useTranslations("offer-status");
+
+  if (!offer) {
+    return null;
+  }
 
   return (
     <aside className="flex flex-col rounded-lg bg-secondary text-primary">
@@ -54,26 +64,22 @@ export function LateralCard({ offer }: LateralCardProps) {
             </span>
           </div>
         </div>
-
         <div className="p-4 md:px-6">
           <Progress
             indicatorColor="bg-facto-primary"
             value={Math.round((offer.acquiredAmount / offer.goalAmount) * 100)}
           />
         </div>
-
         <div className="flex justify-between border-b border-t px-4 py-[14px] text-sm md:px-6">
           <p>{t("offer-status")}</p>
           <Badge variant="secondary" className="rounded-md">
             {offerStatusT(offer.status)}
           </Badge>
         </div>
-
         <div className="flex justify-between border-b px-4 py-[14px] text-sm md:px-6">
           <p>{t("payment-frequency")}</p>
           <span className="font-semibold">{t("monthly")}</span>
         </div>
-
         <div className="flex justify-between px-4 py-[14px] text-sm md:px-6">
           <p>{t("receive-in", { installments: offer.installmentsCount })}</p>
           <span className="font-semibold">{format(offer.installmentsEndDate, "P")}</span>

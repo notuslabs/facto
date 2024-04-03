@@ -1,4 +1,3 @@
-import BN from "bn.js";
 import { useLocale } from "next-intl";
 
 type UseFormatNumberProps = {
@@ -30,20 +29,4 @@ export function useFormatPercent() {
       style: "percent",
       minimumFractionDigits: 2,
     }).format(value);
-}
-
-type UseFormatBigNumberProps = {
-  value: BN;
-  locale?: string;
-  currency?: string;
-};
-
-export function useFormatBigNumber() {
-  const l = useLocale();
-
-  return ({ value, locale, currency = "USD" }: UseFormatBigNumberProps) =>
-    new Intl.NumberFormat(locale ?? l, {
-      style: "currency",
-      currency: currency,
-    }).format(value.toNumber()); // TODO: this is not right, it'll overflow
 }

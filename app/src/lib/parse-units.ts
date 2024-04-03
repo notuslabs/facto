@@ -1,4 +1,24 @@
-export function parseUnits(valueOrNumber: string | number, decimals: number) {
+import { BN } from "bn.js";
+import { DEFAULT_DECIMALS } from "./constants";
+/**
+ * Multiplies a string representation of a number by a given exponent of base 10 (10exponent).
+ *
+ * - Docs: https://viem.sh/docs/utilities/parseUnits
+ *
+ * @example
+ * import { parseUnits } from 'viem'
+ *
+ * parseUnits('420', 9)
+ * // 420000000000n
+ */
+export function parseUnits(valueOrNumber: string | number, decimals: number = DEFAULT_DECIMALS) {
+  if (typeof valueOrNumber == "number") {
+    if (valueOrNumber > Number.MAX_SAFE_INTEGER) {
+      throw new Error(
+        `Number is too large to be represented in JavaScript. Value: ${valueOrNumber}`,
+      );
+    }
+  }
   const value = valueOrNumber.toString();
   let [integer, fraction = "0"] = value.split(".");
 
@@ -33,5 +53,5 @@ export function parseUnits(valueOrNumber: string | number, decimals: number) {
     fraction = fraction.padEnd(decimals, "0");
   }
 
-  return BigInt(`${negative ? "-" : ""}${integer}${fraction}`);
+  return new BN(`${negative ? "-" : ""}${integer}${fraction}`);
 }

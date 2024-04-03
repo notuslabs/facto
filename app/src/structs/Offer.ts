@@ -2,6 +2,7 @@ import { IdlAccounts } from "@coral-xyz/anchor";
 import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
 import { addMonths, subMonths } from "date-fns";
+import { formatUnits } from "@/lib/format-units";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
 
@@ -52,16 +53,16 @@ export class Offer {
     this.id = raw.id;
     this.description = raw.description;
     this.discriminator = raw.discriminator;
-    this.goalAmount = raw.goalAmount.toNumber();
+    this.goalAmount = formatUnits(raw.goalAmount);
     this.originator = rawOriginator;
+    this.acquiredAmount = formatUnits(raw.acquiredAmount);
     this.deadlineDate = new Date(raw.deadlineDate.toNumber() * 1000).toISOString();
-    this.acquiredAmount = raw.acquiredAmount.toNumber();
     this.installmentsCount = raw.installmentsCount;
-    this.installmentsTotalAmount = raw.installmentsTotalAmount.toNumber();
+    this.installmentsTotalAmount = formatUnits(raw.installmentsTotalAmount);
     this.installmentsNextPaymentDate = new Date(
       raw.installmentsNextPaymentDate.toNumber() * 1000,
     ).toISOString();
-    this.minAmountInvest = raw.minAmountInvest.toNumber();
+    this.minAmountInvest = formatUnits(raw.minAmountInvest);
     this.#creditScoreInNumber = raw.creditScore;
     this.startDate = new Date(raw.startDate.toNumber() * 1000).toISOString();
     this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();

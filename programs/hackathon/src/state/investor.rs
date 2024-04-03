@@ -36,7 +36,7 @@ pub struct CreateInvestor<'info> {
     )]
     pub investor_stable_token_account: Account<'info, TokenAccount>,
 
-    #[account(mut)]
+    #[account(mut, mint::decimals = 6)]
     // TODO: Restrict the stable coin later
     pub stable_coin: Account<'info, Mint>,
 
@@ -76,7 +76,7 @@ pub struct DepositTokens<'info> {
     )]
     pub investor_stable_token_account: Account<'info, TokenAccount>,
 
-    #[account(mut)]
+    #[account(mut, mint::decimals = 6)]
     // TODO: Restrict the stable coin later
     pub stable_coin: Account<'info, Mint>,
 
@@ -107,7 +107,7 @@ pub struct WithdrawTokens<'info> {
     )]
     pub to_token_account: Account<'info, TokenAccount>,
 
-    #[account(mut)]
+    #[account(mut, mint::decimals = 6)]
     // TODO: Restrict the stable coin later
     pub stable_coin: Account<'info, Mint>,
 

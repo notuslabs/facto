@@ -64,7 +64,7 @@ export function useInvest() {
       );
 
       const tx = await program.methods
-        .invest(offerId, new BN(parseUnits(amount, 8).toString()))
+        .invest(offerId, parseUnits(amount))
         .accounts({
           caller: keypair.publicKey,
           payer: keypair.publicKey,
@@ -81,11 +81,11 @@ export function useInvest() {
         tx: tx,
       };
     },
-    onSuccess: ({ offerId }) => {
-      queryClient.invalidateQueries({
+    onSuccess: async ({ offerId }) => {
+      await queryClient.invalidateQueries({
         queryKey: ["investor-stable-token-account"],
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ["offer", offerId],
       });
       queryClient.invalidateQueries({
