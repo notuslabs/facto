@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useFormatNumber } from "@/hooks/number-formatters";
@@ -12,28 +12,64 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const DepositOfferFormSchema = z.object({
-  amount: z.coerce
-    .number()
-    .positive("Invesment amount must be greater than 0")
-    .int("Invesment amount must be an integer"),
-});
+type CreateDepositOfferFormSchemaProps = {
+  balance?: number | null;
+  offerRemaining?: number | null;
+  minAmountInvest?: number;
+};
+
+const CreateDepositOfferFormSchema = ({
+  balance,
+  offerRemaining,
+  minAmountInvest = 1,
+}: CreateDepositOfferFormSchemaProps) =>
+  z.object({
+    amount: z.coerce
+      .number()
+      .positive("Invesment amount must be greater than 0")
+      .refine((val) => val <= (balance ?? 0), "You can't deposit more than your balance")
+      .refine(
+        (val) => val <= (offerRemaining ?? 0),
+        "You can't deposit more than needed for offer to end",
+      )
+      .refine((val) => val >= minAmountInvest, "You can't deposit less than the minimum amount"),
+  });
 
 type LateralCardProps = {
   offerId: string;
   balance?: number | null;
+  offerRemaining?: number | null;
+  minAmountInvest?: number;
   isLoadingBalance: boolean;
 };
 
-export function LateralCardForm({ offerId, balance, isLoadingBalance }: LateralCardProps) {
+export function LateralCardForm({
+  offerId,
+  balance,
+  isLoadingBalance,
+  offerRemaining,
+  minAmountInvest,
+}: LateralCardProps) {
   const { mutate: invest, isPending: isInvesting } = useInvest();
   const formatNumber = useFormatNumber();
   const t = useTranslations("offer-page.lateral-card");
+
+  const DepositOfferFormSchema = CreateDepositOfferFormSchema({
+    balance,
+    offerRemaining,
+    minAmountInvest,
+  });
 
   const form = useForm<z.infer<typeof DepositOfferFormSchema>>({
     resolver: zodResolver(DepositOfferFormSchema),
     mode: "onChange",
   });
+
+  function topUp() {
+    if (balance == null) return;
+
+    form.setValue("amount", balance);
+  }
 
   async function onSubmit(values: z.infer<typeof DepositOfferFormSchema>) {
     invest(
@@ -42,9 +78,18 @@ export function LateralCardForm({ offerId, balance, isLoadingBalance }: LateralC
         offerId: offerId,
       },
       {
-        onSuccess: () => {
+        onSuccess: (tx) => {
           toast.success(t("investment-success"), {
-            action: (() => <Button variant="outline">{t("view-transaction")}</Button>)(),
+            action: (() => (
+              <a
+                href={`https://explorer.solana.com/tx/${tx}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                {t("view-transaction")}
+              </a>
+            ))(),
           });
         },
       },
@@ -99,9 +144,9 @@ export function LateralCardForm({ offerId, balance, isLoadingBalance }: LateralC
                   </span>
                 ) : (
                   balance && (
-                    <span className="font-bold underline underline-offset-2">
+                    <button onClick={topUp} className="font-bold underline underline-offset-2">
                       {formatNumber({ value: balance ?? 0 })}
-                    </span>
+                    </button>
                   )
                 )}
               </p>

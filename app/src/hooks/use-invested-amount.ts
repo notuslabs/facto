@@ -36,7 +36,6 @@ export function useInvestedAmount(offerId: string) {
         investorOfferTokenAccountPubKey,
       ).catch(console.error);
 
-      console.log("amount", investorOfferTokenAccount?.amount);
 
       return investorOfferTokenAccount
         ? parseFloat(investorOfferTokenAccount.amount.toString()) / 10 ** 9

@@ -8,10 +8,12 @@ import { formatUnits } from "@/lib/format-units";
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
 
 export enum OfferStatus {
+  StartingSoon = "StartingSoon",
   Open = "Open",
-  Finished = "Finished",
-  OnTrack = "OnTrack",
   Funded = "Funded",
+  OnTrack = "OnTrack",
+  Finished = "Finished",
+  Delinquent = "Delinquent",
   Failed = "Failed",
 }
 
@@ -23,15 +25,15 @@ export class Offer {
     this.discriminator = raw.discriminator;
     this.goalAmount = formatUnits(raw.goalAmount);
     this.originator = rawOriginator;
-    this.deadlineDate = new Date(raw.deadlineDate.toNumber()).toISOString();
     this.acquiredAmount = formatUnits(raw.acquiredAmount);
+    this.deadlineDate = new Date(raw.deadlineDate.toNumber() * 1000).toISOString();
     this.installmentsCount = raw.installmentsCount;
     this.installmentsTotalAmount = formatUnits(raw.installmentsTotalAmount);
     this.installmentsNextPaymentDate = new Date(
-      raw.installmentsNextPaymentDate.toNumber(),
+      raw.installmentsNextPaymentDate.toNumber() * 1000,
     ).toISOString();
     this.minAmountInvest = formatUnits(raw.minAmountInvest);
-    this.startDate = new Date(raw.startDate.toNumber()).toISOString();
+    this.startDate = new Date(raw.startDate.toNumber() * 1000).toISOString();
     this.creditScore = raw.creditScore;
     this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
@@ -65,27 +67,37 @@ export class Offer {
     const currentTime = new Date().getTime();
     const deadlineTime = new Date(this.deadlineDate).getTime();
     const startTime = new Date(this.startDate).getTime();
+    const installmentsNextPaymentDateTime = new Date(this.installmentsNextPaymentDate).getTime();
 
-    if (
-      currentTime < deadlineTime &&
-      currentTime >= startTime &&
-      this.acquiredAmount < this.goalAmount
-    ) {
+    if (currentTime < startTime) {
+      return OfferStatus.StartingSoon;
+    }
+
+    if (currentTime < deadlineTime && this.acquiredAmount < this.goalAmount) {
       return OfferStatus.Open;
-    } else if (this.acquiredAmount === this.goalAmount && currentTime >= deadlineTime) {
+    }
+
+    if (this.acquiredAmount == this.goalAmount) {
+      if (currentTime < deadlineTime) {
+        return OfferStatus.Funded;
+      }
+
       if (this.totalInstallmentsPaid === this.installmentsCount) {
         return OfferStatus.Finished;
       }
 
-      const nextPaymentTime = new Date(this.installmentsNextPaymentDate).getTime();
-      if (currentTime >= nextPaymentTime) {
+      if (currentTime <= installmentsNextPaymentDateTime) {
         return OfferStatus.OnTrack;
+      } else {
+        return OfferStatus.Delinquent;
       }
-
-      return OfferStatus.Funded;
     }
 
     return OfferStatus.Failed;
+  }
+
+  public get remainingAmount(): number {
+    return this.goalAmount - this.acquiredAmount;
   }
 
   public deadlineDate: string;

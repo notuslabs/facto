@@ -141,6 +141,26 @@
     "status": "Status",
     "from-offers": "De {offers} ofertas"
   },
+  "transactions-page": {
+    "title": "",
+    "welcome": "Bem-vindo",
+    "description": "Seus investimentos crescem mais rápido com a",
+    "your-balance": "Seu saldo para investimento",
+    "withdrawal": "Saque",
+    "deposit": "Depósito"
+  },
+  "deposit-page": {
+    "deposit-value": "Valor do depósito",
+    "your-balance": "Seu saldo em conta é de ",
+    "disclaimer": "Disclaimer aqui",
+    "deposit": "Depósito"
+  },
+  "withdrawal-page": {
+    "withdrawal-value": "Valor do saque",
+    "your-balance": "Seu saldo em conta é de ",
+    "disclaimer": "Disclaimer aqui",
+    "withdrawal": "Saque"
+  },
   "score-card": {
     "bad": "Ruim",
     "regular": "Regular",
@@ -150,6 +170,14 @@
   "badges": {
     "paid": "Pago",
     "anticipated": "Previsto"
+  },
+  "transactions-modal": {
+    "deposit": "Depósito",
+    "withdrawal": "Saque",
+    "description": "Adicione saldo em sua conta para investir",
+    "deposit-value": "Valor do depósito",
+    "withdrawal-value": "Valor do saque",
+    "your-balance": "Seu saldo em conta é de "
   },
   "become": {
     "investor": {
@@ -258,6 +286,11 @@
     "not-an-originator": "Você não é um originador, para criar uma oferta você precisa ser um originador",
     "success-toast-message": "Sua oferta foi criada com sucesso",
     "error-toast-message": "Ocorreu um erro ao criar sua oferta"
+  },
+  "transactions-form": {
+    "deposit": "Depósito",
+    "withdrawal": "Saque",
+    "your-balance": "Seu saldo em conta é de "
   },
   "credit-scores": {
     "AAA": "Investimentos de qualidade excepcional. Menor risco de default. Representam a segurança máxima.",

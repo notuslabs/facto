@@ -312,6 +312,12 @@ export type Hackathon = {
               {
                 "kind": "account",
                 "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
                 "account": "Investor",
                 "path": "investor"
               }
@@ -347,7 +353,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -748,6 +754,12 @@ export type Hackathon = {
               {
                 "kind": "account",
                 "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
                 "account": "Investor",
                 "path": "investor"
               }
@@ -755,7 +767,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -763,7 +775,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -802,7 +814,22 @@ export type Hackathon = {
         {
           "name": "offerToken",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "offer_token"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              }
+            ]
+          }
         },
         {
           "name": "offer",
@@ -874,7 +901,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -882,7 +909,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -999,7 +1026,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1007,7 +1034,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -1074,7 +1101,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1082,7 +1109,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -1753,6 +1780,12 @@ export const IDL: Hackathon = {
               {
                 "kind": "account",
                 "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
                 "account": "Investor",
                 "path": "investor"
               }
@@ -1788,7 +1821,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -2189,6 +2222,12 @@ export const IDL: Hackathon = {
               {
                 "kind": "account",
                 "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
                 "account": "Investor",
                 "path": "investor"
               }
@@ -2196,7 +2235,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2204,7 +2243,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -2243,7 +2282,22 @@ export const IDL: Hackathon = {
         {
           "name": "offerToken",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "offer_token"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              }
+            ]
+          }
         },
         {
           "name": "offer",
@@ -2315,7 +2369,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2323,7 +2377,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -2440,7 +2494,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2448,7 +2502,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",
@@ -2515,7 +2569,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "investorTokenAccount",
+          "name": "investorStableTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2523,7 +2577,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_token_account"
+                "value": "investor_stable_token_account"
               },
               {
                 "kind": "account",

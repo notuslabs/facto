@@ -70,7 +70,6 @@ export function useInvest() {
         })
         .signers([keypair])
         .rpc();
-      console.log(tx);
 
       return tx;
     },
