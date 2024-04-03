@@ -3,6 +3,7 @@ import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
 import { addMonths, subMonths } from "date-fns";
 import { getOfferInterestRate } from "@/lib/utils";
+import { formatUnits } from "@/lib/format-units";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
 
@@ -20,21 +21,16 @@ export class Offer {
     this.id = raw.id;
     this.description = raw.description;
     this.discriminator = raw.discriminator;
-    this.interestRatePercent = getOfferInterestRate(
-      raw.goalAmount.toNumber(),
-      raw.installmentsTotalAmount.toNumber(),
-      raw.installmentsCount,
-    );
-    this.goalAmount = raw.goalAmount.toNumber();
+    this.goalAmount = formatUnits(raw.goalAmount);
     this.originator = rawOriginator;
     this.deadlineDate = new Date(raw.deadlineDate.toNumber()).toISOString();
-    this.acquiredAmount = raw.acquiredAmount.toNumber();
+    this.acquiredAmount = formatUnits(raw.acquiredAmount);
     this.installmentsCount = raw.installmentsCount;
-    this.installmentsTotalAmount = raw.installmentsTotalAmount.toNumber();
+    this.installmentsTotalAmount = formatUnits(raw.installmentsTotalAmount);
     this.installmentsNextPaymentDate = new Date(
       raw.installmentsNextPaymentDate.toNumber(),
     ).toISOString();
-    this.minAmountInvest = raw.minAmountInvest.toNumber();
+    this.minAmountInvest = formatUnits(raw.minAmountInvest);
     this.startDate = new Date(raw.startDate.toNumber()).toISOString();
     this.creditScore = raw.creditScore;
     this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();
@@ -47,6 +43,11 @@ export class Offer {
       this.installmentsStartDate,
       this.installmentsCount - 1,
     ).toISOString();
+    this.interestRatePercent = getOfferInterestRate(
+      this.goalAmount,
+      this.installmentsTotalAmount,
+      this.installmentsCount,
+    );
   }
 
   public id: string;

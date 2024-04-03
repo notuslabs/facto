@@ -4,6 +4,7 @@ import { PublicKey, Keypair } from "@solana/web3.js";
 import { Program, utils } from "@coral-xyz/anchor";
 import { FAKE_MINT } from "@/lib/constants";
 import { Hackathon } from "@/lib/idl/facto-idl-types";
+import { parseUnits } from "@/lib/parse-units";
 
 export type CreateOfferParams = {
   description: string;
@@ -42,13 +43,13 @@ export async function createOffer({
     .createOffer(
       id,
       description,
-      new BN(Math.ceil(deadlineDate.getTime() / 1000)),
-      new BN(goalAmount),
-      new BN(Math.ceil((startDate.getTime() + 1000 * 60 * 2) / 1000)),
-      new BN(minAmountInvest),
+      new BN(Math.round(deadlineDate.getTime() / 1000)),
+      parseUnits(goalAmount),
+      new BN(Math.round(startDate.getTime() / 1000)),
+      parseUnits(minAmountInvest),
       installmentsCount,
-      new BN(installmentsTotalAmount),
-      new BN(Math.ceil(installmentsStartDate.getTime() / 1000)),
+      parseUnits(installmentsTotalAmount),
+      new BN(Math.round(installmentsStartDate.getTime() / 1000)),
     )
     .accounts({
       payer: caller.publicKey,

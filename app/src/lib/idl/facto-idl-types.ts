@@ -207,7 +207,7 @@ export type Hackathon = {
         },
         {
           "name": "stableToken",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -596,7 +596,7 @@ export type Hackathon = {
         },
         {
           "name": "stableToken",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -796,7 +796,7 @@ export type Hackathon = {
         },
         {
           "name": "stableToken",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -1648,7 +1648,7 @@ export const IDL: Hackathon = {
         },
         {
           "name": "stableToken",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -2037,7 +2037,7 @@ export const IDL: Hackathon = {
         },
         {
           "name": "stableToken",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -2237,7 +2237,7 @@ export const IDL: Hackathon = {
         },
         {
           "name": "stableToken",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {

@@ -28,11 +28,11 @@ pub fn create_offer(
         ValidationError::DeadlineDateMustBeInTheFuture
     );
     require!(
-        goal_amount >= 1,
+        goal_amount >= 1000000,
         ValidationError::GoalAmountMustBeEqualToOrGreaterThanOne
     );
     require!(
-        goal_amount <= 15_000_000,
+        goal_amount <= 15000000000000,
         ValidationError::GoalAmountExceeded
     );
     require!(
@@ -40,7 +40,7 @@ pub fn create_offer(
         ValidationError::StartDateMustBeInTheFuture
     );
     require!(
-        min_amount_invest >= 1,
+        min_amount_invest >= 1000000,
         ValidationError::MinAmountMustBeEqualToOrGreaterThanOne
     );
     require!(
@@ -78,11 +78,10 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
         amount >= ctx.accounts.offer.min_amount_invest,
         ValidationError::InvestmentAmountMustBeGreaterThanOfferMinAmount
     );
-    /*require!(
-        (ctx.accounts.vault_stable_token_account.amount + amount)
-            <= ctx.accounts.offer.goal_amount,
+    require!(
+        (ctx.accounts.vault_stable_token_account.amount + amount) <= ctx.accounts.offer.goal_amount,
         ValidationError::InvestmentExceedsGoalAmount
-    );*/
+    );
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::Open,
         ValidationError::OfferIsNotOpen
