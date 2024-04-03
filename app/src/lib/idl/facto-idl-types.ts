@@ -1455,11 +1455,21 @@ export type Hackathon = {
   "errors": [
     {
       "code": 6000,
+      "name": "MaxNameLengthExceeded",
+      "msg": "Max name length exceeded. Maximum length is 30"
+    },
+    {
+      "code": 6001,
+      "name": "AmountMustBeEqualToOrGreaterThanOne",
+      "msg": "Amount must be equal to or greater than 1"
+    },
+    {
+      "code": 6002,
       "name": "InsufficientBalance",
       "msg": "Insufficient Balance"
     },
     {
-      "code": 6001,
+      "code": 6003,
       "name": "TransferFailedUnknown",
       "msg": "Transfer failed with an unknown error."
     }
@@ -2923,11 +2933,21 @@ export const IDL: Hackathon = {
   "errors": [
     {
       "code": 6000,
+      "name": "MaxNameLengthExceeded",
+      "msg": "Max name length exceeded. Maximum length is 30"
+    },
+    {
+      "code": 6001,
+      "name": "AmountMustBeEqualToOrGreaterThanOne",
+      "msg": "Amount must be equal to or greater than 1"
+    },
+    {
+      "code": 6002,
       "name": "InsufficientBalance",
       "msg": "Insufficient Balance"
     },
     {
-      "code": 6001,
+      "code": 6003,
       "name": "TransferFailedUnknown",
       "msg": "Transfer failed with an unknown error."
     }
