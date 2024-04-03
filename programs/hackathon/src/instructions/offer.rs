@@ -47,6 +47,10 @@ pub fn create_offer(
         installments_count >= 1,
         ValidationError::InstallmentsTotalMustBeGreaterThanOne
     );
+    require!(
+        installments_total_amount > goal_amount,
+        ValidationError::InstallmentsTotalAmountMustBeGreaterThanGoalAmount
+    );
 
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
@@ -286,4 +290,6 @@ enum ValidationError {
     StartDateMustBeInTheFuture,
     #[msg("Installments total must be greater than one")]
     InstallmentsTotalMustBeGreaterThanOne,
+    #[msg("Installments total amount must be greater than goal amount")]
+    InstallmentsTotalAmountMustBeGreaterThanGoalAmount,
 }
