@@ -14,7 +14,7 @@ import { z } from "zod";
 
 type CreateDepositOfferFormSchemaProps = {
   balance?: number | null;
-  offerRemaining?: number | null;
+  offerRemaining: number;
   minAmountInvest?: number;
 };
 
@@ -28,17 +28,14 @@ const CreateDepositOfferFormSchema = ({
       .number()
       .positive("Invesment amount must be greater than 0")
       .refine((val) => val <= (balance ?? 0), "You can't deposit more than your balance")
-      .refine(
-        (val) => val <= (offerRemaining ?? 0),
-        "You can't deposit more than needed for offer to end",
-      )
+      .refine((val) => val <= offerRemaining, "You can't deposit more than needed for offer to end")
       .refine((val) => val >= minAmountInvest, "You can't deposit less than the minimum amount"),
   });
 
 type LateralCardProps = {
   offerId: string;
   balance?: number | null;
-  offerRemaining?: number | null;
+  offerRemaining: number;
   minAmountInvest?: number;
   isLoadingBalance: boolean;
 };
