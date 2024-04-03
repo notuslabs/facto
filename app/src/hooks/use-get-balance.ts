@@ -8,6 +8,7 @@ export function useBalance() {
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ["balance", data?.investorTokenAccount?.amount.toString()],
+    enabled: !isPending && !!data,
     queryFn: () => {
       if (isPending || !data) {
         return null;
@@ -15,7 +16,7 @@ export function useBalance() {
 
       return {
         formattedBalance: data.investorTokenAccount
-          ? formatUnits(data.investorTokenAccount.amount, 9)
+          ? formatUnits(data.investorTokenAccount.amount)
           : null,
       };
     },
