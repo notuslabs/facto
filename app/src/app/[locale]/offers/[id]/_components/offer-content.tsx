@@ -8,25 +8,17 @@ import { DetailsCard } from "./yield-card";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOffer } from "@/hooks/use-offer";
-import { useGetScoreRanges } from "@/hooks/use-generate-score-ranges";
-
-export type RangeOption = {
-  range: [number, number];
-  info: {
-    code: string;
-    text: string;
-  };
-};
+import { RangeOption } from "@/structs/Offer";
 
 type OfferContentProps = {
   offerId: string;
+  offerScoreRange: RangeOption;
 };
 
-export function OfferContent({ offerId }: OfferContentProps) {
+export function OfferContent({ offerId, offerScoreRange }: OfferContentProps) {
   const { data: offer } = useOffer(offerId);
   const [activeTab, setActiveTab] = useState("yield");
   const t = useTranslations("offer-page");
-  const scoreRange = useGetScoreRanges(offer?.creditScore ?? 0);
 
   // This should never happen
   if (!offer) return null;
@@ -38,7 +30,7 @@ export function OfferContent({ offerId }: OfferContentProps) {
       content: (
         <DetailsCard
           installmentsCount={offer.installmentsCount}
-          interestRate={offer.interestRatePercent}
+          interestRate={offer.interestRate}
           description={offer.description}
         />
       ),
@@ -48,10 +40,8 @@ export function OfferContent({ offerId }: OfferContentProps) {
       display: t("tabs.income-schedule.title"),
       content: (
         <ReceptionCronogram
-          totalInstallmentsPaid={offer.totalInstallmentsPaid}
           installmentsCount={offer.installmentsCount}
-          installmentsStartDate={new Date(offer.installmentsStartDate)}
-          installmentsTotalAmount={offer.installmentsTotalAmount}
+          installmentsList={offer.installmentsList}
         />
       ),
     },
@@ -70,7 +60,7 @@ export function OfferContent({ offerId }: OfferContentProps) {
     {
       name: "credit-score",
       display: t("tabs.credit-score.title"),
-      content: <ScoreCard scoreRange={scoreRange} />,
+      content: <ScoreCard scoreRange={offerScoreRange} />,
     },
   ];
 

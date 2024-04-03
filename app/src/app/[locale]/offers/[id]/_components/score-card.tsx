@@ -1,10 +1,11 @@
 import { ScoreBadge } from "@/components/score-badge";
 import { Separator } from "@/components/ui/separator";
+import { RangeOption } from "@/structs/Offer";
 import { useTranslations } from "next-intl";
-import { RangeOption } from "./offer-content";
 
 export function ScoreCard({ scoreRange }: { scoreRange: RangeOption | null }) {
   const t = useTranslations("offer-page.score-card");
+  const scoreT = useTranslations("credit-scores");
 
   if (scoreRange == null) return null;
 
@@ -18,7 +19,7 @@ export function ScoreCard({ scoreRange }: { scoreRange: RangeOption | null }) {
 
         <Separator className="bg-secondary" />
 
-        <p className="text-balance text-sm">{scoreRange.info.text}</p>
+        <p className="text-balance text-sm">{scoreT(scoreRange.info.code)}</p>
       </div>
     </div>
   );

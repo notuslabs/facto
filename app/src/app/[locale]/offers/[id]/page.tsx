@@ -41,7 +41,7 @@ export default async function OfferPage({
         />
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
-          <OfferContent offerId={params.id} />
+          <OfferContent offerId={params.id} offerScoreRange={offer.creditScore} />
 
           <div className="hidden w-full md:mt-[4.5rem] md:block lg:-mt-40">
             <LateralCard offer={offer} />

@@ -2,7 +2,6 @@ import { IdlAccounts } from "@coral-xyz/anchor";
 import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
 import { addMonths, subMonths } from "date-fns";
-import { getOfferInterestRate } from "@/lib/utils";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
 
@@ -16,17 +15,43 @@ export enum OfferStatus {
   Failed = "Failed",
 }
 
+export type CreditScoreOption = (typeof creditScoreOptions)[number];
+
+export type RangeOption = {
+  range: [number, number];
+  info: {
+    code: CreditScoreOption;
+  };
+};
+
+export const creditScoreOptions = [
+  "AAA",
+  "AA",
+  "A",
+  "BBB",
+  "BB",
+  "B",
+  "CCC",
+  "CC",
+  "C",
+  "D",
+] as const;
+
+export type InstallmentsList = Array<{
+  date: Date;
+  installmentNumber: number;
+  amount: number;
+  status: "paid" | "anticipated";
+}>;
+
+export const paymentFrequencyOptions = ["monthly"] as const;
+
 // Remember to only use JSON serializable types bc of nextjs and react-query caching
 export class Offer {
   private constructor(raw: Account<"offer">, rawOriginator: Account<"originator">) {
     this.id = raw.id;
     this.description = raw.description;
     this.discriminator = raw.discriminator;
-    this.interestRatePercent = getOfferInterestRate(
-      raw.goalAmount.toNumber(),
-      raw.installmentsTotalAmount.toNumber(),
-      raw.installmentsCount,
-    );
     this.goalAmount = raw.goalAmount.toNumber();
     this.originator = rawOriginator;
     this.deadlineDate = new Date(raw.deadlineDate.toNumber() * 1000).toISOString();
@@ -37,8 +62,8 @@ export class Offer {
       raw.installmentsNextPaymentDate.toNumber() * 1000,
     ).toISOString();
     this.minAmountInvest = raw.minAmountInvest.toNumber();
+    this.#creditScoreInNumber = raw.creditScore;
     this.startDate = new Date(raw.startDate.toNumber() * 1000).toISOString();
-    this.creditScore = raw.creditScore;
     this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
     this.installmentsStartDate = subMonths(
@@ -59,7 +84,6 @@ export class Offer {
 
   public description: string;
   public discriminator: number;
-  public interestRatePercent: string;
   public goalAmount: number;
 
   public get status(): OfferStatus {
@@ -99,6 +123,45 @@ export class Offer {
     return this.goalAmount - this.acquiredAmount;
   }
 
+  public get interestRate(): string {
+    return (
+      ((this.installmentsTotalAmount / this.goalAmount - 1) * 100 * 12) /
+      this.installmentsCount
+    )
+      .toFixed(6)
+      .slice(0, -4);
+  }
+
+  public get creditScore() {
+    let foundRange = this.#creditScoreRanges.find(
+      (optionRange) =>
+        this.#creditScoreInNumber >= optionRange.range[0] &&
+        this.#creditScoreInNumber <= optionRange.range[1],
+    )!;
+
+    return foundRange;
+  }
+
+  public get installmentsList(): InstallmentsList {
+    const installmentsList: InstallmentsList = [];
+
+    for (let i = 0; i < this.installmentsCount; i++) {
+      const date = addMonths(this.installmentsStartDate, i);
+      const installmentNumber = i + 1;
+      const amount = this.installmentsTotalAmount / this.installmentsCount;
+      const status = this.totalInstallmentsPaid >= installmentNumber ? "paid" : "anticipated";
+
+      installmentsList.push({
+        date: date,
+        installmentNumber: installmentNumber,
+        amount: amount,
+        status: status,
+      });
+    }
+
+    return installmentsList;
+  }
+
   public deadlineDate: string;
   public acquiredAmount: number;
   public originator: Account<"originator">;
@@ -107,11 +170,13 @@ export class Offer {
   public installmentsStartDate: string;
   public minAmountInvest: number;
   public startDate: string;
-  public creditScore: number;
   public createdAt: string;
   public installmentsTotalAmount: number;
   public totalInstallmentsPaid: number;
   public installmentsEndDate: string;
+
+  #creditScoreInNumber: number;
+  #creditScoreRanges = this.#generateCreditScoreRanges(creditScoreOptions);
 
   toJSON() {
     return {
@@ -119,6 +184,9 @@ export class Offer {
       remainingAmount: this.remainingAmount,
       name: this.name,
       status: this.status,
+      interestRate: this.interestRate,
+      creditScore: this.creditScore,
+      installmentsList: this.installmentsList,
     };
   }
 
@@ -143,5 +211,24 @@ export class Offer {
     return raw
       .map((raw, index) => new Offer(raw.account, originators[index]))
       .sort((a, b) => a.discriminator - b.discriminator);
+  }
+
+  #generateCreditScoreRanges(creditScoreOptions_: typeof creditScoreOptions): Array<RangeOption> {
+    const totalRange = 1000;
+    const rangePerOption = totalRange / creditScoreOptions.length;
+
+    return creditScoreOptions_
+      .map((option, i) => {
+        const startRange = Math.round(totalRange - (i + 1) * rangePerOption);
+        const endRange = Math.round(totalRange - i * rangePerOption);
+
+        return {
+          range: [startRange, endRange] as [number, number],
+          info: {
+            code: option,
+          },
+        };
+      })
+      .reverse();
   }
 }

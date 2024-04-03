@@ -84,7 +84,7 @@ export function LateralCardForm({
         offerId: offerId,
       },
       {
-        onSuccess: (tx) => {
+        onSuccess: ({ tx }) => {
           toast.success(t("investment-success"), {
             action: (() => (
               <a
