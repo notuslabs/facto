@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useFormatNumber } from "@/hooks/number-formatters";
@@ -42,9 +42,18 @@ export function LateralCardForm({ offerId, balance, isLoadingBalance }: LateralC
         offerId: offerId,
       },
       {
-        onSuccess: () => {
+        onSuccess: (tx) => {
           toast.success(t("investment-success"), {
-            action: (() => <Button variant="outline">{t("view-transaction")}</Button>)(),
+            action: (() => (
+              <a
+                href={`https://explorer.solana.com/tx/${tx}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                {t("view-transaction")}
+              </a>
+            ))(),
           });
         },
       },

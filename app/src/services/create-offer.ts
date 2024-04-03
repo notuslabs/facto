@@ -44,7 +44,7 @@ export async function createOffer({
       description,
       new BN(Math.ceil(deadlineDate.getTime() / 1000)),
       new BN(goalAmount),
-      new BN(Math.ceil((startDate.getTime() + 1000 * 60 * 2) / 1000)),
+      new BN(Math.ceil(startDate.getTime() / 1000)),
       new BN(minAmountInvest),
       installmentsCount,
       new BN(installmentsTotalAmount),
