@@ -13,6 +13,8 @@ import MobileExtraNavbar from "@/components/mobile-extra-navbar";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
+export const runtime = "edge";
+
 type Props = {
   children: ReactNode;
   params: { locale: string };
