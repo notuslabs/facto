@@ -37,6 +37,7 @@ export default function TransactionsDepositPage() {
   const publicKey = programa && programa.keypair.publicKey;
 
   function onSubmit(values: z.infer<typeof WithdrawalSchema>) {
+    if (!publicKey) return;
     withdrawal({ amount: values.amount, toTokenAccount: publicKey });
   }
 

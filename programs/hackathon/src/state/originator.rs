@@ -33,7 +33,7 @@ pub struct CreateOriginator<'info> {
         bump
     )]
     pub originator_token_account: Account<'info, TokenAccount>,
-    #[account(mut)] // TODO: add stable coin constraint
+    #[account(mut, mint::decimals = 6)] // TODO: add stable coin constraint
     pub stable_coin: Account<'info, Mint>,
 
     pub system_program: Program<'info, System>,
@@ -66,7 +66,7 @@ pub struct WithdrawOriginatorTokens<'info> {
     pub originator: Account<'info, Originator>,
     #[account(mut, seeds = [b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
     pub originator_token_account: Account<'info, TokenAccount>,
-    #[account(mut)] // TODO: add constraint to stable token
+    #[account(mut, mint::decimals = 6)] // TODO: add constraint to stable token
     pub stable_token: Account<'info, Mint>,
 
     #[account(mut, token::mint = stable_token)]

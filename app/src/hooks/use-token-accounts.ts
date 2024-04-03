@@ -5,41 +5,35 @@ import { utils } from "@coral-xyz/anchor";
 import { getAccount, getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
-import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { FAKE_MINT } from "@/lib/constants";
-import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
 
 export function useTokenAccounts() {
   const { data: programData } = useProgram();
-  const { data } = useSession();
 
   const program = programData?.program;
-  const solanaWallet = data?.solanaWallet;
-  const address = data?.address;
+  const keypair = programData?.keypair;
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["token-accounts", address?.toString(), program?.programId.toString()],
+    queryKey: ["token-accounts", keypair?.publicKey?.toString(), program?.programId.toString()],
     queryFn: async () => {
-      if (!solanaWallet || !program) return null;
+      if (!keypair || !program) return null;
 
       const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
-      const privateKey = await getPrivateKey(solanaWallet);
-      const loggedUserWallet = getKeypairFromPrivateKey(privateKey);
 
       const [investorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor"), loggedUserWallet.publicKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
       const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
         program.programId,
       );
 
       const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), loggedUserWallet.publicKey.toBuffer()],
+        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
@@ -50,9 +44,9 @@ export function useTokenAccounts() {
 
       const userTokenAccount = await getOrCreateAssociatedTokenAccount(
         connection,
-        loggedUserWallet,
+        keypair,
         FAKE_MINT,
-        loggedUserWallet.publicKey,
+        keypair.publicKey,
       ).catch((e) => console.log(e));
 
       const investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey).catch(

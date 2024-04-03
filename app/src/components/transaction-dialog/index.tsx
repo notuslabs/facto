@@ -55,6 +55,7 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
   });
 
   function onSubmit(values: z.infer<typeof schemaType>) {
+    if (!publicKey) return;
     if (type === "withdrawal") {
       withdrawal({ amount: values.amount, toTokenAccount: publicKey });
     } else {

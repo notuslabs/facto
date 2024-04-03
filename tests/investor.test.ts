@@ -23,7 +23,7 @@ describe("Investor", () => {
 
   const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode("investor_token_account"),
+      anchor.utils.bytes.utf8.encode("investor_stable_token_account"),
       investorPubKey.toBuffer(),
     ],
     program.programId
@@ -46,7 +46,7 @@ describe("Investor", () => {
       .createInvestor("Investor 1")
       .accounts({
         investor: investorPubKey,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         caller: caller.publicKey,
         payer: caller.publicKey,
         stableCoin: tokenPublicKey,
@@ -89,7 +89,7 @@ describe("Investor", () => {
       .depositTokens(new BN(20))
       .accounts({
         investor: investorPubKey,
-        investorTokenAccount: investorTokenAccountPubKey,
+        investorStableTokenAccount: investorTokenAccountPubKey,
         caller: caller.publicKey,
         payer: caller.publicKey,
         stableCoin: tokenPublicKey,
@@ -123,7 +123,7 @@ describe("Investor", () => {
       .withdrawTokens(new BN(20))
       .accounts({
         investor: investorPubKey,
-        investorTokenAccount: investorTokenAccount.address,
+        investorStableTokenAccount: investorTokenAccount.address,
         toTokenAccount: caller_token_account.address,
         caller: caller.publicKey,
         payer: caller.publicKey,

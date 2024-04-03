@@ -3,19 +3,20 @@
 import { Card } from "@/components/card";
 import { useTranslations } from "next-intl";
 import { OriginatorForm } from "./_components/originator-form";
-import { useTokenAccounts } from "@/hooks/use-token-accounts";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { useAccounts } from "@/hooks/use-accounts";
+import { useSession } from "@/hooks/use-session";
 
 export default function InvestorFormPage() {
-  const { data: tokenAccounts, isLoading: isTokenAccountsLoading } = useTokenAccounts();
+  const { data: tokenAccounts, isPending: isTokenAccountsLoading } = useAccounts();
+  const { data: sessionData, isPending: isSessionLoading } = useSession();
   const t = useTranslations("become.originator");
   const router = useRouter();
 
-  const isAllowedToCreate = !isTokenAccountsLoading && !tokenAccounts?.originatorTokenAccount;
-  const alreadyHasOriginatorAccount =
-    !isTokenAccountsLoading && !!tokenAccounts?.originatorTokenAccount;
+  const isAllowedToCreate = !isTokenAccountsLoading && !tokenAccounts?.originatorAccount;
+  const alreadyHasOriginatorAccount = !isTokenAccountsLoading && !!tokenAccounts?.originatorAccount;
 
   useEffect(() => {
     if (alreadyHasOriginatorAccount) {
@@ -23,6 +24,13 @@ export default function InvestorFormPage() {
       router.push("/");
     }
   }, [alreadyHasOriginatorAccount, router, t]);
+
+  useEffect(() => {
+    if (!sessionData?.userInfo && !isSessionLoading) {
+      toast.error(t("not-authenticated"));
+      router.push("/");
+    }
+  }, [isSessionLoading, sessionData?.userInfo, t, router]);
 
   // TODO: block not authed user
 
