@@ -30,7 +30,7 @@ export function useDeposit() {
       );
 
       const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
         program.programId,
       );
 
@@ -38,7 +38,7 @@ export function useDeposit() {
         .depositTokens(new BN(amount * 10 ** 9))
         .accounts({
           investor: investorPubKey,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           caller: loggedUserWallet.publicKey,
           payer: loggedUserWallet.publicKey,
           stableCoin: FAKE_MINT,

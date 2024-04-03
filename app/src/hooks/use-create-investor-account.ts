@@ -31,7 +31,7 @@ export function useCreateInvestorAccount() {
       );
 
       const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_token_account"), investorPubKey.toBuffer()],
+        [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
         program.programId,
       );
 
@@ -39,7 +39,7 @@ export function useCreateInvestorAccount() {
         .createInvestor(userInfo?.name ?? userInfo?.email ?? loggedUserWallet.publicKey.toString())
         .accounts({
           investor: investorPubKey,
-          investorTokenAccount: investorTokenAccountPubKey,
+          investorStableTokenAccount: investorTokenAccountPubKey,
           payer: loggedUserWallet.publicKey,
           caller: loggedUserWallet.publicKey,
           stableCoin: FAKE_MINT,

@@ -31,10 +31,10 @@ pub struct CreateInvestor<'info> {
         payer = payer, 
         token::mint = stable_coin,
         token::authority = investor,
-        seeds = [b"investor_token_account", investor.key().as_ref()],
+        seeds = [b"investor_stable_token_account", investor.key().as_ref()],
         bump
     )]
-    pub investor_token_account: Account<'info, TokenAccount>,
+    pub investor_stable_token_account: Account<'info, TokenAccount>,
 
     #[account(mut)]
     // TODO: Restrict the stable coin later
@@ -71,10 +71,10 @@ pub struct DepositTokens<'info> {
         mut,
         token::mint = stable_coin,
         token::authority = investor,
-        seeds = [b"investor_token_account", investor.key().as_ref()],
+        seeds = [b"investor_stable_token_account", investor.key().as_ref()],
         bump = investor.token_account_bump
     )]
-    pub investor_token_account: Account<'info, TokenAccount>,
+    pub investor_stable_token_account: Account<'info, TokenAccount>,
 
     #[account(mut)]
     // TODO: Restrict the stable coin later
@@ -97,10 +97,10 @@ pub struct WithdrawTokens<'info> {
         mut,
         token::mint = stable_coin,
         token::authority = investor,
-        seeds = [b"investor_token_account", investor.key().as_ref()],
+        seeds = [b"investor_stable_token_account", investor.key().as_ref()],
         bump = investor.token_account_bump
     )]
-    pub investor_token_account: Account<'info, TokenAccount>,
+    pub investor_stable_token_account: Account<'info, TokenAccount>,
     #[account(
         mut,
         token::mint = stable_coin,
