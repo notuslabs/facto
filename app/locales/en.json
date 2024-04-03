@@ -83,10 +83,11 @@
     "about-originator": {
       "title": "About originator",
       "description": "As Usury, the mentor behind this ecological residential project, I am committed to promoting positive change in the construction industry. With extensive experience and a sustainable vision, each contribution is valued and invested with integrity and transparency. Together, we are building more than just houses; we are creating a sanctuary for those who value the environment and quality of life. I am immensely grateful for you joining us on this journey towards a more sustainable and prosperous future for all.",
+      "offer": "Offer",
       "offers": "Offers",
       "loss": "Loss",
       "total-raised": "Raised total",
-      "date": "Date",
+      "date": "Final date",
       "installment-number": "Installment nº",
       "amount": "Amount",
       "status": "Status"
@@ -105,7 +106,9 @@
       "payment-frequency": "Payment frequency",
       "monthly": "Monthly",
       "receive-in": "Receive in {installments} installments until",
-      "date": "{date, date}"
+      "date": "{date, date}",
+      "investment-success": "Your investment was successful!",
+      "view-transaction": "View transaction"
     }
   },
   "investments-page": {
@@ -138,6 +141,26 @@
     "status": "Status",
     "from-offers": "From {offers} offers"
   },
+  "transactions-page": {
+    "title": "",
+    "welcome": "Welcome",
+    "description": "Your investments grow faster with",
+    "your-balance": "Your balance for investments",
+    "withdrawal": "Withdrawal",
+    "deposit": "Deposit"
+  },
+  "deposit-page": {
+    "deposit-value": "Deposit value",
+    "your-balance": "Your in account balance is ",
+    "disclaimer": "Disclaimer here",
+    "deposit": "Deposit"
+  },
+  "withdrawal-page": {
+    "withdrawal-value": "Withdrawal value",
+    "your-balance": "Your in account balance is ",
+    "disclaimer": "Disclaimer here",
+    "withdrawal": "Withdrawal"
+  },
   "score-card": {
     "bad": "Bad",
     "regular": "Regular",
@@ -147,6 +170,14 @@
   "badges": {
     "paid": "Paid",
     "anticipated": "Anticipated"
+  },
+  "transactions-modal": {
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "description": "Add to your balance to invest",
+    "deposit-value": "Deposit value",
+    "withdrawal-value": "Withdrawal value",
+    "your-balance": "Your in account balance is "
   },
   "become": {
     "investor": {
@@ -168,6 +199,9 @@
         "name": "Originator Name",
         "name-description": "{chars}/{maxChars} characteres max",
         "name-placeholder": "Originator Name",
+        "token": "Token Slug",
+        "token-description": "{chars}/{maxChars} characters max",
+        "token-placeholder": "Ex: SLUG",
         "description": "Description",
         "description-description": "{chars}/{maxChars} characteres max",
         "description-placeholder": "Short description about your profile"
@@ -252,5 +286,36 @@
     "not-an-originator": "You're not an originator, to create an offer you need to be an originator",
     "success-toast-message": "You offer has been created successfully",
     "error-toast-message": "An error occurred while creating your offer"
+  },
+  "transactions-form": {
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "your-balance": "Your in account balance is "
+  },
+  "credit-scores": {
+    "AAA": "Exceptional quality investments. Lower risk of default. They represent maximum security.",
+    "AA": "High quality investments. Very low default risk. Very safe, but a little less than AAA.",
+    "A": "Good quality investments. Low default risk. They are considered safe, but with slightly higher risks than AA.",
+    "BBB": "Medium quality investments. Moderate default risk. Marking the line between investment grade and speculative investments.",
+    "BB": "Speculative investments. Moderately high default risk. Less safe, with potential for higher returns.",
+    "B": "Highly speculative investments. High risk of default. Investors must be prepared for possible losses.",
+    "CCC": "Very poor quality investments. Very high risk of default. Risky investments, with the possibility of high returns or total loss.",
+    "CC": "Extremely speculative investments. Extremely high default risk. Very risky and usually in a situation of financial difficulties.",
+    "C": "Precarious investments. Close to default or in default, but still paying. For investors looking for risky bets.",
+    "D": "Default. The investment failed to meet its financial obligations. The lowest and riskiest category."
+  },
+  "offer-status": {
+    "StartingSoon": "Starting soon",
+    "Open": "Open",
+    "Funded": "Funded",
+    "OnTrack": "On track",
+    "Finished": "Finished",
+    "Delinquent": "Delinquent",
+    "Failed": "Failed"
+  },
+  "time-picker": {
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds"
   }
 }

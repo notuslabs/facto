@@ -1,4 +1,3 @@
-import { formatBigNumber, formatNumber } from "@/lib/format-number";
 import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -6,14 +5,14 @@ import { ScoreBadge } from "./score-badge";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { Link } from "@/navigation";
-import { Offer } from "@/structs/Offer";
-import BN from "bn.js";
+import { Offer, RangeOption } from "@/structs/Offer";
+import { useFormatNumber } from "@/hooks/number-formatters";
 
 type OfferCardHeaderProps = {
   offerName: string;
   originatorName: string;
   period: string;
-  interestRate: number;
+  interestRate: string;
   secondaryText: string;
 };
 
@@ -43,10 +42,11 @@ function OfferCardHeader({
 type OfferCardBodyProps = {
   amountAcquired: number;
   amountToBeAcquired: number;
-  creditScore: number;
+  scoreRange: RangeOption;
 };
 
-function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: OfferCardBodyProps) {
+function OfferCardBody({ amountAcquired, amountToBeAcquired, scoreRange }: OfferCardBodyProps) {
+  const formatNumber = useFormatNumber();
   const t = useTranslations("home.offers.card.body");
 
   return (
@@ -58,13 +58,13 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
             <p className="text-xs font-semibold">{t("total")}</p>
           </div>
           <div className="flex items-center justify-between gap-2 font-medium dark:text-primary">
-            <p className="text-sm ">{formatNumber(amountAcquired)}</p>
-            <p className="text-sm">{formatNumber(amountToBeAcquired)}</p>
+            <p className="text-sm ">{formatNumber({ value: amountAcquired })}</p>
+            <p className="text-sm">{formatNumber({ value: amountToBeAcquired })}</p>
           </div>
         </div>
 
         <Progress
-          indicatorColor="bg-success-strong"
+          indicatorColor="bg-facto-primary"
           className="h-2.5 w-full rounded-full dark:bg-primary-foreground"
           value={(amountAcquired / amountToBeAcquired) * 100}
         />
@@ -77,7 +77,7 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
       </div>
       <div className="flex items-center justify-between gap-2 border-b border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("credit-score")}</p>
-        <ScoreBadge score={creditScore} />
+        {scoreRange != null && <ScoreBadge scoreRange={scoreRange} />}
       </div>
       <div className="flex items-center justify-between gap-2 border-b border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("payment-frequency")}</p>
@@ -130,19 +130,19 @@ export function OfferCard({ offer }: OfferCardProps) {
       <OfferCardHeader
         offerName={offer.name}
         originatorName={offer.originator.name}
-        interestRate={offer.installmentsTotalAmount / offer.goalAmount}
+        interestRate={offer.interestRate}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
       />
 
       <OfferCardBody
-        creditScore={offer.creditScore}
+        scoreRange={offer.creditScore}
         amountAcquired={offer.acquiredAmount}
         amountToBeAcquired={offer.goalAmount}
       />
       <OfferCardFooter
         installments={offer.installmentsCount}
-        endDate={offer.deadlineDate}
+        endDate={new Date(offer.installmentsEndDate)}
         offerId={offer.id}
       />
     </div>

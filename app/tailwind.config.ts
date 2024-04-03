@@ -25,6 +25,7 @@ const config = {
       colors: {
         facto: {
           primary: "var(--facto-primary-green)",
+          secondary: "var(--facto-secondary-green)",
         },
         success: {
           foreground: "var(--success-foreground)",

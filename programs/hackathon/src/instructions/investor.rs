@@ -8,7 +8,7 @@ pub fn create_investor(ctx: Context<CreateInvestor>, name: String) -> Result<()>
     let investor = &mut ctx.accounts.investor;
     investor.name = name;
     investor.bump = *ctx.bumps.get("investor").unwrap();
-    investor.token_account_bump = *ctx.bumps.get("investor_token_account").unwrap();
+    investor.token_account_bump = *ctx.bumps.get("investor_stable_token_account").unwrap();
     Ok(())
 }
 
@@ -17,7 +17,7 @@ pub fn deposit_tokens(ctx: Context<DepositTokens>, amount: u64) -> Result<()> {
         amount >= 1,
         ValidationError::AmountMustBeEqualToOrGreaterThanOne
     );
-    let investor_token_account = &mut ctx.accounts.investor_token_account;
+    let investor_token_account = &mut ctx.accounts.investor_stable_token_account;
 
     token::mint_to(
         CpiContext::new(
@@ -44,12 +44,12 @@ pub fn edit_investor(ctx: Context<EditInvestor>, name: String) -> Result<()> {
 }
 
 pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> {
-    let investor_token_account = &mut ctx.accounts.investor_token_account;
+    let investor_token_account = &mut ctx.accounts.investor_stable_token_account;
     let stable_token = &ctx.accounts.stable_coin;
 
     require!(
         amount <= investor_token_account.amount,
-        ValidationErrors::InsufficientBalance
+        ValidationError::InsufficientBalance
     );
 
     let transfer = TransferChecked {
@@ -78,17 +78,9 @@ pub fn withdraw_tokens(ctx: Context<WithdrawTokens>, amount: u64) -> Result<()> 
         Err(error) => {
             msg!("Transfer failed. Err: {}", error);
 
-            err!(ValidationErrors::TransferFailedUnknown)
+            err!(ValidationError::TransferFailedUnknown)
         }
     }
-}
-
-#[error_code]
-enum ValidationErrors {
-    #[msg("Insufficient Balance")]
-    InsufficientBalance,
-    #[msg("Transfer failed with an unknown error.")]
-    TransferFailedUnknown,
 }
 
 #[error_code]
@@ -97,6 +89,8 @@ enum ValidationError {
     MaxNameLengthExceeded,
     #[msg("Amount must be equal to or greater than 1")]
     AmountMustBeEqualToOrGreaterThanOne,
-    #[msg("Insufficient balance")]
+    #[msg("Insufficient Balance")]
     InsufficientBalance,
+    #[msg("Transfer failed with an unknown error.")]
+    TransferFailedUnknown,
 }
