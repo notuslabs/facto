@@ -181,7 +181,9 @@
   },
   "badges": {
     "paid": "Paid",
-    "anticipated": "Anticipated"
+    "anticipated": "Anticipated",
+    "upcoming": "Upcoming",
+    "overdue": "Overdue"
   },
   "transactions-modal": {
     "deposit": "Deposit",

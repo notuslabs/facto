@@ -42,7 +42,7 @@ export type InstallmentsList = Array<{
   date: Date;
   installmentNumber: number;
   amount: number;
-  status: "paid" | "anticipated";
+  status: "upcoming" | "overdue" | "paid";
 }>;
 
 export const paymentFrequencyOptions = ["monthly"] as const;
@@ -150,7 +150,17 @@ export class Offer {
       const date = addMonths(this.installmentsStartDate, i);
       const installmentNumber = i + 1;
       const amount = this.installmentsTotalAmount / this.installmentsCount;
-      const status = this.totalInstallmentsPaid >= installmentNumber ? "paid" : "anticipated";
+
+      // "upcoming": "A vencer",
+      // "overdue": "Em atraso"
+      let status: "overdue" | "upcoming" | "paid" = "upcoming";
+      if (installmentNumber <= this.totalInstallmentsPaid) {
+        status = "paid";
+      }
+
+      if (Date.now() > date.getTime() && installmentNumber > this.totalInstallmentsPaid) {
+        status = "overdue";
+      }
 
       installmentsList.push({
         date: date,

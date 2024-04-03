@@ -181,7 +181,9 @@
   },
   "badges": {
     "paid": "Pago",
-    "anticipated": "Previsto"
+    "anticipated": "Previsto",
+    "upcoming": "A vencer",
+    "overdue": "Em atraso"
   },
   "transactions-modal": {
     "deposit": "Depósito",

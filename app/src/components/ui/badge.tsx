@@ -16,6 +16,7 @@ const badgeVariants = cva(
         red: "border-transparent text-error-foreground bg-error-muted",
         yellow: "border-transparent bg-warning-muted text-warning-foreground",
         gray: "text-muted-foreground border-transparent bg-secondary",
+        primary: "bg-background text-muted-foreground",
         "credit-score-a": "bg-success-muted border-success-border text-success-foreground",
         "credit-score-b": "bg-info-muted border-info-muted-border text-info-foreground",
         "credit-score-c": "bg-warning-muted border-warning-muted-border text-warning-foreground",
