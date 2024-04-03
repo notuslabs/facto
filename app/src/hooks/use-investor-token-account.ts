@@ -29,10 +29,6 @@ export function useInvestorTokenAccount() {
         program.programId,
       );
 
-      console.log({
-        investorTokenAccountPubKey: investorTokenAccountPubKey.toString(),
-      });
-
       const investorTokenAccount = await getAccount(
         programData.program.provider.connection,
         investorTokenAccountPubKey,
