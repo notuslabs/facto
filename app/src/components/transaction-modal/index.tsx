@@ -25,8 +25,7 @@ export default function TransactionModal({ type }: TransactionModalProps) {
 
       <div className="flex flex-col gap-6 rounded-2xl bg-secondary p-6">
         <div className="flex flex-col gap-3 text-xs">
-          {(type === "deposit" && t("deposit-value")) ||
-            (type === "withdrawal" && t("withdrawal-value"))}
+          {type === "deposit" ? t("deposit-value") : t("withdrawal-value")}
           <TransactionsForm
             balance={balance?.formattedBalance}
             isModal
