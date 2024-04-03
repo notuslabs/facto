@@ -126,6 +126,18 @@
     "installments": "parcelas",
     "per-year": "ao ano"
   },
+  "installments-page": {
+    "title": "Parcelas a vencer",
+    "exhibiting": "Exibindo",
+    "offers": "Parcelas a vencer de {offerNumber} ofertas",
+    "all-status": "Todos status",
+    "offer-name": "Offerta",
+    "installment-date": "Data",
+    "installments-count": "Parcela",
+    "installment-amount": "Valor da parcela",
+    "status": "Status",
+    "see-offer": "Ver oferta"
+  },
   "receivables-page": {
     "title": "Parcelas a receber",
     "exhibiting": "Exibindo",

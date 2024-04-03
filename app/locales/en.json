@@ -126,6 +126,18 @@
     "installments": "installments",
     "per-year": "per year"
   },
+  "installments-page": {
+    "title": "Due installments",
+    "exhibiting": "Exhibiting",
+    "offers": "Due installments of {offerNumber} offers",
+    "all-status": "All status",
+    "offer-name": "Offer",
+    "installment-date": "Date",
+    "installments-count": "Installment",
+    "installment-amount": "Installment Value",
+    "status": "Status",
+    "see-offer": "See offer"
+  },
   "receivables-page": {
     "title": "Outstanding receivables",
     "exhibiting": "Exhibiting",

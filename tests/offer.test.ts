@@ -89,11 +89,17 @@ describe("Offer", { timeout: 500000 }, () => {
     program.programId
   );
   const [vaultPaymentTokenAccount] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("vault_payment_token_account"), offer.toBuffer()],
+    [
+      anchor.utils.bytes.utf8.encode("vault_payment_token_account"),
+      offer.toBuffer(),
+    ],
     program.programId
   );
   const [vaultPaymentTokenAccount2] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("vault_payment_token_account"), offer2.toBuffer()],
+    [
+      anchor.utils.bytes.utf8.encode("vault_payment_token_account"),
+      offer2.toBuffer(),
+    ],
     program.programId
   );
   const [investorOfferTokenAccount] = PublicKey.findProgramAddressSync(
@@ -219,7 +225,8 @@ describe("Offer", { timeout: 500000 }, () => {
         vault: vaultPubKey,
       })
       .signers([payer, callerOriginator])
-      .rpc().catch(console.error);
+      .rpc()
+      .catch(console.error);
 
     await program.methods
       .createOffer(
@@ -296,7 +303,7 @@ describe("Offer", { timeout: 500000 }, () => {
           offerToken: offerTokenPublicKey,
           offer,
           investor,
-          stableToken: stableTokenPubKey
+          stableToken: stableTokenPubKey,
         })
         .signers([payer, callerInvestor])
         .rpc();
@@ -321,7 +328,7 @@ describe("Offer", { timeout: 500000 }, () => {
           offerToken: offerTokenPublicKey,
           offer,
           investor,
-          stableToken: stableTokenPubKey
+          stableToken: stableTokenPubKey,
         })
         .signers([payer, callerInvestor])
         .rpc();
@@ -347,7 +354,7 @@ describe("Offer", { timeout: 500000 }, () => {
         offerToken: offerTokenPublicKey,
         offer,
         investor,
-        stableToken: stableTokenPubKey
+        stableToken: stableTokenPubKey,
       })
       .signers([payer, callerInvestor])
       .rpc();
@@ -384,7 +391,7 @@ describe("Offer", { timeout: 500000 }, () => {
         offerToken: offerTokenPublicKey,
         offer,
         investor,
-        stableToken: stableTokenPubKey
+        stableToken: stableTokenPubKey,
       })
       .signers([payer, callerInvestor])
       .rpc();
@@ -422,8 +429,6 @@ describe("Offer", { timeout: 500000 }, () => {
       program.programId
     );
 
-    await advanceTime<Hackathon>(program, deadline);
-
     await program.methods
       .withdrawInvestments(offerId)
       .accounts({
@@ -433,7 +438,7 @@ describe("Offer", { timeout: 500000 }, () => {
         payer: payer.publicKey,
         originator: originator,
         caller: callerOriginator.publicKey,
-        stableToken: stableTokenPubKey
+        stableToken: stableTokenPubKey,
       })
       .signers([payer, callerOriginator])
       .rpc();
@@ -528,7 +533,7 @@ describe("Offer", { timeout: 500000 }, () => {
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
-        stableToken: stableTokenPubKey
+        stableToken: stableTokenPubKey,
       })
       .signers([payer])
       .rpc();
@@ -555,7 +560,7 @@ describe("Offer", { timeout: 500000 }, () => {
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,
-          stableToken: stableTokenPubKey
+          stableToken: stableTokenPubKey,
         })
         .signers([payer])
         .rpc();
@@ -650,7 +655,7 @@ describe("Offer", { timeout: 500000 }, () => {
         vaultPaymentTokenAccount,
         offerToken: offerTokenPublicKey,
         offer,
-        stableToken: stableTokenPubKey
+        stableToken: stableTokenPubKey,
       })
       .signers([payer])
       .rpc();
@@ -677,7 +682,7 @@ describe("Offer", { timeout: 500000 }, () => {
           vaultPaymentTokenAccount,
           offerToken: offerTokenPublicKey,
           offer,
-          stableToken: stableTokenPubKey
+          stableToken: stableTokenPubKey,
         })
         .signers([payer])
         .rpc();

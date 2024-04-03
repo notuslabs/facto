@@ -1390,16 +1390,25 @@ export type Hackathon = {
         "kind": "enum",
         "variants": [
           {
-            "name": "Open"
+            "name": "StartingSoon"
           },
           {
             "name": "Failed"
+          },
+          {
+            "name": "Canceled"
+          },
+          {
+            "name": "Open"
           },
           {
             "name": "Funded"
           },
           {
             "name": "OnTrack"
+          },
+          {
+            "name": "Delinquent"
           },
           {
             "name": "Finished"
@@ -2858,16 +2867,25 @@ export const IDL: Hackathon = {
         "kind": "enum",
         "variants": [
           {
-            "name": "Open"
+            "name": "StartingSoon"
           },
           {
             "name": "Failed"
+          },
+          {
+            "name": "Canceled"
+          },
+          {
+            "name": "Open"
           },
           {
             "name": "Funded"
           },
           {
             "name": "OnTrack"
+          },
+          {
+            "name": "Delinquent"
           },
           {
             "name": "Finished"

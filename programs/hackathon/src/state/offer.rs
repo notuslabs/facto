@@ -6,10 +6,13 @@ use crate::{Investor, InvestorInstallments, Originator};
 
 #[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace, PartialEq)]
 pub enum OfferStatus {
-    Open,
+    StartingSoon,
     Failed,
+    Canceled,
+    Open,
     Funded,
     OnTrack,
+    Delinquent,
     Finished,
 }
 
@@ -64,25 +67,31 @@ impl<'info> Offer {
         let clock = Clock::get().unwrap();
         let current_timestamp = clock.unix_timestamp;
 
-        if current_timestamp < self.deadline_date
-            && current_timestamp >= self.start_date
-            && self.acquired_amount < self.goal_amount
-        {
-            OfferStatus::Open
-        } else if self.acquired_amount == self.goal_amount
-            && current_timestamp >= self.deadline_date
-        {
+        if current_timestamp < self.start_date {
+            return OfferStatus::StartingSoon;
+        }
+
+        if current_timestamp < self.deadline_date && self.acquired_amount < self.goal_amount {
+            return OfferStatus::Open;
+        }
+
+        if self.acquired_amount == self.goal_amount {
+            if current_timestamp < self.deadline_date {
+                return OfferStatus::Funded;
+            }
+
             if self.total_installments_paid == self.installments_count {
                 return OfferStatus::Finished;
             }
-            if current_timestamp >= self.installments_next_payment_date {
-                return OfferStatus::OnTrack;
-            }
 
-            OfferStatus::Funded
-        } else {
-            OfferStatus::Failed
+            if current_timestamp <= self.installments_next_payment_date {
+                return OfferStatus::OnTrack;
+            } else {
+                return OfferStatus::Delinquent;
+            }
         }
+
+        OfferStatus::Failed
     }
 
     pub fn get_installment_amount(&self) -> u64 {

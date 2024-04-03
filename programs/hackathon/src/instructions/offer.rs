@@ -138,8 +138,9 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
         ctx.accounts.offer.originator == ctx.accounts.originator.key(),
         ValidationError::InvalidOriginatorSigner
     );
+    let offer_status = ctx.accounts.offer.get_status();
     require!(
-        ctx.accounts.offer.get_status() == OfferStatus::Funded,
+        offer_status == OfferStatus::Funded || offer_status == OfferStatus::OnTrack,
         ValidationError::OfferIsNotFunded
     );
 
@@ -168,8 +169,9 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
 }
 
 pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
+    let offer_status = ctx.accounts.offer.get_status();
     require!(
-        ctx.accounts.offer.get_status() == OfferStatus::OnTrack,
+        offer_status == OfferStatus::OnTrack || offer_status == OfferStatus::Delinquent,
         ValidationError::OfferIsNotOnTrack
     );
 
@@ -250,6 +252,8 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
     )?;
 
     ctx.accounts.investor_installment.count_received += 1;
+    let seconds_in_30_days = 2592000;
+    ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 
     Ok(())
 }
