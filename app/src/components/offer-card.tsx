@@ -64,7 +64,7 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, creditScore }: Offe
         </div>
 
         <Progress
-          indicatorColor="bg-success-strong"
+          indicatorColor="bg-facto-primary"
           className="h-2.5 w-full rounded-full dark:bg-primary-foreground"
           value={(amountAcquired / amountToBeAcquired) * 100}
         />

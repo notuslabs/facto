@@ -20,7 +20,6 @@ export function LateralCard() {
           <ChevronDown size={20} />
         </Button>
       </div>
-
       <div className="flex justify-between px-4 md:p-6">
         <div>
           <p className="text-placeholder text-2xl font-semibold text-placeholder-foreground">$0</p>
@@ -67,7 +66,7 @@ export function LateralCard() {
         </div>
 
         <div className="p-4 md:px-6">
-          <Progress indicatorColor="bg-success-strong" value={33} />
+          <Progress indicatorColor="bg-facto-primary" value={33} />
         </div>
 
         <div className="flex justify-between border-b border-t px-4 py-[14px] text-sm md:px-6">

@@ -138,6 +138,26 @@
     "status": "Status",
     "from-offers": "From {offers} offers"
   },
+  "transactions-page": {
+    "title": "",
+    "welcome": "Welcome",
+    "description": "Your investments grow faster with",
+    "your-balance": "Your balance for investments",
+    "withdrawal": "Withdrawal",
+    "deposit": "Deposit"
+  },
+  "deposit-page": {
+    "deposit-value": "Deposit value",
+    "your-balance": "Your in account balance is ",
+    "disclaimer": "Disclaimer here",
+    "deposit": "Deposit"
+  },
+  "withdrawal-page": {
+    "withdrawal-value": "Withdrawal value",
+    "your-balance": "Your in account balance is ",
+    "disclaimer": "Disclaimer here",
+    "withdrawal": "Withdrawal"
+  },
   "score-card": {
     "bad": "Bad",
     "regular": "Regular",
@@ -147,6 +167,14 @@
   "badges": {
     "paid": "Paid",
     "anticipated": "Anticipated"
+  },
+  "transactions-modal": {
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "description": "Add to your balance to invest",
+    "deposit-value": "Deposit value",
+    "withdrawal-value": "Withdrawal value",
+    "your-balance": "Your in account balance is "
   },
   "become": {
     "investor": {
@@ -252,5 +280,10 @@
     "not-an-originator": "You're not an originator, to create an offer you need to be an originator",
     "success-toast-message": "You offer has been created successfully",
     "error-toast-message": "An error occurred while creating your offer"
+  },
+  "transactions-form": {
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "your-balance": "Your in account balance is "
   }
 }

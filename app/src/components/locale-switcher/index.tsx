@@ -32,7 +32,7 @@ export default function LocaleSwitcher() {
       size="sm"
       onClick={() => changeLocale(otherLocale)}
     >
-      <Globe size={16} />
+      <Globe size={16} className="text-facto-primary" />
       {locale.toUpperCase()}
     </Button>
   );
