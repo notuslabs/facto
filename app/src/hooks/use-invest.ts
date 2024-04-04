@@ -81,15 +81,18 @@ export function useInvest() {
         tx: tx,
       };
     },
-    onSuccess: async ({ offerId }) => {
-      await queryClient.invalidateQueries({
+    onSuccess: ({ offerId }) => {
+      queryClient.invalidateQueries({
         queryKey: ["investor-stable-token-account"],
       });
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["offer", offerId],
       });
       queryClient.invalidateQueries({
         queryKey: ["invested-amount", offerId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["offers"],
       });
     },
     onError: (error) => {

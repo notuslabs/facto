@@ -36,13 +36,13 @@ export default function TestOfferCreation() {
         onClick={async () => {
           const tx = await createOffer({
             description: "Test",
-            deadlineDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+            deadlineDate: new Date(Date.now() + 1000 * 60),
             goalAmount: 100,
-            startDate: new Date(Date.now() + 1000 * 60),
+            startDate: new Date(Date.now()),
             minAmountInvest: 10,
             installmentsTotalAmount: 110,
-            installmentsCount: 1,
-            installmentsStartDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+            installmentsCount: 12,
+            installmentsStartDate: new Date(Date.now() + 1000 * 60 * 10),
             program: program as unknown as Program<Hackathon>,
             caller: keypair as Keypair,
           });
