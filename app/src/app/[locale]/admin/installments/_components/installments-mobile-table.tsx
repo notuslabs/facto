@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CircleDollarSign, ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Offer } from "@/structs/Offer";
+import { Offer, OfferStatus } from "@/structs/Offer";
 
 interface DesktopTableProps {
   data: Offer[];
@@ -24,7 +24,7 @@ export default function InstallmentsMobileTable({ data }: DesktopTableProps) {
     <div className="flex flex-col gap-4 md:hidden">
       {data.map((tableData) => {
         console.log(tableData.installmentsList);
-        const isOnTrack = tableData.status === "OnTrack";
+        const isOnTrack = tableData.status === OfferStatus.OnTrack;
         const paymentStatus = isOnTrack ? "upcoming" : "overdue";
         const paymentColor: "red" | "yellow" = isOnTrack ? "red" : "yellow";
         return (
