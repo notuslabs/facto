@@ -5,5 +5,6 @@ export function useOffers() {
   return useQuery({
     queryKey: ["offers"],
     queryFn: listOffers,
+    refetchInterval: 1000 * 20,
   });
 }

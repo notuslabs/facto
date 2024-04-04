@@ -22,6 +22,21 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+      fontSize: {
+        xs: ["0.75rem", { lineHeight: "1rem" }],
+        sm: ["0.875rem", { lineHeight: "1.25rem" }],
+        base: ["1rem", { lineHeight: "1.5rem" }],
+        lg: ["1.125rem", { lineHeight: "1.875rem" }],
+        xl: ["1.25rem", { lineHeight: "2rem" }],
+        "2xl": ["1.5rem", { lineHeight: "2.375rem" }],
+        "3xl": ["1.875rem", { lineHeight: "2.625rem" }],
+        "4xl": ["2.25rem", { lineHeight: "3.25rem" }],
+        "5xl": ["3rem", { lineHeight: "4.5rem" }],
+        "6xl": ["3.75rem", { lineHeight: "5.375rem" }],
+        "7xl": ["4.5rem", { lineHeight: "6.75rem" }],
+        "8xl": ["6rem", { lineHeight: "9rem" }],
+        "9xl": ["6.75rem", { lineHeight: "12rem" }],
+      },
       colors: {
         facto: {
           primary: "var(--facto-primary-green)",
