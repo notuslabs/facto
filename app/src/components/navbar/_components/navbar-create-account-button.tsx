@@ -2,13 +2,12 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useSession } from "@/hooks/use-session";
 import { Loader2 } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 export function NavbarCreateAccountButton() {
   const { data, isPending } = useSession();
   const { login } = useAuth();
   const t = useTranslations("navbar");
-  const locale = useLocale();
 
   if (!!data?.userInfo) return null;
 
@@ -17,7 +16,7 @@ export function NavbarCreateAccountButton() {
   }
 
   return (
-    <Button variant="defaultGradient" onClick={() => login()}>
+    <Button variant="defaultGradient" onClick={() => login({ asOriginator: false })}>
       {t("create-account")}
     </Button>
   );

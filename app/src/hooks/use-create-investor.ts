@@ -1,9 +1,8 @@
 "use client";
 
 import { PublicKey } from "@solana/web3.js";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { utils } from "@coral-xyz/anchor";
-import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useTokenAccounts } from "./use-token-accounts";
 import { FAKE_MINT } from "@/lib/constants";
@@ -16,7 +15,6 @@ class AlreadyRegisteredError extends Error {
 }
 
 export function useCreateInvestor() {
-  const queryClient = useQueryClient();
   const { data: programData } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.investor");
@@ -53,27 +51,6 @@ export function useCreateInvestor() {
         })
         .signers([keypair])
         .rpc();
-    },
-    onSuccess: () => {
-      toast.success(t("success-toast-message"));
-
-      queryClient.invalidateQueries({
-        queryKey: ["token-accounts"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["accounts"],
-      });
-    },
-    onError: (error) => {
-      console.error(error.message);
-      // if (error instanceof AlreadyRegisteredError) {
-      //   toast.error(error.message);
-      //   return;
-      // }
-
-      toast.error(error.message);
-
-      // toast.error(t("error-toast-message"));
     },
   });
 }

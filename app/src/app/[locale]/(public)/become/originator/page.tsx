@@ -11,7 +11,14 @@ import { useRouter } from "@/navigation";
 
 export default function InvestorFormPage() {
   const { data: tokenAccounts, isPending: isTokenAccountsLoading } = useAccounts();
-  const { data: sessionData, isPending: isSessionLoading } = useSession();
+  const {
+    data: sessionData,
+    isPending: isSessionLoading,
+    isRefetching: isRefetchingSession,
+    isFetching: isFetchingSession,
+    isLoading: isLoadingSession,
+    isStale: isStaleSession,
+  } = useSession();
   const t = useTranslations("become.originator");
   const router = useRouter();
 
@@ -26,11 +33,27 @@ export default function InvestorFormPage() {
   }, [alreadyHasOriginatorAccount, router, t]);
 
   useEffect(() => {
-    if (!sessionData?.userInfo && !isSessionLoading) {
+    if (
+      !sessionData?.userInfo &&
+      !isSessionLoading &&
+      !isRefetchingSession &&
+      !isFetchingSession &&
+      !isLoadingSession &&
+      !isStaleSession
+    ) {
       toast.error(t("not-authenticated"));
       router.push("/");
     }
-  }, [isSessionLoading, sessionData?.userInfo, t, router]);
+  }, [
+    isSessionLoading,
+    isFetchingSession,
+    isLoadingSession,
+    isRefetchingSession,
+    isStaleSession,
+    sessionData?.userInfo,
+    t,
+    router,
+  ]);
 
   return (
     <div className="container">
