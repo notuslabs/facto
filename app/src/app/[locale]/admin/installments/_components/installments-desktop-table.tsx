@@ -6,22 +6,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge, installmentStatusToVariant } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
-import { CircleDollarSign } from "lucide-react";
-import { Offer } from "@/structs/Offer";
+import { InstallmentStatus, Offer } from "@/structs/Offer";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { PayButton } from "./pay-button";
 
 interface DesktopTableProps {
   data: Offer[];
 }
-
-const colors = {
-  paid: "green",
-  upcoming: "primary",
-  overdue: "yellow",
-} as const;
 
 export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
   const format = useDateFormatter();
@@ -31,45 +24,49 @@ export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
   return (
     <div className="hidden flex-col gap-4 md:flex">
       {data.map((tableData) => {
-        return tableData.installmentsList.map((installment) => {
-          return (
-            <div
-              className="flex content-center items-center rounded-2xl bg-secondary"
-              key={tableData.name}
-            >
-              <Table className="mw-945 p-4">
-                <>
-                  <TableHeader className="text-xs text-placeholder-foreground">
-                    <TableRow>
-                      <TableHead className="h-4 w-[1/9] pt-3">{t("offer-name")}</TableHead>
-                      <TableHead className="h-4 w-[1/9] pt-3">{t("installment-date")}</TableHead>
-                      <TableHead className="h-4 w-[1/9] pt-3">{t("installments-count")}</TableHead>
-                      <TableHead className="h-4 w-[1/9] pt-3">{t("installment-amount")}</TableHead>
-                      <TableHead className="h-4 pt-3">{t("status")}</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="text-sm font-medium">
-                    <TableRow>
-                      <TableCell className="pb-3 pt-2">{tableData.name}</TableCell>
-                      <TableCell className="pb-3 pt-2">{format(installment.date, "P")}</TableCell>
-                      <TableCell className="pb-3 pt-2">{`${installment.installmentNumber}/${tableData.installmentsCount}`}</TableCell>
-                      <TableCell className="pb-3 pt-2">{installment.amount.toFixed(2)}</TableCell>
-                      <TableCell className="pb-3 pt-2">
-                        <Badge variant={colors[installment.status]}>{tr(installment.status)}</Badge>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </>
-              </Table>
-              <Button
-                size="sm"
-                className="mr-4 disabled:border-disabled disabled:bg-disabled disabled:text-disabled-foreground"
-              >
-                <CircleDollarSign size={16} /> Pagar
-              </Button>
-            </div>
-          );
-        });
+        return tableData.installmentsList.map((installment, index) => (
+          <div
+            className="flex content-center items-center rounded-2xl bg-secondary"
+            key={`${tableData.name}-${installment.installmentNumber}`}
+          >
+            <Table className="mw-945 p-4">
+              <>
+                <TableHeader className="text-xs text-placeholder-foreground">
+                  <TableRow>
+                    <TableHead className="h-4 w-[1/9] pt-3">{t("offer-name")}</TableHead>
+                    <TableHead className="h-4 w-[1/9] pt-3">{t("installment-date")}</TableHead>
+                    <TableHead className="h-4 w-[1/9] pt-3">{t("installments-count")}</TableHead>
+                    <TableHead className="h-4 w-[1/9] pt-3">{t("installment-amount")}</TableHead>
+                    <TableHead className="h-4 pt-3">{t("status")}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="text-sm font-medium">
+                  <TableRow>
+                    <TableCell className="pb-3 pt-2">{tableData.name}</TableCell>
+                    <TableCell className="pb-3 pt-2">{format(installment.date, "P")}</TableCell>
+                    <TableCell className="pb-3 pt-2">{`${installment.installmentNumber}/${tableData.installmentsCount}`}</TableCell>
+                    <TableCell className="pb-3 pt-2">{installment.amount.toFixed(2)}</TableCell>
+                    <TableCell className="pb-3 pt-2">
+                      <div className="w-[100px]">
+                        <Badge variant={installmentStatusToVariant[installment.status]}>
+                          {tr(installment.status)}
+                        </Badge>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </>
+            </Table>
+            <PayButton
+              id={tableData.id}
+              index={index}
+              disable={
+                installment.status === InstallmentStatus.Paid ||
+                installment.installmentNumber !== tableData.totalInstallmentsPaid + 1
+              }
+            />
+          </div>
+        ));
       })}
     </div>
   );

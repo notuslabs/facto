@@ -1,8 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ChevronDown, CircleDollarSign } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import InstallmentsMobileTable from "./_components/installments-mobile-table";
 import InstallmentssDesktopTable from "./_components/installments-desktop-table";
@@ -10,70 +9,9 @@ import { useOffersByOriginator } from "@/hooks/use-offers-by-originator";
 
 export default function InstallmentsPage() {
   const t = useTranslations("installments-page");
-  const tr = useTranslations("badges");
 
-  const tableData = [
-    {
-      offerName: "Agiotagem #1",
-      installmentDate: "16/04/2024",
-      installmentsPaid: 1,
-      installmentTotal: 12,
-      installmentAmount: "R$ 420",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-      link: "ali",
-    },
-    {
-      offerName: "Agiotagem #1",
-      installmentDate: "16/04/2024",
-      installmentsPaid: 1,
-      installmentTotal: 12,
-      installmentAmount: "R$ 420",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-      link: "alo",
-    },
-    {
-      offerName: "Agiotagem #1",
-      installmentDate: "16/04/2024",
-      installmentsPaid: 1,
-      installmentTotal: 12,
-      installmentAmount: "R$ 420",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-      link: "alo",
-    },
-    {
-      offerName: "Agiotagem #1",
-      installmentDate: "16/04/2024",
-      installmentsPaid: 1,
-      installmentTotal: 12,
-      installmentAmount: "R$ 420",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-      link: "alo",
-    },
-    {
-      offerName: "Agiotagem #1",
-      installmentDate: "16/04/2024",
-      installmentsPaid: 1,
-      installmentTotal: 12,
-      installmentAmount: "R$ 420",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-      link: "alo",
-    },
-    {
-      offerName: "Agiotagem #1",
-      installmentDate: "16/04/2024",
-      installmentsPaid: 1,
-      installmentTotal: 12,
-      installmentAmount: "R$ 420",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-      link: "alo",
-    },
-  ];
-
-  const offerNumber = tableData.length;
-
-  const { data } = useOffersByOriginator();
-
-  console.log("datas", data);
+  const { data } = useOffersByOriginator(["Funded", "OnTrack", "Delinquent", "Finished"]);
+  const offerNumber = data?.length ?? 0;
 
   return (
     data && (

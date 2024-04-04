@@ -320,9 +320,9 @@
   },
   "offer-status": {
     "StartingSoon": "Em breve",
-    "Open": "Aberto",
+    "Open": "Em captação",
     "Funded": "Fundado",
-    "OnTrack": "Em andamento",
+    "OnTrack": "Em pagamento",
     "Finished": "Concluído",
     "Delinquent": "Delinquente",
     "Failed": "Falhou"

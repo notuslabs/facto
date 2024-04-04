@@ -1,7 +1,7 @@
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
-import { addMonths, subMonths } from "date-fns";
+import { addMonths, subMonths, addHours, subHours } from "date-fns";
 import { formatUnits } from "@/lib/format-units";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
@@ -14,6 +14,12 @@ export enum OfferStatus {
   Finished = "Finished",
   Delinquent = "Delinquent",
   Failed = "Failed",
+}
+
+export enum InstallmentStatus {
+  Paid = "paid",
+  Upcoming = "upcoming",
+  Overdue = "overdue",
 }
 
 export type CreditScoreOption = (typeof creditScoreOptions)[number];
@@ -42,7 +48,7 @@ export type InstallmentsList = Array<{
   date: Date;
   installmentNumber: number;
   amount: number;
-  status: "upcoming" | "overdue" | "paid";
+  status: InstallmentStatus;
 }>;
 
 export const paymentFrequencyOptions = ["monthly"] as const;
@@ -67,10 +73,14 @@ export class Offer {
     this.startDate = new Date(raw.startDate.toNumber() * 1000).toISOString();
     this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
-    this.installmentsStartDate = subMonths(
+    this.installmentsStartDate = subHours(
       this.installmentsNextPaymentDate,
       this.totalInstallmentsPaid,
     ).toISOString();
+    // this.installmentsStartDate = subMonths(
+    //   this.installmentsNextPaymentDate,
+    //   this.totalInstallmentsPaid,
+    // ).toISOString();
     this.installmentsEndDate = addMonths(
       this.installmentsStartDate,
       this.installmentsCount - 1,
@@ -147,19 +157,18 @@ export class Offer {
     const installmentsList: InstallmentsList = [];
 
     for (let i = 0; i < this.installmentsCount; i++) {
-      const date = addMonths(this.installmentsStartDate, i);
+      // const date = addMonths(this.installmentsStartDate, i);
+      const date = addHours(this.installmentsStartDate, i * 2);
       const installmentNumber = i + 1;
       const amount = this.installmentsTotalAmount / this.installmentsCount;
 
-      // "upcoming": "A vencer",
-      // "overdue": "Em atraso"
-      let status: "overdue" | "upcoming" | "paid" = "upcoming";
+      let status = InstallmentStatus.Upcoming;
       if (installmentNumber <= this.totalInstallmentsPaid) {
-        status = "paid";
+        status = InstallmentStatus.Paid;
       }
 
       if (Date.now() > date.getTime() && installmentNumber > this.totalInstallmentsPaid) {
-        status = "overdue";
+        status = InstallmentStatus.Overdue;
       }
 
       installmentsList.push({
