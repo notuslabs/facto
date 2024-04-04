@@ -94,17 +94,19 @@ export default function TransactionsDepositPage() {
         </div>
       </div>
 
-      <div className="px-6">
-        <p className="text-xs text-muted-foreground">{t("address")}</p>
-        <div className="flex justify-between gap-16 text-primary">
-          <p className="overflow-hidden text-ellipsis text-base font-medium">{transactionHash}</p>
-          <ClipboardCopy
-            className="min-w-fit cursor-pointer hover:opacity-50"
-            size={24}
-            onClick={handleCopyToClipboard}
-          />
+      {transactionHash && (
+        <div className="px-6">
+          <p className="text-xs text-muted-foreground">{t("address")}</p>
+          <div className="flex justify-between gap-16 text-primary">
+            <p className="overflow-hidden text-ellipsis text-base font-medium">{transactionHash}</p>
+            <ClipboardCopy
+              className="min-w-fit cursor-pointer hover:opacity-50"
+              size={24}
+              onClick={handleCopyToClipboard}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <DisclaimerCard background />
 

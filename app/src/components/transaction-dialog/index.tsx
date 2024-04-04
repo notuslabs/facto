@@ -137,19 +137,22 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
             </div>
           </div>
 
-          <div className="px-6 text-xs text-muted-foreground">
-            <p>{t("address")}</p>
-            <div className="flex justify-between gap-16">
-              <p className="overflow-hidden text-ellipsis text-sm text-placeholder-foreground">
-                345345345345
-              </p>
-              <ClipboardCopy
-                className="min-w-fit cursor-pointer hover:opacity-50"
-                size={16}
-                onClick={handleCopyToClipboard}
-              />
+          {depositTransactionHash || withdrawalTransactionHash ? (
+            <div className="px-6 text-xs text-muted-foreground">
+              <p>{t("address")}</p>
+              <div className="flex justify-between gap-16">
+                <p className="overflow-hidden text-ellipsis text-sm text-placeholder-foreground">
+                  {type === "deposit" ? depositTransactionHash : withdrawalTransactionHash}
+                </p>
+                <ClipboardCopy
+                  className="min-w-fit cursor-pointer hover:opacity-50"
+                  size={16}
+                  onClick={handleCopyToClipboard}
+                />
+              </div>
             </div>
-          </div>
+          ) : null}
+
           <DisclaimerCard background />
 
           {type === "withdrawal" && (

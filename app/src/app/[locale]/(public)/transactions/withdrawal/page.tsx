@@ -24,10 +24,12 @@ const WithdrawalSchema = z.object({
 export default function TransactionsDepositPage() {
   const { data: balance, isPending } = useBalance({ variant: "investor" });
   const { data: programa } = useProgram();
-  const { mutate: withdrawal, isPending: isWithdrawalPending } = useWithdrawal();
+  const {
+    mutate: withdrawal,
+    isPending: isWithdrawalPending,
+    data: transactionHash,
+  } = useWithdrawal();
   const t = useTranslations("withdrawal-page");
-  const transactionHash =
-    "00299277837662juijha8nicholasotaku872209922144354565675688978thallespassaros9345csdfsd23534523jkh34b5kuh2";
   const form = useForm<z.infer<typeof WithdrawalSchema>>({
     resolver: zodResolver(WithdrawalSchema),
     defaultValues: {
@@ -42,6 +44,7 @@ export default function TransactionsDepositPage() {
   }
 
   function handleCopyToClipboard() {
+    if (!transactionHash) return;
     copy(transactionHash.toString());
     toast.success(t("address-copied"));
   }
@@ -96,17 +99,19 @@ export default function TransactionsDepositPage() {
         </div>
       </div>
 
-      <div className="px-6">
-        <p className="text-xs text-muted-foreground">{t("address")}</p>
-        <div className="flex justify-between gap-16 text-primary">
-          <p className="overflow-hidden text-ellipsis text-base font-medium">{transactionHash}</p>
-          <ClipboardCopy
-            className="min-w-fit cursor-pointer hover:opacity-50"
-            size={24}
-            onClick={handleCopyToClipboard}
-          />
+      {transactionHash && (
+        <div className="px-6">
+          <p className="text-xs text-muted-foreground">{t("address")}</p>
+          <div className="flex justify-between gap-16 text-primary">
+            <p className="overflow-hidden text-ellipsis text-base font-medium">{transactionHash}</p>
+            <ClipboardCopy
+              className="min-w-fit cursor-pointer hover:opacity-50"
+              size={24}
+              onClick={handleCopyToClipboard}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <DisclaimerCard background />
 
