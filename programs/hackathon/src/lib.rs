@@ -14,21 +14,21 @@ pub mod state;
 pub mod hackathon {
     use super::*;
 
-    pub fn create_originator(
-        ctx: Context<CreateOriginator>,
+    pub fn create_borrower(
+        ctx: Context<CreateBorrower>,
         name: String,
         description: String,
         token_slug: String,
     ) -> Result<()> {
-        instructions::create_originator(ctx, name, description, token_slug)
+        instructions::create_borrower(ctx, name, description, token_slug)
     }
 
-    pub fn edit_originator(
-        ctx: Context<EditOriginator>,
+    pub fn edit_borrower(
+        ctx: Context<EditBorrower>,
         name: String,
         description: String,
     ) -> Result<()> {
-        instructions::edit_originator(ctx, name, description)
+        instructions::edit_borrower(ctx, name, description)
     }
 
     pub fn create_offer(
@@ -61,7 +61,10 @@ pub mod hackathon {
         instructions::invest(ctx, amount)
     }
 
-    pub fn withdraw_investments(ctx: Context<WithdrawInvestments>, _offer_id: String) -> Result<()> {
+    pub fn withdraw_investments(
+        ctx: Context<WithdrawInvestments>,
+        _offer_id: String,
+    ) -> Result<()> {
         instructions::withdraw_investments(ctx)
     }
 
@@ -69,7 +72,10 @@ pub mod hackathon {
         instructions::pay_installment(ctx)
     }
 
-    pub fn withdraw_installment(ctx: Context<WithdrawInstallment>, _offer_id: String) -> Result<()> {
+    pub fn withdraw_installment(
+        ctx: Context<WithdrawInstallment>,
+        _offer_id: String,
+    ) -> Result<()> {
         instructions::withdraw_installments(ctx)
     }
 
@@ -89,10 +95,10 @@ pub mod hackathon {
         instructions::withdraw_tokens(ctx, amount)
     }
 
-    pub fn withdraw_originator_tokens(
-        ctx: Context<WithdrawOriginatorTokens>,
+    pub fn withdraw_borrower_tokens(
+        ctx: Context<WithdrawBorrowerTokens>,
         amount: u64,
     ) -> Result<()> {
-        instructions::withdraw_originator_tokens(ctx, amount)
+        instructions::withdraw_borrower_tokens(ctx, amount)
     }
 }

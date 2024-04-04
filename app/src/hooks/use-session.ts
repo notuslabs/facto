@@ -3,6 +3,7 @@ import { web3auth } from "@/lib/web3AuthService";
 import { SolanaWallet } from "@web3auth/solana-provider";
 import { PublicKey } from "@solana/web3.js";
 import { useCallback } from "react";
+import { useInitModal } from "./use-init-modal";
 
 export function useSession() {
   const getPublicKey = useCallback(async (solanaWallet?: SolanaWallet | null) => {
@@ -21,13 +22,7 @@ export function useSession() {
     return user;
   }, []);
 
-  useQuery({
-    queryKey: ["web3-auth"],
-    queryFn: async () => {
-      await web3auth.initModal();
-    },
-    staleTime: Infinity,
-  });
+  useInitModal();
 
   return useQuery({
     queryKey: ["session", web3auth.provider?.chainId],

@@ -3,6 +3,10 @@
     "title": "Hackathon Solana",
     "description": "Projeto da Hackathon Solana"
   },
+  "opening-page": {
+    "title": "Invista e Fortaleça",
+    "description": "Conectando investidores a projetos"
+  },
   "navbar": {
     "login": "Entrar",
     "logout": "Sair",
@@ -13,7 +17,9 @@
     "deposit": "Depósito",
     "balance": "Meu Saldo",
     "user": "Usuário",
-    "transactions": "Transações"
+    "transactions": "Transações",
+    "my-offers": "Minhas ofertas",
+    "installments": "Parcelas"
   },
   "header": {
     "people-invested": "{peopleNumber} pessoas investiram",
@@ -59,7 +65,7 @@
       "income-schedule": {
         "title": "Cronograma de recebimento"
       },
-      "about-originator": {
+      "about-borrower": {
         "title": "Sobre o originador"
       },
       "credit-score": {
@@ -80,7 +86,7 @@
       "amount": "Valor",
       "status": "Status"
     },
-    "about-originator": {
+    "about-borrower": {
       "title": "Sobre o originador",
       "description": "Como Agiotagem, o mentor por trás deste projeto residencial ecológico, estou comprometido em promover uma mudança positiva na construção civil. Com vasta experiência e uma visão sustentável, cada contribuição é valorizada e investida com integridade e transparência. Juntos, estamos construindo mais do que simples casas; estamos criando um santuário para aqueles que valorizam o meio ambiente e a qualidade de vida. Agradeço imensamente por se juntar a nós nesta jornada rumo a um futuro mais sustentável e próspero para todos.",
       "offer": "Oferta",
@@ -196,10 +202,10 @@
       "submit-button": "Continuar",
       "success-toast-message": "Sua conta foi criada com sucesso",
       "error-toast-message": "Ocorreu um erro ao criar sua conta",
-      "already-registered-toast-message": "Já existe uma conta de investidor vinculada à sua conta.",
+      "already-registered-toast-message": "Você já é um investidor.",
       "not-authenticated": "Você precisa estar autenticado para se tornar um investidor"
     },
-    "originator": {
+    "borrower": {
       "title": "Vamos criar sua conta",
       "form-fields": {
         "name": "Nome de Originador",
@@ -215,7 +221,7 @@
       "submit-button": "Continuar",
       "success-toast-message": "Sua conta foi criada com sucesso",
       "error-toast-message": "Ocorreu um erro ao criar sua conta",
-      "already-registered-toast-message": "Já existe uma conta de originador vinculada à sua conta.",
+      "already-registered-toast-message": "Você já é um originador.",
       "not-authenticated": "Você precisa estar autenticado para se tornar um originador"
     }
   },
@@ -289,7 +295,7 @@
     "not-authenticated": "Você precisa estar autenticado para criar uma oferta",
     "continue-button": "Continuar",
     "submit-button": "Criar oferta",
-    "not-an-originator": "Você não é um originador, para criar uma oferta você precisa ser um originador",
+    "not-an-borrower": "Você não é um originador, para criar uma oferta você precisa ser um originador",
     "success-toast-message": "Sua oferta foi criada com sucesso",
     "error-toast-message": "Ocorreu um erro ao criar sua oferta"
   },

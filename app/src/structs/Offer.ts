@@ -49,12 +49,12 @@ export const paymentFrequencyOptions = ["monthly"] as const;
 
 // Remember to only use JSON serializable types bc of nextjs and react-query caching
 export class Offer {
-  private constructor(raw: Account<"offer">, rawOriginator: Account<"originator">) {
+  private constructor(raw: Account<"offer">, rawBorrower: Account<"borrower">) {
     this.id = raw.id;
     this.description = raw.description;
     this.discriminator = raw.discriminator;
     this.goalAmount = formatUnits(raw.goalAmount);
-    this.originator = rawOriginator;
+    this.borrower = rawBorrower;
     this.acquiredAmount = formatUnits(raw.acquiredAmount);
     this.deadlineDate = new Date(raw.deadlineDate.toNumber() * 1000).toISOString();
     this.installmentsCount = raw.installmentsCount;
@@ -80,7 +80,7 @@ export class Offer {
   public id: string;
 
   public get name(): string {
-    return `${this.originator.tokenSlug}#${this.discriminator}`;
+    return `${this.borrower.tokenSlug}#${this.discriminator}`;
   }
 
   public description: string;
@@ -165,7 +165,7 @@ export class Offer {
 
   public deadlineDate: string;
   public acquiredAmount: number;
-  public originator: Account<"originator">;
+  public borrower: Account<"borrower">;
   public installmentsCount: number;
   public installmentsNextPaymentDate: string;
   public installmentsStartDate: string;
@@ -193,10 +193,10 @@ export class Offer {
 
   static async fromRawItem(raw: { account: Account<"offer"> }) {
     const program = getProgram();
-    const originatorPubKey = raw.account.originator;
-    const originator = await program.account.originator.fetch(originatorPubKey);
+    const borrowerPubKey = raw.account.borrower;
+    const borrower = await program.account.borrower.fetch(borrowerPubKey);
 
-    const offer = new Offer(raw.account, originator);
+    const offer = new Offer(raw.account, borrower);
 
     return offer;
   }
@@ -204,13 +204,13 @@ export class Offer {
   static async fromRawCollection(raw: { account: Account<"offer"> }[]) {
     const program = getProgram();
 
-    const originatorsPubKeys = raw.map((raw) => raw.account.originator);
-    const originators = (await program.account.originator.fetchMultiple(
-      originatorsPubKeys,
-    )) as Account<"originator">[];
+    const borrowersPubKeys = raw.map((raw) => raw.account.borrower);
+    const borrowers = (await program.account.borrower.fetchMultiple(
+      borrowersPubKeys,
+    )) as Account<"borrower">[];
 
     return raw
-      .map((raw, index) => new Offer(raw.account, originators[index]))
+      .map((raw, index) => new Offer(raw.account, borrowers[index]))
       .sort((a, b) => a.discriminator - b.discriminator);
   }
 

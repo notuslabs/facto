@@ -10,7 +10,7 @@ import { useFormatNumber } from "@/hooks/number-formatters";
 
 type OfferCardHeaderProps = {
   offerName: string;
-  originatorName: string;
+  borrowerName: string;
   period: string;
   interestRate: string;
   secondaryText: string;
@@ -18,7 +18,7 @@ type OfferCardHeaderProps = {
 
 function OfferCardHeader({
   offerName,
-  originatorName,
+  borrowerName,
   interestRate,
   period,
   secondaryText,
@@ -32,7 +32,7 @@ function OfferCardHeader({
         </span>
       </div>
       <div className="flex items-center justify-between gap-2 text-muted-foreground">
-        <p className="text-xs">{originatorName}</p>
+        <p className="text-xs">{borrowerName}</p>
         <p className="text-xs">{secondaryText}</p>
       </div>
     </div>
@@ -129,7 +129,7 @@ export function OfferCard({ offer }: OfferCardProps) {
     <div className="rounded-lg border border-border">
       <OfferCardHeader
         offerName={offer.name}
-        originatorName={offer.originator.name}
+        borrowerName={offer.borrower.name}
         interestRate={offer.interestRate}
         period={t("time-period")}
         secondaryText={t("awaited-return")}
