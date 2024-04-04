@@ -10,14 +10,15 @@ export const installmentStatusToVariant = {
   overdue: "yellow",
 } as const;
 
-export const statusToVariant = {
-  StartingSoon: "outline",
-  Open: "outline",
-  Funded: "green",
-  OnTrack: "blue",
-  Finished: "outline",
-  Delinquent: "yellow",
-  Failed: "red",
+export const STATUSES_TO_VARIANTS = {
+  [OfferStatus.Delinquent]: "yellow",
+  [OfferStatus.Failed]: "red",
+  [OfferStatus.Cancelled]: "red",
+  [OfferStatus.Finished]: "white", // white
+  [OfferStatus.Funded]: "green",
+  [OfferStatus.OnTrack]: "blue",
+  [OfferStatus.Open]: "white", // white
+  [OfferStatus.StartingSoon]: "white", // white
 } as const;
 
 const badgeVariants = cva(
@@ -36,7 +37,6 @@ const badgeVariants = cva(
         yellow: "border-transparent bg-warning-muted text-warning-foreground",
         gray: "text-muted-foreground border-transparent bg-secondary",
         primary: "bg-background text-muted-foreground",
-        blue: "bg-info-muted text-info-foreground",
         "credit-score-a": "bg-success-muted border-success-border text-success-foreground",
         "credit-score-b": "bg-info-muted border-info-muted-border text-info-foreground",
         "credit-score-c": "bg-warning-muted border-warning-muted-border text-warning-foreground",
@@ -48,17 +48,6 @@ const badgeVariants = cva(
     },
   },
 );
-
-export const STATUSES_TO_VARIANTS = {
-  [OfferStatus.Delinquent]: "yellow",
-  [OfferStatus.Failed]: "red",
-  [OfferStatus.Cancelled]: "red",
-  [OfferStatus.Finished]: "white", // white
-  [OfferStatus.Funded]: "green",
-  [OfferStatus.OnTrack]: "blue",
-  [OfferStatus.Open]: "white", // white
-  [OfferStatus.StartingSoon]: "white", // white
-} as const;
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
