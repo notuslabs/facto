@@ -23,13 +23,13 @@ export function usePayOffer(key: string) {
     mutationFn: async ({ offerId }: PayOffer) => {
       if (!keypair || !program) return;
 
-      const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
+      const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
-      const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator_token_account"), originatorPubKey.toBuffer()],
+      const [borrowerTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower_token_account"), borrowerPubKey.toBuffer()],
         program.programId,
       );
 
@@ -37,7 +37,7 @@ export function usePayOffer(key: string) {
         .payInstallment(offerId)
         .accounts({
           stableToken: FAKE_MINT,
-          originatorTokenAccount: originatorTokenAccountPubKey,
+          borrowerTokenAccount: borrowerTokenAccountPubKey,
           caller: keypair.publicKey,
           payer: keypair.publicKey,
         })
@@ -48,7 +48,7 @@ export function usePayOffer(key: string) {
       toast.success("Parcela paga com sucesso");
 
       queryClient.invalidateQueries({
-        queryKey: ["offers-by-originator"],
+        queryKey: ["offers-by-borrower"],
       });
     },
     onError: (error) => {

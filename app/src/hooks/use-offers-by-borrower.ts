@@ -1,12 +1,12 @@
 "use client";
 
-import { listOffersByOriginator } from "@/services/list-offers";
+import { listOffersByBorrower } from "@/services/list-offers";
 import { useQuery } from "@tanstack/react-query";
 import { PublicKey } from "@solana/web3.js";
 import { useProgram } from "./use-program";
 import { utils } from "@coral-xyz/anchor";
 
-export function useOffersByOriginator(filter?: string[]) {
+export function useOffersByBorrower(filter?: string[]) {
   const { data: programData } = useProgram();
 
   const program = programData?.program;
@@ -14,18 +14,18 @@ export function useOffersByOriginator(filter?: string[]) {
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["offers-by-originator", filter, keypair?.publicKey.toString()],
+    queryKey: ["offers-by-borrower", filter, keypair?.publicKey.toString()],
     queryFn: () => {
       if (!keypair || !program) return null;
 
-      const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
+      const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
-      console.log("originator key", originatorPubKey);
+      console.log("borrower key", borrowerPubKey);
 
-      return listOffersByOriginator(originatorPubKey, filter);
+      return listOffersByBorrower(borrowerPubKey, filter);
     },
     enabled: !!program && !!keypair,
   });

@@ -5,12 +5,12 @@ import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import InstallmentsMobileTable from "./_components/installments-mobile-table";
 import InstallmentssDesktopTable from "./_components/installments-desktop-table";
-import { useOffersByOriginator } from "@/hooks/use-offers-by-originator";
+import { useOffersByBorrower } from "@/hooks/use-offers-by-borrower";
 
 export default function InstallmentsPage() {
   const t = useTranslations("installments-page");
 
-  const { data } = useOffersByOriginator(["Funded", "OnTrack", "Delinquent", "Finished"]);
+  const { data } = useOffersByBorrower(["Funded", "OnTrack", "Delinquent", "Finished"]);
   const offerNumber = data?.length ?? 0;
 
   return (

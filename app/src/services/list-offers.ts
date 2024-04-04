@@ -6,13 +6,15 @@ export async function listOffers(): Promise<Offer[]> {
   const program = getProgram();
 
   const offers = await program.account.offer.all();
+
   const rawOffers = await Offer.fromRawCollection(offers);
+  console.log(rawOffers.map((offer) => offer.toJSON()));
 
   return rawOffers.map((offer) => offer.toJSON());
 }
 
-export async function listOffersByOriginator(
-  originator: PublicKey,
+export async function listOffersByBorrower(
+  borrower: PublicKey,
   filterByStatus?: string[],
 ): Promise<Offer[]> {
   const program = getProgram();
@@ -21,12 +23,12 @@ export async function listOffersByOriginator(
     {
       memcmp: {
         offset: 8,
-        bytes: originator.toBase58(),
+        bytes: borrower.toBase58(),
       },
     },
   ]);
   const rawOffers = await Offer.fromRawCollection(offers);
-
+  console.log(rawOffers);
   if (filterByStatus && filterByStatus.length > 0) {
     return rawOffers.filter((offer) => {
       offer = offer.toJSON();

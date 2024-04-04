@@ -52,6 +52,10 @@ export const pathnames = {
     en: "/offers/[id]",
     "pt-BR": "/offers/[id]",
   },
+  "/admin/installments": {
+    en: "/admin/installments",
+    "pt-BR": "/admin/installments",
+  },
 } satisfies Pathnames<typeof locales>;
 
 // Use the default: `always`
