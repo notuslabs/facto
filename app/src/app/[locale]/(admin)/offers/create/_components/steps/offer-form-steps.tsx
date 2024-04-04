@@ -393,7 +393,7 @@ export function OfferFormStep3({
                       {field.value ? (
                         format(field.value, "PPP")
                       ) : (
-                        <span>{t("form-fields.start-date.placeholder")}</span>
+                        <span>{t("form-fields.deadline-date.placeholder")}</span>
                       )}
                     </Button>
                   </FormControl>
@@ -408,6 +408,9 @@ export function OfferFormStep3({
                     }
                     initialFocus
                   />
+                  <div className="border-t border-border p-3">
+                    <TimePicker setDate={field.onChange} date={field.value} />
+                  </div>
                 </PopoverContent>
               </Popover>
               <FormMessage />
@@ -482,6 +485,9 @@ export function OfferFormStep3({
                     }
                     initialFocus
                   />
+                  <div className="border-t border-border p-3">
+                    <TimePicker setDate={field.onChange} date={field.value} />
+                  </div>
                 </PopoverContent>
               </Popover>
               <FormMessage />
