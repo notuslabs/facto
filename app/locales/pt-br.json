@@ -5,7 +5,15 @@
   },
   "opening-page": {
     "title": "Invista e Fortaleça",
-    "description": "Conectando investidores a projetos"
+    "description": "Conectando investidores a projetos",
+    "borrower-card": {
+      "title": "Sou Originador",
+      "description": "E quero pegar dinheiro emprestado"
+    },
+    "investor-card": {
+      "title": "Sou Investidor",
+      "description": "E quero ver ofertas"
+    }
   },
   "navbar": {
     "login": "Entrar",

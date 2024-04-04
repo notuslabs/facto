@@ -5,7 +5,15 @@
   },
   "opening-page": {
     "title": "Invest and Strengthen",
-    "description": "Conect investors to projects"
+    "description": "Conect investors to projects",
+    "borrower-card": {
+      "title": "I'm a Borrower",
+      "description": "And I need to raise funds for my project"
+    },
+    "investor-card": {
+      "title": "I'm an Investor",
+      "description": "And I want to invest in projects"
+    }
   },
   "navbar": {
     "login": "Login",
