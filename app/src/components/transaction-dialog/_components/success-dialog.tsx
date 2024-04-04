@@ -3,29 +3,22 @@ import { buttonVariants } from "@/components/ui/button";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CheckCircle2, ClipboardCopy, ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
-import copy from "copy-to-clipboard";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 interface SuccessDialogProps {
   type: "deposit" | "withdrawal";
   operationAmount: number;
-  transactionHash: string;
-  externalLink: string;
+  transactionHash: string | null | undefined;
+  copyToClipboard: () => void;
 }
 
 export default function SuccessDialog({
   type,
   operationAmount,
   transactionHash,
-  externalLink,
+  copyToClipboard,
 }: SuccessDialogProps) {
   const t = useTranslations("success");
-
-  function handleCopyToClipboard() {
-    copy(transactionHash.toString());
-    toast.success(t("hash-copied"));
-  }
 
   return (
     <div className="relative flex w-[451px] flex-col gap-12">
@@ -51,7 +44,7 @@ export default function SuccessDialog({
             <ClipboardCopy
               className="cursor-pointer hover:opacity-50"
               size={24}
-              onClick={handleCopyToClipboard}
+              onClick={copyToClipboard}
             />
           </div>
         </div>
@@ -60,7 +53,7 @@ export default function SuccessDialog({
           className={cn(buttonVariants({ variant: "link" }), "w-fit bg-card")}
           target="_blank"
           rel="noreferrer nofollow"
-          href={externalLink}
+          href={`https://explorer.solana.com/tx/${transactionHash}`}
         >
           {t("see-on")} <ExternalLink size={16} />
         </a>

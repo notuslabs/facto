@@ -37,15 +37,16 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
     mutate: withdrawal,
     isSuccess: isWithdrawalSuccess,
     isPending: isWithdrawalPending,
+    data: withdrawalTransactionHash,
   } = useWithdrawal();
   const {
     mutate: deposit,
     isSuccess: isDepositSuccess,
     isPending: isDepositPending,
+    data: depositTransactionHash,
   } = useDeposit();
   const publicKey = data && data.keypair.publicKey;
   const schemaType = type === "deposit" ? DepositSchema : WithdrawalSchema;
-  const transactionHash = "0ojnweifjn91723f109nbd0192hd191293nxm010xn1";
 
   const form = useForm<z.infer<typeof schemaType>>({
     resolver: zodResolver(schemaType),
@@ -64,7 +65,14 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
   }
 
   function handleCopyToClipboard() {
-    copy(transactionHash.toString());
+    if (type === "deposit" && depositTransactionHash) {
+      copy(depositTransactionHash);
+      return;
+    }
+    if (withdrawalTransactionHash) {
+      copy(withdrawalTransactionHash);
+    }
+
     toast.success(t("address-copied"));
   }
 
@@ -74,8 +82,8 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
         <SuccessDialog
           operationAmount={444}
           type={type}
-          transactionHash={transactionHash}
-          externalLink="www.google.com"
+          transactionHash={type === "deposit" ? depositTransactionHash : withdrawalTransactionHash}
+          copyToClipboard={handleCopyToClipboard}
         />
       ) : (
         <>

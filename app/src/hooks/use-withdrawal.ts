@@ -24,7 +24,7 @@ export function useWithdrawal() {
       amount: number;
       toTokenAccount: PublicKey;
     }) => {
-      if (!keypair || !program) return;
+      if (!keypair || !program) return null;
 
       const [investorPubKey] = PublicKey.findProgramAddressSync(
         [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
@@ -36,7 +36,7 @@ export function useWithdrawal() {
         program.programId,
       );
 
-      await program.methods
+      const tx = await program.methods
         .withdrawTokens(new BN(amount * 10 ** 9))
         .accounts({
           investor: investorPubKey,
@@ -46,8 +46,8 @@ export function useWithdrawal() {
           payer: keypair.publicKey,
           caller: keypair.publicKey,
         })
-        .rpc()
-        .catch((e) => console.log(e));
+        .rpc();
+      return tx;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

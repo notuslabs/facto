@@ -22,10 +22,13 @@ const DepositSchema = z.object({
 
 export default function TransactionsDepositPage() {
   const { data, isPending } = useBalance();
-  const { mutate: deposit, isPending: isDepositPending } = useDeposit();
+  const {
+    mutate: deposit,
+    isPending: isDepositPending,
+    data: transactionHash,
+    reset,
+  } = useDeposit();
   const t = useTranslations("deposit-page");
-  const transactionHash =
-    "00299277837662juijha8nicholasotaku872209922144354565675688978thallespassaros9345csdfsd23534523jkh34b5kuh2";
   const form = useForm<z.infer<typeof DepositSchema>>({
     resolver: zodResolver(DepositSchema),
     defaultValues: {
@@ -38,6 +41,7 @@ export default function TransactionsDepositPage() {
   }
 
   function handleCopyToClipboard() {
+    if (!transactionHash) return;
     copy(transactionHash.toString());
     toast.success(t("address-copied"));
   }
