@@ -32,13 +32,13 @@ export function useTokenAccounts() {
         program.programId,
       );
 
-      const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
+      const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
-      const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator_token_account"), originatorPubKey.toBuffer()],
+      const [borrowerTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower_token_account"), borrowerPubKey.toBuffer()],
         program.programId,
       );
 
@@ -53,14 +53,13 @@ export function useTokenAccounts() {
         console.error,
       );
 
-      const originatorTokenAccount = await getAccount(
-        connection,
-        originatorTokenAccountPubKey,
-      ).catch(console.error);
+      const borrowerTokenAccount = await getAccount(connection, borrowerTokenAccountPubKey).catch(
+        console.error,
+      );
 
       return {
         investorTokenAccount,
-        originatorTokenAccount,
+        borrowerTokenAccount,
         userTokenAccount,
       };
     },

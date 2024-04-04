@@ -22,21 +22,21 @@ export function useAccounts() {
         program.programId,
       );
 
-      const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
+      const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
       const investorAccount = await program.account.investor
         .fetch(investorPubKey)
         .catch(console.error);
-      const originatorAccount = await program.account.originator
-        .fetch(originatorPubKey)
+      const borrowerAccount = await program.account.borrower
+        .fetch(borrowerPubKey)
         .catch(console.error);
 
       return {
         investorAccount: investorAccount ?? null,
-        originatorAccount: originatorAccount ?? null,
+        borrowerAccount: borrowerAccount ?? null,
       };
     },
     retry: 0,

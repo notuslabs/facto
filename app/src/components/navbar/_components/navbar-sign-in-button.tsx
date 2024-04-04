@@ -15,11 +15,11 @@ export function NavbarSignInButton() {
   if (!!data?.userInfo) return null;
 
   if (isPending) {
-    return <Loader2 size={16} className="animate-spin" />;
+    return null;
   }
 
   return (
-    <Button variant="ghost" onClick={() => login()}>
+    <Button variant="ghost" onClick={() => login({ asBorrower: false })}>
       {t("login")}
     </Button>
   );

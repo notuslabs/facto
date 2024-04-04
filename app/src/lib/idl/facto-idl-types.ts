@@ -3,7 +3,7 @@ export type Hackathon = {
   "name": "hackathon",
   "instructions": [
     {
-      "name": "createOriginator",
+      "name": "createBorrower",
       "accounts": [
         {
           "name": "payer",
@@ -16,7 +16,7 @@ export type Hackathon = {
           "isSigner": true
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -24,7 +24,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -35,7 +35,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -43,13 +43,13 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
@@ -86,10 +86,10 @@ export type Hackathon = {
       ]
     },
     {
-      "name": "editOriginator",
+      "name": "editBorrower",
       "accounts": [
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -97,7 +97,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -148,7 +148,7 @@ export type Hackathon = {
           "isSigner": true
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -156,7 +156,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -488,7 +488,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -496,19 +496,19 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -516,7 +516,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -626,7 +626,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -634,19 +634,19 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -654,7 +654,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -1149,7 +1149,7 @@ export type Hackathon = {
       ]
     },
     {
-      "name": "withdrawOriginatorTokens",
+      "name": "withdrawBorrowerTokens",
       "accounts": [
         {
           "name": "payer",
@@ -1162,7 +1162,7 @@ export type Hackathon = {
           "isSigner": true
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1170,7 +1170,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -1181,7 +1181,7 @@ export type Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1189,13 +1189,13 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
@@ -1230,6 +1230,38 @@ export type Hackathon = {
     }
   ],
   "accounts": [
+    {
+      "name": "borrower",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "totalOffers",
+            "type": "u32"
+          },
+          {
+            "name": "tokenSlug",
+            "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "tokenAccountBump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
     {
       "name": "investor",
       "type": {
@@ -1272,7 +1304,7 @@ export type Hackathon = {
         "kind": "struct",
         "fields": [
           {
-            "name": "originator",
+            "name": "borrower",
             "type": "publicKey"
           },
           {
@@ -1345,38 +1377,6 @@ export type Hackathon = {
           },
           {
             "name": "vaultBump",
-            "type": "u8"
-          }
-        ]
-      }
-    },
-    {
-      "name": "originator",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "type": "string"
-          },
-          {
-            "name": "totalOffers",
-            "type": "u32"
-          },
-          {
-            "name": "tokenSlug",
-            "type": "string"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          },
-          {
-            "name": "tokenAccountBump",
             "type": "u8"
           }
         ]
@@ -1455,23 +1455,28 @@ export type Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MaxNameLengthExceeded",
-      "msg": "Max name length exceeded. Maximum length is 30"
-    },
-    {
-      "code": 6001,
-      "name": "AmountMustBeEqualToOrGreaterThanOne",
-      "msg": "Amount must be equal to or greater than 1"
-    },
-    {
-      "code": 6002,
       "name": "InsufficientBalance",
       "msg": "Insufficient Balance"
     },
     {
-      "code": 6003,
+      "code": 6001,
       "name": "TransferFailedUnknown",
       "msg": "Transfer failed with an unknown error."
+    },
+    {
+      "code": 6002,
+      "name": "MaxNameLengthExceeded",
+      "msg": "Max name length exceeded. Maximum length is 30"
+    },
+    {
+      "code": 6003,
+      "name": "MaxDescriptionLengthExceeded",
+      "msg": "Max description length exceeded. Maximum length is 500"
+    },
+    {
+      "code": 6004,
+      "name": "MaxTokenSlugLengthExceeded",
+      "msg": "Max token slug length exceeded. Maximum length is 30"
     }
   ]
 };
@@ -1481,7 +1486,7 @@ export const IDL: Hackathon = {
   "name": "hackathon",
   "instructions": [
     {
-      "name": "createOriginator",
+      "name": "createBorrower",
       "accounts": [
         {
           "name": "payer",
@@ -1494,7 +1499,7 @@ export const IDL: Hackathon = {
           "isSigner": true
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1502,7 +1507,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -1513,7 +1518,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1521,13 +1526,13 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
@@ -1564,10 +1569,10 @@ export const IDL: Hackathon = {
       ]
     },
     {
-      "name": "editOriginator",
+      "name": "editBorrower",
       "accounts": [
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1575,7 +1580,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -1626,7 +1631,7 @@ export const IDL: Hackathon = {
           "isSigner": true
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1634,7 +1639,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -1966,7 +1971,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1974,19 +1979,19 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -1994,7 +1999,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -2104,7 +2109,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2112,19 +2117,19 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2132,7 +2137,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -2627,7 +2632,7 @@ export const IDL: Hackathon = {
       ]
     },
     {
-      "name": "withdrawOriginatorTokens",
+      "name": "withdrawBorrowerTokens",
       "accounts": [
         {
           "name": "payer",
@@ -2640,7 +2645,7 @@ export const IDL: Hackathon = {
           "isSigner": true
         },
         {
-          "name": "originator",
+          "name": "borrower",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2648,7 +2653,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator"
+                "value": "borrower"
               },
               {
                 "kind": "account",
@@ -2659,7 +2664,7 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "originatorTokenAccount",
+          "name": "borrowerTokenAccount",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2667,13 +2672,13 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "originator_token_account"
+                "value": "borrower_token_account"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Originator",
-                "path": "originator"
+                "account": "Borrower",
+                "path": "borrower"
               }
             ]
           }
@@ -2708,6 +2713,38 @@ export const IDL: Hackathon = {
     }
   ],
   "accounts": [
+    {
+      "name": "borrower",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "totalOffers",
+            "type": "u32"
+          },
+          {
+            "name": "tokenSlug",
+            "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "tokenAccountBump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
     {
       "name": "investor",
       "type": {
@@ -2750,7 +2787,7 @@ export const IDL: Hackathon = {
         "kind": "struct",
         "fields": [
           {
-            "name": "originator",
+            "name": "borrower",
             "type": "publicKey"
           },
           {
@@ -2823,38 +2860,6 @@ export const IDL: Hackathon = {
           },
           {
             "name": "vaultBump",
-            "type": "u8"
-          }
-        ]
-      }
-    },
-    {
-      "name": "originator",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "type": "string"
-          },
-          {
-            "name": "totalOffers",
-            "type": "u32"
-          },
-          {
-            "name": "tokenSlug",
-            "type": "string"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          },
-          {
-            "name": "tokenAccountBump",
             "type": "u8"
           }
         ]
@@ -2933,23 +2938,28 @@ export const IDL: Hackathon = {
   "errors": [
     {
       "code": 6000,
-      "name": "MaxNameLengthExceeded",
-      "msg": "Max name length exceeded. Maximum length is 30"
-    },
-    {
-      "code": 6001,
-      "name": "AmountMustBeEqualToOrGreaterThanOne",
-      "msg": "Amount must be equal to or greater than 1"
-    },
-    {
-      "code": 6002,
       "name": "InsufficientBalance",
       "msg": "Insufficient Balance"
     },
     {
-      "code": 6003,
+      "code": 6001,
       "name": "TransferFailedUnknown",
       "msg": "Transfer failed with an unknown error."
+    },
+    {
+      "code": 6002,
+      "name": "MaxNameLengthExceeded",
+      "msg": "Max name length exceeded. Maximum length is 30"
+    },
+    {
+      "code": 6003,
+      "name": "MaxDescriptionLengthExceeded",
+      "msg": "Max description length exceeded. Maximum length is 500"
+    },
+    {
+      "code": 6004,
+      "name": "MaxTokenSlugLengthExceeded",
+      "msg": "Max token slug length exceeded. Maximum length is 30"
     }
   ]
 };

@@ -1,32 +1,32 @@
-import * as anchor from "@coral-xyz/anchor";
-import type { Hackathon } from "../target/types/hackathon";
-import { PublicKey } from "@solana/web3.js";
-import { airdropSol } from "./utils";
-import { expect } from "chai";
-import { BN } from "bn.js";
+import * as anchor from '@coral-xyz/anchor';
+import type { Hackathon } from '../target/types/hackathon';
+import { PublicKey } from '@solana/web3.js';
+import { airdropSol } from './utils';
+import { expect } from 'chai';
+import { BN } from 'bn.js';
 import {
   createMint,
   getAccount,
   mintTo,
   createAccount,
-} from "@solana/spl-token";
+} from '@solana/spl-token';
 
-describe("Originator", () => {
+describe('Borrower', () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Hackathon as anchor.Program<Hackathon>;
   const caller = anchor.web3.Keypair.generate();
   let token: PublicKey;
 
-  const [originatorPubKey] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode("originator"), caller.publicKey.toBuffer()],
+  const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+    [anchor.utils.bytes.utf8.encode('borrower'), caller.publicKey.toBuffer()],
     program.programId
   );
 
-  const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+  const [borrowerTokenAccountPubKey] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode("originator_token_account"),
-      originatorPubKey.toBuffer(),
+      anchor.utils.bytes.utf8.encode('borrower_token_account'),
+      borrowerPubKey.toBuffer(),
     ],
     program.programId
   );
@@ -43,12 +43,12 @@ describe("Originator", () => {
     );
   });
 
-  it("should be able to become an originator", async () => {
+  it('should be able to become an borrower', async () => {
     await program.methods
-      .createOriginator("Test", "description", "test")
+      .createBorrower('Test', 'description', 'test')
       .accounts({
-        originator: originatorPubKey,
-        originatorTokenAccount: originatorTokenAccountPubKey,
+        borrower: borrowerPubKey,
+        borrowerTokenAccount: borrowerTokenAccountPubKey,
         stableCoin: token,
         payer: caller.publicKey,
         caller: caller.publicKey,
@@ -57,32 +57,28 @@ describe("Originator", () => {
       .rpc()
       .catch((e) => console.log(e));
 
-    const originatorInfo = await program.account.originator.fetch(
-      originatorPubKey
-    );
+    const borrowerInfo = await program.account.borrower.fetch(borrowerPubKey);
 
-    const originatorTokenAccountInfo = await getAccount(
+    const borrowerTokenAccountInfo = await getAccount(
       anchor.getProvider().connection,
-      originatorTokenAccountPubKey
+      borrowerTokenAccountPubKey
     );
 
-    expect(originatorInfo).not.to.be.undefined;
-    expect(originatorInfo).not.to.be.null;
-    expect(originatorInfo.name).to.equal("Test");
-    expect(originatorInfo.description).to.equal("description");
+    expect(borrowerInfo).not.to.be.undefined;
+    expect(borrowerInfo).not.to.be.null;
+    expect(borrowerInfo.name).to.equal('Test');
+    expect(borrowerInfo.description).to.equal('description');
 
-    expect(originatorTokenAccountInfo).not.to.be.undefined;
-    expect(originatorTokenAccountInfo).not.to.be.null;
-    expect(parseFloat(originatorTokenAccountInfo.amount.toString())).to.equal(
-      0
-    );
+    expect(borrowerTokenAccountInfo).not.to.be.undefined;
+    expect(borrowerTokenAccountInfo).not.to.be.null;
+    expect(parseFloat(borrowerTokenAccountInfo.amount.toString())).to.equal(0);
   });
 
-  it("should be able to edit an originator", async () => {
+  it('should be able to edit an borrower', async () => {
     await program.methods
-      .editOriginator("Test 2", "description 2")
+      .editBorrower('Test 2', 'description 2')
       .accounts({
-        originator: originatorPubKey,
+        borrower: borrowerPubKey,
         payer: caller.publicKey,
         caller: caller.publicKey,
       })
@@ -90,17 +86,15 @@ describe("Originator", () => {
       .rpc()
       .catch((e) => console.log(e));
 
-    const originatorInfo = await program.account.originator.fetch(
-      originatorPubKey
-    );
+    const borrowerInfo = await program.account.borrower.fetch(borrowerPubKey);
 
-    expect(originatorInfo).not.to.be.undefined;
-    expect(originatorInfo).not.to.be.null;
-    expect(originatorInfo.name).to.equal("Test 2");
-    expect(originatorInfo.description).to.equal("description 2");
+    expect(borrowerInfo).not.to.be.undefined;
+    expect(borrowerInfo).not.to.be.null;
+    expect(borrowerInfo.name).to.equal('Test 2');
+    expect(borrowerInfo.description).to.equal('description 2');
   });
 
-  it("should be able to withdraw all tokens", async () => {
+  it('should be able to withdraw all tokens', async () => {
     const receiverTokenAccountPubKey = await createAccount(
       anchor.getProvider().connection,
       caller,
@@ -112,46 +106,43 @@ describe("Originator", () => {
       anchor.getProvider().connection,
       caller,
       token,
-      originatorTokenAccountPubKey,
+      borrowerTokenAccountPubKey,
       caller,
       100
     );
 
-    const [originatorTokenAccount, receiverTokenAccount] = await Promise.all([
-      getAccount(anchor.getProvider().connection, originatorTokenAccountPubKey),
+    const [borrowerTokenAccount, receiverTokenAccount] = await Promise.all([
+      getAccount(anchor.getProvider().connection, borrowerTokenAccountPubKey),
       getAccount(anchor.getProvider().connection, receiverTokenAccountPubKey),
     ]);
 
-    expect(originatorTokenAccount.amount).to.equal(100n);
+    expect(borrowerTokenAccount.amount).to.equal(100n);
     expect(receiverTokenAccount.amount).to.equal(0n);
 
     const tx = await program.methods
-      .withdrawOriginatorTokens(new BN(10))
+      .withdrawBorrowerTokens(new BN(10))
       .accounts({
         caller: caller.publicKey,
         payer: caller.publicKey,
         toTokenAccount: receiverTokenAccountPubKey,
-        originator: originatorPubKey,
-        originatorTokenAccount: originatorTokenAccountPubKey,
+        borrower: borrowerPubKey,
+        borrowerTokenAccount: borrowerTokenAccountPubKey,
         stableToken: token,
       })
       .signers([caller])
-      .rpc({ commitment: "processed" })
+      .rpc({ commitment: 'processed' })
       .catch((error) => {
         console.log(error);
         expect(false).to.equal(true);
       });
 
-    const [originatorTokenAccountAfter, receiverTokenAccountAfter] =
+    const [borrowerTokenAccountAfter, receiverTokenAccountAfter] =
       await Promise.all([
-        getAccount(
-          anchor.getProvider().connection,
-          originatorTokenAccountPubKey
-        ),
+        getAccount(anchor.getProvider().connection, borrowerTokenAccountPubKey),
         getAccount(anchor.getProvider().connection, receiverTokenAccountPubKey),
       ]);
 
-    expect(originatorTokenAccountAfter.amount).to.equal(90n);
+    expect(borrowerTokenAccountAfter.amount).to.equal(90n);
     expect(receiverTokenAccountAfter.amount).to.equal(10n);
   });
 });

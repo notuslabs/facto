@@ -55,11 +55,11 @@ pub fn create_offer(
     let offer = &mut ctx.accounts.offer;
     offer.id = id;
     offer.description = description;
-    offer.discriminator = ctx.accounts.originator.total_offers;
+    offer.discriminator = ctx.accounts.borrower.total_offers;
     offer.goal_amount = goal_amount;
     offer.deadline_date = deadline_date;
     offer.acquired_amount = 0;
-    offer.originator = ctx.accounts.originator.key();
+    offer.borrower = ctx.accounts.borrower.key();
     offer.installments_count = installments_count;
     offer.installments_total_amount = installments_total_amount;
     offer.installments_next_payment_date = installments_next_payment_date;
@@ -73,7 +73,7 @@ pub fn create_offer(
     offer.token_bump = *ctx.bumps.get("token").unwrap();
     offer.vault_bump = *ctx.bumps.get("vault").unwrap();
 
-    ctx.accounts.originator.total_offers += 1;
+    ctx.accounts.borrower.total_offers += 1;
     Ok(())
 }
 
@@ -139,8 +139,8 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
 
 pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
     require!(
-        ctx.accounts.offer.originator == ctx.accounts.originator.key(),
-        ValidationError::InvalidOriginatorSigner
+        ctx.accounts.offer.borrower == ctx.accounts.borrower.key(),
+        ValidationError::InvalidBorrowerSigner
     );
     require!(
         ctx.accounts.offer.get_status() == OfferStatus::Funded,
@@ -150,7 +150,7 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
     let transfer = TransferChecked {
         authority: ctx.accounts.offer.to_account_info(),
         from: ctx.accounts.vault_stable_token_account.to_account_info(),
-        to: ctx.accounts.originator_token_account.to_account_info(),
+        to: ctx.accounts.borrower_token_account.to_account_info(),
         mint: ctx.accounts.stable_token.to_account_info(),
     };
 
@@ -178,9 +178,9 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
     );
 
     let transfer = TransferChecked {
-        from: ctx.accounts.originator_token_account.to_account_info(),
+        from: ctx.accounts.borrower_token_account.to_account_info(),
         to: ctx.accounts.vault_payment_token_account.to_account_info(),
-        authority: ctx.accounts.originator.to_account_info(),
+        authority: ctx.accounts.borrower.to_account_info(),
         mint: ctx.accounts.stable_token.to_account_info(),
     };
     token::transfer_checked(
@@ -188,9 +188,9 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
             ctx.accounts.token_program.to_account_info(),
             transfer,
             &[&[
-                b"originator",
+                b"borrower",
                 ctx.accounts.caller.key().as_ref(),
-                &[ctx.accounts.originator.bump],
+                &[ctx.accounts.borrower.bump],
             ]],
         ),
         ctx.accounts.offer.get_installment_amount(),
@@ -270,8 +270,8 @@ enum ValidationError {
     OfferIsNotFunded,
     #[msg("The Offer is not on track")]
     OfferIsNotOnTrack,
-    #[msg("Caller is not the owner of the Originator")]
-    InvalidOriginatorSigner,
+    #[msg("Caller is not the owner of the Borrower")]
+    InvalidBorrowerSigner,
     #[msg("Investor has no installment to receive")]
     InstallmentAlreadyPaid,
     #[msg("Max ID length exceeded. Maximum length is 16")]

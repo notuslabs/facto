@@ -1,8 +1,8 @@
 import { DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
-import TransactionsForm from "@/app/[locale]/transactions/_components/transactions-form";
 import { useBalance } from "@/hooks/use-get-balance";
 import { useProgram } from "@/hooks/use-program";
+import TransactionsForm from "@/app/[locale]/(public)/transactions/_components/transactions-form";
 
 interface TransactionModalProps {
   type: "deposit" | "withdrawal";
@@ -10,7 +10,7 @@ interface TransactionModalProps {
 
 export default function TransactionModal({ type }: TransactionModalProps) {
   const t = useTranslations("transactions-modal");
-  const { data: balance } = useBalance();
+  const { data: balance } = useBalance({ variant: "investor" });
   const { data } = useProgram();
   const publicKey = data && data.keypair.publicKey;
 

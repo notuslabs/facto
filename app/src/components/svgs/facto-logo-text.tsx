@@ -1,5 +1,10 @@
 import * as React from "react";
-export function FactoLogoText(props: React.HTMLAttributes<SVGSVGElement>) {
+export function FactoLogoText(
+  props: React.HTMLAttributes<SVGSVGElement> & {
+    height?: number;
+    width?: number;
+  },
+) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={126} height={36} fill="none" {...props}>
       <path
