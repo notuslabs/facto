@@ -8,6 +8,7 @@ import { useInvest } from "@/hooks/use-invest";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, HelpingHand, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -98,8 +99,14 @@ export function LateralCardForm({
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="p-4">
           <Button className="flex gap-2 bg-subtle text-placeholder-foreground md:hidden">
-            <div className="flex size-5 items-center justify-center rounded-full bg-black"></div>
-            Fake Token
+            <Image
+              src="/usdc-logo.png"
+              width={20}
+              height={20}
+              alt="USDC"
+              className="size-5 rounded-full bg-black"
+            />
+            Fake USDC
             <ChevronDown size={20} />
           </Button>
         </div>
@@ -153,8 +160,14 @@ export function LateralCardForm({
             disabled={true}
             className="hidden gap-2 bg-subtle text-placeholder-foreground md:flex"
           >
-            <div className="flex size-5 items-center justify-center rounded-full bg-black"></div>
-            Fake Token
+            <Image
+              src="/usdc-logo.png"
+              width={20}
+              height={20}
+              alt="USDC"
+              className="size-5 rounded-full bg-black"
+            />
+            Fake USDC
             <ChevronDown size={20} />
           </Button>
         </div>
