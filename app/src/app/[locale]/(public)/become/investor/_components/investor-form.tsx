@@ -14,9 +14,11 @@ import { Input } from "@/components/ui/input";
 import { useCreateInvestor } from "@/hooks/use-create-investor";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const FormSchema = z.object({
@@ -29,6 +31,7 @@ type InvestorFormProps = {
 };
 
 export function InvestorForm({ isLoading, isAllowedToCreate }: InvestorFormProps) {
+  const queryClient = useQueryClient();
   const { mutate: createInvestor, isPending: isCreatingInvestor } = useCreateInvestor();
   const t = useTranslations("become.investor");
 
@@ -42,7 +45,29 @@ export function InvestorForm({ isLoading, isAllowedToCreate }: InvestorFormProps
   const name = form.watch("name");
 
   function onSubmit(values: z.infer<typeof FormSchema>) {
-    createInvestor(values.name);
+    createInvestor(values.name, {
+      onSuccess: () => {
+        toast.success(t("success-toast-message"));
+
+        queryClient.invalidateQueries({
+          queryKey: ["token-accounts"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["accounts"],
+        });
+      },
+      onError: (error) => {
+        console.error(error.message);
+        // if (error instanceof AlreadyRegisteredError) {
+        //   toast.error(error.message);
+        //   return;
+        // }
+
+        toast.error(error.message);
+
+        // toast.error(t("error-toast-message"));
+      },
+    });
   }
 
   return (
