@@ -9,7 +9,11 @@ import { useAuth } from "@/hooks/use-auth";
 import LocaleSwitcher from "@/components/locale-switcher";
 import { Separator } from "@/components/ui/separator";
 
-export function NavbarUserButton() {
+type NavbarUserButtonProps = {
+  variant?: "investor" | "borrower" | "none";
+};
+
+export function NavbarUserButton({ variant }: NavbarUserButtonProps) {
   const { data } = useSession();
   const { logout } = useAuth();
   const t = useTranslations("navbar");
@@ -20,10 +24,11 @@ export function NavbarUserButton() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary" className="flex gap-2 rounded-full pl-3 pr-2">
+        <Button variant="secondary" className="flex gap-2 rounded-full pl-3 pr-2  ">
           {userInfo && (
             <span className="text-xs font-medium">
-              {userInfo.name?.split(" ")[0] ?? `${t("user")}`}
+              {/* TODO: add translation */}
+              {variant === "investor" ? "Investor" : "Borrower"}
             </span>
           )}
           {userInfo.profileImage && (

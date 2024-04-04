@@ -105,6 +105,9 @@ export function useInvest() {
       queryClient.invalidateQueries({
         queryKey: ["invested-amount", offerId],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["offers"],
+      });
     },
     onError: (error) => {
       console.error(error.message);

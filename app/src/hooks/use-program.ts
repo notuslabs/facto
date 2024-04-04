@@ -30,7 +30,7 @@ export function useProgram() {
         console.log({ err });
       }
 
-      if (!privateKey) return;
+      if (!privateKey) return null;
 
       keypair = Keypair.fromSecretKey(Buffer.from(privateKey, "hex"));
 
