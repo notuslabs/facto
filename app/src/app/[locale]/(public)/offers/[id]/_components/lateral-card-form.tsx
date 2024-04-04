@@ -132,7 +132,7 @@ export function LateralCardForm({
               )}
             />
 
-            {(isLoadingBalance || balance) && (
+            {(isLoadingBalance || balance != null) && (
               <p className="flex items-center gap-1 whitespace-nowrap text-xs text-primary">
                 {t("your-balance")}
                 {isLoadingBalance ? (
