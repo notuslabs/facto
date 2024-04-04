@@ -32,9 +32,9 @@ export const pathnames = {
     en: "/become/investor",
     "pt-BR": "/become/investor",
   },
-  "/become/originator": {
-    en: "/become/originator",
-    "pt-BR": "/become/originator",
+  "/become/borrower": {
+    en: "/become/borrower",
+    "pt-BR": "/become/borrower",
   },
   "/my-offers": {
     en: "/my-offers",

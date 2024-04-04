@@ -15,29 +15,29 @@ export function ContractInteractTestButton() {
       return;
     }
 
-    const originatorKeypair = Keypair.generate();
+    const borrowerKeypair = Keypair.generate();
 
-    const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-      [utils.bytes.utf8.encode("originator_token_account"), originatorKeypair.publicKey.toBuffer()],
+    const [borrowerTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+      [utils.bytes.utf8.encode("borrower_token_account"), borrowerKeypair.publicKey.toBuffer()],
       program.programId,
     );
 
     await program.methods
-      .createOriginator("Teste", "description", "SLUG")
+      .createBorrower("Teste", "description", "SLUG")
       .accounts({
-        originator: originatorKeypair.publicKey,
-        originatorTokenAccount: originatorTokenAccountPubKey,
+        borrower: borrowerKeypair.publicKey,
+        borrowerTokenAccount: borrowerTokenAccountPubKey,
         payer: keypair.publicKey,
         caller: keypair.publicKey,
       })
-      .signers([keypair, originatorKeypair])
+      .signers([keypair, borrowerKeypair])
       .rpc();
 
-    await program.account.originator.fetch(originatorKeypair.publicKey);
+    await program.account.borrower.fetch(borrowerKeypair.publicKey);
   }
   return (
     <div className="container">
-      <Button onClick={interact}>Create new Originator</Button>
+      <Button onClick={interact}>Create new Borrower</Button>
     </div>
   );
 }

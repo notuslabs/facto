@@ -16,7 +16,7 @@ export function NavbarCreateAccountButton() {
   }
 
   return (
-    <Button variant="defaultGradient" onClick={() => login({ asOriginator: false })}>
+    <Button variant="defaultGradient" onClick={() => login({ asBorrower: false })}>
       {t("create-account")}
     </Button>
   );

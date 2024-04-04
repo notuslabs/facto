@@ -15,20 +15,20 @@ export async function getOffer(id: string) {
     const offer = await program.account.offer.fetch(offerAddress);
     const rawOffer = await Offer.fromRawItem({ account: offer });
 
-    const originatorOffers = await program.account.offer.all([
+    const borrowerOffers = await program.account.offer.all([
       {
         memcmp: {
           offset: 8,
-          bytes: offer.originator.toBase58(),
+          bytes: offer.borrower.toBase58(),
         },
       },
     ]);
 
-    const rawOriginatorOffers = await Offer.fromRawCollection(originatorOffers);
+    const rawBorrowerOffers = await Offer.fromRawCollection(borrowerOffers);
 
     return {
       ...rawOffer.toJSON(),
-      originatorOffers: rawOriginatorOffers.map((offer) => offer.toJSON()),
+      borrowerOffers: rawBorrowerOffers.map((offer) => offer.toJSON()),
     };
   } catch (error) {
     console.error(error);

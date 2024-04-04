@@ -2,7 +2,7 @@ export function CryptoCurrency04(props: React.HTMLAttributes<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={80} height={81} fill="none" {...props}>
       <path
-        stroke="url(#originator-gradient)"
+        stroke="url(#borrower-gradient)"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={6.756}
@@ -10,7 +10,7 @@ export function CryptoCurrency04(props: React.HTMLAttributes<SVGSVGElement>) {
       />
       <defs>
         <linearGradient
-          id="originator-gradient"
+          id="borrower-gradient"
           x1={6.667}
           x2={73.333}
           y1={40.5}

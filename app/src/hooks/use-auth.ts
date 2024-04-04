@@ -12,12 +12,12 @@ export function useAuth() {
   const router = useRouter();
 
   const { mutate: login, isPending: isLoggingIn } = useMutation({
-    mutationFn: async (props?: { asOriginator?: boolean }) => {
+    mutationFn: async (props?: { asBorrower?: boolean }) => {
       const provider = await web3auth.connect();
 
-      if (provider && props?.asOriginator) {
+      if (provider && props?.asBorrower) {
         await queryClient.resetQueries();
-        router.push("/become/originator");
+        router.push("/become/borrower");
 
         return provider;
       }

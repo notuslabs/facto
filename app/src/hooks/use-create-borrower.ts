@@ -11,7 +11,7 @@ import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
 import { z } from "zod";
-import { OriginatorFormSchema } from "@/app/[locale]/(public)/become/originator/_components/originator-form";
+import { BorrowerFormSchema } from "@/app/[locale]/(public)/become/borrower/_components/borrower-form";
 
 class CustomError extends Error {
   constructor(message?: string) {
@@ -19,40 +19,40 @@ class CustomError extends Error {
   }
 }
 
-export function useCreateOriginator() {
+export function useCreateBorrower() {
   const queryClient = useQueryClient();
   const { data: programData } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
-  const t = useTranslations("become.originator");
+  const t = useTranslations("become.borrower");
 
   const program = programData?.program;
   const keypair = programData?.keypair;
 
   return useMutation({
-    mutationFn: async ({ name, description, tokenSlug }: z.infer<typeof OriginatorFormSchema>) => {
+    mutationFn: async ({ name, description, tokenSlug }: z.infer<typeof BorrowerFormSchema>) => {
       if (!keypair || !program) {
         throw new CustomError(t("not-authenticated"));
       }
 
-      if (!!tokenAccounts?.originatorTokenAccount) {
+      if (!!tokenAccounts?.borrowerTokenAccount) {
         throw new CustomError(t("already-registered-toast-message"));
       }
 
-      const [originatorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator"), keypair.publicKey.toBuffer()],
+      const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower"), keypair.publicKey.toBuffer()],
         program.programId,
       );
 
-      const [originatorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("originator_token_account"), originatorPubKey.toBuffer()],
+      const [borrowerTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("borrower_token_account"), borrowerPubKey.toBuffer()],
         program.programId,
       );
 
       const res = await program.methods
-        .createOriginator(name, description, tokenSlug)
+        .createBorrower(name, description, tokenSlug)
         .accounts({
-          originator: originatorPubKey,
-          originatorTokenAccount: originatorTokenAccountPubKey,
+          borrower: borrowerPubKey,
+          borrowerTokenAccount: borrowerTokenAccountPubKey,
           stableCoin: FAKE_MINT,
           payer: keypair.publicKey,
           caller: keypair.publicKey,

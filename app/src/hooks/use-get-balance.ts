@@ -4,7 +4,7 @@ import { BN } from "bn.js";
 import { useTokenAccounts } from "./use-token-accounts";
 
 type GetBalanceProps = {
-  variant?: "investor" | "originator" | "none";
+  variant?: "investor" | "borrower" | "none";
 };
 
 export function useBalance({ variant }: GetBalanceProps) {
@@ -15,7 +15,7 @@ export function useBalance({ variant }: GetBalanceProps) {
     queryKey: [
       "balance",
       data?.investorTokenAccount?.amount.toString(),
-      data?.originatorTokenAccount?.amount.toString(),
+      data?.borrowerTokenAccount?.amount.toString(),
       variant,
     ],
     enabled: !isPending && !!data,
@@ -27,7 +27,7 @@ export function useBalance({ variant }: GetBalanceProps) {
       const formattedBalance =
         variant === "investor"
           ? formatUnits(data.investorTokenAccount?.amount ?? new BN(0))
-          : formatUnits(data.originatorTokenAccount?.amount ?? new BN(0));
+          : formatUnits(data.borrowerTokenAccount?.amount ?? new BN(0));
 
       return {
         formattedBalance,

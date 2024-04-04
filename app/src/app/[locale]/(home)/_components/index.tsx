@@ -4,7 +4,7 @@ import FactoLogo from "@/components/svgs/facto-logo";
 import { FactoLogoText } from "@/components/svgs/facto-logo-text";
 import { Link } from "@/navigation";
 import { InvestorChoiceCard } from "./investor-choice-card";
-import { OriginatorChoiceCard } from "./originator-choice-card";
+import { BorrowerChoiceCard } from "./borrower-choice-card";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -38,7 +38,7 @@ export function Opening() {
 
         <div className="grid grid-cols-2 gap-14">
           <InvestorChoiceCard />
-          <OriginatorChoiceCard />
+          <BorrowerChoiceCard />
         </div>
       </main>
 

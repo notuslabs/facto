@@ -32,7 +32,7 @@
     },
     "offers": {
       "title": "Opportunities to invest",
-      "search-input-placeholder": "Search for offers, originators",
+      "search-input-placeholder": "Search for offers, borrowers",
       "offer-stage": "Offer stage",
       "filter": "Filter",
       "card": {
@@ -65,8 +65,8 @@
       "income-schedule": {
         "title": "Income schedule"
       },
-      "about-originator": {
-        "title": "About originator"
+      "about-borrower": {
+        "title": "About borrower"
       },
       "credit-score": {
         "title": "Credit score"
@@ -86,8 +86,8 @@
       "amount": "Amount",
       "status": "Status"
     },
-    "about-originator": {
-      "title": "About originator",
+    "about-borrower": {
+      "title": "About borrower",
       "description": "As Usury, the mentor behind this ecological residential project, I am committed to promoting positive change in the construction industry. With extensive experience and a sustainable vision, each contribution is valued and invested with integrity and transparency. Together, we are building more than just houses; we are creating a sanctuary for those who value the environment and quality of life. I am immensely grateful for you joining us on this journey towards a more sustainable and prosperous future for all.",
       "offer": "Offer",
       "offers": "Offers",
@@ -199,12 +199,12 @@
       "already-registered-toast-message": "You're already an investor.",
       "not-authenticated": "You need to be authenticated to become an investor"
     },
-    "originator": {
+    "borrower": {
       "title": "Let's create your account",
       "form-fields": {
-        "name": "Originator Name",
+        "name": "Borrower Name",
         "name-description": "{chars}/{maxChars} characteres max",
-        "name-placeholder": "Originator Name",
+        "name-placeholder": "Borrower Name",
         "token": "Token Slug",
         "token-description": "{chars}/{maxChars} characters max",
         "token-placeholder": "Ex: SLUG",
@@ -215,8 +215,8 @@
       "submit-button": "Continue",
       "success-toast-message": "Your account was created successfully",
       "error-toast-message": "An error occurred while creating your account",
-      "already-registered-toast-message": "You're already an originator.",
-      "not-authenticated": "You need to be authenticated to become an originator"
+      "already-registered-toast-message": "You're already an borrower.",
+      "not-authenticated": "You need to be authenticated to become an borrower"
     }
   },
   "create-offer-page": {
@@ -231,7 +231,7 @@
     "form-fields": {
       "name": {
         "label": "Offer name",
-        "description": "Automatically generated using the token and the total amount of offers created by the originator"
+        "description": "Automatically generated using the token and the total amount of offers created by the borrower"
       },
       "description": {
         "label": "Description",
@@ -289,7 +289,7 @@
     "not-authenticated": "You need to be authenticated to create an offer",
     "continue-button": "Continue",
     "submit-button": "Create offer",
-    "not-an-originator": "You're not an originator, to create an offer you need to be an originator",
+    "not-an-borrower": "You're not an borrower, to create an offer you need to be an borrower",
     "success-toast-message": "You offer has been created successfully",
     "error-toast-message": "An error occurred while creating your offer"
   },

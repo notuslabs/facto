@@ -14,14 +14,14 @@ import FactoLogo from "../svgs/facto-logo";
 import { useSession } from "@/hooks/use-session";
 
 type NavbarProps = {
-  variant?: "investor" | "originator" | "none";
+  variant?: "investor" | "borrower" | "none";
 };
 
 export function Navbar({ variant = "investor" }: NavbarProps) {
   const t = useTranslations("navbar");
   const { data } = useSession();
 
-  const originatorLinks = [
+  const borrowerLinks = [
     {
       label: t("my-offers"),
       href: "/my-offers" as const,
@@ -59,9 +59,9 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
 
           {variant !== "none" && (
             <div className="z-20 hidden gap-4 text-sm font-medium text-disabled-foreground dark:text-muted-foreground md:flex">
-              {variant === "originator" &&
+              {variant === "borrower" &&
                 !!data?.userInfo &&
-                originatorLinks.map((link) => (
+                borrowerLinks.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}

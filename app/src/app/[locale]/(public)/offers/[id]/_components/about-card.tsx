@@ -24,7 +24,7 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
   const formatNumber = useFormatNumber();
   const formatPercent = useFormatPercent();
   const format = useDateFormatter();
-  const t = useTranslations("offer-page.about-originator");
+  const t = useTranslations("offer-page.about-borrower");
 
   const otherOffers = allOffers.filter((offer) => offer.id !== offerId);
 

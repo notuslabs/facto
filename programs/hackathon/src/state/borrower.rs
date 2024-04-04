@@ -3,7 +3,7 @@ use anchor_spl::token::{Mint, Token, TokenAccount};
 
 #[account]
 #[derive(InitSpace)]
-pub struct Originator {
+pub struct Borrower {
     #[max_len(30)]
     pub name: String,
     #[max_len(500)]
@@ -16,23 +16,23 @@ pub struct Originator {
 }
 
 #[derive(Accounts)]
-pub struct CreateOriginator<'info> {
+pub struct CreateBorrower<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
     #[account(mut)]
     pub caller: Signer<'info>,
 
-    #[account(init, payer = payer, space = Originator::INIT_SPACE, seeds = [b"originator", caller.key().as_ref()], bump)]
-    pub originator: Account<'info, Originator>,
+    #[account(init, payer = payer, space = Borrower::INIT_SPACE, seeds = [b"borrower", caller.key().as_ref()], bump)]
+    pub borrower: Account<'info, Borrower>,
     #[account(
         init,
         payer = payer, 
         token::mint = stable_coin,
-        token::authority = originator,
-        seeds = [b"originator_token_account", originator.key().as_ref()],
+        token::authority = borrower,
+        seeds = [b"borrower_token_account", borrower.key().as_ref()],
         bump
     )]
-    pub originator_token_account: Account<'info, TokenAccount>,
+    pub borrower_token_account: Account<'info, TokenAccount>,
     #[account(mut, mint::decimals = 6)] // TODO: add stable coin constraint
     pub stable_coin: Account<'info, Mint>,
 
@@ -41,13 +41,13 @@ pub struct CreateOriginator<'info> {
 }
 
 #[derive(Accounts)]
-pub struct EditOriginator<'info> {
+pub struct EditBorrower<'info> {
     #[account(
         mut,
-        seeds = [b"originator", caller.key().as_ref()],
-        bump=originator.bump
+        seeds = [b"borrower", caller.key().as_ref()],
+        bump=borrower.bump
     )]
-    pub originator: Account<'info, Originator>,
+    pub borrower: Account<'info, Borrower>,
     #[account(mut)]
     pub payer: Signer<'info>,
     #[account(mut)]
@@ -56,16 +56,16 @@ pub struct EditOriginator<'info> {
 }
 
 #[derive(Accounts)]
-pub struct WithdrawOriginatorTokens<'info> {
+pub struct WithdrawBorrowerTokens<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
     #[account(mut)]
     pub caller: Signer<'info>,
 
-    #[account(mut, seeds = [b"originator", caller.key().as_ref()], bump=originator.bump)]
-    pub originator: Account<'info, Originator>,
-    #[account(mut, seeds = [b"originator_token_account", originator.key().as_ref()], bump=originator.token_account_bump)]
-    pub originator_token_account: Account<'info, TokenAccount>,
+    #[account(mut, seeds = [b"borrower", caller.key().as_ref()], bump=borrower.bump)]
+    pub borrower: Account<'info, Borrower>,
+    #[account(mut, seeds = [b"borrower_token_account", borrower.key().as_ref()], bump=borrower.token_account_bump)]
+    pub borrower_token_account: Account<'info, TokenAccount>,
     #[account(mut, mint::decimals = 6)] // TODO: add constraint to stable token
     pub stable_token: Account<'info, Mint>,
 

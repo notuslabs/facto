@@ -46,14 +46,14 @@ export function OfferContent({ offerId, offerScoreRange }: OfferContentProps) {
       ),
     },
     {
-      name: "about-originator",
-      display: t("tabs.about-originator.title"),
+      name: "about-borrower",
+      display: t("tabs.about-borrower.title"),
       content: (
         <AboutCard
-          name={offer.originator.name}
+          name={offer.borrower.name}
           offerId={offerId}
-          description={offer.originator.description}
-          allOffers={offer.originatorOffers}
+          description={offer.borrower.description}
+          allOffers={offer.borrowerOffers}
         />
       ),
     },

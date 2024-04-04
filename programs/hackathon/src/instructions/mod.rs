@@ -1,7 +1,7 @@
-pub use offer::*;
-pub use originator::*;
+pub use borrower::*;
 pub use investor::*;
+pub use offer::*;
 
-pub mod offer;
-pub mod originator;
+pub mod borrower;
 pub mod investor;
+pub mod offer;

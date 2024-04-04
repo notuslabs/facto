@@ -19,7 +19,7 @@ export function NavbarSignInButton() {
   }
 
   return (
-    <Button variant="ghost" onClick={() => login({ asOriginator: false })}>
+    <Button variant="ghost" onClick={() => login({ asBorrower: false })}>
       {t("login")}
     </Button>
   );

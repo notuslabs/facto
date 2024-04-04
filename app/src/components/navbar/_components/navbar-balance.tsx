@@ -7,7 +7,7 @@ import { Loader2Icon, WalletCards } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type NavbarBalanceProps = {
-  variant?: "investor" | "originator" | "none";
+  variant?: "investor" | "borrower" | "none";
 };
 
 export function NavbarBalance({ variant }: NavbarBalanceProps) {

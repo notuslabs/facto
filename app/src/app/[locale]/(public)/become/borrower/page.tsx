@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/card";
 import { useTranslations } from "next-intl";
-import { OriginatorForm } from "./_components/originator-form";
+import { BorrowerForm } from "./_components/borrower-form";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useAccounts } from "@/hooks/use-accounts";
@@ -19,18 +19,18 @@ export default function InvestorFormPage() {
     isLoading: isLoadingSession,
     isStale: isStaleSession,
   } = useSession();
-  const t = useTranslations("become.originator");
+  const t = useTranslations("become.borrower");
   const router = useRouter();
 
-  const isAllowedToCreate = !isTokenAccountsLoading && !tokenAccounts?.originatorAccount;
-  const alreadyHasOriginatorAccount = !isTokenAccountsLoading && !!tokenAccounts?.originatorAccount;
+  const isAllowedToCreate = !isTokenAccountsLoading && !tokenAccounts?.borrowerAccount;
+  const alreadyHasBorrowerAccount = !isTokenAccountsLoading && !!tokenAccounts?.borrowerAccount;
 
   useEffect(() => {
-    if (alreadyHasOriginatorAccount) {
+    if (alreadyHasBorrowerAccount) {
       toast.error(t("already-registered-toast-message"));
       router.push("/offers/create");
     }
-  }, [alreadyHasOriginatorAccount, router, t]);
+  }, [alreadyHasBorrowerAccount, router, t]);
 
   useEffect(() => {
     if (
@@ -60,7 +60,7 @@ export default function InvestorFormPage() {
       <Card>
         <h1 className="text-3xl font-medium">{t("title")}</h1>
 
-        <OriginatorForm isLoading={isTokenAccountsLoading} isAllowedToCreate={isAllowedToCreate} />
+        <BorrowerForm isLoading={isTokenAccountsLoading} isAllowedToCreate={isAllowedToCreate} />
       </Card>
     </div>
   );

@@ -13,15 +13,15 @@ export default function CreateOfferPage() {
   const router = useRouter();
   const t = useTranslations("create-offer-page");
 
-  const isAllowedToCreate = !isAccountsLoading && !!accounts?.originatorAccount;
-  const notOriginator = !isAccountsLoading && !accounts?.originatorAccount;
+  const isAllowedToCreate = !isAccountsLoading && !!accounts?.borrowerAccount;
+  const notBorrower = !isAccountsLoading && !accounts?.borrowerAccount;
 
   useEffect(() => {
-    if (notOriginator) {
-      toast.error(t("not-an-originator"));
-      // router.push("/become/originator");
+    if (notBorrower) {
+      toast.error(t("not-an-borrower"));
+      // router.push("/become/borrower");
     }
-  }, [notOriginator, router, t]);
+  }, [notBorrower, router, t]);
 
   // TODO: block not authed user
   // useEffect(() => {

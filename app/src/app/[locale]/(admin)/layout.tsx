@@ -39,7 +39,7 @@ export default function RootLayout({ children, params: { locale } }: Props) {
     <html className="dark" lang={locale} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <Providers locale={locale} messages={messages}>
-          <Navbar variant="originator" />
+          <Navbar variant="borrower" />
           {children}
           <Toaster position="top-right" />
           <MobileExtraNavbar />

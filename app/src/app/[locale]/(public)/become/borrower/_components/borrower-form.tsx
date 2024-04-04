@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCreateOriginator } from "@/hooks/use-create-originator";
+import { useCreateBorrower } from "@/hooks/use-create-borrower";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2 } from "lucide-react";
@@ -19,7 +19,7 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export const OriginatorFormSchema = z.object({
+export const BorrowerFormSchema = z.object({
   name: z.string().min(2).max(30),
   tokenSlug: z
     .string()
@@ -34,12 +34,12 @@ type InvestorFormProps = {
   isAllowedToCreate: boolean;
 };
 
-export function OriginatorForm({ isLoading, isAllowedToCreate }: InvestorFormProps) {
-  const { mutate: createOriginator, isPending: isCreatingOriginator } = useCreateOriginator();
-  const t = useTranslations("become.originator");
+export function BorrowerForm({ isLoading, isAllowedToCreate }: InvestorFormProps) {
+  const { mutate: createBorrower, isPending: isCreatingBorrower } = useCreateBorrower();
+  const t = useTranslations("become.borrower");
 
-  const form = useForm<z.infer<typeof OriginatorFormSchema>>({
-    resolver: zodResolver(OriginatorFormSchema),
+  const form = useForm<z.infer<typeof BorrowerFormSchema>>({
+    resolver: zodResolver(BorrowerFormSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -51,8 +51,8 @@ export function OriginatorForm({ isLoading, isAllowedToCreate }: InvestorFormPro
   const tokenSlug = form.watch("tokenSlug");
   const description = form.watch("description");
 
-  function onSubmit(values: z.infer<typeof OriginatorFormSchema>) {
-    createOriginator(values);
+  function onSubmit(values: z.infer<typeof BorrowerFormSchema>) {
+    createBorrower(values);
   }
 
   return (
@@ -81,7 +81,7 @@ export function OriginatorForm({ isLoading, isAllowedToCreate }: InvestorFormPro
                   <FormControl>
                     <Input
                       placeholder={t("form-fields.name-placeholder")}
-                      disabled={isCreatingOriginator || !isAllowedToCreate}
+                      disabled={isCreatingBorrower || !isAllowedToCreate}
                       {...field}
                     />
                   </FormControl>
@@ -108,7 +108,7 @@ export function OriginatorForm({ isLoading, isAllowedToCreate }: InvestorFormPro
                   <FormControl>
                     <Input
                       placeholder={t("form-fields.token-placeholder")}
-                      disabled={isCreatingOriginator || !isAllowedToCreate}
+                      disabled={isCreatingBorrower || !isAllowedToCreate}
                       {...field}
                     />
                   </FormControl>
@@ -136,7 +136,7 @@ export function OriginatorForm({ isLoading, isAllowedToCreate }: InvestorFormPro
                 <FormControl className="w-[741px] max-w-full">
                   <Input
                     placeholder={t("form-fields.description-placeholder")}
-                    disabled={isCreatingOriginator || !isAllowedToCreate}
+                    disabled={isCreatingBorrower || !isAllowedToCreate}
                     {...field}
                   />
                 </FormControl>
@@ -147,9 +147,9 @@ export function OriginatorForm({ isLoading, isAllowedToCreate }: InvestorFormPro
           />
         </div>
         <div className="flex w-full items-center justify-end">
-          <Button type="submit" disabled={isCreatingOriginator || !isAllowedToCreate}>
+          <Button type="submit" disabled={isCreatingBorrower || !isAllowedToCreate}>
             {t("submit-button")}
-            {isCreatingOriginator ? (
+            {isCreatingBorrower ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
               <ArrowRight size={16} />

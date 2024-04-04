@@ -1,4 +1,4 @@
-export function OriginatorTexture(props: React.HTMLAttributes<SVGSVGElement>) {
+export function BorrowerTexture(props: React.HTMLAttributes<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={164} height={136} fill="none" {...props}>
       <g fill="#27272A" opacity={0.5}>

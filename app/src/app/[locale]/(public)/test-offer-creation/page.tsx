@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useProgram } from "@/hooks/use-program";
 import { Hackathon } from "@/lib/idl/facto-idl-types";
 import { createOffer } from "@/services/create-offer";
-import { createOriginator } from "@/services/create-originator";
+import { createBorrower } from "@/services/create-borrower";
 import { Program } from "@coral-xyz/anchor";
 import { Keypair } from "@solana/web3.js";
 
@@ -20,7 +20,7 @@ export default function TestOfferCreation() {
       <Button
         className="block"
         onClick={async () => {
-          const tx = await createOriginator({
+          const tx = await createBorrower({
             name: "Test",
             description: "Test",
             tokenSlug: "test",
@@ -30,7 +30,7 @@ export default function TestOfferCreation() {
           console.log(tx);
         }}
       >
-        Create Originator
+        Create Borrower
       </Button>
       <Button
         onClick={async () => {

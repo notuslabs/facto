@@ -10,7 +10,7 @@ import { useAccounts } from "./use-accounts";
 import { useProgram } from "./use-program";
 import { CreateOfferFormSchema } from "@/app/[locale]/(admin)/offers/create/_components/offer-form-validation";
 
-class OriginatorAccountNotFound extends Error {
+class BorrowerAccountNotFound extends Error {
   constructor() {
     super();
   }
@@ -44,8 +44,8 @@ export function useCreateOffer() {
     }: z.infer<typeof CreateOfferFormSchema>) => {
       if (!keypair || !program) return null;
 
-      if (!accounts?.originatorAccount) {
-        throw new OriginatorAccountNotFound();
+      if (!accounts?.borrowerAccount) {
+        throw new BorrowerAccountNotFound();
       }
 
       const { id } = await createOffer({
@@ -79,8 +79,8 @@ export function useCreateOffer() {
     },
     onError: (error) => {
       console.error(error.message);
-      // if (error instanceof OriginatorAccountNotFound) {
-      //   toast.error(t("not-an-originator"));
+      // if (error instanceof BorrowerAccountNotFound) {
+      //   toast.error(t("not-an-borrower"));
       //   return;
       // }
 

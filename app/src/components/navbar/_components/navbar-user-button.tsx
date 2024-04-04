@@ -10,7 +10,7 @@ import LocaleSwitcher from "@/components/locale-switcher";
 import { Separator } from "@/components/ui/separator";
 
 type NavbarUserButtonProps = {
-  variant?: "investor" | "originator" | "none";
+  variant?: "investor" | "borrower" | "none";
 };
 
 export function NavbarUserButton({ variant }: NavbarUserButtonProps) {
@@ -28,7 +28,7 @@ export function NavbarUserButton({ variant }: NavbarUserButtonProps) {
           {userInfo && (
             <span className="text-xs font-medium">
               {/* TODO: add translation */}
-              {variant === "investor" ? "Investor" : "Originator"}
+              {variant === "investor" ? "Investor" : "Borrower"}
             </span>
           )}
           {userInfo.profileImage && (
