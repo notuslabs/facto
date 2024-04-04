@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "../../globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { Providers } from "@/components/providers";
+import { Providers } from "@/providers";
 import { Navbar } from "@/components/navbar";
 import { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
