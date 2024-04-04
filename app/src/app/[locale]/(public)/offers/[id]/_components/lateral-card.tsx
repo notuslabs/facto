@@ -22,7 +22,7 @@ export function LateralCard({ offerId }: LateralCardProps) {
   });
 
   const { data: investedAmount } = useInvestedAmount(offerId);
-  const { data: balance, isPending: isLoadingBalance } = useBalance();
+  const { data: balance, isPending: isLoadingBalance } = useBalance({ variant: "investor" });
   const formatNumber = useFormatNumber();
   const format = useDateFormatter();
   const t = useTranslations("offer-page.lateral-card");

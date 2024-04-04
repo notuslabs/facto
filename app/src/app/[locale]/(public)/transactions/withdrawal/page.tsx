@@ -11,7 +11,7 @@ import TransactionsForm from "../_components/transactions-form";
 
 export default function TransactionsWithdrawalPage() {
   const t = useTranslations("withdrawal-page");
-  const { data: balance, isPending } = useBalance();
+  const { data: balance, isPending } = useBalance({ variant: "investor" });
   const { data } = useProgram();
   const publicKey = data && data.keypair.publicKey;
   const contract = "00299277837662juijha88722099221443545656756889789345csdfsd23534523jkh34b5kuh2";

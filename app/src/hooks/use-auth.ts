@@ -7,9 +7,14 @@ export function useAuth() {
   const { mutate: login, isPending: isLoggingIn } = useMutation({
     mutationFn: async () => {
       const provider = await web3auth.connect();
-      queryClient.refetchQueries({
-        queryKey: ["session"],
+
+      console.log({
+        provider,
       });
+
+      queryClient.resetQueries();
+
+      return provider;
     },
   });
 
@@ -17,9 +22,7 @@ export function useAuth() {
     mutationFn: async () => {
       await web3auth.logout();
 
-      queryClient.refetchQueries({
-        queryKey: ["session"],
-      });
+      queryClient.resetQueries();
     },
   });
 

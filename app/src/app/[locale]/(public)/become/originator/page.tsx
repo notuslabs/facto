@@ -3,11 +3,11 @@
 import { Card } from "@/components/card";
 import { useTranslations } from "next-intl";
 import { OriginatorForm } from "./_components/originator-form";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useSession } from "@/hooks/use-session";
+import { useRouter } from "@/navigation";
 
 export default function InvestorFormPage() {
   const { data: tokenAccounts, isPending: isTokenAccountsLoading } = useAccounts();
@@ -21,7 +21,7 @@ export default function InvestorFormPage() {
   useEffect(() => {
     if (alreadyHasOriginatorAccount) {
       toast.error(t("already-registered-toast-message"));
-      router.push("/");
+      router.push("/offers/create");
     }
   }, [alreadyHasOriginatorAccount, router, t]);
 
@@ -31,8 +31,6 @@ export default function InvestorFormPage() {
       router.push("/");
     }
   }, [isSessionLoading, sessionData?.userInfo, t, router]);
-
-  // TODO: block not authed user
 
   return (
     <div className="container">

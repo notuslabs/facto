@@ -7,8 +7,8 @@ import { z } from "zod";
 import { useRouter } from "@/navigation";
 import { createOffer } from "@/services/create-offer";
 import { useAccounts } from "./use-accounts";
-import { CreateOfferFormSchema } from "@/app/[locale]/offers/create/_components/offer-form-validation";
 import { useProgram } from "./use-program";
+import { CreateOfferFormSchema } from "@/app/[locale]/(admin)/offers/create/_components/offer-form-validation";
 
 class OriginatorAccountNotFound extends Error {
   constructor() {

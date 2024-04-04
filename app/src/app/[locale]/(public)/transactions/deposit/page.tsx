@@ -9,7 +9,7 @@ import GoBackButton from "../_components/go-back-button";
 import TransactionsForm from "../_components/transactions-form";
 
 export default function TransactionsDepositPage() {
-  const { data, isPending } = useBalance();
+  const { data, isPending } = useBalance({ variant: "investor" });
   const t = useTranslations("deposit-page");
 
   const contract =

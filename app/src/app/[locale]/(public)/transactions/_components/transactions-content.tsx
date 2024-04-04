@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 
 export default function TransactionsContent() {
   const t = useTranslations("transactions-page");
-  const { data, isPending } = useBalance();
+  const { data, isPending } = useBalance({ variant: "investor" });
   return (
     <div className="flex h-[582px] flex-col gap-8 rounded-t-3xl bg-primary-foreground px-4 pt-6">
       <div className="flex flex-col items-center justify-center gap-1 text-center">

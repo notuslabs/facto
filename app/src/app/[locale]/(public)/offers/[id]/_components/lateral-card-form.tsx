@@ -140,7 +140,7 @@ export function LateralCardForm({
                     <Loader2 strokeWidth={2} size={12} className="animate-spin" />
                   </span>
                 ) : (
-                  balance && (
+                  balance != null && (
                     <button onClick={topUp} className="font-bold underline underline-offset-2">
                       {formatNumber({ value: balance ?? 0 })}
                     </button>

@@ -15,7 +15,7 @@ export function NavbarSignInButton() {
   if (!!data?.userInfo) return null;
 
   if (isPending) {
-    return <Loader2 size={16} className="animate-spin" />;
+    return null;
   }
 
   return (

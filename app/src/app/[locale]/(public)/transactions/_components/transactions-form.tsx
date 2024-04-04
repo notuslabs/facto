@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 interface TransactionsFormProps {
   type: "deposit" | "withdrawal";
   balance: number | null | undefined;
-  publicKey?: PublicKey | undefined;
+  publicKey?: PublicKey | undefined | null;
   isModal?: boolean;
 }
 

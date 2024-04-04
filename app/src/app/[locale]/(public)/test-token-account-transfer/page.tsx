@@ -14,6 +14,7 @@ import { useCreateInvestorAccount } from "@/hooks/use-create-investor-account";
 import { useDeposit } from "@/hooks/use-deposit";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { useSession } from "@/hooks/use-session";
+import { DEFAULT_DECIMALS } from "@/lib/constants";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -51,7 +52,7 @@ export default function TestTokenAccountTransfer() {
   const { data: tokenAccounts, isPending: isLoadingAccounts } = useTokenAccounts();
 
   async function createFakeMintToken(connection: Connection, wallet: Keypair) {
-    const mint = await createMint(connection, wallet, wallet.publicKey, null, 9);
+    const mint = await createMint(connection, wallet, wallet.publicKey, null, DEFAULT_DECIMALS);
 
     return mint;
   }

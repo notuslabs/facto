@@ -11,7 +11,7 @@ import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
 import { z } from "zod";
-import { OriginatorFormSchema } from "@/app/[locale]/become/originator/_components/originator-form";
+import { OriginatorFormSchema } from "@/app/[locale]/(public)/become/originator/_components/originator-form";
 
 class CustomError extends Error {
   constructor(message?: string) {

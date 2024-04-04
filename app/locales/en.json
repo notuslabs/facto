@@ -3,6 +3,10 @@
     "title": "Hackathon Solana",
     "description": "Hackathon project for Solana"
   },
+  "opening-page": {
+    "title": "Invest and Strengthen",
+    "description": "Conect investors to projects"
+  },
   "navbar": {
     "login": "Login",
     "logout": "Logout",
@@ -13,7 +17,9 @@
     "deposit": "Deposit",
     "balance": "My Balance",
     "user": "User",
-    "transactions": "Transactions"
+    "transactions": "Transactions",
+    "my-offers": "Minhas ofertas",
+    "installments": "Parcelas"
   },
   "header": {
     "people-invested": "{peopleNumber} people invested",
@@ -190,7 +196,7 @@
       "submit-button": "Continue",
       "success-toast-message": "Your account was created successfully",
       "error-toast-message": "An error occurred while creating your account",
-      "already-registered-toast-message": "There is already an investor account linked to your account.",
+      "already-registered-toast-message": "You're already an investor.",
       "not-authenticated": "You need to be authenticated to become an investor"
     },
     "originator": {
@@ -209,7 +215,7 @@
       "submit-button": "Continue",
       "success-toast-message": "Your account was created successfully",
       "error-toast-message": "An error occurred while creating your account",
-      "already-registered-toast-message": "There is already an originator account linked to your account.",
+      "already-registered-toast-message": "You're already an originator.",
       "not-authenticated": "You need to be authenticated to become an originator"
     }
   },

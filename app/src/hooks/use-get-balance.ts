@@ -1,23 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import { formatUnits } from "@/lib/format-units";
-import { useInvestorTokenAccount } from "./use-investor-token-account";
+import { BN } from "bn.js";
+import { useTokenAccounts } from "./use-token-accounts";
 
-export function useBalance() {
-  const { data, isPending } = useInvestorTokenAccount();
+type GetBalanceProps = {
+  variant?: "investor" | "originator" | "none";
+};
+
+export function useBalance({ variant }: GetBalanceProps) {
+  const { data, isPending } = useTokenAccounts();
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["balance", data?.investorTokenAccount?.amount.toString()],
+    queryKey: [
+      "balance",
+      data?.investorTokenAccount?.amount.toString(),
+      data?.originatorTokenAccount?.amount.toString(),
+      variant,
+    ],
     enabled: !isPending && !!data,
     queryFn: () => {
       if (isPending || !data) {
         return null;
       }
 
+      const formattedBalance =
+        variant === "investor"
+          ? formatUnits(data.investorTokenAccount?.amount ?? new BN(0))
+          : formatUnits(data.originatorTokenAccount?.amount ?? new BN(0));
+
       return {
-        formattedBalance: data.investorTokenAccount
-          ? formatUnits(data.investorTokenAccount.amount)
-          : null,
+        formattedBalance,
       };
     },
   });

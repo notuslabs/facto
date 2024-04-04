@@ -12,6 +12,10 @@ export const pathnames = {
     en: "/receivables",
     "pt-BR": "/receivables",
   },
+  "/installments": {
+    en: "/installments",
+    "pt-BR": "/installments",
+  },
   "/transactions": {
     en: "/transactions",
     "pt-BR": "/transactions",
@@ -31,6 +35,14 @@ export const pathnames = {
   "/become/originator": {
     en: "/become/originator",
     "pt-BR": "/become/originator",
+  },
+  "/my-offers": {
+    en: "/my-offers",
+    "pt-BR": "/my-offers",
+  },
+  "/offers": {
+    en: "/offers",
+    "pt-BR": "/offers",
   },
   "/offers/create": {
     en: "/offers/create",
