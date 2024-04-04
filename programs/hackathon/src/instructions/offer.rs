@@ -263,7 +263,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
     )?;
 
     ctx.accounts.investment.installments_received += 1;
-    let seconds_in_30_days = 60 * 60 * 2; //2592000;
+    let seconds_in_30_days = 60 * 60 * 2; //2592000 we'll leave it as 2 hours for testing purposes;
     ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 
     Ok(())
