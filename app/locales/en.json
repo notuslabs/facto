@@ -319,13 +319,14 @@
     "D": "Default. The investment failed to meet its financial obligations. The lowest and riskiest category."
   },
   "offer-status": {
-    "StartingSoon": "Starting soon",
-    "Open": "Open",
-    "Funded": "Funded",
-    "OnTrack": "On track",
-    "Finished": "Finished",
-    "Delinquent": "Delinquent",
-    "Failed": "Failed"
+    "starting-soon": "Starting soon",
+    "open": "Open",
+    "funded": "Funded",
+    "on-track": "On track",
+    "finished": "Finished",
+    "delinquent": "Delinquent",
+    "failed": "Failed",
+    "cancelled": "Cancelled"
   },
   "time-picker": {
     "hours": "Hours",

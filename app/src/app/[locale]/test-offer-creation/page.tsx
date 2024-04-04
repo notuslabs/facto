@@ -1,14 +1,19 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { env } from "@/env";
+import { useCreateInvestor } from "@/hooks/use-create-investor";
 import { useProgram } from "@/hooks/use-program";
 import { Hackathon } from "@/lib/idl/facto-idl-types";
+import { parseUnits } from "@/lib/parse-units";
 import { createOffer } from "@/services/create-offer";
 import { createOriginator } from "@/services/create-originator";
-import { Program } from "@coral-xyz/anchor";
-import { Keypair } from "@solana/web3.js";
+import { Program, utils } from "@coral-xyz/anchor";
+import { createMint, mintTo } from "@solana/spl-token";
+import { Keypair, PublicKey } from "@solana/web3.js";
 
 export default function TestOfferCreation() {
   const { data: programData } = useProgram();
+  const { mutate: createInvestor } = useCreateInvestor();
 
   const keypair = programData?.keypair;
   const program = programData?.program;
@@ -20,6 +25,11 @@ export default function TestOfferCreation() {
       <Button
         className="block"
         onClick={async () => {
+          createInvestor("test", {
+            onSuccess(data, variables, context) {
+              console.log("investor", data);
+            },
+          });
           const tx = await createOriginator({
             name: "Test",
             description: "Test",
@@ -27,10 +37,71 @@ export default function TestOfferCreation() {
             caller: keypair as Keypair,
             program: program as unknown as Program<Hackathon>,
           });
-          console.log(tx);
+          console.log("originator", tx);
+
+          const [investor] = PublicKey.findProgramAddressSync(
+            [utils.bytes.utf8.encode("investor"), keypair?.publicKey.toBuffer() as Buffer],
+            program?.programId as PublicKey,
+          );
+
+          const [investorTokenAccount] = PublicKey.findProgramAddressSync(
+            [
+              utils.bytes.utf8.encode("investor_stable_token_account"),
+              investor.toBuffer() as Buffer,
+            ],
+            program?.programId as PublicKey,
+          );
+
+          await mintTo(
+            program?.provider.connection as any,
+            keypair as Keypair,
+            new PublicKey(env.NEXT_PUBLIC_FAKE_MINT_ADDRESS),
+            investorTokenAccount,
+            keypair as Keypair,
+            parseUnits(100).toNumber(),
+          );
+          console.log("mint done");
+
+          const offer = await createOffer({
+            description: "Test",
+            deadlineDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+            goalAmount: 100,
+            startDate: new Date(Date.now() + 1000 * 60),
+            minAmountInvest: 10,
+            installmentsTotalAmount: 110,
+            installmentsCount: 1,
+            installmentsStartDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+            program: program as unknown as Program<Hackathon>,
+            caller: keypair as Keypair,
+          });
+          console.log("offer", offer);
         }}
       >
-        Create Originator
+        cria tudo
+      </Button>
+      <Button
+        className="block"
+        onClick={async () => {
+          const drop = await program?.provider.connection.requestAirdrop(
+            keypair?.publicKey as PublicKey,
+            9000000000,
+          );
+          await program?.provider.connection.confirmTransaction(drop as string, "finalized");
+          console.log("airdrop done");
+
+          const mint = await createMint(
+            program?.provider.connection as any,
+            keypair as Keypair,
+            keypair?.publicKey as PublicKey,
+            keypair?.publicKey as PublicKey,
+            6,
+            undefined,
+            { commitment: "finalized" },
+          );
+          console.log("change your .env to ", mint.toString());
+        }}
+      >
+        Create Mint
       </Button>
       <Button
         onClick={async () => {

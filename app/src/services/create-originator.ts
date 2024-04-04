@@ -27,7 +27,7 @@ export async function createOriginator({
       caller: caller.publicKey,
     })
     .signers([caller])
-    .rpc({ commitment: "processed" });
+    .rpc({ commitment: "finalized" });
 
   return tx;
 }

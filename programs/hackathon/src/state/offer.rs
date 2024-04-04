@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::{Mint, Token, TokenAccount};
 
-use crate::{Investor, InvestorInstallments, Originator};
+use crate::{Investment, Investor, Originator};
 
 #[derive(Clone, AnchorDeserialize, AnchorSerialize, InitSpace, PartialEq)]
 pub enum OfferStatus {
@@ -156,7 +156,7 @@ pub struct Invest<'info> {
         seeds=[b"investor_offer_token_account", offer.key().as_ref(), investor.key().as_ref()],
         bump
     )]
-    pub investor_offer_token_account: Account<'info, TokenAccount>,
+    pub investor_offer_token_account: Box<Account<'info, TokenAccount>>,
     #[account(mut, seeds=[b"offer_vault", offer.key().as_ref()], bump=offer.vault_bump)]
     pub vault_stable_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"investor_stable_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
@@ -164,11 +164,19 @@ pub struct Invest<'info> {
     #[account(mut, seeds=[b"offer", offer_id.as_bytes()], bump=offer.bump)]
     pub offer: Account<'info, Offer>,
     #[account(mut, seeds = [b"offer_token", offer.key().as_ref()], bump=offer.token_bump)]
-    pub offer_token: Account<'info, Mint>,
+    pub offer_token: Box<Account<'info, Mint>>,
     #[account(mut, mint::decimals = 6)] // TODO: add constraint
-    pub stable_token: Account<'info, Mint>,
+    pub stable_token: Box<Account<'info, Mint>>,
     #[account(mut, seeds=[b"investor", caller.key().as_ref()], bump=investor.bump)]
     pub investor: Account<'info, Investor>,
+    #[account(
+        init_if_needed,
+        payer = payer,
+        space = 8 + Investment::INIT_SPACE,
+        seeds=[b"investment", offer.key().as_ref(), investor.key().as_ref()],
+        bump
+    )]
+    pub investment: Box<Account<'info, Investment>>,
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
@@ -232,26 +240,26 @@ pub struct PayInstallment<'info> {
 #[instruction(offer_id: String)]
 pub struct WithdrawInstallment<'info> {
     #[account(mut)]
-    payer: Signer<'info>,
+    pub payer: Signer<'info>,
+    #[account(mut)]
+    pub caller: Signer<'info>,
 
     #[account(
-        init_if_needed,
-        payer = payer,
-        space = 8 + InvestorInstallments::INIT_SPACE,
-        seeds = [b"investor_installment", offer.key().as_ref(), investor.key().as_ref()],
-        bump
+        mut,
+        seeds = [b"investment", offer.key().as_ref(), investor.key().as_ref()],
+        bump=investment.bump
     )]
-    pub investor_installment: Account<'info, InvestorInstallments>,
-    /// CHECK:
-    pub owner_investor: AccountInfo<'info>,
-    #[account(mut, seeds=[b"investor", owner_investor.key().as_ref()], bump=investor.bump)]
+    pub investment: Account<'info, Investment>,
+    #[account(mut, seeds=[b"investor", caller.key().as_ref()], bump=investor.bump)]
     pub investor: Account<'info, Investor>,
     #[account(mut, seeds=[b"investor_offer_token_account", offer.key().as_ref(), investor.key().as_ref()], bump)]
     pub investor_offer_token_account: Account<'info, TokenAccount>,
     #[account(mut, seeds=[b"investor_stable_token_account", investor.key().as_ref()], bump=investor.token_account_bump)]
     pub investor_stable_token_account: Account<'info, TokenAccount>,
+
     #[account(mut, seeds=[b"vault_payment_token_account", offer.key().as_ref()], bump)]
     pub vault_payment_token_account: Account<'info, TokenAccount>,
+
     #[account(mut, mint::decimals = 6)] // TODO: add constraint
     pub stable_token: Account<'info, Mint>,
     #[account(mut, seeds = [b"offer_token", offer.key().as_ref()], bump=offer.token_bump)]

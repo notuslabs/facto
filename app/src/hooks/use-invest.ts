@@ -63,18 +63,33 @@ export function useInvest() {
         program.programId,
       );
 
+      const [investmentPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("investment"), offerPubKey.toBuffer(), investorPubKey.toBuffer()],
+        program.programId,
+      );
+
+      const [offerTokenPubKey] = PublicKey.findProgramAddressSync(
+        [utils.bytes.utf8.encode("offer_token"), offerPubKey.toBuffer()],
+        program.programId,
+      );
+
       const tx = await program.methods
         .invest(offerId, parseUnits(amount))
         .accounts({
           caller: keypair.publicKey,
           payer: keypair.publicKey,
           stableToken: FAKE_MINT,
+          investor: investorPubKey,
+          offer: offerPubKey,
+          offerToken: offerTokenPubKey,
+          investment: investmentPubKey,
           investorStableTokenAccount: investorTokenAccountPubKey,
           investorOfferTokenAccount: investorOfferTokenAccountPubKey,
           vaultStableTokenAccount: vaultStableTokenAccountPubKey,
         })
         .signers([keypair])
-        .rpc();
+        .rpc({ commitment: "finalized" })
+        .catch(console.error);
 
       return {
         offerId: offerId,

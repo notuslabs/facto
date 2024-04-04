@@ -93,6 +93,12 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
 
     ctx.accounts.offer.acquired_amount += amount;
 
+    ctx.accounts.investment.total_invested += amount;
+    ctx.accounts.investment.offer = ctx.accounts.offer.key();
+    ctx.accounts.investment.investor = ctx.accounts.investor.key();
+    ctx.accounts.investment.installments_received = 0;
+    ctx.accounts.investment.bump = *ctx.bumps.get("investment").unwrap();
+
     let transfer = TransferChecked {
         from: ctx.accounts.investor_stable_token_account.to_account_info(),
         to: ctx.accounts.vault_stable_token_account.to_account_info(),
@@ -206,13 +212,12 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
 
 pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
     require!(
-        ctx.accounts.investor_installment.count_received
-            < ctx.accounts.offer.total_installments_paid,
+        ctx.accounts.investment.installments_received < ctx.accounts.offer.total_installments_paid,
         ValidationError::InstallmentAlreadyPaid
     );
 
     let amount_to_burn = ctx.accounts.investor_offer_token_account.amount
-        / (ctx.accounts.offer.installments_count - ctx.accounts.investor_installment.count_received)
+        / (ctx.accounts.offer.installments_count - ctx.accounts.investment.installments_received)
             as u64;
     let burn_accounts = Burn {
         from: ctx.accounts.investor_offer_token_account.to_account_info(),
@@ -226,7 +231,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
             burn_accounts,
             &[&[
                 b"investor",
-                ctx.accounts.owner_investor.key().as_ref(),
+                ctx.accounts.caller.key().as_ref(),
                 &[ctx.accounts.investor.bump],
             ]],
         ),
@@ -255,7 +260,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
         ctx.accounts.stable_token.decimals,
     )?;
 
-    ctx.accounts.investor_installment.count_received += 1;
+    ctx.accounts.investment.installments_received += 1;
     let seconds_in_30_days = 2592000;
     ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 

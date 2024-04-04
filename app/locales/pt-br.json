@@ -319,13 +319,14 @@
     "D": "Default. O investimento falhou em cumprir com suas obrigações financeiras. A categoria mais baixa e arriscada."
   },
   "offer-status": {
-    "StartingSoon": "Em breve",
-    "Open": "Aberto",
-    "Funded": "Fundado",
-    "OnTrack": "Em andamento",
-    "Finished": "Concluído",
-    "Delinquent": "Delinquente",
-    "Failed": "Falhou"
+    "starting-soon": "Em breve",
+    "open": "Em captação",
+    "funded": "Captado",
+    "on-track": "Em pagamento",
+    "delinquent": "Em atraso",
+    "cancelled": "Cancelado",
+    "failed": "Falhou",
+    "finished": "Concluído"
   },
   "time-picker": {
     "hours": "Horas",

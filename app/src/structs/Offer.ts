@@ -6,14 +6,16 @@ import { formatUnits } from "@/lib/format-units";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
 
+export type RawOfferAccount = Account<"offer">;
 export enum OfferStatus {
-  StartingSoon = "StartingSoon",
-  Open = "Open",
-  Funded = "Funded",
-  OnTrack = "OnTrack",
-  Finished = "Finished",
-  Delinquent = "Delinquent",
-  Failed = "Failed",
+  StartingSoon = "starting-soon",
+  Open = "open",
+  Funded = "funded",
+  OnTrack = "on-track",
+  Finished = "finished",
+  Delinquent = "delinquent",
+  Failed = "failed",
+  Cancelled = "cancelled",
 }
 
 export type CreditScoreOption = (typeof creditScoreOptions)[number];
@@ -211,16 +213,16 @@ export class Offer {
     return offer;
   }
 
-  static async fromRawCollection(raw: { account: Account<"offer"> }[]) {
+  static async fromRawCollection(raw: { account: RawOfferAccount }[]) {
     const program = getProgram();
 
-    const originatorsPubKeys = raw.map((raw) => raw.account.originator);
+    const originatorsPubKeys = raw.map((offer) => offer.account.originator);
     const originators = (await program.account.originator.fetchMultiple(
       originatorsPubKeys,
     )) as Account<"originator">[];
 
     return raw
-      .map((raw, index) => new Offer(raw.account, originators[index]))
+      .map((offer, index) => new Offer(offer.account, originators[index]))
       .sort((a, b) => a.discriminator - b.discriminator);
   }
 

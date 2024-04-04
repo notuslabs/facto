@@ -6,32 +6,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { Link } from "@/navigation";
+import { Investment } from "@/structs/Investment";
 import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
-
-type TableData = {
-  offerName: string;
-  totalRaised: string;
-  offerTotal: string;
-  investedAmt: string;
-  returnPercentage: string;
-  finalDate: string;
-  installments: number;
-  link: string;
-  paymentStatus: JSX.Element;
-};
+import { useFormatNumber } from "@/hooks/number-formatters";
+import { Badge, STATUSES_TO_VARIANTS } from "@/components/ui/badge";
 
 interface DesktopTableProps {
-  data: TableData[];
+  investments: Investment[];
 }
 
-export default function InvestmentsDesktopTable({ data }: DesktopTableProps) {
+export default function InvestmentsDesktopTable({ investments }: DesktopTableProps) {
   const t = useTranslations("investments-page");
+  const tb = useTranslations("offer-status");
+  const formatDate = useDateFormatter();
+  const formatCurrency = useFormatNumber();
 
   return (
     <div className="hidden flex-col gap-4 md:flex">
-      {data.map((tableData) => (
-        <Table className="rounded-2xl bg-secondary p-4" key={tableData.offerName}>
+      {investments.map((investment) => (
+        <Table className="rounded-2xl bg-secondary p-4" key={investment.offer.name}>
           <>
             <TableHeader className="text-xs text-placeholder-foreground">
               <TableRow>
@@ -48,25 +44,35 @@ export default function InvestmentsDesktopTable({ data }: DesktopTableProps) {
             </TableHeader>
             <TableBody className="text-sm font-medium">
               <TableRow>
-                <TableCell className="pb-3 pt-2">{tableData.offerName}</TableCell>
-                <TableCell className="pb-3 pt-2">{tableData.totalRaised}</TableCell>
-                <TableCell className="pb-3 pt-2">{tableData.offerTotal}</TableCell>
-                <TableCell className="pb-3 pt-2">{tableData.investedAmt}</TableCell>
+                <TableCell className="pb-3 pt-2">{investment.offer.name}</TableCell>
+                <TableCell className="pb-3 pt-2">{investment.offer.acquiredAmount}</TableCell>
+                <TableCell className="pb-3 pt-2">{investment.offer.goalAmount}</TableCell>
                 <TableCell className="pb-3 pt-2">
-                  {tableData.returnPercentage} {t("per-year")}
-                </TableCell>
-                <TableCell className="pb-3 pt-2">{tableData.finalDate}</TableCell>
-                <TableCell className="pb-3 pt-2">
-                  {tableData.installments} {t("installments")}
+                  {formatCurrency({ value: investment.totalInvested })}
                 </TableCell>
                 <TableCell className="pb-3 pt-2">
-                  <a className="flex items-center gap-2" href={tableData.link}>
+                  {investment.offer.interestRate}% {t("per-year")}
+                </TableCell>
+                <TableCell className="pb-3 pt-2">
+                  {formatDate(investment.offer.deadlineDate, "P")}
+                </TableCell>
+                <TableCell className="pb-3 pt-2">
+                  {investment.offer.installmentsCount} {t("installments")}
+                </TableCell>
+                <TableCell className="pb-3 pt-2">
+                  <Link
+                    className="flex items-center gap-2"
+                    target="_blank"
+                    href={{ params: { id: investment.offer.id }, pathname: "/offers/[id]" }}
+                  >
                     <ExternalLink size={20} />
                     <span className="underline underline-offset-2">{t("see-offer")}</span>
-                  </a>
+                  </Link>
                 </TableCell>
-                <TableCell className="w-[120px] pb-3 pt-2 text-right">
-                  {tableData.paymentStatus}
+                <TableCell className="w-[150px] pb-3 pt-2 text-right">
+                  <Badge variant={STATUSES_TO_VARIANTS[investment.offer.status]}>
+                    {tb(investment.offer.status)}
+                  </Badge>
                 </TableCell>
               </TableRow>
             </TableBody>
