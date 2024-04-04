@@ -1,6 +1,6 @@
 import { Hackathon, IDL } from "@/lib/idl/facto-idl-types";
 import idl from "@/lib/idl/idl-facto.json";
-import { PublicKey, Keypair } from "@solana/web3.js";
+import { Keypair } from "@solana/web3.js";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { useConnection } from "./use-connection";
 import { useSession } from "./use-session";
@@ -15,6 +15,7 @@ export function useProgram() {
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ["program", solanaWallet?.provider.chainId.toString()],
+    enabled: !!solanaWallet,
     queryFn: async () => {
       if (!solanaWallet) return;
       let keypair = null;
