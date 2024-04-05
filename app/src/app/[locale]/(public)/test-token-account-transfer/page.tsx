@@ -15,6 +15,7 @@ import { useDeposit } from "@/hooks/use-deposit";
 import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { useSession } from "@/hooks/use-session";
 import { DEFAULT_DECIMALS } from "@/lib/constants";
+import { RequireAuthProvider } from "@/providers/require-auth-provider";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -43,6 +44,14 @@ function TokenAccountOverview({ title, address, amount }: TokenAccountOverviewPr
 }
 
 export default function TestTokenAccountTransfer() {
+  return (
+    <RequireAuthProvider>
+      <TestTokenAccountTransferTemplate />
+    </RequireAuthProvider>
+  );
+}
+
+function TestTokenAccountTransferTemplate() {
   const withdrawRef = useRef<HTMLInputElement>(null);
   const { data } = useSession();
   const { mutate: deposit, isPending: isDepositing } = useDeposit();

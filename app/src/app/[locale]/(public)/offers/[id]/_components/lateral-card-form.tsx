@@ -80,7 +80,7 @@ export function LateralCardForm({
           toast.success(t("investment-success"), {
             action: (() => (
               <a
-                href={`https://explorer.solana.com/tx/${tx}`}
+                href={`https://explorer.solana.com/tx/${tx}?custer=devnet`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={buttonVariants({ variant: "outline" })}

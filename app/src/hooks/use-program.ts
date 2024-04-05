@@ -14,7 +14,7 @@ export function useProgram() {
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["program", solanaWallet?.provider.chainId.toString()],
+    queryKey: ["program", !!solanaWallet],
     queryFn: async () => {
       if (!solanaWallet) return;
       let keypair = null;
@@ -54,5 +54,6 @@ export function useProgram() {
         keypair,
       };
     },
+    enabled: !!solanaWallet,
   });
 }

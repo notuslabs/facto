@@ -19,23 +19,13 @@ export default function CreateOfferPage() {
   useEffect(() => {
     if (notBorrower) {
       toast.error(t("not-an-borrower"));
-      // router.push("/become/borrower");
+      router.push("/become/borrower");
     }
   }, [notBorrower, router, t]);
 
-  // TODO: block not authed user
-  // useEffect(() => {
-  //   if (notAuthed) {
-  //     toast.error(t("not-authenticated"));
-  //     // router.push("/");
-
-  //     return;
-  //   }
-  // }, [notAuthed, router, t]);
-
   return (
     <div className="container">
-      <Card className="w-full">
+      <Card withTexture className="w-full">
         <OfferForm isLoading={isAccountsLoading} isAllowedToCreate={isAllowedToCreate} />
       </Card>
     </div>

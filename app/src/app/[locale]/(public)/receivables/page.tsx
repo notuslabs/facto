@@ -7,8 +7,17 @@ import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 import ReceivablesDesktopTable from "./_components/receivables-desktop-table";
 import ReceivablesMobileTable from "./_components/receivables-mobile-table";
+import { RequireAuthProvider } from "@/providers/require-auth-provider";
 
 export default function ReceivablesPage({ params }: PageProps<{ locale: string }>) {
+  return (
+    <RequireAuthProvider>
+      <ReceivablesPageTemplate params={params} />
+    </RequireAuthProvider>
+  );
+}
+
+function ReceivablesPageTemplate({ params }: PageProps<{ locale: string }>) {
   unstable_setRequestLocale(params.locale);
   const t = useTranslations("receivables-page");
   const tr = useTranslations("badges");

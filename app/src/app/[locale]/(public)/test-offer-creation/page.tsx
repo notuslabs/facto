@@ -6,8 +6,17 @@ import { createOffer } from "@/services/create-offer";
 import { createBorrower } from "@/services/create-borrower";
 import { Program } from "@coral-xyz/anchor";
 import { Keypair } from "@solana/web3.js";
+import { RequireAuthProvider } from "@/providers/require-auth-provider";
 
 export default function TestOfferCreation() {
+  return (
+    <RequireAuthProvider>
+      <TestOfferCreationTemplate />
+    </RequireAuthProvider>
+  );
+}
+
+function TestOfferCreationTemplate() {
   const { data: programData } = useProgram();
 
   const keypair = programData?.keypair;

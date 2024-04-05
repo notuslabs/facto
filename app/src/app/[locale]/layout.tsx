@@ -1,11 +1,11 @@
 import { Inter } from "next/font/google";
-import "../../globals.css";
+import "../globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/providers";
 import { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
-import { locales } from "../../../config";
+import { locales } from "../../config";
 import { useMessages } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 

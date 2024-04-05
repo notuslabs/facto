@@ -6,6 +6,7 @@ import { utils } from "@coral-xyz/anchor";
 import { BN } from "bn.js";
 import { FAKE_MINT } from "@/lib/constants";
 import { useProgram } from "./use-program";
+import { parseUnits } from "@/lib/parse-units";
 
 export function useDeposit() {
   const queryClient = useQueryClient();
@@ -29,7 +30,7 @@ export function useDeposit() {
       );
 
       await program.methods
-        .depositTokens(new BN(amount * 10 ** 9))
+        .depositTokens(parseUnits(amount))
         .accounts({
           investor: investorPubKey,
           investorStableTokenAccount: investorTokenAccountPubKey,

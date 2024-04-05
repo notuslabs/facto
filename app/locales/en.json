@@ -1,4 +1,5 @@
 {
+  "not-authenticated": "You need to be authenticated",
   "meta-data": {
     "title": "Hackathon Solana",
     "description": "Hackathon project for Solana"

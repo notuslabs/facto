@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { Provider } from "jotai";
 import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
-import { TanStackQueryProvider } from "../components/tanstack-query-provider";
-import { Web3AuthProvider } from "../components/web3-auth-provider";
+import { TanStackQueryProvider } from "./tanstack-query-provider";
+import { Web3AuthProvider } from "./web3-auth-provider";
 
 type ProvidersProps = {
   children?: ReactNode | undefined;
