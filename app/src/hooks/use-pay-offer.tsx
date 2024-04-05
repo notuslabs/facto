@@ -8,14 +8,19 @@ import { utils } from "@coral-xyz/anchor";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { buttonVariants } from "@/components/ui/button";
+import { getAccount } from "@solana/spl-token";
+import { getConnection } from "@/services/get-connection";
+import { formatUnits } from "@/lib/format-units";
 
 type PayOffer = {
   offerId: string;
+  amount: number;
 };
 
 export function usePayOffer(key: string) {
   const queryClient = useQueryClient();
-  const t = useTranslations("pay-offer");
+  const t = useTranslations();
+  const connection = getConnection();
 
   const { data: programData } = useProgram();
 
@@ -24,7 +29,7 @@ export function usePayOffer(key: string) {
 
   return useMutation({
     mutationKey: ["pay-offer", key],
-    mutationFn: async ({ offerId }: PayOffer) => {
+    mutationFn: async ({ offerId, amount }: PayOffer) => {
       if (!keypair || !program) {
         throw new Error();
       }
@@ -38,6 +43,12 @@ export function usePayOffer(key: string) {
         [utils.bytes.utf8.encode("borrower_token_account"), borrowerPubKey.toBuffer()],
         program.programId,
       );
+
+      const borrowerTokenAccount = await getAccount(connection, borrowerTokenAccountPubKey);
+
+      if (amount > formatUnits(borrowerTokenAccount.amount)) {
+        throw new Error("Insuficient amount to pay installment");
+      }
 
       const tx = await program.methods
         .payInstallment(offerId)
@@ -53,7 +64,7 @@ export function usePayOffer(key: string) {
       return { tx };
     },
     onSuccess: ({ tx }) => {
-      toast.success(t("pay-successful"), {
+      toast.success(t("pay-offer.pay-successful"), {
         action: (() => (
           <a
             href={`https://explorer.solana.com/tx/${tx}?cluster=devnet`}
@@ -61,7 +72,7 @@ export function usePayOffer(key: string) {
             rel="noopener noreferrer"
             className={buttonVariants({ variant: "outline" })}
           >
-            {t("view-transaction")}
+            {t("pay-offer.view-transaction")}
           </a>
         ))(),
       });
@@ -71,7 +82,8 @@ export function usePayOffer(key: string) {
       });
     },
     onError: (error) => {
-      toast.error(t("pay-error", { error: error.message }));
+      console.error(error);
+      toast.error(t("pay-offer.pay-error", { error: error.message }));
     },
   });
 }

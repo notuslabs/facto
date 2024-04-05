@@ -135,6 +135,23 @@
     "installments": "installments",
     "per-year": "per year"
   },
+  "admin-offers": {
+    "title": "My Offers",
+    "all-status": "All status",
+    "exhibiting": "Exhibiting",
+    "offers": "{offerNumber} offers",
+    "offer-name": "Offer",
+    "raised-value": "Raised value",
+    "offer-total": "Offer total",
+    "start-date": "First installment",
+    "installment-number": "Installments number",
+    "visualize": "Visualize",
+    "status": "Status",
+    "see-offer": "See offer",
+    "installments": "installments",
+    "per-year": "per year",
+    "create-offer": "Create Offer"
+  },
   "installments-page": {
     "title": "Due installments",
     "exhibiting": "Exhibiting",

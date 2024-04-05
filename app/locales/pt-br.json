@@ -135,12 +135,29 @@
     "installments": "parcelas",
     "per-year": "ao ano"
   },
+  "admin-offers": {
+    "title": "Minhas Ofertas",
+    "all-status": "Todos status",
+    "exhibiting": "Exibindo",
+    "offers": "{offerNumber} ofertas",
+    "offer-name": "Oferta",
+    "raised-value": "Valor captado",
+    "offer-total": "Total da oferta",
+    "start-date": "Primeira parcela",
+    "installment-number": "Pagará em",
+    "visualize": "Visualizar",
+    "status": "Status",
+    "see-offer": "Ver oferta",
+    "installments": "parcelas",
+    "per-year": "ao ano",
+    "create-offer": "Nova Oferta"
+  },
   "installments-page": {
     "title": "Parcelas a vencer",
     "exhibiting": "Exibindo",
     "offers": "Parcelas a vencer de {offerNumber} ofertas",
     "all-status": "Todos status",
-    "offer-name": "Offerta",
+    "offer-name": "Oferta",
     "installment-date": "Data",
     "installments-count": "Parcela",
     "installment-amount": "Valor da parcela",
@@ -360,7 +377,7 @@
     "seconds": "Segundos"
   },
   "pay-offer": {
-    "pay-successful": "Pagamento realizado com sucesso {link}",
+    "pay-successful": "Pagamento realizado com sucesso",
     "pay-error": "Erro no pagamento: {error}",
     "view-transaction": "Ver transação"
   }

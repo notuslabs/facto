@@ -24,7 +24,7 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
   const borrowerLinks = [
     {
       label: t("my-offers"),
-      href: "/my-offers" as const,
+      href: "/admin/offers" as const,
     },
     {
       label: t("installments"),
