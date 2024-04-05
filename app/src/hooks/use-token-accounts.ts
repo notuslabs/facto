@@ -47,15 +47,11 @@ export function useTokenAccounts() {
         keypair,
         FAKE_MINT,
         keypair.publicKey,
-      ).catch((e) => console.log(e));
+      )
 
-      const investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey).catch(
-        console.error,
-      );
+      const investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey)
 
-      const borrowerTokenAccount = await getAccount(connection, borrowerTokenAccountPubKey).catch(
-        console.error,
-      );
+      const borrowerTokenAccount = await getAccount(connection, borrowerTokenAccountPubKey)
 
       return {
         investorTokenAccount,

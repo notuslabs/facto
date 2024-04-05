@@ -161,7 +161,7 @@
     "disclaimer": "Disclaimer here",
     "deposit": "Deposit",
     "address": "Address",
-    "address-copied":"Address copied"
+    "address-copied": "Address copied"
   },
   "withdrawal-page": {
     "withdrawal-value": "Withdrawal value",
@@ -169,7 +169,7 @@
     "disclaimer": "Disclaimer here",
     "withdrawal": "Withdrawal",
     "address": "Address",
-    "address-copied":"Address copied"
+    "address-copied": "Address copied"
   },
   "score-card": {
     "bad": "Bad",
@@ -181,7 +181,7 @@
     "paid": "Paid",
     "anticipated": "Anticipated"
   },
-  "transactions-modal": {
+  "transactions-dialog": {
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
     "description": "Add to your balance to invest",
@@ -189,7 +189,7 @@
     "withdrawal-value": "Withdrawal value",
     "your-balance": "Your in account balance is ",
     "address": "Address",
-    "address-copied":"Address copied"
+    "address-copied": "Address copied"
   },
   "become": {
     "investor": {

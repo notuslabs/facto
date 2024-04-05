@@ -21,7 +21,7 @@ export default function SuccessDialog({
   const t = useTranslations("success");
 
   return (
-    <div className="relative flex w-[451px] flex-col gap-12">
+    <div className="relative mx-auto flex w-[355px] flex-col gap-12 sm:w-[451px]">
       <DialogHeader className="pt-[60.5px]">
         <DialogTitle className="flex flex-col items-center gap-2">
           <CheckCircle2 size={46.67} className="text-facto-primary" strokeWidth={2} />

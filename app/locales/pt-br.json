@@ -181,7 +181,7 @@
     "paid": "Pago",
     "anticipated": "Previsto"
   },
-  "transactions-modal": {
+  "transactions-dialog": {
     "deposit": "Depósito",
     "withdrawal": "Saque",
     "description": "Adicione saldo em sua conta para investir",
@@ -189,7 +189,7 @@
     "withdrawal-value": "Valor do saque",
     "your-balance": "Seu saldo em conta é de ",
     "address": "Endereço da transação",
-    "address-copied":"Endereço copiado"
+    "address-copied": "Endereço copiado"
   },
   "become": {
     "investor": {

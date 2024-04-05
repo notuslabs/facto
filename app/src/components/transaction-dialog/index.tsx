@@ -6,7 +6,7 @@ import SuccessDialog from "./_components/success-dialog";
 import { useWithdrawal } from "@/hooks/use-withdrawal";
 import { useDeposit } from "@/hooks/use-deposit";
 import DisclaimerCard from "../disclaimer-card";
-import { ArrowUpSquare, ClipboardCopy, PlusSquare } from "lucide-react";
+import { ArrowUpSquare, ClipboardCopy, Loader2, PlusSquare } from "lucide-react";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { formatNumber } from "@/lib/format-number";
 import { Input } from "@/components/ui/input";
+import { useTokenAccounts } from "@/hooks/use-token-accounts";
 
 interface TransactionDialogProps {
   type: "deposit" | "withdrawal";
@@ -30,9 +31,10 @@ const DepositSchema = z.object({
 });
 
 export default function TransactionDialog({ type }: TransactionDialogProps) {
-  const t = useTranslations("transactions-modal");
+  const t = useTranslations("transactions-dialog");
   const { data: balance } = useBalance({ variant: "investor" });
   const { data } = useProgram();
+  const { data: tokenAccounts } = useTokenAccounts();
   const {
     mutate: withdrawal,
     isSuccess: isWithdrawalSuccess,
@@ -45,7 +47,7 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
     isPending: isDepositPending,
     data: depositTransactionHash,
   } = useDeposit();
-  const publicKey = data && data.keypair.publicKey;
+
   const schemaType = type === "deposit" ? DepositSchema : WithdrawalSchema;
 
   const form = useForm<z.infer<typeof schemaType>>({
@@ -55,10 +57,14 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof schemaType>) {
-    if (!publicKey) return;
-    if (type === "withdrawal") {
-      withdrawal({ amount: values.amount, toTokenAccount: publicKey });
+  const amount = form.watch("amount");
+
+  async function onSubmit(values: z.infer<typeof schemaType>) {
+    if (type === "withdrawal" && tokenAccounts?.userTokenAccount.address) {
+      withdrawal({
+        amount: values.amount,
+        toTokenAccount: tokenAccounts?.userTokenAccount.address,
+      });
     } else {
       deposit(values.amount);
     }
@@ -76,11 +82,23 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
     toast.success(t("address-copied"));
   }
 
+  function handleCopyAddress() {
+    if (type === "deposit" && tokenAccounts?.investorTokenAccount.address) {
+      copy(tokenAccounts?.investorTokenAccount.address.toString());
+      return;
+    }
+    if (tokenAccounts?.userTokenAccount.address) {
+      copy(tokenAccounts?.userTokenAccount.address.toString());
+    }
+
+    toast.success(t("address-copied"));
+  }
+
   return (
     <div className="flex w-[451px] flex-col gap-6">
       {isWithdrawalSuccess || isDepositSuccess ? (
         <SuccessDialog
-          operationAmount={444}
+          operationAmount={amount}
           type={type}
           transactionHash={type === "deposit" ? depositTransactionHash : withdrawalTransactionHash}
           copyToClipboard={handleCopyToClipboard}
@@ -137,17 +155,20 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
             </div>
           </div>
 
-          {depositTransactionHash || withdrawalTransactionHash ? (
+          {tokenAccounts?.investorTokenAccount.address.toString() ||
+          tokenAccounts?.userTokenAccount.address.toString() ? (
             <div className="px-6 text-xs text-muted-foreground">
               <p>{t("address")}</p>
               <div className="flex justify-between gap-16">
                 <p className="overflow-hidden text-ellipsis text-sm text-placeholder-foreground">
-                  {type === "deposit" ? depositTransactionHash : withdrawalTransactionHash}
+                  {type === "deposit"
+                    ? tokenAccounts?.investorTokenAccount.address.toString()
+                    : tokenAccounts?.userTokenAccount.address.toString()}
                 </p>
                 <ClipboardCopy
                   className="min-w-fit cursor-pointer hover:opacity-50"
                   size={16}
-                  onClick={handleCopyToClipboard}
+                  onClick={handleCopyAddress}
                 />
               </div>
             </div>
@@ -163,7 +184,11 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
                 variant="defaultGradient"
                 disabled={isWithdrawalPending}
               >
-                <ArrowUpSquare size={20} />
+                {isWithdrawalPending ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : (
+                  <ArrowUpSquare size={20} />
+                )}
                 {t("withdrawal")}
               </Button>
             </div>
@@ -177,7 +202,11 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
                 variant="defaultGradient"
                 disabled={isDepositPending}
               >
-                <PlusSquare size={20} />
+                {isDepositPending ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : (
+                  <PlusSquare size={20} />
+                )}
                 {t("deposit")}
               </Button>
             </div>

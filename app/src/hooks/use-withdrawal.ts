@@ -8,6 +8,7 @@ import { BN } from "bn.js";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
+import { parseUnits } from "@/lib/parse-units"
 
 export function useWithdrawal() {
   const queryClient = useQueryClient();
@@ -37,7 +38,7 @@ export function useWithdrawal() {
       );
 
       const tx = await program.methods
-        .withdrawTokens(new BN(amount * 10 ** 9))
+        .withdrawTokens(parseUnits(amount))
         .accounts({
           investor: investorPubKey,
           investorStableTokenAccount: investorTokenAccountPubKey,
@@ -46,7 +47,7 @@ export function useWithdrawal() {
           payer: keypair.publicKey,
           caller: keypair.publicKey,
         })
-        .rpc();
+        .rpc()
       return tx;
     },
     onSuccess: () => {
