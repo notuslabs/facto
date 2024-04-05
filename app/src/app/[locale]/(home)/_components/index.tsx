@@ -6,9 +6,10 @@ import { Link } from "@/navigation";
 import { InvestorChoiceCard } from "./investor-choice-card";
 import { BorrowerChoiceCard } from "./borrower-choice-card";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export function Opening() {
+  const locale = useLocale();
   const t = useTranslations("opening-page");
 
   return (
@@ -31,9 +32,35 @@ export function Opening() {
       </nav>
 
       <main className="container relative z-[2]">
-        <div className="py-[88px]">
-          <h1 className="text-6xl font-extrabold text-foreground">{t("title")}</h1>
-          <p className="text-xl text-facto-primary">{t("description")}</p>
+        <div className="flex flex-col gap-1 pb-16 pt-[56.58px]">
+          {locale === "en" ? (
+            <>
+              <h1 className="text-balance text-6xl leading-[72.61px] text-foreground">
+                <span className="font-extrabold">Borrow</span> or{" "}
+                <span className="font-extrabold">lend</span> money at{" "}
+                <span className="font-extrabold">better rates</span> with{" "}
+                <span className="font-extrabold">Facto</span>
+              </h1>
+              <p className="text-lg">
+                The 100% onchain credit marketplace built with{" "}
+                <span className="inline-block bg-gradient-to-r from-[#15D085] via-[#20E69D] to-[#AA66FE] bg-clip-text text-transparent">
+                  Solana Token Extensions
+                </span>
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-6xl font-extrabold leading-[72.61px] text-foreground">
+                Peça emprestado ou empreste dinheiro com taxas melhores com a Facto
+              </h1>
+              <p className="text-lg">
+                O mercado de crédito 100% on-chain construído com{" "}
+                <span className="inline-block bg-gradient-to-r from-[#15D085] via-[#20E69D] to-[#AA66FE] bg-clip-text text-transparent">
+                  Extensões de token Solana
+                </span>
+              </p>
+            </>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-14">

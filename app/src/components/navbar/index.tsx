@@ -34,11 +34,11 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
 
   const investorLinks = [
     {
-      label: t("my-investments"),
+      label: t("investments"),
       href: "/investments" as const,
     },
     {
-      label: t("receivables"),
+      label: t("repayments"),
       href: "/receivables" as const,
     },
     {
@@ -49,7 +49,7 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
 
   return (
     <nav className="relative w-full py-4 dark:bg-background md:h-[153px] md:pt-8">
-      <div className="absolute -left-[15%] -top-[225%] hidden size-[531px] rounded-full bg-facto-primary opacity-[18%] blur-3xl md:block 2xl:left-0" />
+      <div className="absolute -left-[15%] -top-[225%] hidden size-[531px] rounded-full bg-facto-primary opacity-[8%] blur-3xl md:block 2xl:left-0" />
       <div className="container flex items-center justify-between">
         <div className="z-20 flex items-center gap-12">
           <Link href="/" className="flex items-center justify-start gap-2">

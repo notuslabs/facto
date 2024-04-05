@@ -1,17 +1,21 @@
 {
   "meta-data": {
-    "title": "Hackathon Solana",
+    "title": "Facto",
     "description": "Projeto da Hackathon Solana"
   },
   "opening-page": {
-    "title": "Invista e Fortaleça",
-    "description": "Conectando investidores a projetos"
+    "title": "Pegue emprestado ou empreste dinheiro a melhores taxas com a Facto",
+    "description": "O mercado de crédito 100% on-chain construído com extensões de token Solana",
+    "investor-title": "Sou INVESTIDOR",
+    "investor-description": "E quero ver ofertas",
+    "borrower-title": "Sou ORIGINADOR",
+    "borrower-description": "E quero pegar dinheiro emprestado"
   },
   "navbar": {
     "login": "Entrar",
     "logout": "Sair",
-    "my-investments": "Meus investimentos",
-    "receivables": "Parcelas a receber",
+    "investments": "Investimentos",
+    "repayments": "Parcelas a receber",
     "create-account": "Criar conta",
     "withdrawal": "Saque",
     "deposit": "Depósito",
@@ -27,11 +31,11 @@
   },
   "home": {
     "hero": {
-      "title": "Comece a investir",
-      "description": "Alguma descrição de apoio sobre a proposta de valor do projeto e trazer mais"
+      "title": "Explore as principais oportunidades abaixo",
+      "description": "Rendimentos reais, de empresas reais."
     },
     "offers": {
-      "title": "Oportunidades para investir",
+      "title": "Oportunidades para emprestar",
       "search-input-placeholder": "Buscar ofertas, originadores",
       "offer-stage": "Etapa da oferta",
       "filter": "Filtrar",
@@ -165,20 +169,20 @@
     "description": "Seus investimentos crescem mais rápido com a",
     "your-balance": "Seu saldo para investimento",
     "withdrawal": "Saque",
-    "deposit": "Depósito"
+    "mint": "Cunhar"
   },
   "deposit-page": {
-    "deposit-value": "Valor do depósito",
+    "mint-value": "Valor do depósito",
     "your-balance": "Seu saldo em conta é de ",
-    "disclaimer": "Disclaimer aqui",
-    "deposit": "Depósito",
+    "disclaimer": "Este é um projeto para um hackathon e estamos usando um token USDC falso. Você pode usar esta interface para cunhar esse token, mas ele não representa nenhum valor financeiro, apenas para fins de demonstração.",
+    "mint": "Cunhar",
     "address": "Endereço da transação",
     "address-copied": "Endereço copiado"
   },
   "withdrawal-page": {
     "withdrawal-value": "Valor do saque",
     "your-balance": "Seu saldo em conta é de ",
-    "disclaimer": "Disclaimer aqui",
+    "disclaimer": "Este é um projeto para um hackathon e estamos usando um token USDC falso. Você pode usar esta interface para sacar esse token, mas ele não representa nenhum valor financeiro, apenas para fins de demonstração.",
     "withdrawal": "Saque",
     "address": "Endereço da transação",
     "address-copied": "Endereço copiado"
@@ -196,10 +200,10 @@
     "overdue": "Em atraso"
   },
   "transactions-dialog": {
-    "deposit": "Depósito",
+    "mint": "Cunhar",
     "withdrawal": "Saque",
     "description": "Adicione saldo em sua conta para investir",
-    "deposit-value": "Valor do depósito",
+    "mint-value": "Valor do depósito",
     "withdrawal-value": "Valor do saque",
     "your-balance": "Seu saldo em conta é de ",
     "address": "Endereço da transação",
@@ -319,9 +323,9 @@
     "your-balance": "Seu saldo em conta é de "
   },
   "success": {
-    "title-deposit": "Depósito realizado com sucesso",
+    "title-deposit": "Cunho realizado com sucesso",
     "title-withdrawal": "Saque realizado com sucesso",
-    "amount-deposit": "Valor do depósito",
+    "amount-deposit": "Valor do cunho",
     "amount-withdrawal": "Valor do saque",
     "hash": "Hash da transação",
     "hash-copied": "Hash copiado",

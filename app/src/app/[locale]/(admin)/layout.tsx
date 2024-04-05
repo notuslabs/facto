@@ -28,6 +28,17 @@ export async function generateMetadata({ params: { locale } }: Omit<Props, "chil
   return {
     title: t("title"),
     description: t("description"),
+    icons: {
+      icon: [
+        {
+          url: "/favicon.ico",
+        },
+        {
+          url: "light-favicon.ico",
+          media: "(prefers-color-scheme: light)",
+        },
+      ],
+    },
   };
 }
 
