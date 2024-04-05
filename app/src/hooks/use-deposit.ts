@@ -3,9 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PublicKey } from "@solana/web3.js";
 import { utils } from "@coral-xyz/anchor";
-import { FAKE_MINT } from "@/lib/constants";
 import { useProgram } from "./use-program";
-import { parseUnits } from "@/lib/parse-units"
 
 export function useDeposit() {
   const queryClient = useQueryClient();
@@ -28,16 +26,11 @@ export function useDeposit() {
         program.programId,
       );
 
-      const tx = await program.methods
-        .depositTokens(parseUnits(amount))
-        .accounts({
-          investor: investorPubKey,
-          investorStableTokenAccount: investorTokenAccountPubKey,
-          caller: keypair.publicKey,
-          payer: keypair.publicKey,
-          stableCoin: FAKE_MINT,
-        })
-        .rpc();
+      const { tx } = await fetch("/api/mint", {
+        method: "POST",
+        body: JSON.stringify({ address: investorTokenAccountPubKey, amount }),
+      }).then((res) => res.json());
+
       return tx;
     },
     onSuccess: () => {
