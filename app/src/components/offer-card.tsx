@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ScoreBadge } from "./score-badge";
-import { Badge, statusToVariant } from "./ui/badge";
+import { Badge, STATUSES_TO_VARIANTS } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { Link } from "@/navigation";
 import { Offer, OfferStatus, RangeOption } from "@/structs/Offer";
@@ -78,7 +78,7 @@ function OfferCardBody({
       </div>
       <div className="flex items-center justify-between gap-2 border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("project-status")}</p>
-        <Badge variant={statusToVariant[status]}>{offerStatusT(status)}</Badge>
+        <Badge variant={STATUSES_TO_VARIANTS[status]}>{offerStatusT(status)}</Badge>
       </div>
       <div className="flex items-center justify-between gap-2 border-b border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("credit-score")}</p>

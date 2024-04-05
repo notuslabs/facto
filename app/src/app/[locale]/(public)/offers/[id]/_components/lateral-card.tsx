@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, statusToVariant } from "@/components/ui/badge";
+import { Badge, STATUSES_TO_VARIANTS } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useFormatNumber } from "@/hooks/number-formatters";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
@@ -72,7 +72,7 @@ export function LateralCard({ offerId }: LateralCardProps) {
         </div>
         <div className="flex justify-between border-b border-t px-4 py-[14px] text-sm md:px-6">
           <p>{t("offer-status")}</p>
-          <Badge variant={statusToVariant[offer.status]}>{offerStatusT(offer.status)}</Badge>
+          <Badge variant={STATUSES_TO_VARIANTS[offer.status]}>{offerStatusT(offer.status)}</Badge>
         </div>
         <div className="flex justify-between border-b px-4 py-[14px] text-sm md:px-6">
           <p>{t("payment-frequency")}</p>
