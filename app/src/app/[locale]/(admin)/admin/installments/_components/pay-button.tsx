@@ -3,14 +3,14 @@ import { usePayOffer } from "@/hooks/use-pay-offer";
 import { cn } from "@/lib/utils";
 import { CircleDollarSign, Loader2 } from "lucide-react";
 
-type PayButtonType = {
+type PayButtonProps = {
   id: string;
   index: number;
   disable: boolean;
   className?: string;
 };
 
-export function PayButton({ id, index, disable, className }: PayButtonType) {
+export function PayButton({ id, index, disable, className }: PayButtonProps) {
   const { mutate: payOffer, isPending } = usePayOffer(`${id}-${index}`);
 
   return (

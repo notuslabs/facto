@@ -29,7 +29,7 @@ export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
             className="flex content-center items-center rounded-2xl bg-secondary"
             key={`${tableData.name}-${installment.installmentNumber}`}
           >
-            <Table className="mw-945 p-4">
+            <Table className="p-4">
               <>
                 <TableHeader className="text-xs text-placeholder-foreground">
                   <TableRow>

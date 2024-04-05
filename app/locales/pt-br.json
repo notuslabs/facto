@@ -338,5 +338,10 @@
     "hours": "Horas",
     "minutes": "Minutos",
     "seconds": "Segundos"
+  },
+  "pay-offer": {
+    "pay-successful": "Pagamento realizado com sucesso {link}",
+    "pay-error": "Erro no pagamento: {error}",
+    "view-transaction": "Ver transação"
   }
 }
