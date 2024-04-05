@@ -20,14 +20,11 @@ export function useProgram() {
       let keypair = null;
       let program = null;
 
-      let privateKey: string = "";
-      try {
-        privateKey = await solanaWallet.request<unknown, string>({
+      let privateKey = await solanaWallet
+        .request<unknown, string>({
           method: "solanaPrivateKey",
-        });
-      } catch (err) {
-        console.log({ err });
-      }
+        })
+        .catch(() => "");
 
       if (!privateKey) return null;
 

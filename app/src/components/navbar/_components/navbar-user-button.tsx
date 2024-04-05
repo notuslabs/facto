@@ -21,8 +21,6 @@ export function NavbarUserButton({ variant }: NavbarUserButtonProps) {
   const t = useTranslations("navbar");
   const userInfo = data?.userInfo;
 
-  console.log({ variant });
-
   if (!userInfo) return null;
 
   return (
