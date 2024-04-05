@@ -1,12 +1,11 @@
 "use client";
 
-import FactoLogo from "@/components/svgs/facto-logo";
-import { FactoLogoText } from "@/components/svgs/facto-logo-text";
 import { Link } from "@/navigation";
 import { InvestorChoiceCard } from "./investor-choice-card";
 import { BorrowerChoiceCard } from "./borrower-choice-card";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import LocaleSwitcher from "@/components/locale-switcher";
 
 export function Opening() {
   const t = useTranslations("opening-page");
@@ -25,6 +24,8 @@ export function Opening() {
               quality={100}
             />
           </Link>
+
+          <LocaleSwitcher />
         </div>
 
         <div className="absolute -right-[50%] -top-[500%] hidden size-[1200px] rounded-full bg-[radial-gradient(circle,_rgba(163,222,16,1)_0%,_rgba(224,255,146,0)_100%)] opacity-15 blur-3xl md:block lg:-right-[50%]"></div>

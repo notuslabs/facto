@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 import { InstallmentStatus, Offer } from "@/structs/Offer";
 import { PayButton } from "./pay-button";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { Link } from "@/navigation";
 
 interface DesktopTableProps {
   data: Offer[];
@@ -52,10 +53,14 @@ export default function InstallmentsMobileTable({ data }: DesktopTableProps) {
                 <TableBody className="flex justify-between text-sm font-medium">
                   <TableCell>{format(installment.date, "P")}</TableCell>
                   <TableCell className="pb-3 pt-2">
-                    <a className="flex items-center gap-2" href={"tableData.link"}>
+                    <Link
+                      className="flex items-center gap-2"
+                      target="_blank"
+                      href={{ params: { id: tableData.id }, pathname: "/offers/[id]" }}
+                    >
                       <ExternalLink size={20} />
                       <span className="underline underline-offset-2">{t("see-offer")}</span>
-                    </a>
+                    </Link>
                   </TableCell>
                 </TableBody>
               </TableRow>
@@ -76,9 +81,10 @@ export default function InstallmentsMobileTable({ data }: DesktopTableProps) {
                 index={index}
                 disable={
                   installment.status === InstallmentStatus.Paid ||
-                  installment.installmentNumber !== tableData.totalInstallmentsPaid + 1
+                  installment.installmentNumber !== (tableData.totalInstallmentsPaid ?? 0) + 1
                 }
                 className="w-full"
+                amount={installment.amount}
               />
             </div>
           </div>

@@ -1,11 +1,20 @@
 {
+  "not-authenticated": "You need to be authenticated",
   "meta-data": {
     "title": "Hackathon Solana",
     "description": "Hackathon project for Solana"
   },
   "opening-page": {
     "title": "Invest and Strengthen",
-    "description": "Conect investors to projects"
+    "description": "Conect investors to projects",
+    "borrower-card": {
+      "title": "I'm a Borrower",
+      "description": "And I need to raise funds for my project"
+    },
+    "investor-card": {
+      "title": "I'm an Investor",
+      "description": "And I want to invest in projects"
+    }
   },
   "navbar": {
     "login": "Login",
@@ -13,6 +22,7 @@
     "my-investments": "My investments",
     "receivables": "Outstanding receivables",
     "create-account": "Create account",
+    "become-investor": "Become an investor",
     "withdrawal": "Withdrawal",
     "deposit": "Deposit",
     "balance": "My Balance",
@@ -135,6 +145,23 @@
     "installments": "installments",
     "per-year": "per year"
   },
+  "admin-offers": {
+    "title": "My Offers",
+    "all-status": "All status",
+    "exhibiting": "Exhibiting",
+    "offers": "{offerNumber} offers",
+    "offer-name": "Offer",
+    "raised-value": "Raised value",
+    "offer-total": "Offer total",
+    "start-date": "First installment",
+    "installment-number": "Installments number",
+    "visualize": "Visualize",
+    "status": "Status",
+    "see-offer": "See offer",
+    "installments": "installments",
+    "per-year": "per year",
+    "create-offer": "Create Offer"
+  },
   "installments-page": {
     "title": "Due installments",
     "exhibiting": "Exhibiting",
@@ -157,7 +184,11 @@
     "installment": "Installment",
     "installment-value": "Installment value",
     "status": "Status",
-    "from-offers": "From {offers} offers"
+    "from-offers": "From {offers} offers",
+    "claim": "Claim",
+    "installment-claimed": "Installment successfully claimed",
+    "view-transaction": "View transaction",
+    "claiming-installment": "Claiming installment..."
   },
   "transactions-page": {
     "title": "",
@@ -193,7 +224,8 @@
     "paid": "Paid",
     "anticipated": "Anticipated",
     "upcoming": "Upcoming",
-    "overdue": "Overdue"
+    "overdue": "Overdue",
+    "claimed": "Claimed"
   },
   "transactions-dialog": {
     "deposit": "Deposit",

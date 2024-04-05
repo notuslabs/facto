@@ -2,7 +2,7 @@
 
 import { config } from "@/lib/web3AuthService";
 import { utils } from "@coral-xyz/anchor";
-import { getAccount, getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
+import { Account, getAccount, getOrCreateAssociatedTokenAccount } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
 import { FAKE_MINT } from "@/lib/constants";
@@ -47,11 +47,15 @@ export function useTokenAccounts() {
         keypair,
         FAKE_MINT,
         keypair.publicKey,
-      )
+      );
 
-      const investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey)
+      let investorTokenAccount = await getAccount(connection, investorTokenAccountPubKey).catch(
+        () => null,
+      );
 
-      const borrowerTokenAccount = await getAccount(connection, borrowerTokenAccountPubKey)
+      let borrowerTokenAccount = await getAccount(connection, borrowerTokenAccountPubKey).catch(
+        () => null,
+      );
 
       return {
         investorTokenAccount,

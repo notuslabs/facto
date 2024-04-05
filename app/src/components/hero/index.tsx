@@ -1,14 +1,11 @@
 "use client";
 
-import { useAuth } from "@/hooks/use-auth";
 import { useProgram } from "@/hooks/use-program";
 import { useTranslations } from "next-intl";
 
 export function Hero() {
   const { data } = useProgram();
   const t = useTranslations("home.hero");
-
-  console.log(data?.keypair.publicKey.toString());
 
   return (
     <div className="flex w-full flex-col items-center justify-center bg-background px-4 py-10 md:h-[304px]">
