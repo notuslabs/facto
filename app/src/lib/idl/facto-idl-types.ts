@@ -428,6 +428,32 @@ export type Hackathon = {
           }
         },
         {
+          "name": "investment",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "investment"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Investor",
+                "path": "investor"
+              }
+            ]
+          }
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -691,7 +717,12 @@ export type Hackathon = {
           "isSigner": true
         },
         {
-          "name": "investorInstallment",
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "investment",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -699,7 +730,7 @@ export type Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_installment"
+                "value": "investment"
               },
               {
                 "kind": "account",
@@ -717,11 +748,6 @@ export type Hackathon = {
           }
         },
         {
-          "name": "ownerInvestor",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "investor",
           "isMut": true,
           "isSigner": false,
@@ -735,7 +761,7 @@ export type Hackathon = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "path": "owner_investor"
+                "path": "caller"
               }
             ]
           }
@@ -1283,13 +1309,25 @@ export type Hackathon = {
       }
     },
     {
-      "name": "investorInstallments",
+      "name": "investment",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "countReceived",
+            "name": "offer",
+            "type": "publicKey"
+          },
+          {
+            "name": "investor",
+            "type": "publicKey"
+          },
+          {
+            "name": "installmentsReceived",
             "type": "u8"
+          },
+          {
+            "name": "totalInvested",
+            "type": "u64"
           },
           {
             "name": "bump",
@@ -1390,16 +1428,25 @@ export type Hackathon = {
         "kind": "enum",
         "variants": [
           {
-            "name": "Open"
+            "name": "StartingSoon"
           },
           {
             "name": "Failed"
+          },
+          {
+            "name": "Canceled"
+          },
+          {
+            "name": "Open"
           },
           {
             "name": "Funded"
           },
           {
             "name": "OnTrack"
+          },
+          {
+            "name": "Delinquent"
           },
           {
             "name": "Finished"
@@ -1911,6 +1958,32 @@ export const IDL: Hackathon = {
           }
         },
         {
+          "name": "investment",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "investment"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Offer",
+                "path": "offer"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Investor",
+                "path": "investor"
+              }
+            ]
+          }
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -2174,7 +2247,12 @@ export const IDL: Hackathon = {
           "isSigner": true
         },
         {
-          "name": "investorInstallment",
+          "name": "caller",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "investment",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -2182,7 +2260,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "const",
                 "type": "string",
-                "value": "investor_installment"
+                "value": "investment"
               },
               {
                 "kind": "account",
@@ -2200,11 +2278,6 @@ export const IDL: Hackathon = {
           }
         },
         {
-          "name": "ownerInvestor",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "investor",
           "isMut": true,
           "isSigner": false,
@@ -2218,7 +2291,7 @@ export const IDL: Hackathon = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "path": "owner_investor"
+                "path": "caller"
               }
             ]
           }
@@ -2766,13 +2839,25 @@ export const IDL: Hackathon = {
       }
     },
     {
-      "name": "investorInstallments",
+      "name": "investment",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "countReceived",
+            "name": "offer",
+            "type": "publicKey"
+          },
+          {
+            "name": "investor",
+            "type": "publicKey"
+          },
+          {
+            "name": "installmentsReceived",
             "type": "u8"
+          },
+          {
+            "name": "totalInvested",
+            "type": "u64"
           },
           {
             "name": "bump",
@@ -2873,16 +2958,25 @@ export const IDL: Hackathon = {
         "kind": "enum",
         "variants": [
           {
-            "name": "Open"
+            "name": "StartingSoon"
           },
           {
             "name": "Failed"
+          },
+          {
+            "name": "Canceled"
+          },
+          {
+            "name": "Open"
           },
           {
             "name": "Funded"
           },
           {
             "name": "OnTrack"
+          },
+          {
+            "name": "Delinquent"
           },
           {
             "name": "Finished"

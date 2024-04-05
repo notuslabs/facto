@@ -8,6 +8,7 @@ import { BN } from "bn.js";
 import { FAKE_MINT } from "@/lib/constants";
 import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
+import { parseUnits } from "@/lib/parse-units"
 
 export function useWithdrawal() {
   const queryClient = useQueryClient();
@@ -24,7 +25,7 @@ export function useWithdrawal() {
       amount: number;
       toTokenAccount: PublicKey;
     }) => {
-      if (!keypair || !program) return;
+      if (!keypair || !program) return null;
 
       const [investorPubKey] = PublicKey.findProgramAddressSync(
         [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
@@ -36,8 +37,8 @@ export function useWithdrawal() {
         program.programId,
       );
 
-      await program.methods
-        .withdrawTokens(new BN(amount * 10 ** 9))
+      const tx = await program.methods
+        .withdrawTokens(parseUnits(amount))
         .accounts({
           investor: investorPubKey,
           investorStableTokenAccount: investorTokenAccountPubKey,
@@ -47,7 +48,7 @@ export function useWithdrawal() {
           caller: keypair.publicKey,
         })
         .rpc()
-        .catch((e) => console.log(e));
+      return tx;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

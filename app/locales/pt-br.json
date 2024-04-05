@@ -144,6 +144,18 @@
     "installments": "parcelas",
     "per-year": "ao ano"
   },
+  "installments-page": {
+    "title": "Parcelas a vencer",
+    "exhibiting": "Exibindo",
+    "offers": "Parcelas a vencer de {offerNumber} ofertas",
+    "all-status": "Todos status",
+    "offer-name": "Offerta",
+    "installment-date": "Data",
+    "installments-count": "Parcela",
+    "installment-amount": "Valor da parcela",
+    "status": "Status",
+    "see-offer": "Ver oferta"
+  },
   "receivables-page": {
     "title": "Parcelas a receber",
     "exhibiting": "Exibindo",
@@ -168,13 +180,17 @@
     "deposit-value": "Valor do depósito",
     "your-balance": "Seu saldo em conta é de ",
     "disclaimer": "Disclaimer aqui",
-    "deposit": "Depósito"
+    "deposit": "Depósito",
+    "address": "Endereço da transação",
+    "address-copied": "Endereço copiado"
   },
   "withdrawal-page": {
     "withdrawal-value": "Valor do saque",
     "your-balance": "Seu saldo em conta é de ",
     "disclaimer": "Disclaimer aqui",
-    "withdrawal": "Saque"
+    "withdrawal": "Saque",
+    "address": "Endereço da transação",
+    "address-copied": "Endereço copiado"
   },
   "score-card": {
     "bad": "Ruim",
@@ -184,15 +200,19 @@
   },
   "badges": {
     "paid": "Pago",
-    "anticipated": "Previsto"
+    "anticipated": "Previsto",
+    "upcoming": "A vencer",
+    "overdue": "Em atraso"
   },
-  "transactions-modal": {
+  "transactions-dialog": {
     "deposit": "Depósito",
     "withdrawal": "Saque",
     "description": "Adicione saldo em sua conta para investir",
     "deposit-value": "Valor do depósito",
     "withdrawal-value": "Valor do saque",
-    "your-balance": "Seu saldo em conta é de "
+    "your-balance": "Seu saldo em conta é de ",
+    "address": "Endereço da transação",
+    "address-copied": "Endereço copiado"
   },
   "become": {
     "investor": {
@@ -307,6 +327,15 @@
     "withdrawal": "Saque",
     "your-balance": "Seu saldo em conta é de "
   },
+  "success": {
+    "title-deposit": "Depósito realizado com sucesso",
+    "title-withdrawal": "Saque realizado com sucesso",
+    "amount-deposit": "Valor do depósito",
+    "amount-withdrawal": "Valor do saque",
+    "hash": "Hash da transação",
+    "hash-copied": "Hash copiado",
+    "see-on": "Ver na blockchain"
+  },
   "credit-scores": {
     "AAA": "Investimentos de qualidade excepcional. Menor risco de default. Representam a segurança máxima.",
     "AA": "Investimentos de alta qualidade. Risco de default muito baixo. Muito seguros, mas um pouco menos que os AAA.",
@@ -320,17 +349,23 @@
     "D": "Default. O investimento falhou em cumprir com suas obrigações financeiras. A categoria mais baixa e arriscada."
   },
   "offer-status": {
-    "StartingSoon": "Em breve",
-    "Open": "Aberto",
-    "Funded": "Fundado",
-    "OnTrack": "Em andamento",
-    "Finished": "Concluído",
-    "Delinquent": "Delinquente",
-    "Failed": "Falhou"
+    "starting-soon": "Em breve",
+    "open": "Em captação",
+    "funded": "Captado",
+    "on-track": "Em pagamento",
+    "delinquent": "Em atraso",
+    "cancelled": "Cancelado",
+    "failed": "Falhou",
+    "finished": "Concluído"
   },
   "time-picker": {
     "hours": "Horas",
     "minutes": "Minutos",
     "seconds": "Segundos"
+  },
+  "pay-offer": {
+    "pay-successful": "Pagamento realizado com sucesso {link}",
+    "pay-error": "Erro no pagamento: {error}",
+    "view-transaction": "Ver transação"
   }
 }

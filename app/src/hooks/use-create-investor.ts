@@ -40,6 +40,11 @@ export function useCreateInvestor() {
         program.programId,
       );
 
+      await fetch("/api/airdrop", {
+        method: "POST",
+        body: JSON.stringify({ address: keypair.publicKey.toString() }),
+      });
+
       await program.methods
         .createInvestor(name)
         .accounts({
@@ -50,7 +55,7 @@ export function useCreateInvestor() {
           stableCoin: FAKE_MINT,
         })
         .signers([keypair])
-        .rpc();
+        .rpc({ commitment: "finalized" });
     },
   });
 }

@@ -48,6 +48,11 @@ export function useCreateBorrower() {
         program.programId,
       );
 
+      await fetch("/api/airdrop", {
+        method: "POST",
+        body: JSON.stringify({ address: keypair.publicKey.toString() }),
+      });
+
       const res = await program.methods
         .createBorrower(name, description, tokenSlug)
         .accounts({

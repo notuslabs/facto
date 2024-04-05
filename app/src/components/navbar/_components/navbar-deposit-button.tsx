@@ -5,7 +5,7 @@ import { useSession } from "@/hooks/use-session";
 import { PlusSquare } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import TransactionModal from "@/components/transaction-modal";
+import TransactionDialog from "@/components/transaction-dialog";
 
 export function NavbarDepositButton() {
   const { data } = useSession();
@@ -23,7 +23,7 @@ export function NavbarDepositButton() {
         </Button>
       </DialogTrigger>
       <DialogContent className="border-0">
-        <TransactionModal type="deposit" />
+        <TransactionDialog type="deposit" />
       </DialogContent>
     </Dialog>
   );

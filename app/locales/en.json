@@ -144,6 +144,18 @@
     "installments": "installments",
     "per-year": "per year"
   },
+  "installments-page": {
+    "title": "Due installments",
+    "exhibiting": "Exhibiting",
+    "offers": "Due installments of {offerNumber} offers",
+    "all-status": "All status",
+    "offer-name": "Offer",
+    "installment-date": "Date",
+    "installments-count": "Installment",
+    "installment-amount": "Installment Value",
+    "status": "Status",
+    "see-offer": "See offer"
+  },
   "receivables-page": {
     "title": "Outstanding receivables",
     "exhibiting": "Exhibiting",
@@ -168,13 +180,17 @@
     "deposit-value": "Deposit value",
     "your-balance": "Your in account balance is ",
     "disclaimer": "Disclaimer here",
-    "deposit": "Deposit"
+    "deposit": "Deposit",
+    "address": "Address",
+    "address-copied": "Address copied"
   },
   "withdrawal-page": {
     "withdrawal-value": "Withdrawal value",
     "your-balance": "Your in account balance is ",
     "disclaimer": "Disclaimer here",
-    "withdrawal": "Withdrawal"
+    "withdrawal": "Withdrawal",
+    "address": "Address",
+    "address-copied": "Address copied"
   },
   "score-card": {
     "bad": "Bad",
@@ -184,15 +200,19 @@
   },
   "badges": {
     "paid": "Paid",
-    "anticipated": "Anticipated"
+    "anticipated": "Anticipated",
+    "upcoming": "Upcoming",
+    "overdue": "Overdue"
   },
-  "transactions-modal": {
+  "transactions-dialog": {
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
     "description": "Add to your balance to invest",
     "deposit-value": "Deposit value",
     "withdrawal-value": "Withdrawal value",
-    "your-balance": "Your in account balance is "
+    "your-balance": "Your in account balance is ",
+    "address": "Address",
+    "address-copied": "Address copied"
   },
   "become": {
     "investor": {
@@ -307,6 +327,15 @@
     "withdrawal": "Withdrawal",
     "your-balance": "Your in account balance is "
   },
+  "success": {
+    "title-deposit": "Deposit occurred successfully",
+    "title-withdrawal": "Withdrawal occurred successfully",
+    "amount-deposit": "Deposit amount",
+    "amount-withdrawal": "Withdrawal amount",
+    "hash": "Transaction hash",
+    "hash-copied": "Hash copied",
+    "see-on": "See on blockchain"
+  },
   "credit-scores": {
     "AAA": "Exceptional quality investments. Lower risk of default. They represent maximum security.",
     "AA": "High quality investments. Very low default risk. Very safe, but a little less than AAA.",
@@ -320,17 +349,23 @@
     "D": "Default. The investment failed to meet its financial obligations. The lowest and riskiest category."
   },
   "offer-status": {
-    "StartingSoon": "Starting soon",
-    "Open": "Open",
-    "Funded": "Funded",
-    "OnTrack": "On track",
-    "Finished": "Finished",
-    "Delinquent": "Delinquent",
-    "Failed": "Failed"
+    "starting-soon": "Starting soon",
+    "open": "Open",
+    "funded": "Funded",
+    "on-track": "On track",
+    "finished": "Finished",
+    "delinquent": "Delinquent",
+    "failed": "Failed",
+    "cancelled": "Cancelled"
   },
   "time-picker": {
     "hours": "Hours",
     "minutes": "Minutes",
     "seconds": "Seconds"
+  },
+  "pay-offer": {
+    "pay-successful": "Pay Successful",
+    "pay-error": "Pay installment error: {error}",
+    "view-transaction": "View transaction"
   }
 }

@@ -2,10 +2,10 @@ import { Button } from "./ui/button";
 import { HelpingHand } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ScoreBadge } from "./score-badge";
-import { Badge } from "./ui/badge";
+import { Badge, STATUSES_TO_VARIANTS } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { Link } from "@/navigation";
-import { Offer, RangeOption } from "@/structs/Offer";
+import { Offer, OfferStatus, RangeOption } from "@/structs/Offer";
 import { useFormatNumber } from "@/hooks/number-formatters";
 
 type OfferCardHeaderProps = {
@@ -43,11 +43,18 @@ type OfferCardBodyProps = {
   amountAcquired: number;
   amountToBeAcquired: number;
   scoreRange: RangeOption;
+  status: OfferStatus;
 };
 
-function OfferCardBody({ amountAcquired, amountToBeAcquired, scoreRange }: OfferCardBodyProps) {
+function OfferCardBody({
+  amountAcquired,
+  amountToBeAcquired,
+  scoreRange,
+  status,
+}: OfferCardBodyProps) {
   const formatNumber = useFormatNumber();
   const t = useTranslations("home.offers.card.body");
+  const offerStatusT = useTranslations("offer-status");
 
   return (
     <div className="flex w-full flex-col text-muted-foreground">
@@ -71,9 +78,7 @@ function OfferCardBody({ amountAcquired, amountToBeAcquired, scoreRange }: Offer
       </div>
       <div className="flex items-center justify-between gap-2 border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("project-status")}</p>
-        <Badge variant="secondary" className="rounded-md bg-background text-muted-foreground">
-          {t("in-fundraising")}
-        </Badge>
+        <Badge variant={STATUSES_TO_VARIANTS[status]}>{offerStatusT(status)}</Badge>
       </div>
       <div className="flex items-center justify-between gap-2 border-b border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
         <p className="text-sm">{t("credit-score")}</p>
@@ -139,6 +144,7 @@ export function OfferCard({ offer }: OfferCardProps) {
         scoreRange={offer.creditScore}
         amountAcquired={offer.acquiredAmount}
         amountToBeAcquired={offer.goalAmount}
+        status={offer.status}
       />
       <OfferCardFooter
         installments={offer.installmentsCount}
