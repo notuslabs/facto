@@ -3,9 +3,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PublicKey } from "@solana/web3.js";
 import { utils } from "@coral-xyz/anchor";
-import { BN } from "bn.js";
 import { FAKE_MINT } from "@/lib/constants";
 import { useProgram } from "./use-program";
+import { parseUnits } from "@/lib/parse-units"
 
 export function useDeposit() {
   const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ export function useDeposit() {
 
   return useMutation({
     mutationFn: async (amount: number) => {
-      if (!keypair || !program) return;
+      if (!keypair || !program) return null;
 
       const [investorPubKey] = PublicKey.findProgramAddressSync(
         [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
@@ -28,8 +28,8 @@ export function useDeposit() {
         program.programId,
       );
 
-      await program.methods
-        .depositTokens(new BN(amount * 10 ** 9))
+      const tx = await program.methods
+        .depositTokens(parseUnits(amount))
         .accounts({
           investor: investorPubKey,
           investorStableTokenAccount: investorTokenAccountPubKey,
@@ -38,6 +38,7 @@ export function useDeposit() {
           stableCoin: FAKE_MINT,
         })
         .rpc();
+      return tx;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
