@@ -8,7 +8,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_WEB3AUTH_CLIENT_ID: z.string().min(1),
     NEXT_PUBLIC_RPC_URL: z.string().url(),
-    NEXT_PUBLIC_FAKE_MINT_ADDRESS: z.string().length(44),
+    NEXT_PUBLIC_FAKE_MINT_ADDRESS: z.string().length(43),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   runtimeEnv: {

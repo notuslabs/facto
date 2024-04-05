@@ -8,7 +8,7 @@ import { useRouter } from "@/navigation";
 import { createOffer } from "@/services/create-offer";
 import { useAccounts } from "./use-accounts";
 import { useProgram } from "./use-program";
-import { CreateOfferFormSchema } from "@/app/[locale]/(admin)/offers/create/_components/offer-form-validation";
+import { CreateOfferFormSchema } from "@/app/[locale]/(authed)/admin/offers/create/_components/offer-form-validation";
 
 class BorrowerAccountNotFound extends Error {
   constructor() {

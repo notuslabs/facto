@@ -20,6 +20,8 @@ export function useBalance({ variant }: GetBalanceProps) {
     ],
     enabled: !isPending && !!data,
     queryFn: () => {
+      console.log({ isPending, data });
+
       if (isPending || !data) {
         return null;
       }

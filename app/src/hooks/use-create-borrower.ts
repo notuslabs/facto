@@ -3,15 +3,14 @@
 import { PublicKey } from "@solana/web3.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { utils } from "@coral-xyz/anchor";
-import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useTokenAccounts } from "./use-token-accounts";
 import { FAKE_MINT } from "@/lib/constants";
-import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
 import { z } from "zod";
-import { BorrowerFormSchema } from "@/app/[locale]/(public)/become/borrower/_components/borrower-form";
+import { BorrowerFormSchema } from "@/app/[locale]/(authed)/become/borrower/_components/borrower-form";
+import { useRouter } from "@/navigation";
 
 class CustomError extends Error {
   constructor(message?: string) {
@@ -24,6 +23,7 @@ export function useCreateBorrower() {
   const { data: programData } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.borrower");
+  const router = useRouter();
 
   const program = programData?.program;
   const keypair = programData?.keypair;
@@ -53,7 +53,7 @@ export function useCreateBorrower() {
         body: JSON.stringify({ address: keypair.publicKey.toString() }),
       });
 
-      const res = await program.methods
+      await program.methods
         .createBorrower(name, description, tokenSlug)
         .accounts({
           borrower: borrowerPubKey,
@@ -64,8 +64,6 @@ export function useCreateBorrower() {
         })
         .signers([keypair])
         .rpc();
-
-      console.log({ res });
     },
     onSuccess: () => {
       toast.success(t("success-toast-message"));
@@ -76,6 +74,8 @@ export function useCreateBorrower() {
       queryClient.invalidateQueries({
         queryKey: ["accounts"],
       });
+
+      router.push("/admin/offers");
     },
     onError: (error) => {
       console.error(error);

@@ -83,7 +83,7 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
   }
 
   function handleCopyAddress() {
-    if (type === "deposit" && tokenAccounts?.investorTokenAccount.address) {
+    if (type === "deposit" && tokenAccounts?.investorTokenAccount?.address) {
       copy(tokenAccounts?.investorTokenAccount.address.toString());
       return;
     }
@@ -155,14 +155,14 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
             </div>
           </div>
 
-          {tokenAccounts?.investorTokenAccount.address.toString() ||
+          {tokenAccounts?.investorTokenAccount?.address.toString() ||
           tokenAccounts?.userTokenAccount.address.toString() ? (
             <div className="px-6 text-xs text-muted-foreground">
               <p>{t("address")}</p>
               <div className="flex justify-between gap-16">
                 <p className="overflow-hidden text-ellipsis text-sm text-placeholder-foreground">
                   {type === "deposit"
-                    ? tokenAccounts?.investorTokenAccount.address.toString()
+                    ? tokenAccounts?.investorTokenAccount?.address.toString()
                     : tokenAccounts?.userTokenAccount.address.toString()}
                 </p>
                 <ClipboardCopy
