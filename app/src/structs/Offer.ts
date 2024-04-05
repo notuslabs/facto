@@ -22,6 +22,7 @@ export enum InstallmentStatus {
   Paid = "paid",
   Upcoming = "upcoming",
   Overdue = "overdue",
+  Claimed = "claimed",
 }
 
 export type CreditScoreOption = (typeof creditScoreOptions)[number];
@@ -57,8 +58,13 @@ export const paymentFrequencyOptions = ["monthly"] as const;
 
 // Remember to only use JSON serializable types bc of nextjs and react-query caching
 export class Offer {
-  private constructor(raw: Account<"offer">, rawBorrower: Account<"borrower">) {
+  private constructor(
+    raw: RawOfferAccount,
+    rawBorrower: Account<"borrower">,
+    installmentsReceived?: number | null,
+  ) {
     this.id = raw.id;
+    this.#installmentsReceived = installmentsReceived ?? 0;
     this.description = raw.description;
     this.discriminator = raw.discriminator;
     this.goalAmount = formatUnits(raw.goalAmount);
@@ -77,7 +83,7 @@ export class Offer {
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
     this.installmentsStartDate = subHours(
       this.installmentsNextPaymentDate,
-      this.totalInstallmentsPaid,
+      this.totalInstallmentsPaid ?? 0,
     ).toISOString();
     // this.installmentsStartDate = subMonths(
     //   this.installmentsNextPaymentDate,
@@ -85,7 +91,7 @@ export class Offer {
     // ).toISOString();
     this.installmentsEndDate = addMonths(
       this.installmentsStartDate,
-      this.installmentsCount - 1,
+      this.installmentsCount,
     ).toISOString();
   }
 
@@ -98,6 +104,22 @@ export class Offer {
   public description: string;
   public discriminator: number;
   public goalAmount: number;
+  public deadlineDate: string;
+  public acquiredAmount: number;
+  public borrower: Account<"borrower">;
+  public installmentsCount: number;
+  public installmentsNextPaymentDate: string;
+  public installmentsStartDate: string;
+  public minAmountInvest: number;
+  public startDate: string;
+  public createdAt: string;
+  public installmentsTotalAmount: number;
+  public totalInstallmentsPaid: number | null;
+  public installmentsEndDate: string;
+
+  #creditScoreInNumber: number;
+  #creditScoreRanges = this.#generateCreditScoreRanges(creditScoreOptions);
+  #installmentsReceived: number;
 
   public get status(): OfferStatus {
     const currentTime = new Date().getTime();
@@ -160,17 +182,26 @@ export class Offer {
 
     for (let i = 0; i < this.installmentsCount; i++) {
       // const date = addMonths(this.installmentsStartDate, i);
+
       const date = addHours(this.installmentsStartDate, i * 2);
       const installmentNumber = i + 1;
       const amount = this.installmentsTotalAmount / this.installmentsCount;
 
       let status = InstallmentStatus.Upcoming;
-      if (installmentNumber <= this.totalInstallmentsPaid) {
+      if (this.totalInstallmentsPaid && installmentNumber <= this.totalInstallmentsPaid) {
         status = InstallmentStatus.Paid;
       }
 
-      if (Date.now() > date.getTime() && installmentNumber > this.totalInstallmentsPaid) {
+      if (
+        this.totalInstallmentsPaid &&
+        Date.now() > date.getTime() &&
+        installmentNumber > this.totalInstallmentsPaid
+      ) {
         status = InstallmentStatus.Overdue;
+      }
+
+      if (this.#installmentsReceived && installmentNumber <= this.#installmentsReceived) {
+        status = InstallmentStatus.Claimed;
       }
 
       installmentsList.push({
@@ -183,22 +214,6 @@ export class Offer {
 
     return installmentsList;
   }
-
-  public deadlineDate: string;
-  public acquiredAmount: number;
-  public borrower: Account<"borrower">;
-  public installmentsCount: number;
-  public installmentsNextPaymentDate: string;
-  public installmentsStartDate: string;
-  public minAmountInvest: number;
-  public startDate: string;
-  public createdAt: string;
-  public installmentsTotalAmount: number;
-  public totalInstallmentsPaid: number;
-  public installmentsEndDate: string;
-
-  #creditScoreInNumber: number;
-  #creditScoreRanges = this.#generateCreditScoreRanges(creditScoreOptions);
 
   toJSON() {
     return {
@@ -222,7 +237,9 @@ export class Offer {
     return offer;
   }
 
-  static async fromRawCollection(raw: { account: RawOfferAccount }[]) {
+  static async fromRawCollection(
+    raw: { account: RawOfferAccount; installmentsReceived?: number | null }[],
+  ) {
     const program = getProgram();
 
     const borrowersPubKeys = raw.map((offer) => offer.account.borrower);
@@ -231,7 +248,7 @@ export class Offer {
     )) as Account<"borrower">[];
 
     return raw
-      .map((offer, index) => new Offer(offer.account, borrowers[index]))
+      .map((offer, index) => new Offer(offer.account, borrowers[index], offer.installmentsReceived))
       .sort((a, b) => a.discriminator - b.discriminator);
   }
 

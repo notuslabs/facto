@@ -42,7 +42,9 @@ export function usePayOffer(key: string) {
           payer: keypair.publicKey,
         })
         .signers([keypair])
-        .rpc();
+        .rpc()
+        .catch(console.error);
+      console.log(res);
     },
     onSuccess: () => {
       toast.success("Parcela paga com sucesso");

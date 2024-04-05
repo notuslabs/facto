@@ -11,7 +11,7 @@ export function useClaimInstallment() {
     mutationFn: async (offerId: string) => {
       if (!keypair || !program) return;
 
-      await claimInstallment({ program, caller: keypair, offerId });
+      return await claimInstallment({ program, caller: keypair, offerId });
     },
   });
 }

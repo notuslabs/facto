@@ -158,7 +158,10 @@
     "installment-value": "Installment value",
     "status": "Status",
     "from-offers": "From {offers} offers",
-    "claim": "Claim"
+    "claim": "Claim",
+    "installment-claimed": "Installment successfully claimed",
+    "view-transaction": "View transaction",
+    "claiming-installment": "Claiming installment..."
   },
   "transactions-page": {
     "title": "",
@@ -190,7 +193,8 @@
     "paid": "Paid",
     "anticipated": "Anticipated",
     "upcoming": "Upcoming",
-    "overdue": "Overdue"
+    "overdue": "Overdue",
+    "claimed": "Claimed"
   },
   "transactions-modal": {
     "deposit": "Deposit",
