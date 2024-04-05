@@ -8,7 +8,6 @@ export async function listOffers(): Promise<Offer[]> {
   const offers = await program.account.offer.all();
 
   const rawOffers = await Offer.fromRawCollection(offers);
-  console.log(rawOffers.map((offer) => offer.toJSON()));
 
   return rawOffers.map((offer) => offer.toJSON());
 }
@@ -28,7 +27,7 @@ export async function listOffersByBorrower(
     },
   ]);
   const rawOffers = await Offer.fromRawCollection(offers);
-  console.log(rawOffers);
+
   if (filterByStatus && filterByStatus.length > 0) {
     return rawOffers.filter((offer) => {
       offer = offer.toJSON();
