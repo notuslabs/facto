@@ -10,7 +10,7 @@ import { useOffersByBorrower } from "@/hooks/use-offers-by-borrower";
 export default function InstallmentsPage() {
   const t = useTranslations("installments-page");
 
-  const { data } = useOffersByBorrower(["Funded", "OnTrack", "Delinquent", "Finished"]);
+  const { data } = useOffersByBorrower(["funded", "on-track", "delinquent", "finished"]);
   const offerNumber = data?.length ?? 0;
 
   return (
