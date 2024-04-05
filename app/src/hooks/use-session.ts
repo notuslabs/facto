@@ -1,20 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 import { web3auth } from "@/lib/web3AuthService";
-import { SolanaWallet } from "@web3auth/solana-provider";
-import { PublicKey } from "@solana/web3.js";
 import { useCallback } from "react";
 import { useInitModal } from "./use-init-modal";
+import { useSolanaWallet } from "./use-solana-wallet";
+import { debounce } from "@/lib/debounce";
+import { ADAPTER_STATUS_TYPE } from "@web3auth/base";
 
 export function useSession() {
-  const getPublicKey = useCallback(async (solanaWallet?: SolanaWallet | null) => {
-    if (!solanaWallet) {
-      return;
+  const { data: solanaWallet } = useSolanaWallet();
+
+  const retrieveUserSession = debounce(async (status: ADAPTER_STATUS_TYPE) => {
+    let userInfo = null;
+
+    if (status === "connected") {
+      userInfo = await getUserInfo();
     }
 
-    const pubKey = await solanaWallet.requestAccounts();
+    if (!userInfo) throw new Error("Not authenticated");
 
-    return new PublicKey(pubKey[0]);
-  }, []);
+    return {
+      userInfo,
+      solanaWallet,
+    };
+  }, 200);
 
   const getUserInfo = useCallback(async () => {
     const user = await web3auth.getUserInfo();
@@ -25,33 +33,21 @@ export function useSession() {
   useInitModal();
 
   return useQuery({
-    queryKey: ["session", web3auth.provider?.chainId],
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: ["session", !!solanaWallet, web3auth.status],
     queryFn: async () => {
-      let userInfo = null;
-      let solanaWallet = null;
-      let address = null;
+      if (!web3auth.status) return null;
 
-      // I don't know if this is the best way to this, but
-      // I guess we don't need to instantiate the solana wallet
-      // every time we want to execute an action, so I'm saving it
-      // in a state variable.
-      if (web3auth.provider) {
-        solanaWallet = new SolanaWallet(web3auth.provider);
+      const userSession = await retrieveUserSession(web3auth.status);
 
-        address = (await getPublicKey(solanaWallet)) ?? null;
+      if (userSession instanceof Error) {
+        throw new Error("Not authenticated");
       }
 
-      if (web3auth.connected) {
-        userInfo = await getUserInfo();
-      }
-
-      return {
-        userInfo,
-        solanaWallet,
-        address,
-      };
+      return userSession;
     },
-    enabled: !!web3auth.provider?.chainId,
+    enabled: !!solanaWallet && !!web3auth.status,
+    staleTime: 1000 * 60 * 5,
     retry: 0,
   });
 }

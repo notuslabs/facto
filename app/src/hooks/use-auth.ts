@@ -4,7 +4,6 @@ import { useCreateInvestor } from "./use-create-investor";
 import { SolanaWallet } from "@web3auth/solana-provider";
 import { PublicKey } from "@solana/web3.js";
 import { useRouter } from "@/navigation";
-import { flushSync } from "react-dom";
 
 export function useAuth() {
   const { mutate: createInvestor } = useCreateInvestor();
@@ -16,14 +15,14 @@ export function useAuth() {
       const provider = await web3auth.connect();
 
       if (provider && props?.asBorrower) {
-        await queryClient.resetQueries();
+        refetchAuthQueries();
         router.push("/become/borrower");
 
         return provider;
       }
 
       if (provider) {
-        await queryClient.resetQueries();
+        refetchAuthQueries();
         const solanaWallet = new SolanaWallet(provider);
         const userInfo = await web3auth.getUserInfo();
 
@@ -55,11 +54,25 @@ export function useAuth() {
     },
   });
 
+  function refetchAuthQueries() {
+    Promise.all([
+      queryClient.resetQueries({
+        queryKey: ["session"],
+      }),
+      queryClient.resetQueries({
+        queryKey: ["accounts"],
+      }),
+      queryClient.resetQueries({
+        queryKey: ["token-accounts"],
+      }),
+    ]);
+  }
+
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: async () => {
       await web3auth.logout();
-
-      queryClient.resetQueries();
+      refetchAuthQueries();
+      router.push("/");
     },
   });
 

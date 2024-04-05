@@ -7,16 +7,27 @@ import { Hackathon } from "@/lib/idl/facto-idl-types";
 import { parseUnits } from "@/lib/parse-units";
 import { createOffer } from "@/services/create-offer";
 import { createBorrower } from "@/services/create-borrower";
+import { RequireAuthProvider } from "@/providers/require-auth-provider";
 import { Program, utils } from "@coral-xyz/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import { mintTo, createMint } from "@solana/spl-token";
 import { usePayOffer } from "@/hooks/use-pay-offer";
 export default function TestOfferCreation() {
+  return (
+    <RequireAuthProvider>
+      <TestOfferCreationTemplate />
+    </RequireAuthProvider>
+  );
+}
+
+function TestOfferCreationTemplate() {
   const { data: programData } = useProgram();
   const { mutateAsync: createInvestor } = useCreateInvestor();
   const { mutateAsync } = usePayOffer("hi");
   const keypair = programData?.keypair;
   const program = programData?.program;
+
+  console.log({ keypair });
 
   return (
     <div className="container">
@@ -25,6 +36,8 @@ export default function TestOfferCreation() {
       <Button
         className="block"
         onClick={async () => {
+          if (!keypair) return null;
+
           const [investor] = PublicKey.findProgramAddressSync(
             [utils.bytes.utf8.encode("investor"), keypair?.publicKey.toBuffer() as Buffer],
             program?.programId as PublicKey,

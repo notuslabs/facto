@@ -8,9 +8,11 @@ import { useSession } from "@/hooks/use-session";
 import { useAuth } from "@/hooks/use-auth";
 import LocaleSwitcher from "@/components/locale-switcher";
 import { Separator } from "@/components/ui/separator";
+import { NavbarVariant } from "..";
+import { cn } from "@/lib/utils";
 
 type NavbarUserButtonProps = {
-  variant?: "investor" | "borrower" | "none";
+  variant?: NavbarVariant;
 };
 
 export function NavbarUserButton({ variant }: NavbarUserButtonProps) {
@@ -24,8 +26,11 @@ export function NavbarUserButton({ variant }: NavbarUserButtonProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="secondary" className="flex gap-2 rounded-full pl-3 pr-2  ">
-          {userInfo && (
+        <Button
+          variant="secondary"
+          className={cn("flex gap-2 rounded-full pl-3 pr-2", variant === "none" && "p-1")}
+        >
+          {userInfo && variant !== "none" && (
             <span className="text-xs font-medium">
               {/* TODO: add translation */}
               {variant === "investor" ? "Investor" : "Borrower"}

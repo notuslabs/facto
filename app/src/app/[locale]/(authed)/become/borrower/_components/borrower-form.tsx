@@ -61,13 +61,13 @@ export function BorrowerForm({ isLoading, isAllowedToCreate }: InvestorFormProps
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn("flex flex-col items-center justify-start", isLoading && "animate-pulse")}
       >
-        <div className="flex w-[741px] flex-col gap-8 py-[118px]">
-          <div className="grid grid-cols-4 gap-8">
+        <div className="flex w-full max-w-[741px] flex-col gap-8 py-[118px]">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem className="col-span-3">
+                <FormItem className="md:col-span-3">
                   <FormLabel required>{t("form-fields.name")}</FormLabel>
                   <FormDescription
                     data-exceeded-chars={name.length > 30 ? "true" : "false"}
@@ -94,7 +94,7 @@ export function BorrowerForm({ isLoading, isAllowedToCreate }: InvestorFormProps
               control={form.control}
               name="tokenSlug"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel required>{t("form-fields.token")}</FormLabel>
                   <FormDescription
                     data-exceeded-chars={name.length > 30 ? "true" : "false"}

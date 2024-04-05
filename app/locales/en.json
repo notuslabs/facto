@@ -1,11 +1,20 @@
 {
+  "not-authenticated": "You need to be authenticated",
   "meta-data": {
     "title": "Hackathon Solana",
     "description": "Hackathon project for Solana"
   },
   "opening-page": {
     "title": "Invest and Strengthen",
-    "description": "Conect investors to projects"
+    "description": "Conect investors to projects",
+    "borrower-card": {
+      "title": "I'm a Borrower",
+      "description": "And I need to raise funds for my project"
+    },
+    "investor-card": {
+      "title": "I'm an Investor",
+      "description": "And I want to invest in projects"
+    }
   },
   "navbar": {
     "login": "Login",
@@ -13,6 +22,7 @@
     "my-investments": "My investments",
     "receivables": "Outstanding receivables",
     "create-account": "Create account",
+    "become-investor": "Become an investor",
     "withdrawal": "Withdrawal",
     "deposit": "Deposit",
     "balance": "My Balance",

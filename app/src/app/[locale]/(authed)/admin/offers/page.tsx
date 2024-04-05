@@ -37,7 +37,7 @@ export default function OffersPage() {
           <Button variant="secondary" className="flex items-center">
             {t("all-status")} <ChevronDown size={20} />
           </Button>
-          <Link href="/offers/create" className={buttonVariants()}>
+          <Link href="/admin/offers/create" className={buttonVariants()}>
             <PlusSquare size={20} />
             {t("create-offer")}
           </Link>

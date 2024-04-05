@@ -110,7 +110,7 @@ export function useInvest() {
       });
     },
     onError: (error) => {
-      console.error(error.message);
+      console.error(error);
       toast.error(error.message);
     },
   });
