@@ -3,14 +3,12 @@ import idl from "@/lib/idl/idl-facto.json";
 import { Keypair } from "@solana/web3.js";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { useConnection } from "./use-connection";
-import { useSession } from "./use-session";
 import { useQuery } from "@tanstack/react-query";
+import { useSolanaWallet } from "./use-solana-wallet";
 
 export function useProgram() {
   const { connection } = useConnection();
-  const { data } = useSession();
-
-  const solanaWallet = data?.solanaWallet;
+  const { data: solanaWallet } = useSolanaWallet();
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
@@ -20,11 +18,13 @@ export function useProgram() {
       let keypair = null;
       let program = null;
 
-      let privateKey = await solanaWallet
-        .request<unknown, string>({
+      let privateKey = "";
+
+      try {
+        privateKey = await solanaWallet.request<unknown, string>({
           method: "solanaPrivateKey",
-        })
-        .catch(() => "");
+        });
+      } catch {}
 
       if (!privateKey) return null;
 
