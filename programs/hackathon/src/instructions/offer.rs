@@ -208,6 +208,8 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
     )?;
 
     ctx.accounts.offer.total_installments_paid += 1;
+    let seconds_in_30_days = 60 * 60 * 2; //2592000;
+    ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 
     Ok(())
 }
@@ -263,8 +265,6 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
     )?;
 
     ctx.accounts.investment.installments_received += 1;
-    let seconds_in_30_days = 60 * 60 * 2; //2592000 TODO: we'll leave it as 2 hours for testing purposes;
-    ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 
     Ok(())
 }
