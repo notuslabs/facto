@@ -136,7 +136,7 @@ export class Offer {
     }
 
     if (this.acquiredAmount == this.goalAmount) {
-      if (currentTime < deadlineTime) {
+      if (currentTime < deadlineTime && this.totalInstallmentsPaid == 0) {
         return OfferStatus.Funded;
       }
 

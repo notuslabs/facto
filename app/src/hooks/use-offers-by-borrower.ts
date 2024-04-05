@@ -23,8 +23,6 @@ export function useOffersByBorrower(filter?: string[]) {
         program.programId,
       );
 
-      console.log("borrower key", borrowerPubKey);
-
       return listOffersByBorrower(borrowerPubKey, filter);
     },
     enabled: !!program && !!keypair,

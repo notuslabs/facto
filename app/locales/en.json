@@ -175,13 +175,17 @@
     "deposit-value": "Deposit value",
     "your-balance": "Your in account balance is ",
     "disclaimer": "Disclaimer here",
-    "deposit": "Deposit"
+    "deposit": "Deposit",
+    "address": "Address",
+    "address-copied": "Address copied"
   },
   "withdrawal-page": {
     "withdrawal-value": "Withdrawal value",
     "your-balance": "Your in account balance is ",
     "disclaimer": "Disclaimer here",
-    "withdrawal": "Withdrawal"
+    "withdrawal": "Withdrawal",
+    "address": "Address",
+    "address-copied": "Address copied"
   },
   "score-card": {
     "bad": "Bad",
@@ -196,13 +200,15 @@
     "overdue": "Overdue",
     "claimed": "Claimed"
   },
-  "transactions-modal": {
+  "transactions-dialog": {
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
     "description": "Add to your balance to invest",
     "deposit-value": "Deposit value",
     "withdrawal-value": "Withdrawal value",
-    "your-balance": "Your in account balance is "
+    "your-balance": "Your in account balance is ",
+    "address": "Address",
+    "address-copied": "Address copied"
   },
   "become": {
     "investor": {
@@ -317,6 +323,15 @@
     "withdrawal": "Withdrawal",
     "your-balance": "Your in account balance is "
   },
+  "success": {
+    "title-deposit": "Deposit occurred successfully",
+    "title-withdrawal": "Withdrawal occurred successfully",
+    "amount-deposit": "Deposit amount",
+    "amount-withdrawal": "Withdrawal amount",
+    "hash": "Transaction hash",
+    "hash-copied": "Hash copied",
+    "see-on": "See on blockchain"
+  },
   "credit-scores": {
     "AAA": "Exceptional quality investments. Lower risk of default. They represent maximum security.",
     "AA": "High quality investments. Very low default risk. Very safe, but a little less than AAA.",
@@ -343,5 +358,10 @@
     "hours": "Hours",
     "minutes": "Minutes",
     "seconds": "Seconds"
+  },
+  "pay-offer": {
+    "pay-successful": "Pay Successful",
+    "pay-error": "Pay installment error: {error}",
+    "view-transaction": "View transaction"
   }
 }

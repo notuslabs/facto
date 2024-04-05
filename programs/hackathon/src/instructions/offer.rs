@@ -213,6 +213,8 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
     } else {
         ctx.accounts.offer.total_installments_paid = Some(1);
     }
+    let seconds_in_30_days = 60 * 60 * 2; //2592000;
+    ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 
     Ok(())
 }
