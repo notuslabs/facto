@@ -24,14 +24,16 @@ export function InvestmentsPageTemplate({ params }: PageProps<{ locale: string }
           <h2 className="font-medium md:text-2xl">{t("title")}</h2>
           <div className="flex border-spacing-4 gap-1 text-xs text-placeholder-foreground md:hidden">
             <span>{t("exhibiting")}</span>
-            <span>{t("offers", { totalInvestments })}</span>
+            <span>{t("offers", { offerNumber: totalInvestments })}</span>
           </div>
         </div>
 
         <div className="flex gap-4">
           <div className="hidden border-spacing-4 flex-col gap-1 border-r pr-4 text-right md:flex">
             <span className="text-xs text-placeholder-foreground">{t("exhibiting")}</span>
-            <span className="text-sm font-medium">{t("offers", { totalInvestments })}</span>
+            <span className="text-sm font-medium">
+              {t("offers", { offerNumber: totalInvestments })}
+            </span>
           </div>
 
           <Button variant="secondary" className="flex items-center">

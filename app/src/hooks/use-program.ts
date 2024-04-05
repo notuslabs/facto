@@ -24,7 +24,9 @@ export function useProgram() {
         privateKey = await solanaWallet.request<unknown, string>({
           method: "solanaPrivateKey",
         });
-      } catch {}
+      } catch (err) {
+        console.log({ err });
+      }
 
       if (!privateKey) return null;
 

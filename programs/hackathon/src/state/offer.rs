@@ -47,7 +47,7 @@ pub struct Offer {
     pub acquired_amount: u64,
     pub installments_count: u8,
     pub installments_total_amount: u64,
-    pub total_installments_paid: u8,
+    pub total_installments_paid: Option<u8>,
     pub installments_next_payment_date: i64,
     pub min_amount_invest: u64,
     pub start_date: i64,
@@ -76,11 +76,18 @@ impl<'info> Offer {
         }
 
         if self.acquired_amount == self.goal_amount {
-            if current_timestamp < self.deadline_date && self.total_installments_paid == 0 {
+            if current_timestamp < self.deadline_date
+                && self.total_installments_paid.is_some_and(|x| x == 0)
+            {
                 return OfferStatus::Funded;
             }
 
-            if self.total_installments_paid == self.installments_count {
+            if self
+                .total_installments_paid
+                .is_some_and(|total_installments_paid| {
+                    total_installments_paid == self.installments_count
+                })
+            {
                 return OfferStatus::Finished;
             }
 
