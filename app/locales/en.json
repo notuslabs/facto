@@ -157,7 +157,8 @@
     "installment": "Installment",
     "installment-value": "Installment value",
     "status": "Status",
-    "from-offers": "From {offers} offers"
+    "from-offers": "From {offers} offers",
+    "claim": "Claim"
   },
   "transactions-page": {
     "title": "",

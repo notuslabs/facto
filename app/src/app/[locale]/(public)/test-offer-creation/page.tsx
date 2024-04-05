@@ -13,7 +13,7 @@ import { mintTo, createMint } from "@solana/spl-token";
 
 export default function TestOfferCreation() {
   const { data: programData } = useProgram();
-  const { mutate: createInvestor } = useCreateInvestor();
+  const { mutateAsync: createInvestor } = useCreateInvestor();
 
   const keypair = programData?.keypair;
   const program = programData?.program;
@@ -31,7 +31,7 @@ export default function TestOfferCreation() {
             tokenSlug: "test",
             caller: keypair as Keypair,
             program: program as unknown as Program<Hackathon>,
-          });
+          }).catch(console.error);
           console.log("originator", tx);
 
           const [investor] = PublicKey.findProgramAddressSync(
@@ -47,6 +47,8 @@ export default function TestOfferCreation() {
             program?.programId as PublicKey,
           );
 
+          await createInvestor("teste");
+          console.log("investor done");
           await mintTo(
             program?.provider.connection as any,
             keypair as Keypair,
@@ -54,7 +56,7 @@ export default function TestOfferCreation() {
             investorTokenAccount,
             keypair as Keypair,
             parseUnits(100).toNumber(),
-          );
+          ).catch(console.error);
           console.log("mint done");
 
           const offer = await createOffer({
@@ -68,8 +70,9 @@ export default function TestOfferCreation() {
             installmentsStartDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
             program: program as unknown as Program<Hackathon>,
             caller: keypair as Keypair,
-          });
+          }).catch(console.error);
           console.log("offer", offer);
+          console.log("all done");
         }}
       >
         cria tudo
@@ -77,10 +80,9 @@ export default function TestOfferCreation() {
       <Button
         className="block"
         onClick={async () => {
-          const drop = await program?.provider.connection.requestAirdrop(
-            keypair?.publicKey as PublicKey,
-            9000000000,
-          );
+          const drop = await program?.provider.connection
+            .requestAirdrop(keypair?.publicKey as PublicKey, 9000000000)
+            .catch(console.error);
           await program?.provider.connection.confirmTransaction(drop as string, "finalized");
           console.log("airdrop done");
 
@@ -92,8 +94,8 @@ export default function TestOfferCreation() {
             6,
             undefined,
             { commitment: "finalized" },
-          );
-          console.log("change your .env to ", mint.toString());
+          ).catch(console.error);
+          console.log("change your .env to ", mint?.toString());
         }}
       >
         Create Mint

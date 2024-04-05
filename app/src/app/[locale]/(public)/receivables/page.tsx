@@ -1,63 +1,22 @@
-import { Badge } from "@/components/ui/badge";
+"use client";
+
 import { Button } from "@/components/ui/button";
 
 import { PageProps } from "@/lib/types";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { unstable_setRequestLocale } from "next-intl/server";
 import ReceivablesDesktopTable from "./_components/receivables-desktop-table";
 import ReceivablesMobileTable from "./_components/receivables-mobile-table";
+import { useInvestorInvestments } from "@/hooks/use-investor-investments";
 
-export default function ReceivablesPage({ params }: PageProps<{ locale: string }>) {
-  unstable_setRequestLocale(params.locale);
+export default function ReceivablesPage({}: PageProps<{ locale: string }>) {
   const t = useTranslations("receivables-page");
   const tr = useTranslations("badges");
-  const offers = 2;
+  const { data } = useInvestorInvestments();
 
-  const tableData = [
-    {
-      offerName: "Agiotagem #1",
-      date: "16/04/2024",
-      installment: "1/4",
-      installmentValue: "R$ 420",
-      paymentStatus: <Badge variant="green">{tr("paid")}</Badge>,
-    },
-    {
-      offerName: "Agiotagem #1",
-      date: "16/05/2024",
-      installment: "2/4",
-      installmentValue: "R$ 420",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      offerName: "Agiotagem #1",
-      date: "16/06/2024",
-      installment: "3/4",
-      installmentValue: "R$ 420",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      offerName: "Agiotagem #1",
-      date: "16/07/2024",
-      installment: "4/4",
-      installmentValue: "R$ 420",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      offerName: "Agiotagem #2",
-      date: "24/05/2024",
-      installment: "1/2",
-      installmentValue: "R$ 666",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-    {
-      offerName: "Agiotagem #2",
-      date: "24/06/2024",
-      installment: "2/2",
-      installmentValue: "R$ 666",
-      paymentStatus: <Badge variant="secondary">{tr("anticipated")}</Badge>,
-    },
-  ];
+  if (!data) return null;
+
+  const offers = data.investorInvestments.length;
 
   return (
     <div className="container flex flex-col gap-8 rounded-2xl p-4 text-primary md:bg-primary-foreground md:p-10">
@@ -81,8 +40,8 @@ export default function ReceivablesPage({ params }: PageProps<{ locale: string }
         </div>
       </div>
 
-      <ReceivablesDesktopTable data={tableData} />
-      <ReceivablesMobileTable data={tableData} />
+      <ReceivablesDesktopTable investments={data.investorInvestments} />
+      <ReceivablesMobileTable investments={data.investorInvestments} />
     </div>
   );
 }

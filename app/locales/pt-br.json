@@ -157,7 +157,8 @@
     "installment": "Parcela",
     "installment-value": "Valor da parcela",
     "status": "Status",
-    "from-offers": "De {offers} ofertas"
+    "from-offers": "De {offers} ofertas",
+    "claim": "Resgatar"
   },
   "transactions-page": {
     "title": "",
