@@ -8,9 +8,10 @@ type PayButtonProps = {
   index: number;
   disable: boolean;
   className?: string;
+  amount: number;
 };
 
-export function PayButton({ id, index, disable, className }: PayButtonProps) {
+export function PayButton({ id, index, disable, className, amount }: PayButtonProps) {
   const { mutate: payOffer, isPending } = usePayOffer(`${id}-${index}`);
 
   return (
@@ -21,7 +22,7 @@ export function PayButton({ id, index, disable, className }: PayButtonProps) {
         className,
       )}
       disabled={disable || isPending}
-      onClick={() => payOffer({ offerId: id })}
+      onClick={() => payOffer({ offerId: id, amount })}
     >
       {isPending ? <Loader2 size={16} className="animate-spin" /> : <CircleDollarSign size={16} />}
       Pagar

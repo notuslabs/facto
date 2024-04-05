@@ -88,8 +88,8 @@ export function useInvest() {
           vaultStableTokenAccount: vaultStableTokenAccountPubKey,
         })
         .signers([keypair])
-        .rpc({ commitment: "finalized" })
-    
+        .rpc({ commitment: "finalized" });
+
       return {
         offerId: offerId,
         tx: tx,
