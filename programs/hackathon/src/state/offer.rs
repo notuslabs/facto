@@ -76,7 +76,9 @@ impl<'info> Offer {
         }
 
         if self.acquired_amount == self.goal_amount {
-            if current_timestamp < self.deadline_date && self.total_installments_paid == 0 {
+            if current_timestamp < self.deadline_date
+                && self.total_installments_paid.is_some_and(|x| x == 0)
+            {
                 return OfferStatus::Funded;
             }
 

@@ -227,7 +227,7 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
 
     let amount_to_burn = ctx.accounts.investor_offer_token_account.amount
         / (ctx.accounts.offer.installments_count
-            - ctx.accounts.investment.installments_received.unwrap_or(1)) as u64;
+            - ctx.accounts.investment.installments_received.unwrap_or(0)) as u64;
     let burn_accounts = Burn {
         from: ctx.accounts.investor_offer_token_account.to_account_info(),
         mint: ctx.accounts.offer_token.to_account_info(),

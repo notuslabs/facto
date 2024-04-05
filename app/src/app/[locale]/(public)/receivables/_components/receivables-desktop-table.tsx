@@ -24,7 +24,7 @@ interface ReceivableDesktopTableProps {
 }
 
 export default function ReceivablesDesktopTable({ investments }: ReceivableDesktopTableProps) {
-  const { mutate, isPending } = useClaimInstallment();
+  const { mutate } = useClaimInstallment();
   const t = useTranslations("receivables-page");
   const tb = useTranslations("badges");
   const formatDate = useDateFormatter();
@@ -42,12 +42,15 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
 
     mutate(offerId, {
       async onSuccess(tx, variables, context) {
-        await queryClient.invalidateQueries({
-          queryKey: ["investor-investments", data?.keypair.publicKey.toString()],
-        });
-        queryClient.refetchQueries({
-          queryKey: ["balance"],
-        });
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: ["investor-investments", data?.keypair.publicKey.toString()],
+          }),
+          queryClient.invalidateQueries({
+            queryKey: ["balance"],
+          }),
+        ]);
+
         toast.success(t("installment-claimed"), {
           action: (() => (
             <a
@@ -66,6 +69,7 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
         toast.error(error.message, {
           id,
         });
+        event.currentTarget.disabled = true;
       },
     });
   };
