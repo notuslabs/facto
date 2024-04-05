@@ -145,6 +145,7 @@ export default function TestOfferCreation() {
         onClick={async () => {
           await mutateAsync({
             offerId: "DW8ZS5hyQG6LN54c",
+            amount: 123,
           });
         }}
       >
