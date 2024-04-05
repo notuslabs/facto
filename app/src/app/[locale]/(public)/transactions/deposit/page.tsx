@@ -44,7 +44,7 @@ export default function TransactionsDepositPage() {
   const amount = form.watch("amount");
 
   function onSubmit(values: z.infer<typeof DepositSchema>) {
-    deposit(values.amount);
+    deposit({ amount: values.amount, variant: "investor" });
   }
 
   function handleCopyToClipboard() {

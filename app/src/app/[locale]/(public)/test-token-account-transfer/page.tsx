@@ -136,7 +136,7 @@ function TestTokenAccountTransferTemplate() {
           </Button>
 
           <Button
-            onClick={() => deposit(100)}
+            onClick={() => deposit({ amount: 100, variant: "investor" })}
             disabled={!tokenAccounts?.investorTokenAccount || isDepositing}
           >
             {(isDepositing || isLoadingAccounts) && <Loader2 size={16} className="animate-spin" />}

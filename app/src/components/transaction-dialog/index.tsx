@@ -20,6 +20,7 @@ import { useTokenAccounts } from "@/hooks/use-token-accounts";
 
 interface TransactionDialogProps {
   type: "deposit" | "withdrawal";
+  variant: "investor" | "borrower";
 }
 
 const WithdrawalSchema = z.object({
@@ -30,7 +31,7 @@ const DepositSchema = z.object({
   amount: z.number().positive().int(),
 });
 
-export default function TransactionDialog({ type }: TransactionDialogProps) {
+export default function TransactionDialog({ type, variant }: TransactionDialogProps) {
   const t = useTranslations("transactions-dialog");
   const { data: balance } = useBalance({ variant: "investor" });
   const { data } = useProgram();
@@ -66,7 +67,7 @@ export default function TransactionDialog({ type }: TransactionDialogProps) {
         toTokenAccount: tokenAccounts?.userTokenAccount.address,
       });
     } else {
-      deposit(values.amount);
+      deposit({ amount: values.amount, variant });
     }
   }
 

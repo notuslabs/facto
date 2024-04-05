@@ -152,7 +152,9 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
         <div className="flex items-center justify-end gap-3">
           {(!data?.userInfo || correctStateVariant === "none") && <LocaleSwitcher />}
           {!isLoading && correctStateVariant !== "none" && <NavbarWithdrawalButton />}
-          {!isLoading && correctStateVariant !== "none" && <NavbarDepositButton />}
+          {!isLoading && correctStateVariant !== "none" && (
+            <NavbarDepositButton variant={correctStateVariant} />
+          )}
           {!isLoading && correctStateVariant !== "none" && (
             <NavbarBalance variant={correctStateVariant} />
           )}

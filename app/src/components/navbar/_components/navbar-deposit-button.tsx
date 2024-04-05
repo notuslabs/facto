@@ -7,11 +7,15 @@ import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import TransactionDialog from "@/components/transaction-dialog";
 
-export function NavbarDepositButton() {
+type NavbarDepositProps = {
+  variant: "investor" | "borrower";
+};
+
+export function NavbarDepositButton({ variant }: NavbarDepositProps) {
   const { data } = useSession();
   const t = useTranslations("navbar");
 
-  if (!data?.userInfo) return null;
+  if (!data?.userInfo && !variant) return null;
 
   return (
     <Dialog>
@@ -23,7 +27,7 @@ export function NavbarDepositButton() {
         </Button>
       </DialogTrigger>
       <DialogContent className="border-0">
-        <TransactionDialog type="deposit" />
+        <TransactionDialog type="deposit" variant={variant} />
       </DialogContent>
     </Dialog>
   );
