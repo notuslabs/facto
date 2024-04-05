@@ -13,22 +13,42 @@ export function useDeposit() {
   const keypair = programData?.keypair;
 
   return useMutation({
-    mutationFn: async (amount: number) => {
+    mutationFn: async ({
+      amount,
+      variant,
+    }: {
+      amount: number;
+      variant: "investor" | "borrower";
+    }) => {
       if (!keypair || !program) return null;
 
-      const [investorPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
-        program.programId,
-      );
+      let tokenAccount: PublicKey;
 
-      const [investorTokenAccountPubKey] = PublicKey.findProgramAddressSync(
-        [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
-        program.programId,
-      );
+      if (variant === "investor") {
+        const [investorPubKey] = PublicKey.findProgramAddressSync(
+          [utils.bytes.utf8.encode("investor"), keypair.publicKey.toBuffer()],
+          program.programId,
+        );
+
+        [tokenAccount] = PublicKey.findProgramAddressSync(
+          [utils.bytes.utf8.encode("investor_stable_token_account"), investorPubKey.toBuffer()],
+          program.programId,
+        );
+      } else {
+        const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+          [utils.bytes.utf8.encode("borrower"), keypair.publicKey.toBuffer()],
+          program.programId,
+        );
+
+        [tokenAccount] = PublicKey.findProgramAddressSync(
+          [utils.bytes.utf8.encode("borrower_token_account"), borrowerPubKey.toBuffer()],
+          program.programId,
+        );
+      }
 
       const { tx } = await fetch("/api/mint", {
         method: "POST",
-        body: JSON.stringify({ address: investorTokenAccountPubKey, amount }),
+        body: JSON.stringify({ address: tokenAccount, amount }),
       }).then((res) => res.json());
 
       return tx;

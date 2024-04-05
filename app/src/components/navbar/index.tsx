@@ -91,7 +91,7 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
           {variant !== "none" && (
             <>
               <NavbarWithdrawalButton />
-              <NavbarDepositButton />
+              <NavbarDepositButton variant={variant} />
               <NavbarBalance variant={variant} />
               <NavbarUserButton variant={variant} />
               <NavbarSignInButton />
