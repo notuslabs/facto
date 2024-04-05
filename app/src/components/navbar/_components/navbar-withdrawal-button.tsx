@@ -23,7 +23,7 @@ export function NavbarWithdrawalButton() {
         </Button>
       </DialogTrigger>
       <DialogContent className="border-0">
-        <TransactionDialog type="withdrawal" />
+        <TransactionDialog type="withdrawal" variant="investor" />
       </DialogContent>
     </Dialog>
   );
