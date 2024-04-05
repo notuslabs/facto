@@ -1,19 +1,27 @@
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { IDL } from "@/lib/idl/facto-idl-types";
 import { getProgram } from "@/services/get-program";
-import { addMonths, subMonths } from "date-fns";
+import { addMonths, subMonths, addHours, subHours } from "date-fns";
 import { formatUnits } from "@/lib/format-units";
 
 type Account<T extends keyof IdlAccounts<typeof IDL>> = IdlAccounts<typeof IDL>[T];
 
+export type RawOfferAccount = Account<"offer">;
 export enum OfferStatus {
-  StartingSoon = "StartingSoon",
-  Open = "Open",
-  Funded = "Funded",
-  OnTrack = "OnTrack",
-  Finished = "Finished",
-  Delinquent = "Delinquent",
-  Failed = "Failed",
+  StartingSoon = "starting-soon",
+  Open = "open",
+  Funded = "funded",
+  OnTrack = "on-track",
+  Finished = "finished",
+  Delinquent = "delinquent",
+  Failed = "failed",
+  Cancelled = "cancelled",
+}
+
+export enum InstallmentStatus {
+  Paid = "paid",
+  Upcoming = "upcoming",
+  Overdue = "overdue",
 }
 
 export type CreditScoreOption = (typeof creditScoreOptions)[number];
@@ -42,7 +50,7 @@ export type InstallmentsList = Array<{
   date: Date;
   installmentNumber: number;
   amount: number;
-  status: "paid" | "anticipated";
+  status: InstallmentStatus;
 }>;
 
 export const paymentFrequencyOptions = ["monthly"] as const;
@@ -67,10 +75,14 @@ export class Offer {
     this.startDate = new Date(raw.startDate.toNumber() * 1000).toISOString();
     this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
-    this.installmentsStartDate = subMonths(
+    this.installmentsStartDate = subHours(
       this.installmentsNextPaymentDate,
       this.totalInstallmentsPaid,
     ).toISOString();
+    // this.installmentsStartDate = subMonths(
+    //   this.installmentsNextPaymentDate,
+    //   this.totalInstallmentsPaid,
+    // ).toISOString();
     this.installmentsEndDate = addMonths(
       this.installmentsStartDate,
       this.installmentsCount - 1,
@@ -102,7 +114,7 @@ export class Offer {
     }
 
     if (this.acquiredAmount == this.goalAmount) {
-      if (currentTime < deadlineTime) {
+      if (currentTime < deadlineTime && this.totalInstallmentsPaid == 0) {
         return OfferStatus.Funded;
       }
 
@@ -147,10 +159,19 @@ export class Offer {
     const installmentsList: InstallmentsList = [];
 
     for (let i = 0; i < this.installmentsCount; i++) {
-      const date = addMonths(this.installmentsStartDate, i);
+      // const date = addMonths(this.installmentsStartDate, i);
+      const date = addHours(this.installmentsStartDate, i * 2);
       const installmentNumber = i + 1;
       const amount = this.installmentsTotalAmount / this.installmentsCount;
-      const status = this.totalInstallmentsPaid >= installmentNumber ? "paid" : "anticipated";
+
+      let status = InstallmentStatus.Upcoming;
+      if (installmentNumber <= this.totalInstallmentsPaid) {
+        status = InstallmentStatus.Paid;
+      }
+
+      if (Date.now() > date.getTime() && installmentNumber > this.totalInstallmentsPaid) {
+        status = InstallmentStatus.Overdue;
+      }
 
       installmentsList.push({
         date: date,
@@ -201,16 +222,16 @@ export class Offer {
     return offer;
   }
 
-  static async fromRawCollection(raw: { account: Account<"offer"> }[]) {
+  static async fromRawCollection(raw: { account: RawOfferAccount }[]) {
     const program = getProgram();
 
-    const borrowersPubKeys = raw.map((raw) => raw.account.borrower);
+    const borrowersPubKeys = raw.map((offer) => offer.account.borrower);
     const borrowers = (await program.account.borrower.fetchMultiple(
       borrowersPubKeys,
     )) as Account<"borrower">[];
 
     return raw
-      .map((raw, index) => new Offer(raw.account, borrowers[index]))
+      .map((offer, index) => new Offer(offer.account, borrowers[index]))
       .sort((a, b) => a.discriminator - b.discriminator);
   }
 

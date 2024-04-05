@@ -12,8 +12,11 @@ pub struct Investor {
 
 #[account]
 #[derive(InitSpace)]
-pub struct InvestorInstallments {
-    pub count_received: u8,
+pub struct Investment {
+    pub offer: Pubkey,
+    pub investor: Pubkey,
+    pub installments_received: u8,
+    pub total_invested: u64,
     pub bump: u8
 }
 
