@@ -10,11 +10,11 @@ import { createBorrower } from "@/services/create-borrower";
 import { Program, utils } from "@coral-xyz/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import { mintTo, createMint } from "@solana/spl-token";
-
+import { usePayOffer } from "@/hooks/use-pay-offer";
 export default function TestOfferCreation() {
   const { data: programData } = useProgram();
   const { mutateAsync: createInvestor } = useCreateInvestor();
-
+  const { mutateAsync } = usePayOffer("hi");
   const keypair = programData?.keypair;
   const program = programData?.program;
 
@@ -25,15 +25,6 @@ export default function TestOfferCreation() {
       <Button
         className="block"
         onClick={async () => {
-          const tx = await createBorrower({
-            name: "Test",
-            description: "Test",
-            tokenSlug: "test",
-            caller: keypair as Keypair,
-            program: program as unknown as Program<Hackathon>,
-          }).catch(console.error);
-          console.log("originator", tx);
-
           const [investor] = PublicKey.findProgramAddressSync(
             [utils.bytes.utf8.encode("investor"), keypair?.publicKey.toBuffer() as Buffer],
             program?.programId as PublicKey,
@@ -46,31 +37,60 @@ export default function TestOfferCreation() {
             ],
             program?.programId as PublicKey,
           );
-
-          await createInvestor("teste");
+          const [tx] = await Promise.all([
+            createBorrower({
+              name: "Test",
+              description: "Test",
+              tokenSlug: "test",
+              caller: keypair as Keypair,
+              program: program as unknown as Program<Hackathon>,
+            }).catch(console.error),
+            createInvestor("teste").catch(console.error),
+          ]);
+          console.log("originator", tx);
           console.log("investor done");
-          await mintTo(
-            program?.provider.connection as any,
-            keypair as Keypair,
-            new PublicKey(env.NEXT_PUBLIC_FAKE_MINT_ADDRESS),
-            investorTokenAccount,
-            keypair as Keypair,
-            parseUnits(100).toNumber(),
-          ).catch(console.error);
-          console.log("mint done");
 
-          const offer = await createOffer({
-            description: "Test",
-            deadlineDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-            goalAmount: 100,
-            startDate: new Date(Date.now() + 1000 * 60),
-            minAmountInvest: 10,
-            installmentsTotalAmount: 110,
-            installmentsCount: 1,
-            installmentsStartDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-            program: program as unknown as Program<Hackathon>,
-            caller: keypair as Keypair,
-          }).catch(console.error);
+          const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+            [utils.bytes.utf8.encode("borrower"), keypair?.publicKey.toBuffer() as Buffer],
+            program?.programId as PublicKey,
+          );
+
+          const [borrowerTokenAccountPubKey] = PublicKey.findProgramAddressSync(
+            [utils.bytes.utf8.encode("borrower_token_account"), borrowerPubKey.toBuffer()],
+            program?.programId as PublicKey,
+          );
+
+          const [offer] = await Promise.all([
+            createOffer({
+              description: "Test",
+              deadlineDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+              goalAmount: 100,
+              startDate: new Date(Date.now() + 1000 * 60),
+              minAmountInvest: 10,
+              installmentsTotalAmount: 110,
+              installmentsCount: 1,
+              installmentsStartDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+              program: program as unknown as Program<Hackathon>,
+              caller: keypair as Keypair,
+            }).catch(console.error),
+            mintTo(
+              program?.provider.connection as any,
+              keypair as Keypair,
+              new PublicKey(env.NEXT_PUBLIC_FAKE_MINT_ADDRESS),
+              investorTokenAccount,
+              keypair as Keypair,
+              parseUnits(1000).toNumber(),
+            ).catch(console.error),
+            mintTo(
+              program?.provider.connection as any,
+              keypair as Keypair,
+              new PublicKey(env.NEXT_PUBLIC_FAKE_MINT_ADDRESS),
+              borrowerTokenAccountPubKey,
+              keypair as Keypair,
+              parseUnits(1000).toNumber(),
+            ).catch(console.error),
+          ]);
+          console.log("mint done");
           console.log("offer", offer);
           console.log("all done");
         }}
@@ -101,23 +121,34 @@ export default function TestOfferCreation() {
         Create Mint
       </Button>
       <Button
+        className="block"
         onClick={async () => {
           const tx = await createOffer({
             description: "Test",
-            deadlineDate: new Date(Date.now() + 1000 * 60),
-            goalAmount: 100,
-            startDate: new Date(Date.now()),
-            minAmountInvest: 10,
-            installmentsTotalAmount: 110,
-            installmentsCount: 12,
-            installmentsStartDate: new Date(Date.now() + 1000 * 60 * 10),
+            deadlineDate: new Date(Date.now() + 1000 * 200),
+            goalAmount: 10,
+            startDate: new Date(Date.now() + 1000 * 15),
+            minAmountInvest: 1,
+            installmentsTotalAmount: 100,
+            installmentsCount: 10,
+            installmentsStartDate: new Date(Date.now() + 1000 * 260),
             program: program as unknown as Program<Hackathon>,
             caller: keypair as Keypair,
-          });
+          }).catch(console.error);
+
           console.log(tx);
         }}
       >
         Create Offer
+      </Button>
+      <Button
+        onClick={async () => {
+          await mutateAsync({
+            offerId: "DW8ZS5hyQG6LN54c",
+          });
+        }}
+      >
+        Pay
       </Button>
     </div>
   );

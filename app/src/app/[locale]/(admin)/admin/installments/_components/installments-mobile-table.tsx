@@ -81,7 +81,7 @@ export default function InstallmentsMobileTable({ data }: DesktopTableProps) {
                 index={index}
                 disable={
                   installment.status === InstallmentStatus.Paid ||
-                  installment.installmentNumber !== tableData.totalInstallmentsPaid + 1
+                  installment.installmentNumber !== (tableData.totalInstallmentsPaid ?? 0) + 1
                 }
                 className="w-full"
                 amount={installment.amount}

@@ -8,6 +8,7 @@ export const installmentStatusToVariant = {
   paid: "green",
   upcoming: "primary",
   overdue: "yellow",
+  claimed: "blue",
 } as const;
 
 export const STATUSES_TO_VARIANTS = {

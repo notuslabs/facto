@@ -66,7 +66,7 @@ export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
               index={index}
               disable={
                 installment.status === InstallmentStatus.Paid ||
-                installment.installmentNumber !== tableData.totalInstallmentsPaid + 1
+                installment.installmentNumber !== (tableData.totalInstallmentsPaid ?? 0) + 1
               }
               amount={installment.amount}
             />

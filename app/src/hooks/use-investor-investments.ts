@@ -4,7 +4,6 @@ import { useProgram } from "./use-program";
 import { getInvestorInvestments } from "@/services/get-investor-investments";
 import { PublicKey } from "@solana/web3.js";
 import { utils } from "@coral-xyz/anchor";
-import { Offer, RawOfferAccount } from "@/structs/Offer";
 
 export function useInvestorInvestments() {
   const { data } = useProgram();

@@ -1,10 +1,11 @@
 import BN from "bn.js";
 import { nanoid } from "nanoid";
-import { PublicKey, Keypair } from "@solana/web3.js";
+import { PublicKey, Keypair, SystemProgram } from "@solana/web3.js";
 import { Program, utils } from "@coral-xyz/anchor";
 import { FAKE_MINT } from "@/lib/constants";
 import { Hackathon } from "@/lib/idl/facto-idl-types";
 import { parseUnits } from "@/lib/parse-units";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 export type CreateOfferParams = {
   description: string;
@@ -38,6 +39,18 @@ export async function createOffer({
     [utils.bytes.utf8.encode("offer"), utils.bytes.utf8.encode(id)],
     program.programId,
   );
+  const [vaultPublicKey] = PublicKey.findProgramAddressSync(
+    [Buffer.from("offer_vault"), offer.toBuffer()],
+    program.programId,
+  );
+  const [borrowerPubKey] = PublicKey.findProgramAddressSync(
+    [Buffer.from("borrower"), caller.publicKey.toBuffer()],
+    program.programId,
+  );
+  const [offerTokenPubKey] = PublicKey.findProgramAddressSync(
+    [Buffer.from("offer_token"), offer.toBuffer()],
+    program.programId,
+  );
 
   await program.methods
     .createOffer(
@@ -51,11 +64,17 @@ export async function createOffer({
       parseUnits(installmentsTotalAmount),
       new BN(Math.round(installmentsStartDate.getTime() / 1000)),
     )
-    .accounts({
+    .accountsStrict({
       payer: caller.publicKey,
       caller: caller.publicKey,
       offer,
+      vault: vaultPublicKey,
+      borrower: borrowerPubKey,
       stableToken: FAKE_MINT,
+      systemProgram: SystemProgram.programId,
+      token: offerTokenPubKey,
+      tokenProgram: TOKEN_PROGRAM_ID,
+      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
     })
     .signers([caller])
     .rpc({ commitment: "finalized" });

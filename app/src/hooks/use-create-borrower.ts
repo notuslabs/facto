@@ -53,7 +53,7 @@ export function useCreateBorrower() {
         body: JSON.stringify({ address: keypair.publicKey.toString() }),
       });
 
-      const res = await program.methods
+      await program.methods
         .createBorrower(name, description, tokenSlug)
         .accounts({
           borrower: borrowerPubKey,
@@ -64,8 +64,6 @@ export function useCreateBorrower() {
         })
         .signers([keypair])
         .rpc();
-
-      console.log({ res });
     },
     onSuccess: () => {
       toast.success(t("success-toast-message"));

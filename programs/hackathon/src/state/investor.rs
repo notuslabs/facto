@@ -15,7 +15,7 @@ pub struct Investor {
 pub struct Investment {
     pub offer: Pubkey,
     pub investor: Pubkey,
-    pub installments_received: u8,
+    pub installments_received: Option<u8>,
     pub total_invested: u64,
     pub bump: u8
 }

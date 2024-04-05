@@ -174,7 +174,11 @@
     "installment": "Parcela",
     "installment-value": "Valor da parcela",
     "status": "Status",
-    "from-offers": "De {offers} ofertas"
+    "from-offers": "De {offers} ofertas",
+    "claim": "Resgatar",
+    "installment-claimed": "O valor da parcela foi resgatado com sucesso!",
+    "view-transaction": "Ver transação",
+    "claiming-installment": "Resgatando parcela..."
   },
   "transactions-page": {
     "title": "",
@@ -210,7 +214,8 @@
     "paid": "Pago",
     "anticipated": "Previsto",
     "upcoming": "A vencer",
-    "overdue": "Em atraso"
+    "overdue": "Em atraso",
+    "claimed": "Resgatado"
   },
   "transactions-dialog": {
     "deposit": "Depósito",
