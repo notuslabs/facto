@@ -28,7 +28,7 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
     },
     {
       label: t("installments"),
-      href: "/installments" as const,
+      href: "/admin/installments" as const,
     },
   ];
 
