@@ -1,14 +1,11 @@
 "use client";
 import { PublicKey } from "@solana/web3.js";
 
-import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { utils } from "@coral-xyz/anchor";
-import { BN } from "bn.js";
 import { FAKE_MINT } from "@/lib/constants";
-import { useSession } from "./use-session";
 import { useProgram } from "./use-program";
-import { parseUnits } from "@/lib/parse-units"
+import { parseUnits } from "@/lib/parse-units";
 
 export function useWithdrawal() {
   const queryClient = useQueryClient();
@@ -47,7 +44,7 @@ export function useWithdrawal() {
           payer: keypair.publicKey,
           caller: keypair.publicKey,
         })
-        .rpc()
+        .rpc();
       return tx;
     },
     onSuccess: () => {

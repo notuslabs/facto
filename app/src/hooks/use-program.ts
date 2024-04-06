@@ -4,17 +4,22 @@ import { Keypair } from "@solana/web3.js";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { useConnection } from "./use-connection";
 import { useQuery } from "@tanstack/react-query";
-import { useSolanaWallet } from "./use-solana-wallet";
+import { useSolanaWallet, useWeb3AuthStatus } from "./use-solana-wallet";
+import { web3auth } from "@/lib/web3AuthService";
+import { useSession } from "./use-session";
 
 export function useProgram() {
   const { connection } = useConnection();
-  const { data: solanaWallet } = useSolanaWallet();
+  const { data: status } = useWeb3AuthStatus();
+  const { data: sessionData } = useSession();
+
+  const solanaWallet = sessionData?.solanaWallet;
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["program", !!solanaWallet],
+    queryKey: ["program", !!solanaWallet, status, solanaWallet],
     queryFn: async () => {
-      if (!solanaWallet) return;
+      if (!solanaWallet) return null;
       let keypair = null;
       let program = null;
 
@@ -53,6 +58,5 @@ export function useProgram() {
         keypair,
       };
     },
-    enabled: !!solanaWallet,
   });
 }

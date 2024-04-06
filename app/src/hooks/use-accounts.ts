@@ -40,6 +40,5 @@ export function useAccounts() {
       };
     },
     retry: 0,
-    enabled: !!keypair && !!program,
   });
 }
