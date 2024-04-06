@@ -8,14 +8,14 @@ import { useTranslations } from "next-intl";
 
 export function BorrowerChoiceCard() {
   const { login, isPending } = useAuth();
-  const t = useTranslations("opening-page.borrower-card");
+  const t = useTranslations("opening-page");
 
   return (
     <button disabled={isPending} onClick={() => login({ asBorrower: true })}>
       <ChoiceCard
-        title={t("title")}
+        title={t("borrower-title")}
         titleClassName="bg-gradient-to-r from-[#717270] to-[#D6D8D5] inline-block text-transparent bg-clip-text"
-        description={t("description")}
+        description={t("borrower-description")}
         icon={<CryptoCurrency04 />}
         className="border-subtle bg-subtle"
       >

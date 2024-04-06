@@ -55,7 +55,7 @@ export default function TransactionsDepositPage() {
 
   return (
     <div className="flex h-screen flex-col gap-6">
-      <GoBackButton title={t("deposit")} />
+      <GoBackButton title={t("mint")} />
       {isSuccess ? (
         <Dialog>
           <SuccessDialog
@@ -70,7 +70,7 @@ export default function TransactionsDepositPage() {
           <div className="px-4">
             <div className="flex flex-col gap-6 rounded-2xl bg-secondary p-6">
               <div className="flex flex-col gap-3 text-xs">
-                {t("deposit-value")}
+                {t("mint-value")}
                 {isPending ? (
                   <Loader2Icon className="animate-spin text-facto-primary" size={24} />
                 ) : (
@@ -144,7 +144,7 @@ export default function TransactionsDepositPage() {
               ) : (
                 <PlusSquare size={20} />
               )}
-              {t("deposit")}
+              {t("mint")}
             </Button>
           </div>
         </>

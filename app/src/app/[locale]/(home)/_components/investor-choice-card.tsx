@@ -7,14 +7,13 @@ import { InvestorTexture } from "@/components/illustrations/investor-texture";
 import { useTranslations } from "next-intl";
 
 export function InvestorChoiceCard() {
-  const t = useTranslations("opening-page.investor-card");
-
+  const t = useTranslations("opening-page");
   return (
     <Link href="/offers">
       <ChoiceCard
-        title={t("title")}
+        title={t("investor-title")}
         titleClassName="bg-gradient-to-r from-[#A3DE10] to-[#E0FF92] inline-block text-transparent bg-clip-text"
-        description={t("description")}
+        description={t("investor-description")}
         icon={<GradientCoinsHand />}
         className="bg-[radial-gradient(at_top_left,_rgba(163,222,16,1)_30%,_rgba(224,255,146,0)_100%)] bg-left"
         contentClassName="bg-background rounded-2xl overflow-hidden"

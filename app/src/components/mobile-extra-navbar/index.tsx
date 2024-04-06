@@ -23,13 +23,13 @@ export default function MobileExtraNavbar() {
     },
     {
       key: 2,
-      name: t("my-investments"),
+      name: t("investments"),
       href: "/investments" as const,
       icon: <HelpingHand size={20} />,
     },
     {
       key: 3,
-      name: t("receivables"),
+      name: t("repayments"),
       href: "/receivables" as const,
       icon: <Receipt size={20} />,
     },
