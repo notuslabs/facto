@@ -12,12 +12,10 @@ type NavbarBalanceProps = {
 
 export function NavbarBalance({ variant }: NavbarBalanceProps) {
   const formatNumber = useFormatNumber();
-  const { data: sessionData } = useSession();
   const { data, isPending } = useBalance({ variant });
   const t = useTranslations("navbar");
 
   if (!data) return null;
-  if (!sessionData?.userInfo) return null;
 
   return (
     <span className="inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">

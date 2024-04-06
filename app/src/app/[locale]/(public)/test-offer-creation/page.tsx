@@ -27,8 +27,6 @@ function TestOfferCreationTemplate() {
   const keypair = programData?.keypair;
   const program = programData?.program;
 
-  console.log({ keypair });
-
   return (
     <div className="container">
       <h1 className="pb-1 text-3xl font-bold">Test Offer Creation</h1>

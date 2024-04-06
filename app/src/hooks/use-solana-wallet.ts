@@ -2,21 +2,13 @@ import { debounce } from "@/lib/debounce";
 import { web3auth } from "@/lib/web3AuthService";
 import { useQuery } from "@tanstack/react-query";
 import { SolanaWallet } from "@web3auth/solana-provider";
-
-export function useWeb3AuthStatus() {
-  return useQuery({
-    queryKey: ["web3-auth-status", web3auth.status],
-    queryFn: async () => {
-      return web3auth.status;
-    },
-  });
-}
+import { useInitModal } from "./use-init-modal";
 
 export function useSolanaWallet() {
-  const { data: status } = useWeb3AuthStatus();
+  const { data: status } = useInitModal();
 
   return useQuery({
-    queryKey: ["solana-wallet", web3auth.provider, status],
+    queryKey: ["solana-wallet", status],
     queryFn: async () => {
       if (!web3auth.provider) return null;
 

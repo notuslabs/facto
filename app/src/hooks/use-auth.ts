@@ -15,14 +15,14 @@ export function useAuth() {
       const provider = await web3auth.connect();
 
       if (provider && props?.asBorrower) {
-        refetchAuthQueries();
+        await refetchAuthQueries();
         router.push("/become/borrower");
 
         return provider;
       }
 
       if (provider) {
-        refetchAuthQueries();
+        await refetchAuthQueries();
         const solanaWallet = new SolanaWallet(provider);
         const userInfo = await web3auth.getUserInfo();
 
@@ -54,8 +54,14 @@ export function useAuth() {
     },
   });
 
-  function refetchAuthQueries() {
-    Promise.all([
+  async function refetchAuthQueries() {
+    await Promise.all([
+      queryClient.resetQueries({
+        queryKey: ["solana-wallet"],
+      }),
+      queryClient.resetQueries({
+        queryKey: ["program"],
+      }),
       queryClient.resetQueries({
         queryKey: ["session"],
       }),
@@ -63,6 +69,24 @@ export function useAuth() {
         queryKey: ["accounts"],
       }),
       queryClient.resetQueries({
+        queryKey: ["token-accounts"],
+      }),
+    ]);
+
+    await Promise.all([
+      queryClient.refetchQueries({
+        queryKey: ["solana-wallet"],
+      }),
+      queryClient.refetchQueries({
+        queryKey: ["program"],
+      }),
+      queryClient.refetchQueries({
+        queryKey: ["session"],
+      }),
+      queryClient.refetchQueries({
+        queryKey: ["accounts"],
+      }),
+      queryClient.refetchQueries({
         queryKey: ["token-accounts"],
       }),
     ]);

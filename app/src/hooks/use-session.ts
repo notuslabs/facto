@@ -1,52 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { web3auth } from "@/lib/web3AuthService";
-import { useCallback } from "react";
 import { useInitModal } from "./use-init-modal";
-import { useSolanaWallet } from "./use-solana-wallet";
-import { debounce } from "@/lib/debounce";
-import { ADAPTER_STATUS_TYPE } from "@web3auth/base";
 
 export function useSession() {
-  const { data: solanaWallet } = useSolanaWallet();
-
-  const retrieveUserSession = debounce(async (status: ADAPTER_STATUS_TYPE) => {
-    let userInfo = null;
-
-    if (status === "connected") {
-      userInfo = await getUserInfo();
-    }
-
-    if (!userInfo) throw new Error("Not authenticated");
-
-    return {
-      userInfo,
-      solanaWallet,
-    };
-  }, 200);
-
-  const getUserInfo = useCallback(async () => {
-    const user = await web3auth.getUserInfo();
-
-    return user;
-  }, []);
-
-  useInitModal();
+  const { data: status } = useInitModal();
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["session", !!solanaWallet, web3auth.status],
+    queryKey: ["session", status],
     queryFn: async () => {
-      if (!web3auth.status) return null;
+      const userInfo = await web3auth.getUserInfo();
 
-      const userSession = await retrieveUserSession(web3auth.status);
+      if (!userInfo) throw new Error("Not authenticated");
 
-      if (userSession instanceof Error) {
-        throw new Error("Not authenticated");
-      }
-
-      return userSession;
+      return {
+        userInfo,
+      };
     },
-    enabled: !!solanaWallet && !!web3auth.status,
+    enabled: !!status,
     staleTime: 1000 * 60 * 5,
     retry: 0,
   });

@@ -17,6 +17,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useCreateInvestor } from "@/hooks/use-create-investor";
 import { PublicKey } from "@solana/web3.js";
 import { Loader2 } from "lucide-react";
+import { useSolanaWallet } from "@/hooks/use-solana-wallet";
 
 export type NavbarVariant = "investor" | "borrower" | "none";
 
@@ -31,6 +32,7 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
   const { data, isPending: isLoadingSession } = useSession();
   const { mutate: createInvestor, isPending: isCreatingInvestor } = useCreateInvestor();
   const pathname = usePathname();
+  const { data: solanaWallet } = useSolanaWallet();
 
   const isBorrowerForm = pathname === "/become/borrower";
   const isInvestorForm = pathname === "/become/investor";
@@ -38,8 +40,6 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
   const isLoading = isLoadingSession || isLoadingAccounts || isCreatingInvestor;
 
   async function handleBecomeInvestor() {
-    const solanaWallet = data?.solanaWallet;
-
     if (!solanaWallet) {
       return;
     }
@@ -152,10 +152,10 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
         <div className="flex items-center justify-end gap-3">
           {(!data?.userInfo || correctStateVariant === "none") && <LocaleSwitcher />}
           {!isLoading && correctStateVariant !== "none" && <NavbarWithdrawalButton />}
-          {!isLoading && correctStateVariant !== "none" && (
+          {!!data?.userInfo && !isLoading && correctStateVariant !== "none" && (
             <NavbarDepositButton variant={correctStateVariant} />
           )}
-          {!isLoading && correctStateVariant !== "none" && (
+          {!!data?.userInfo && !isLoading && correctStateVariant !== "none" && (
             <NavbarBalance variant={correctStateVariant} />
           )}
           {!isLoading &&

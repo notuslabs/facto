@@ -9,7 +9,7 @@ export function useInitModal() {
     queryFn: async () => {
       await web3auth.initModal();
 
-      return null;
+      return web3auth.status;
     },
     staleTime: Infinity,
   });

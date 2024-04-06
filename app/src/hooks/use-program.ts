@@ -4,20 +4,15 @@ import { Keypair } from "@solana/web3.js";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { useConnection } from "./use-connection";
 import { useQuery } from "@tanstack/react-query";
-import { useSolanaWallet, useWeb3AuthStatus } from "./use-solana-wallet";
-import { web3auth } from "@/lib/web3AuthService";
-import { useSession } from "./use-session";
+import { useSolanaWallet } from "./use-solana-wallet";
 
 export function useProgram() {
   const { connection } = useConnection();
-  const { data: status } = useWeb3AuthStatus();
-  const { data: sessionData } = useSession();
-
-  const solanaWallet = sessionData?.solanaWallet;
+  const { data: solanaWallet } = useSolanaWallet();
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["program", !!solanaWallet, status, solanaWallet],
+    queryKey: ["program", !!solanaWallet],
     queryFn: async () => {
       if (!solanaWallet) return null;
       let keypair = null;
