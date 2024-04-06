@@ -37,7 +37,7 @@ describe("Investor", () => {
       caller,
       caller.publicKey,
       caller.publicKey,
-      9
+      6
     );
   });
 

@@ -253,8 +253,9 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
         authority: ctx.accounts.offer.to_account_info(),
         mint: ctx.accounts.stable_token.to_account_info(),
     };
-    let rate = ctx.accounts.offer.installments_total_amount / ctx.accounts.offer.goal_amount;
-    let amount_transfer = amount_to_burn * rate;
+    let rate =
+        ctx.accounts.offer.installments_total_amount as f64 / ctx.accounts.offer.goal_amount as f64;
+    let amount_transfer = (amount_to_burn as f64 * rate) as u64;
     token::transfer_checked(
         CpiContext::new_with_signer(
             ctx.accounts.token_program.to_account_info(),

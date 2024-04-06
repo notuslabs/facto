@@ -1,17 +1,17 @@
-import * as anchor from '@coral-xyz/anchor';
-import type { Hackathon } from '../target/types/hackathon';
-import { PublicKey } from '@solana/web3.js';
-import { airdropSol } from './utils';
-import { expect } from 'chai';
-import { BN } from 'bn.js';
+import * as anchor from "@coral-xyz/anchor";
+import type { Hackathon } from "../target/types/hackathon";
+import { PublicKey } from "@solana/web3.js";
+import { airdropSol } from "./utils";
+import { expect } from "chai";
+import { BN } from "bn.js";
 import {
   createMint,
   getAccount,
   mintTo,
   createAccount,
-} from '@solana/spl-token';
+} from "@solana/spl-token";
 
-describe('Borrower', () => {
+describe("Borrower", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Hackathon as anchor.Program<Hackathon>;
@@ -19,13 +19,13 @@ describe('Borrower', () => {
   let token: PublicKey;
 
   const [borrowerPubKey] = PublicKey.findProgramAddressSync(
-    [anchor.utils.bytes.utf8.encode('borrower'), caller.publicKey.toBuffer()],
+    [anchor.utils.bytes.utf8.encode("borrower"), caller.publicKey.toBuffer()],
     program.programId
   );
 
   const [borrowerTokenAccountPubKey] = PublicKey.findProgramAddressSync(
     [
-      anchor.utils.bytes.utf8.encode('borrower_token_account'),
+      anchor.utils.bytes.utf8.encode("borrower_token_account"),
       borrowerPubKey.toBuffer(),
     ],
     program.programId
@@ -39,13 +39,13 @@ describe('Borrower', () => {
       caller,
       caller.publicKey,
       caller.publicKey,
-      9
+      6
     );
   });
 
-  it('should be able to become an borrower', async () => {
+  it("should be able to become an borrower", async () => {
     await program.methods
-      .createBorrower('Test', 'description', 'test')
+      .createBorrower("Test", "description", "test")
       .accounts({
         borrower: borrowerPubKey,
         borrowerTokenAccount: borrowerTokenAccountPubKey,
@@ -66,17 +66,17 @@ describe('Borrower', () => {
 
     expect(borrowerInfo).not.to.be.undefined;
     expect(borrowerInfo).not.to.be.null;
-    expect(borrowerInfo.name).to.equal('Test');
-    expect(borrowerInfo.description).to.equal('description');
+    expect(borrowerInfo.name).to.equal("Test");
+    expect(borrowerInfo.description).to.equal("description");
 
     expect(borrowerTokenAccountInfo).not.to.be.undefined;
     expect(borrowerTokenAccountInfo).not.to.be.null;
     expect(parseFloat(borrowerTokenAccountInfo.amount.toString())).to.equal(0);
   });
 
-  it('should be able to edit an borrower', async () => {
+  it("should be able to edit an borrower", async () => {
     await program.methods
-      .editBorrower('Test 2', 'description 2')
+      .editBorrower("Test 2", "description 2")
       .accounts({
         borrower: borrowerPubKey,
         payer: caller.publicKey,
@@ -90,11 +90,11 @@ describe('Borrower', () => {
 
     expect(borrowerInfo).not.to.be.undefined;
     expect(borrowerInfo).not.to.be.null;
-    expect(borrowerInfo.name).to.equal('Test 2');
-    expect(borrowerInfo.description).to.equal('description 2');
+    expect(borrowerInfo.name).to.equal("Test 2");
+    expect(borrowerInfo.description).to.equal("description 2");
   });
 
-  it('should be able to withdraw all tokens', async () => {
+  it("should be able to withdraw all tokens", async () => {
     const receiverTokenAccountPubKey = await createAccount(
       anchor.getProvider().connection,
       caller,
@@ -130,7 +130,7 @@ describe('Borrower', () => {
         stableToken: token,
       })
       .signers([caller])
-      .rpc({ commitment: 'processed' })
+      .rpc({ commitment: "processed" })
       .catch((error) => {
         console.log(error);
         expect(false).to.equal(true);
