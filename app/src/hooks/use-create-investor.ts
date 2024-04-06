@@ -58,14 +58,15 @@ export function useCreateInvestor() {
         .signers([keypair])
         .rpc({ commitment: "finalized" });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["token-accounts"],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ["accounts"],
-      });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.refetchQueries({
+          queryKey: ["token-accounts"],
+        }),
+        queryClient.refetchQueries({
+          queryKey: ["accounts"],
+        }),
+      ]);
     },
   });
 }
