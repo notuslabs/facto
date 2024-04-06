@@ -9,6 +9,7 @@ import { createOffer } from "@/services/create-offer";
 import { useAccounts } from "./use-accounts";
 import { useProgram } from "./use-program";
 import { CreateOfferFormSchema } from "@/app/[locale]/(authed)/admin/offers/create/_components/offer-form-validation";
+import { buttonVariants } from "@/components/ui/button";
 
 class BorrowerAccountNotFound extends Error {
   constructor() {
@@ -42,13 +43,13 @@ export function useCreateOffer() {
       installmentsCount,
       minAmountInvest,
     }: z.infer<typeof CreateOfferFormSchema>) => {
-      if (!keypair || !program) return null;
+      if (!keypair || !program) throw new Error("null keypair");
 
       if (!accounts?.borrowerAccount) {
         throw new BorrowerAccountNotFound();
       }
 
-      const { id } = await createOffer({
+      const { id, tx } = await createOffer({
         program,
         caller: keypair,
         deadlineDate,
@@ -61,12 +62,21 @@ export function useCreateOffer() {
         startDate,
       });
 
-      return id;
+      return { id, tx };
     },
-    onSuccess: async (createdOfferId) => {
-      if (createdOfferId == null) return;
-
-      toast.success(t("success-toast-message"));
+    onSuccess: async ({ id, tx }) => {
+      toast.success(t("success-toast-message"), {
+        action: (() => (
+          <a
+            href={`https://explorer.solana.com/tx/${tx}?cluster=devnet`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            {t("view-transaction")}
+          </a>
+        ))(),
+      });
 
       queryClient.invalidateQueries({
         queryKey: ["offers"],
@@ -74,7 +84,7 @@ export function useCreateOffer() {
 
       router.push({
         pathname: "/offers/[id]",
-        params: { id: createdOfferId },
+        params: { id },
       });
     },
     onError: (error) => {

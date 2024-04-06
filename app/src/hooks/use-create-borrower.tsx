@@ -11,6 +11,7 @@ import { useProgram } from "./use-program";
 import { z } from "zod";
 import { BorrowerFormSchema } from "@/app/[locale]/(authed)/become/borrower/_components/borrower-form";
 import { useRouter } from "@/navigation";
+import { buttonVariants } from "@/components/ui/button";
 
 class CustomError extends Error {
   constructor(message?: string) {
@@ -53,7 +54,7 @@ export function useCreateBorrower() {
         body: JSON.stringify({ address: keypair.publicKey.toString() }),
       });
 
-      await program.methods
+      const tx = await program.methods
         .createBorrower(name, description, tokenSlug)
         .accounts({
           borrower: borrowerPubKey,
@@ -63,10 +64,24 @@ export function useCreateBorrower() {
           caller: keypair.publicKey,
         })
         .signers([keypair])
-        .rpc();
+        .rpc({ commitment: "finalized" });
+
+      return { tx };
     },
-    onSuccess: async () => {
-      toast.success(t("success-toast-message"));
+    onSuccess: async ({ tx }) => {
+      toast.success(t("success-toast-message"), {
+        action: (() => (
+          <a
+            href={`https://explorer.solana.com/tx/${tx}?cluster=devnet`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            {t("view-transaction")}
+          </a>
+        ))(),
+      });
+
       await Promise.all([
         queryClient.refetchQueries({
           queryKey: ["token-accounts"],

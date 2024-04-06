@@ -260,6 +260,7 @@
         "description-description": "{chars}/{maxChars} characteres max",
         "description-placeholder": "Short description about your profile"
       },
+      "view-transaction": "View transaction",
       "submit-button": "Continue",
       "success-toast-message": "Your account was created successfully",
       "error-toast-message": "An error occurred while creating your account",
@@ -268,6 +269,7 @@
     }
   },
   "create-offer-page": {
+    "view-transaction": "View transaction",
     "header": {
       "title": "New offer"
     },
