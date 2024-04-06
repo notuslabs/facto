@@ -59,7 +59,7 @@ export function usePayOffer(key: string) {
           payer: keypair.publicKey,
         })
         .signers([keypair])
-        .rpc();
+        .rpc({ commitment: "finalized" });
 
       return { tx };
     },
