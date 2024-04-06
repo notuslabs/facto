@@ -1,7 +1,7 @@
 "use client";
 
 import { PublicKey } from "@solana/web3.js";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { utils } from "@coral-xyz/anchor";
 import { useTranslations } from "next-intl";
 import { useTokenAccounts } from "./use-token-accounts";
@@ -15,6 +15,7 @@ class AlreadyRegisteredError extends Error {
 }
 
 export function useCreateInvestor() {
+  const queryClient = useQueryClient();
   const { data: programData } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const t = useTranslations("become.investor");
@@ -40,6 +41,11 @@ export function useCreateInvestor() {
         program.programId,
       );
 
+      await fetch("/api/airdrop", {
+        method: "POST",
+        body: JSON.stringify({ address: keypair.publicKey.toString() }),
+      });
+
       await program.methods
         .createInvestor(name)
         .accounts({
@@ -50,7 +56,16 @@ export function useCreateInvestor() {
           stableCoin: FAKE_MINT,
         })
         .signers([keypair])
-        .rpc();
+        .rpc({ commitment: "finalized" });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["token-accounts"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["accounts"],
+      });
     },
   });
 }

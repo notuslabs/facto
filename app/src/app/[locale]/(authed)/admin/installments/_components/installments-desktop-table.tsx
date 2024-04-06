@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 import { InstallmentStatus, Offer } from "@/structs/Offer";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { PayButton } from "./pay-button";
+import { useFormatNumber } from "@/hooks/number-formatters";
 
 interface DesktopTableProps {
   data: Offer[];
@@ -18,6 +19,7 @@ interface DesktopTableProps {
 
 export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
   const format = useDateFormatter();
+  const formatCurrency = useFormatNumber();
   const t = useTranslations("installments-page");
   const tr = useTranslations("badges");
 
@@ -45,7 +47,9 @@ export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
                     <TableCell className="pb-3 pt-2">{tableData.name}</TableCell>
                     <TableCell className="pb-3 pt-2">{format(installment.date, "P")}</TableCell>
                     <TableCell className="pb-3 pt-2">{`${installment.installmentNumber}/${tableData.installmentsCount}`}</TableCell>
-                    <TableCell className="pb-3 pt-2">{installment.amount.toFixed(2)}</TableCell>
+                    <TableCell className="pb-3 pt-2">
+                      {formatCurrency({ value: installment.amount })}
+                    </TableCell>
                     <TableCell className="pb-3 pt-2">
                       <div className="w-[100px]">
                         <Badge variant={installmentStatusToVariant[installment.status]}>
@@ -62,8 +66,9 @@ export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
               index={index}
               disable={
                 installment.status === InstallmentStatus.Paid ||
-                installment.installmentNumber !== tableData.totalInstallmentsPaid + 1
+                installment.installmentNumber !== (tableData.totalInstallmentsPaid ?? 0) + 1
               }
+              amount={installment.amount}
             />
           </div>
         ));

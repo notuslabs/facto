@@ -1,4 +1,5 @@
 {
+  "not-authenticated": "You need to be authenticated",
   "meta-data": {
     "title": "Facto",
     "description": "The 100% onchain credit marketplace built with Solana Token Extensions"
@@ -17,6 +18,7 @@
     "investments": "Investments",
     "repayments": "Repayments",
     "create-account": "Create account",
+    "become-investor": "Become an investor",
     "withdrawal": "Withdrawal",
     "deposit": "Deposit",
     "balance": "My Balance",
@@ -139,6 +141,23 @@
     "installments": "installments",
     "per-year": "per year"
   },
+  "admin-offers": {
+    "title": "My Offers",
+    "all-status": "All status",
+    "exhibiting": "Exhibiting",
+    "offers": "{offerNumber} offers",
+    "offer-name": "Offer",
+    "raised-value": "Raised value",
+    "offer-total": "Offer total",
+    "start-date": "First installment",
+    "installment-number": "Installments number",
+    "visualize": "Visualize",
+    "status": "Status",
+    "see-offer": "See offer",
+    "installments": "installments",
+    "per-year": "per year",
+    "create-offer": "Create Offer"
+  },
   "installments-page": {
     "title": "Due installments",
     "exhibiting": "Exhibiting",
@@ -161,7 +180,11 @@
     "installment": "Installment",
     "installment-value": "Installment value",
     "status": "Status",
-    "from-offers": "From {offers} offers"
+    "from-offers": "From {offers} offers",
+    "claim": "Claim",
+    "installment-claimed": "Installment successfully claimed",
+    "view-transaction": "View transaction",
+    "claiming-installment": "Claiming installment..."
   },
   "transactions-page": {
     "title": "",
@@ -197,7 +220,8 @@
     "paid": "Paid",
     "anticipated": "Anticipated",
     "upcoming": "Upcoming",
-    "overdue": "Overdue"
+    "overdue": "Overdue",
+    "claimed": "Claimed"
   },
   "transactions-dialog": {
     "mint": "Mint",

@@ -44,13 +44,17 @@ export const pathnames = {
     en: "/offers",
     "pt-BR": "/offers",
   },
-  "/offers/create": {
-    en: "/offers/create",
-    "pt-BR": "/offers/create",
+  "/admin/offers/create": {
+    en: "/admin/offers/create",
+    "pt-BR": "/admin/offers/create",
   },
   "/offers/[id]": {
     en: "/offers/[id]",
     "pt-BR": "/offers/[id]",
+  },
+  "/admin/offers": {
+    en: "/admin/offers",
+    "pt-BR": "/admin/offers",
   },
   "/admin/installments": {
     en: "/admin/installments",

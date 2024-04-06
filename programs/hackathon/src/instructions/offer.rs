@@ -63,7 +63,7 @@ pub fn create_offer(
     offer.installments_count = installments_count;
     offer.installments_total_amount = installments_total_amount;
     offer.installments_next_payment_date = installments_next_payment_date;
-    offer.total_installments_paid = 0;
+    offer.total_installments_paid = Option::None;
     offer.min_amount_invest = min_amount_invest;
     offer.start_date = start_date;
     offer.credit_score = (Clock::get()?.unix_timestamp % 1000) as u16;
@@ -96,7 +96,7 @@ pub fn invest(ctx: Context<Invest>, amount: u64) -> Result<()> {
     ctx.accounts.investment.total_invested += amount;
     ctx.accounts.investment.offer = ctx.accounts.offer.key();
     ctx.accounts.investment.investor = ctx.accounts.investor.key();
-    ctx.accounts.investment.installments_received = 0;
+    ctx.accounts.investment.installments_received = Option::None;
     ctx.accounts.investment.bump = *ctx.bumps.get("investment").unwrap();
 
     let transfer = TransferChecked {
@@ -207,7 +207,12 @@ pub fn pay_installment(ctx: Context<PayInstallment>) -> Result<()> {
         ctx.accounts.stable_token.decimals,
     )?;
 
-    ctx.accounts.offer.total_installments_paid += 1;
+    if ctx.accounts.offer.total_installments_paid.is_some() {
+        ctx.accounts.offer.total_installments_paid =
+            Some(ctx.accounts.offer.total_installments_paid.unwrap() + 1);
+    } else {
+        ctx.accounts.offer.total_installments_paid = Some(1);
+    }
     let seconds_in_30_days = 60 * 60 * 2; //2592000;
     ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 
@@ -221,8 +226,8 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
     );
 
     let amount_to_burn = ctx.accounts.investor_offer_token_account.amount
-        / (ctx.accounts.offer.installments_count - ctx.accounts.investment.installments_received)
-            as u64;
+        / (ctx.accounts.offer.installments_count
+            - ctx.accounts.investment.installments_received.unwrap_or(0)) as u64;
     let burn_accounts = Burn {
         from: ctx.accounts.investor_offer_token_account.to_account_info(),
         mint: ctx.accounts.offer_token.to_account_info(),
@@ -264,7 +269,15 @@ pub fn withdraw_installments(ctx: Context<WithdrawInstallment>) -> Result<()> {
         ctx.accounts.stable_token.decimals,
     )?;
 
-    ctx.accounts.investment.installments_received += 1;
+    if ctx.accounts.investment.installments_received.is_some() {
+        ctx.accounts.investment.installments_received =
+            Some(ctx.accounts.investment.installments_received.unwrap() + 1);
+    } else {
+        ctx.accounts.investment.installments_received = Some(1);
+    }
+
+    let seconds_in_30_days = 60 * 60 * 2; //2592000 TODO: we'll leave it as 2 hours for testing purposes;
+    ctx.accounts.offer.installments_next_payment_date += seconds_in_30_days;
 
     Ok(())
 }

@@ -17,7 +17,7 @@ export class Investment {
   public offer: Offer;
   public investor: string;
   public totalInvested: number;
-  public installmentsReceived: number;
+  public installmentsReceived: number | null;
 
   static async fromRawCollection(raw: { account: Account<"investment"> }[]): Promise<Investment[]> {
     const program = getProgram();
@@ -25,7 +25,12 @@ export class Investment {
     const rawOffers = (await program.account.offer.fetchMultiple(
       raw.map((i) => i.account.offer),
     )) as RawOfferAccount[];
-    const offers = await Offer.fromRawCollection(rawOffers.map((account) => ({ account })));
+    const offers = await Offer.fromRawCollection(
+      rawOffers.map((account, index) => ({
+        account,
+        installmentsReceived: raw[index].account.installmentsReceived,
+      })),
+    );
 
     return raw.map((rawInvestment, index) => new Investment(rawInvestment.account, offers[index]));
   }

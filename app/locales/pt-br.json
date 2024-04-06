@@ -1,4 +1,5 @@
 {
+  "not-authenticated": "Você precisa estar autenticado",
   "meta-data": {
     "title": "Facto",
     "description": "O mercado de crédito 100% on-chain construído com extensões de token Solana"
@@ -17,6 +18,7 @@
     "investments": "Investimentos",
     "repayments": "Parcelas a receber",
     "create-account": "Criar conta",
+    "become-investor": "Torne-se um investidor",
     "withdrawal": "Saque",
     "deposit": "Depósito",
     "balance": "Meu Saldo",
@@ -139,12 +141,29 @@
     "installments": "parcelas",
     "per-year": "ao ano"
   },
+  "admin-offers": {
+    "title": "Minhas Ofertas",
+    "all-status": "Todos status",
+    "exhibiting": "Exibindo",
+    "offers": "{offerNumber} ofertas",
+    "offer-name": "Oferta",
+    "raised-value": "Valor captado",
+    "offer-total": "Total da oferta",
+    "start-date": "Primeira parcela",
+    "installment-number": "Pagará em",
+    "visualize": "Visualizar",
+    "status": "Status",
+    "see-offer": "Ver oferta",
+    "installments": "parcelas",
+    "per-year": "ao ano",
+    "create-offer": "Nova Oferta"
+  },
   "installments-page": {
     "title": "Parcelas a vencer",
     "exhibiting": "Exibindo",
     "offers": "Parcelas a vencer de {offerNumber} ofertas",
     "all-status": "Todos status",
-    "offer-name": "Offerta",
+    "offer-name": "Oferta",
     "installment-date": "Data",
     "installments-count": "Parcela",
     "installment-amount": "Valor da parcela",
@@ -161,7 +180,11 @@
     "installment": "Parcela",
     "installment-value": "Valor da parcela",
     "status": "Status",
-    "from-offers": "De {offers} ofertas"
+    "from-offers": "De {offers} ofertas",
+    "claim": "Resgatar",
+    "installment-claimed": "O valor da parcela foi resgatado com sucesso!",
+    "view-transaction": "Ver transação",
+    "claiming-installment": "Resgatando parcela..."
   },
   "transactions-page": {
     "title": "",
@@ -197,7 +220,8 @@
     "paid": "Pago",
     "anticipated": "Previsto",
     "upcoming": "A vencer",
-    "overdue": "Em atraso"
+    "overdue": "Em atraso",
+    "claimed": "Resgatado"
   },
   "transactions-dialog": {
     "mint": "Cunhar",
@@ -359,7 +383,7 @@
     "seconds": "Segundos"
   },
   "pay-offer": {
-    "pay-successful": "Pagamento realizado com sucesso {link}",
+    "pay-successful": "Pagamento realizado com sucesso",
     "pay-error": "Erro no pagamento: {error}",
     "view-transaction": "Ver transação"
   }

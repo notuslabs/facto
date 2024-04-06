@@ -1323,7 +1323,9 @@ export type Hackathon = {
           },
           {
             "name": "installmentsReceived",
-            "type": "u8"
+            "type": {
+              "option": "u8"
+            }
           },
           {
             "name": "totalInvested",
@@ -1383,7 +1385,9 @@ export type Hackathon = {
           },
           {
             "name": "totalInstallmentsPaid",
-            "type": "u8"
+            "type": {
+              "option": "u8"
+            }
           },
           {
             "name": "installmentsNextPaymentDate",
@@ -2853,7 +2857,9 @@ export const IDL: Hackathon = {
           },
           {
             "name": "installmentsReceived",
-            "type": "u8"
+            "type": {
+              "option": "u8"
+            }
           },
           {
             "name": "totalInvested",
@@ -2913,7 +2919,9 @@ export const IDL: Hackathon = {
           },
           {
             "name": "totalInstallmentsPaid",
-            "type": "u8"
+            "type": {
+              "option": "u8"
+            }
           },
           {
             "name": "installmentsNextPaymentDate",

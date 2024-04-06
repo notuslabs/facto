@@ -3,25 +3,23 @@ import idl from "@/lib/idl/idl-facto.json";
 import { Keypair } from "@solana/web3.js";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { useConnection } from "./use-connection";
-import { useSession } from "./use-session";
 import { useQuery } from "@tanstack/react-query";
+import { useSolanaWallet } from "./use-solana-wallet";
 
 export function useProgram() {
   const { connection } = useConnection();
-  const { data } = useSession();
-
-  const solanaWallet = data?.solanaWallet;
+  const { data: solanaWallet } = useSolanaWallet();
 
   return useQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ["program", solanaWallet?.provider.chainId.toString()],
-    enabled: !!solanaWallet,
+    queryKey: ["program", !!solanaWallet],
     queryFn: async () => {
       if (!solanaWallet) return;
       let keypair = null;
       let program = null;
 
-      let privateKey: string = "";
+      let privateKey = "";
+
       try {
         privateKey = await solanaWallet.request<unknown, string>({
           method: "solanaPrivateKey",
@@ -55,5 +53,6 @@ export function useProgram() {
         keypair,
       };
     },
+    enabled: !!solanaWallet,
   });
 }

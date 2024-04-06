@@ -44,11 +44,11 @@ export default function TransactionsDepositPage() {
   const amount = form.watch("amount");
 
   function onSubmit(values: z.infer<typeof DepositSchema>) {
-    deposit(values.amount);
+    deposit({ amount: values.amount, variant: "investor" });
   }
 
   function handleCopyToClipboard() {
-    if (!tokenAccounts?.investorTokenAccount.address) return;
+    if (!tokenAccounts?.investorTokenAccount?.address) return;
     copy(tokenAccounts?.investorTokenAccount.address.toString());
     toast.success(t("address-copied"));
   }
@@ -114,12 +114,12 @@ export default function TransactionsDepositPage() {
             </div>
           </div>
 
-          {tokenAccounts?.investorTokenAccount.address.toString() && (
+          {tokenAccounts?.investorTokenAccount?.address.toString() && (
             <div className="px-6">
               <p className="text-xs text-muted-foreground">{t("address")}</p>
               <div className="flex justify-between gap-16 text-primary">
                 <p className="overflow-hidden text-ellipsis text-base font-medium">
-                  {tokenAccounts?.investorTokenAccount.address.toString()}
+                  {tokenAccounts?.investorTokenAccount?.address.toString()}
                 </p>
                 <ClipboardCopy
                   className="min-w-fit cursor-pointer hover:opacity-50"

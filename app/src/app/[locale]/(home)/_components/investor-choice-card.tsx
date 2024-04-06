@@ -1,3 +1,5 @@
+"use client";
+
 import { GradientCoinsHand } from "@/components/illustrations/gradient-coins-hand";
 import { ChoiceCard } from "./choice-card";
 import { Link } from "@/navigation";

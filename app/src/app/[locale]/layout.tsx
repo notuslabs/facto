@@ -1,15 +1,13 @@
 import { Inter } from "next/font/google";
-import "../../globals.css";
+import "../globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { Providers } from "@/components/providers";
-import { Navbar } from "@/components/navbar";
+import { Providers } from "@/providers";
 import { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
-import { locales } from "../../../config";
+import { locales } from "../../config";
 import { useMessages } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
-import MobileExtraNavbar from "@/components/mobile-extra-navbar";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -42,7 +40,7 @@ export async function generateMetadata({ params: { locale } }: Omit<Props, "chil
   };
 }
 
-export default function RootLayout({ children, params: { locale } }: Props) {
+export default function RootLayout({ children, params: { locale }, ...props }: Props) {
   unstable_setRequestLocale(locale);
   const messages = useMessages();
 
@@ -50,10 +48,8 @@ export default function RootLayout({ children, params: { locale } }: Props) {
     <html className="dark" lang={locale} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <Providers locale={locale} messages={messages}>
-          <Navbar variant="borrower" />
           {children}
           <Toaster position="top-right" />
-          <MobileExtraNavbar />
         </Providers>
       </body>
     </html>

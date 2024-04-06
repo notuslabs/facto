@@ -88,8 +88,8 @@ export function useInvest() {
           vaultStableTokenAccount: vaultStableTokenAccountPubKey,
         })
         .signers([keypair])
-        .rpc({ commitment: "finalized" })
-    
+        .rpc({ commitment: "finalized" });
+
       return {
         offerId: offerId,
         tx: tx,
@@ -110,7 +110,7 @@ export function useInvest() {
       });
     },
     onError: (error) => {
-      console.error(error.message);
+      console.error(error);
       toast.error(error.message);
     },
   });

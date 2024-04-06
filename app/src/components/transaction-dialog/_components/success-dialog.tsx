@@ -53,7 +53,7 @@ export default function SuccessDialog({
           className={cn(buttonVariants({ variant: "link" }), "w-fit bg-card")}
           target="_blank"
           rel="noreferrer nofollow"
-          href={`https://explorer.solana.com/tx/${transactionHash}`}
+          href={`https://explorer.solana.com/tx/${transactionHash}?cluster=devnet`}
         >
           {t("see-on")} <ExternalLink size={16} />
         </a>

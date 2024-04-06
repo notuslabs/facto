@@ -76,12 +76,12 @@ export function InvestorForm({ isLoading, isAllowedToCreate }: InvestorFormProps
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn("flex flex-col items-center justify-start", isLoading && "animate-pulse")}
       >
-        <div className="py-[118px]">
+        <div className="flex w-full justify-center py-[118px]">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full max-w-[741px]">
                 <FormLabel required>{t("form-fields.name")}</FormLabel>
                 <FormDescription
                   data-exceeded-chars={name.length > 30 ? "true" : "false"}
@@ -92,7 +92,7 @@ export function InvestorForm({ isLoading, isAllowedToCreate }: InvestorFormProps
                     maxChars: 30,
                   })}
                 </FormDescription>
-                <FormControl className="w-[741px] max-w-full">
+                <FormControl>
                   <Input
                     placeholder={t("form-fields.name-placeholder")}
                     disabled={isCreatingInvestor || !isAllowedToCreate}
