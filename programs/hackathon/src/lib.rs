@@ -1,10 +1,7 @@
 use anchor_lang::prelude::*;
 use state::*;
 
-#[macro_use]
-extern crate dotenv_codegen;
-
-declare_id!(pubkey::str_to_pubkey(dotenv!("FACTO_PROGRAM_ID")));
+declare_id!("9Xyjma1Rg4NCTPPH9cVp99BCdpWRC5Y97BfgmKeEbdZZ");
 
 pub mod instructions;
 pub mod pubkey;
