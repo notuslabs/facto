@@ -6,6 +6,8 @@ import { utils } from "@coral-xyz/anchor";
 import { useProgram } from "./use-program";
 import { getAccount } from "@solana/spl-token";
 import { getConnection } from "@/services/get-connection";
+import { parseUnits } from "@/lib/parse-units";
+import { formatUnits } from "@/lib/format-units";
 
 export function useInvestedAmount(offerId: string) {
   const { data: programData } = useProgram();
@@ -45,9 +47,7 @@ export function useInvestedAmount(offerId: string) {
         investorOfferTokenAccountPubKey,
       ).catch(console.error);
 
-      return investorOfferTokenAccount
-        ? parseFloat(investorOfferTokenAccount.amount.toString()) / 10 ** 9
-        : 0;
+      return investorOfferTokenAccount ? formatUnits(investorOfferTokenAccount.amount) : 0;
     },
     enabled: !!program && !!keypair,
   });

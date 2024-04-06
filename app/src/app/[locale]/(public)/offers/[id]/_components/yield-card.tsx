@@ -3,7 +3,7 @@ import { CalendarDays, HandCoins } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type DetailsCardProps = {
-  interestRate: string;
+  interestRate: number;
   installmentsCount: number;
   description: string;
 };

@@ -47,7 +47,7 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
             queryKey: ["investor-investments", data?.keypair.publicKey.toString()],
           }),
           queryClient.invalidateQueries({
-            queryKey: ["balance"],
+            queryKey: ["token-accounts"],
           }),
         ]);
 

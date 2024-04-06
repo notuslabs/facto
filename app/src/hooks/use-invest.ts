@@ -97,7 +97,7 @@ export function useInvest() {
     },
     onSuccess: ({ offerId }) => {
       queryClient.invalidateQueries({
-        queryKey: ["investor-stable-token-account"],
+        queryKey: ["token-accounts"],
       });
       queryClient.invalidateQueries({
         queryKey: ["offer", offerId],

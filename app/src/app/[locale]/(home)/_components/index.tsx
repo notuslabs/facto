@@ -28,7 +28,7 @@ export function Opening() {
           <LocaleSwitcher />
         </div>
 
-        <div className="absolute -right-[50%] -top-[500%] hidden size-[1200px] rounded-full bg-[radial-gradient(circle,_rgba(163,222,16,1)_0%,_rgba(224,255,146,0)_100%)] opacity-15 blur-3xl md:block lg:-right-[50%]"></div>
+        <div className="pointer-events-none absolute -right-[50%] -top-[500%] hidden size-[1200px] rounded-full bg-[radial-gradient(circle,_rgba(163,222,16,1)_0%,_rgba(224,255,146,0)_100%)] opacity-15 blur-3xl md:block lg:-right-[50%]"></div>
       </nav>
 
       <main className="container relative z-[2]">

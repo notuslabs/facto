@@ -33,6 +33,5 @@ export function useSolanaWallet() {
 
       return solanaWallet;
     },
-    enabled: !!web3auth.provider && !!status && status !== "connecting",
   });
 }

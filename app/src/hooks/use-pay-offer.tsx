@@ -64,6 +64,10 @@ export function usePayOffer(key: string) {
       return { tx };
     },
     onSuccess: ({ tx }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["investor-investments"],
+      });
+
       toast.success(t("pay-offer.pay-successful"), {
         action: (() => (
           <a
@@ -79,6 +83,10 @@ export function usePayOffer(key: string) {
 
       queryClient.invalidateQueries({
         queryKey: ["offers-by-borrower"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["token-accounts"],
       });
     },
     onError: (error) => {
