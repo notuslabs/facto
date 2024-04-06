@@ -1,26 +1,22 @@
 {
   "not-authenticated": "You need to be authenticated",
   "meta-data": {
-    "title": "Hackathon Solana",
-    "description": "Hackathon project for Solana"
+    "title": "Facto",
+    "description": "The 100% onchain credit marketplace built with Solana Token Extensions"
   },
   "opening-page": {
-    "title": "Invest and Strengthen",
-    "description": "Conect investors to projects",
-    "borrower-card": {
-      "title": "I'm a Borrower",
-      "description": "And I need to raise funds for my project"
-    },
-    "investor-card": {
-      "title": "I'm an Investor",
-      "description": "And I want to invest in projects"
-    }
+    "title": "Borrow or lend money at better rates with Facto",
+    "description": "The 100% onchain credit marketplace built with Solana Token Extensions",
+    "investor-title": "Am an INVESTOR",
+    "investor-description": "And want to see offers",
+    "borrower-title": "Am a BORROWER",
+    "borrower-description": "And want to borrow money"
   },
   "navbar": {
     "login": "Login",
     "logout": "Logout",
-    "my-investments": "My investments",
-    "receivables": "Outstanding receivables",
+    "investments": "Investments",
+    "repayments": "Repayments",
     "create-account": "Create account",
     "become-investor": "Become an investor",
     "withdrawal": "Withdrawal",
@@ -37,11 +33,11 @@
   },
   "home": {
     "hero": {
-      "title": "Start investing",
-      "description": "A description here"
+      "title": "Explore top opportunities below",
+      "description": "Real yields, from real companies."
     },
     "offers": {
-      "title": "Opportunities to invest",
+      "title": "Opportunities to lend",
       "search-input-placeholder": "Search for offers, borrowers",
       "offer-stage": "Offer stage",
       "filter": "Filter",
@@ -196,20 +192,20 @@
     "description": "Your investments grow faster with",
     "your-balance": "Your balance for investments",
     "withdrawal": "Withdrawal",
-    "deposit": "Deposit"
+    "mint": "Mint"
   },
   "deposit-page": {
-    "deposit-value": "Deposit value",
+    "mint-value": "Mint value",
     "your-balance": "Your in account balance is ",
-    "disclaimer": "Disclaimer here",
-    "deposit": "Deposit",
+    "disclaimer": "This is a project for a hackathon, and we are using a fake USDC token. You can use this interface to mint this token, but it does not represent any financial value, only for demonstration purposes.",
+    "mint": "Mint",
     "address": "Address",
     "address-copied": "Address copied"
   },
   "withdrawal-page": {
     "withdrawal-value": "Withdrawal value",
     "your-balance": "Your in account balance is ",
-    "disclaimer": "Disclaimer here",
+    "disclaimer": "This is a project for a hackathon, and we are using a fake USDC token. You can use this interface to withdrawal this token, but it does not represent any financial value, only for demonstration purposes.",
     "withdrawal": "Withdrawal",
     "address": "Address",
     "address-copied": "Address copied"
@@ -228,10 +224,10 @@
     "claimed": "Claimed"
   },
   "transactions-dialog": {
-    "deposit": "Deposit",
+    "mint": "Mint",
     "withdrawal": "Withdrawal",
     "description": "Add to your balance to invest",
-    "deposit-value": "Deposit value",
+    "mint-value": "Mint value",
     "withdrawal-value": "Withdrawal value",
     "your-balance": "Your in account balance is ",
     "address": "Address",
@@ -345,15 +341,10 @@
     "success-toast-message": "You offer has been created successfully",
     "error-toast-message": "An error occurred while creating your offer"
   },
-  "transactions-form": {
-    "deposit": "Deposit",
-    "withdrawal": "Withdrawal",
-    "your-balance": "Your in account balance is "
-  },
   "success": {
-    "title-deposit": "Deposit occurred successfully",
+    "title-deposit": "Mint occurred successfully",
     "title-withdrawal": "Withdrawal occurred successfully",
-    "amount-deposit": "Deposit amount",
+    "amount-deposit": "Mint amount",
     "amount-withdrawal": "Withdrawal amount",
     "hash": "Transaction hash",
     "hash-copied": "Hash copied",

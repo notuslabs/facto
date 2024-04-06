@@ -108,14 +108,14 @@ export default function TransactionDialog({ type, variant }: TransactionDialogPr
         <>
           <DialogHeader>
             <DialogTitle>
-              {(type === "deposit" && t("deposit")) || (type === "withdrawal" && t("withdrawal"))}
+              {(type === "deposit" && t("mint")) || (type === "withdrawal" && t("withdrawal"))}
             </DialogTitle>
             <DialogDescription>{t("description")}</DialogDescription>
           </DialogHeader>
 
           <div className="flex flex-col gap-6 rounded-2xl bg-secondary p-6">
             <div className="flex flex-col gap-3 text-xs">
-              {type === "deposit" ? t("deposit-value") : t("withdrawal-value")}
+              {type === "deposit" ? t("mint-value") : t("withdrawal-value")}
               <div className="flex flex-col gap-6 rounded-2xl bg-secondary">
                 <Form {...form}>
                   <form className="flex flex-col gap-1" onSubmit={form.handleSubmit(onSubmit)}>
@@ -208,7 +208,7 @@ export default function TransactionDialog({ type, variant }: TransactionDialogPr
                 ) : (
                   <PlusSquare size={20} />
                 )}
-                {t("deposit")}
+                {t("mint")}
               </Button>
             </div>
           )}

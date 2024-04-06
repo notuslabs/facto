@@ -25,7 +25,7 @@ export default function TransactionsContent() {
           className="flex flex-col items-center gap-2 rounded-2xl border border-border-hover p-8 dark:bg-[#252529]"
         >
           <PlusSquare size={24} className="text-facto-primary" />
-          <span className="text-lg font-medium">{t("deposit")}</span>
+          <span className="text-lg font-medium">{t("mint")}</span>
         </Link>
 
         <Link
