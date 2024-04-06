@@ -25,7 +25,7 @@ export function Header({ name, description, score, acquiredAmount }: HeaderProps
           <span className="size-[30px] rounded-md bg-white"></span>
           {name}
         </h1>
-        <p>{description}</p>
+        <p className="max-w-[50%] break-all">{description}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
