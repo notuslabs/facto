@@ -30,6 +30,7 @@ export async function generateMetadata({ params: { locale } }: Omit<Props, "chil
       icon: [
         {
           url: "/favicon.ico",
+          media: "(prefers-color-scheme: dark)",
         },
         {
           url: "light-favicon.ico",
