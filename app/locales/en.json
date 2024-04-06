@@ -56,7 +56,7 @@
           "monthly": "Monthly"
         },
         "footer": {
-          "receive-in": "Receive in {installments} installments until",
+          "receive-in": "Receive in {installments} repayments until",
           "date": "{endDate, date}",
           "invest": "Invest"
         }
@@ -117,7 +117,7 @@
       "offer-status": "Offer status",
       "payment-frequency": "Payment frequency",
       "monthly": "Monthly",
-      "receive-in": "Receive in {installments} installments until",
+      "receive-in": "Receive in {installments} repayments until",
       "date": "{date, date}",
       "investment-success": "Your investment was successful!",
       "view-transaction": "View transaction"
@@ -134,11 +134,11 @@
     "invested-amount": "Invested amount",
     "return": "Expected returns",
     "final-date": "Final date",
-    "installment-number": "Installments number",
+    "installment-number": "Repayments number",
     "visualize": "Visualize",
     "status": "Status",
     "see-offer": "See offer",
-    "installments": "installments",
+    "installments": "repayments",
     "per-year": "per year"
   },
   "admin-offers": {
@@ -150,23 +150,23 @@
     "raised-value": "Raised value",
     "offer-total": "Offer total",
     "start-date": "First installment",
-    "installment-number": "Installments number",
+    "installment-number": "Repayments number",
     "visualize": "Visualize",
     "status": "Status",
     "see-offer": "See offer",
-    "installments": "installments",
+    "installments": "repayments",
     "per-year": "per year",
     "create-offer": "Create Offer"
   },
   "installments-page": {
-    "title": "Due installments",
+    "title": "Due repayments",
     "exhibiting": "Exhibiting",
-    "offers": "Due installments of {offerNumber} offers",
+    "offers": "Due repayments of {offerNumber} offers",
     "all-status": "All status",
     "offer-name": "Offer",
     "installment-date": "Date",
-    "installments-count": "Installment",
-    "installment-amount": "Installment Value",
+    "installments-count": "Repayment",
+    "installment-amount": "Repayment Value",
     "status": "Status",
     "see-offer": "See offer"
   },
@@ -174,15 +174,15 @@
     "title": "Outstanding receivables",
     "exhibiting": "Exhibiting",
     "all-status": "All status",
-    "installments-to-receive": "Installments to receive from {offers} offers",
+    "installments-to-receive": "Repayments to receive from {offers} offers",
     "offer-name": "Offer",
     "date": "Date",
-    "installment": "Installment",
-    "installment-value": "Installment value",
+    "installment": "Repayment",
+    "installment-value": "Repayment value",
     "status": "Status",
     "from-offers": "From {offers} offers",
     "claim": "Claim",
-    "installment-claimed": "Installment successfully claimed",
+    "installment-claimed": "Repayment successfully claimed",
     "view-transaction": "View transaction",
     "claiming-installment": "Claiming installment..."
   },
@@ -320,7 +320,7 @@
         }
       },
       "installments-total": {
-        "label": "Total installments to pay",
+        "label": "Total repayments to pay",
         "placeholder": "e.g: 1"
       },
       "installments-start-date": {
@@ -330,8 +330,8 @@
     },
     "fill-all-fields-before-proceeding": "Fill all fields before proceeding",
     "fill-goal-amount-and-interest-rate": "Fill the total to be received and the interest rate",
-    "fill-goal-amount-and-interest-rate-and-installments": "Fill the total to be received, the interest rate and the number of installments",
-    "fill-installment-start-date-and-installments-total": "Fill the installment start date and the number of installments",
+    "fill-goal-amount-and-interest-rate-and-installments": "Fill the total to be received, the interest rate and the number of repayments",
+    "fill-installment-start-date-and-installments-total": "Fill the installment start date and the number of repayments",
     "last-installment-date": "Last installment date",
     "each-installment": "Each installment value",
     "total-with-interest": "Total to be paid",
