@@ -65,15 +65,16 @@ export function useCreateBorrower() {
         .signers([keypair])
         .rpc();
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(t("success-toast-message"));
-
-      queryClient.invalidateQueries({
-        queryKey: ["token-accounts"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["accounts"],
-      });
+      await Promise.all([
+        queryClient.refetchQueries({
+          queryKey: ["token-accounts"],
+        }),
+        queryClient.refetchQueries({
+          queryKey: ["accounts"],
+        }),
+      ]);
 
       router.push("/admin/offers");
     },
