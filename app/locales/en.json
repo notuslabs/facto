@@ -44,7 +44,7 @@
       "card": {
         "header": {
           "time-period": "per year",
-          "awaited-return": "Awaited return"
+          "awaited-return": "Expected returns"
         },
         "body": {
           "total": "Total",
