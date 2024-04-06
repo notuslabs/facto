@@ -24,8 +24,8 @@
     "balance": "My Balance",
     "user": "User",
     "transactions": "Transactions",
-    "my-offers": "Minhas ofertas",
-    "installments": "Parcelas"
+    "my-offers": "My offers",
+    "installments": "Repayments"
   },
   "header": {
     "people-invested": "{peopleNumber} people invested",

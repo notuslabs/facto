@@ -16,6 +16,7 @@ import { getKeypairFromPrivateKey, getPrivateKey } from "@/lib/wallet-utils";
 import { useSession } from "@/hooks/use-session";
 import { DEFAULT_DECIMALS } from "@/lib/constants";
 import { RequireAuthProvider } from "@/providers/require-auth-provider";
+import { useSolanaWallet } from "@/hooks/use-solana-wallet";
 
 type TokenAccountOverviewProps = {
   title: string;
@@ -52,6 +53,7 @@ export default function TestTokenAccountTransfer() {
 }
 
 function TestTokenAccountTransferTemplate() {
+  const { data: solanaWallet } = useSolanaWallet();
   const withdrawRef = useRef<HTMLInputElement>(null);
   const { data } = useSession();
   const { mutate: deposit, isPending: isDepositing } = useDeposit();
@@ -146,10 +148,10 @@ function TestTokenAccountTransferTemplate() {
 
         <Button
           onClick={async () => {
-            if (!data?.solanaWallet) return;
+            if (!solanaWallet) return;
             const connection = new Connection(config.chainConfig.rpcTarget, "confirmed");
 
-            const privateKey = await getPrivateKey(data.solanaWallet);
+            const privateKey = await getPrivateKey(solanaWallet);
             const wallet = getKeypairFromPrivateKey(privateKey);
 
             const mint = await createFakeMintToken(connection, wallet);

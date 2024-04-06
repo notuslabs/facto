@@ -12,10 +12,7 @@ type NavbarDepositProps = {
 };
 
 export function NavbarDepositButton({ variant }: NavbarDepositProps) {
-  const { data } = useSession();
   const t = useTranslations("navbar");
-
-  if (!data?.userInfo && !variant) return null;
 
   return (
     <Dialog>
