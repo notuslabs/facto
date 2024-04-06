@@ -5,10 +5,10 @@ seeds = true
 skip-lint = false
 
 [programs.localnet]
-hackathon = "EqgS5t3mdD5UjxYoB1XPShJ8CHkw7zMVrxh9fkQdvMuV"
+hackathon = "9Xyjma1Rg4NCTPPH9cVp99BCdpWRC5Y97BfgmKeEbdZZ"
 
 [programs.devnet]
-hackathon = "EqgS5t3mdD5UjxYoB1XPShJ8CHkw7zMVrxh9fkQdvMuV"
+hackathon = "9Xyjma1Rg4NCTPPH9cVp99BCdpWRC5Y97BfgmKeEbdZZ"
 
 [programs.mainnet]
 hackathon = "factoKTYLrfmqhnwvA9KRuoexnghhTp56YSXoPAVqcW"
