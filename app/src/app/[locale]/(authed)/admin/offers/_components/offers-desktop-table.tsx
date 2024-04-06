@@ -44,10 +44,10 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
               <TableRow>
                 <TableCell className="pb-3 pt-2">{offer.name}</TableCell>
                 <TableCell className="pb-3 pt-2">
-                  {formatCurrency({ value: offer.acquiredAmount })}
+                  {formatCurrency({ value: offer.goalAmount })}
                 </TableCell>
                 <TableCell className="pb-3 pt-2">
-                  {formatCurrency({ value: offer.goalAmount })}
+                  {formatCurrency({ value: offer.acquiredAmount })}
                 </TableCell>
                 <TableCell className="pb-3 pt-2">
                   {formatDate(offer.installmentsStartDate, "P")}
