@@ -12,7 +12,7 @@ type OfferCardHeaderProps = {
   offerName: string;
   borrowerName: string;
   period: string;
-  interestRate: string;
+  interestRate: number;
   secondaryText: string;
 };
 

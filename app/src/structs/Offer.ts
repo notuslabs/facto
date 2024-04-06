@@ -158,13 +158,11 @@ export class Offer {
     return this.goalAmount - this.acquiredAmount;
   }
 
-  public get interestRate(): string {
-    return (
-      ((this.installmentsTotalAmount / this.goalAmount - 1) * 100 * 12) /
-      this.installmentsCount
-    )
-      .toFixed(6)
-      .slice(0, -4);
+  public get interestRate(): number {
+    const variation = this.installmentsTotalAmount - this.goalAmount;
+    const interestRate = parseFloat(((variation / this.goalAmount) * 100).toFixed(6).slice(0, -4));
+
+    return interestRate;
   }
 
   public get creditScore() {
