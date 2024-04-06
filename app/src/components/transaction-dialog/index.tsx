@@ -33,7 +33,7 @@ const DepositSchema = z.object({
 
 export default function TransactionDialog({ type, variant }: TransactionDialogProps) {
   const t = useTranslations("transactions-dialog");
-  const { data: balance } = useBalance({ variant: "investor" });
+  const { data: balance } = useBalance({ variant });
   const { data } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
   const {
