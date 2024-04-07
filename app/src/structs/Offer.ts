@@ -81,14 +81,10 @@ export class Offer {
     this.startDate = new Date(raw.startDate.toNumber() * 1000).toISOString();
     this.createdAt = new Date(raw.createdAt.toNumber() * 1000).toISOString();
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
-    this.installmentsStartDate = subHours(
+    this.installmentsStartDate = subMonths(
       this.installmentsNextPaymentDate,
-      this.totalInstallmentsPaid ?? 0,
+      this.totalInstallmentsPaid,
     ).toISOString();
-    // this.installmentsStartDate = subMonths(
-    //   this.installmentsNextPaymentDate,
-    //   this.totalInstallmentsPaid,
-    // ).toISOString();
     this.installmentsEndDate = addMonths(
       this.installmentsStartDate,
       this.installmentsCount,
@@ -179,9 +175,8 @@ export class Offer {
     const installmentsList: InstallmentsList = [];
 
     for (let i = 0; i < this.installmentsCount; i++) {
-      // const date = addMonths(this.installmentsStartDate, i);
+      const date = addMonths(this.installmentsStartDate, i);
 
-      const date = addHours(this.installmentsStartDate, i * 2);
       const installmentNumber = i + 1;
       const amount = this.installmentsTotalAmount / this.installmentsCount;
 
