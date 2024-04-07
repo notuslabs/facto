@@ -38,6 +38,30 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
   const { data } = useProgram();
   const [balance, setBalance] = useState<(Account | null)[]>();
 
+  useEffect(() => {
+    async function main() {
+      if (!data) return;
+
+      const vaults = offers.map(async (offer) => {
+        const [offerPubKey] = PublicKey.findProgramAddressSync(
+          [Buffer.from("offer"), Buffer.from(offer.id)],
+          data.program.programId,
+        );
+        const [vault] = PublicKey.findProgramAddressSync(
+          [Buffer.from("offer_vault"), offerPubKey.toBuffer()],
+          data.program.programId,
+        );
+
+        return getAccount(data?.program.provider.connection, vault).catch(() => null);
+      });
+
+      const balances = await Promise.all(vaults);
+      setBalance(balances);
+    }
+
+    main();
+  }, [data]);
+
   if (!data) return null;
 
   const handleOfferInvestmentsClaim = (event: React.MouseEvent, offerId: string) => {
@@ -72,28 +96,6 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
       },
     });
   };
-
-  useEffect(() => {
-    async function main() {
-      const vaults = offers.map(async (offer) => {
-        const [offerPubKey] = PublicKey.findProgramAddressSync(
-          [Buffer.from("offer"), Buffer.from(offer.id)],
-          data?.program.programId as PublicKey,
-        );
-        const [vault] = PublicKey.findProgramAddressSync(
-          [Buffer.from("offer_vault"), offerPubKey.toBuffer()],
-          data?.program.programId as PublicKey,
-        );
-
-        return getAccount(data?.program.provider.connection as Connection, vault).catch(() => null);
-      });
-
-      const balances = await Promise.all(vaults);
-      setBalance(balances);
-    }
-
-    main();
-  }, [data]);
 
   if (!balance) return null;
 
