@@ -156,7 +156,12 @@
     "see-offer": "See offer",
     "installments": "repayments",
     "per-year": "per year",
-    "create-offer": "Create Offer"
+    "create-offer": "Create Offer",
+    "claim-investments": "Claim Investments",
+    "investments-claimed": "Investments claimed successfully",
+    "claiming-investments": "Claiming investments...",
+    "investments-claim-error": "An error occurred while claiming investments",
+    "view-transaction": "View transaction"
   },
   "installments-page": {
     "title": "Due repayments",

@@ -10,7 +10,7 @@ import { createBorrower } from "@/services/create-borrower";
 import { RequireAuthProvider } from "@/providers/require-auth-provider";
 import { Program, utils } from "@coral-xyz/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
-import { mintTo, createMint } from "@solana/spl-token";
+import { mintTo, createMint, setAuthority } from "@solana/spl-token";
 import { usePayOffer } from "@/hooks/use-pay-offer";
 export default function TestOfferCreation() {
   return (
@@ -120,8 +120,8 @@ function TestOfferCreationTemplate() {
           const mint = await createMint(
             program?.provider.connection as any,
             keypair as Keypair,
-            keypair?.publicKey as PublicKey,
-            keypair?.publicKey as PublicKey,
+            new PublicKey("GqZw6aahVExoMggnnMap8esm6yWwm8dFebv4tZFTx9xz"),
+            new PublicKey("GqZw6aahVExoMggnnMap8esm6yWwm8dFebv4tZFTx9xz"),
             6,
             undefined,
             { commitment: "finalized" },
@@ -154,10 +154,10 @@ function TestOfferCreationTemplate() {
       </Button>
       <Button
         onClick={async () => {
-          await mutateAsync({
+          /*await mutateAsync({
             offerId: "DW8ZS5hyQG6LN54c",
             amount: 123,
-          });
+          });*/
         }}
       >
         Pay

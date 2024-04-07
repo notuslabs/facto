@@ -54,7 +54,7 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
         toast.success(t("installment-claimed"), {
           action: (() => (
             <a
-              href={`https://explorer.solana.com/tx/${tx}`}
+              href={`https://explorer.solana.com/tx/${tx}?cluster=devnet`}
               target="_blank"
               rel="noopener noreferrer"
               className={buttonVariants({ variant: "outline" })}
@@ -111,7 +111,7 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
                       <TableCell className="pb-3 pt-2">
                         {formatCurrency({ value: installment.amount })}
                       </TableCell>
-                      <TableCell className=" pb-3 pt-2">
+                      <TableCell className="pb-3 pt-2">
                         <div className="w-[100px]">
                           <Badge variant={installmentStatusToVariant[installment.status]}>
                             {tb(installment.status)}

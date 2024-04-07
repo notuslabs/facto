@@ -150,7 +150,9 @@ pub fn withdraw_investments(ctx: Context<WithdrawInvestments>) -> Result<()> {
     );
     let offer_status = ctx.accounts.offer.get_status();
     require!(
-        offer_status == OfferStatus::Funded || offer_status == OfferStatus::OnTrack,
+        offer_status == OfferStatus::Funded
+            || offer_status == OfferStatus::OnTrack
+            || offer_status == OfferStatus::Delinquent,
         ValidationError::OfferIsNotFunded
     );
 

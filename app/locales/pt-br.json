@@ -156,7 +156,12 @@
     "see-offer": "Ver oferta",
     "installments": "parcelas",
     "per-year": "ao ano",
-    "create-offer": "Nova Oferta"
+    "create-offer": "Nova Oferta",
+    "claim-investments": "Resgatar investimentos",
+    "investments-claimed": "Investimentos resgatados com sucesso!",
+    "claiming-investments": "Resgatando investimentos...",
+    "investments-claim-error": "Erro ao resgatar investimentos",
+    "view-transaction": "Ver transação"
   },
   "installments-page": {
     "title": "Parcelas a vencer",
