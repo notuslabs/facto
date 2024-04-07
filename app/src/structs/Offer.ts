@@ -83,7 +83,7 @@ export class Offer {
     this.totalInstallmentsPaid = raw.totalInstallmentsPaid;
     this.installmentsStartDate = subMonths(
       this.installmentsNextPaymentDate,
-      this.totalInstallmentsPaid,
+      this.totalInstallmentsPaid ?? 0,
     ).toISOString();
     this.installmentsEndDate = addMonths(
       this.installmentsStartDate,
