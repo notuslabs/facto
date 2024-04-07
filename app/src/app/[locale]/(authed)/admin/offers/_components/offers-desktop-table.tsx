@@ -19,7 +19,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { useOfferInvestmentsClaim } from "@/hooks/use-offer-investments-claim";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, Connection } from "@solana/web3.js";
 import { useProgram } from "@/hooks/use-program";
 import { Account, getAccount } from "@solana/spl-token";
 import { useEffect, useState } from "react";
@@ -75,19 +75,17 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
 
   useEffect(() => {
     async function main() {
-      if (!data) return;
-
       const vaults = offers.map(async (offer) => {
         const [offerPubKey] = PublicKey.findProgramAddressSync(
           [Buffer.from("offer"), Buffer.from(offer.id)],
-          data.program.programId,
+          data?.program.programId as PublicKey,
         );
         const [vault] = PublicKey.findProgramAddressSync(
           [Buffer.from("offer_vault"), offerPubKey.toBuffer()],
-          data.program.programId,
+          data?.program.programId as PublicKey,
         );
 
-        return getAccount(data.program.provider.connection, vault).catch(() => null);
+        return getAccount(data?.program.provider.connection as Connection, vault).catch(() => null);
       });
 
       const balances = await Promise.all(vaults);
