@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     SystemProgram.transfer({
       fromPubkey: paymaster.publicKey,
       toPubkey: new PublicKey(address),
-      lamports: LAMPORTS_PER_SOL * 5,
+      lamports: LAMPORTS_PER_SOL * 1.5,
     }),
   );
   await sendAndConfirmTransaction(connection, transaction, [paymaster], {
