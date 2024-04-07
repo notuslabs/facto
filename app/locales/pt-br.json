@@ -168,7 +168,8 @@
     "installments-count": "Parcela",
     "installment-amount": "Valor da parcela",
     "status": "Status",
-    "see-offer": "Ver oferta"
+    "see-offer": "Ver oferta",
+    "pay": "Pagar"
   },
   "receivables-page": {
     "title": "Parcelas a receber",

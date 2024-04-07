@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { usePayOffer } from "@/hooks/use-pay-offer";
 import { cn } from "@/lib/utils";
 import { CircleDollarSign, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type PayButtonProps = {
   id: string;
@@ -12,6 +13,8 @@ type PayButtonProps = {
 };
 
 export function PayButton({ id, index, disable, className, amount }: PayButtonProps) {
+  const t = useTranslations("installments-page");
+
   const { mutate: payOffer, isPending } = usePayOffer(`${id}-${index}`);
 
   return (
@@ -25,7 +28,7 @@ export function PayButton({ id, index, disable, className, amount }: PayButtonPr
       onClick={() => payOffer({ offerId: id, amount })}
     >
       {isPending ? <Loader2 size={16} className="animate-spin" /> : <CircleDollarSign size={16} />}
-      Pagar
+      {t("pay")}
     </Button>
   );
 }

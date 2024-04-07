@@ -168,7 +168,8 @@
     "installments-count": "Repayment",
     "installment-amount": "Repayment Value",
     "status": "Status",
-    "see-offer": "See offer"
+    "see-offer": "See offer",
+    "pay": "Repay"
   },
   "receivables-page": {
     "title": "Outstanding receivables",
