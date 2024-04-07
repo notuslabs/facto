@@ -60,7 +60,7 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
     }
 
     main();
-  }, [data]);
+  }, [data, offers]);
 
   if (!data) return null;
 

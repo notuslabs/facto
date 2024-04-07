@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge, STATUSES_TO_VARIANTS } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -58,7 +60,7 @@ export default function OffersMobileTable({ offers }: DesktopTableProps) {
     }
 
     main();
-  }, [data]);
+  }, [data, offers]);
 
   const handleOfferInvestmentsClaim = (event: React.MouseEvent, offerId: string) => {
     const id = toast.loading(t("claiming-investments"));
