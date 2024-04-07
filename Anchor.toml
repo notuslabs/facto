@@ -4,15 +4,6 @@
 seeds = true
 skip-lint = false
 
-[programs.localnet]
-hackathon = "75scVLHRmSUY9AEw7PiYtDhA2oZ9qpJpDoUNqiLcEnoW"
-
-[programs.devnet]
-hackathon = "75scVLHRmSUY9AEw7PiYtDhA2oZ9qpJpDoUNqiLcEnoW"
-
-[programs.mainnet]
-hackathon = "factoKTYLrfmqhnwvA9KRuoexnghhTp56YSXoPAVqcW"
-
 [registry]
 url = "https://api.apr.dev"
 
