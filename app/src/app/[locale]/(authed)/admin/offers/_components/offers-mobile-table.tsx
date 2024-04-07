@@ -11,12 +11,16 @@ import {
 import { useFormatNumber } from "@/hooks/number-formatters";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { useOfferInvestmentsClaim } from "@/hooks/use-offer-investments-claim";
+import { useProgram } from "@/hooks/use-program";
 import { Link } from "@/navigation";
 import { Offer } from "@/structs/Offer";
 import { useQueryClient } from "@tanstack/react-query";
 import { CircleDollarSign, ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { PublicKey } from "@solana/web3.js";
+import { Account, getAccount } from "@solana/spl-token";
 
 interface DesktopTableProps {
   offers: Offer[];
@@ -29,6 +33,32 @@ export default function OffersMobileTable({ offers }: DesktopTableProps) {
   const formatDate = useDateFormatter();
   const { mutate: offerInvestmentsClaim } = useOfferInvestmentsClaim();
   const queryClient = useQueryClient();
+  const [balance, setBalance] = useState<(Account | null)[]>();
+  const { data } = useProgram();
+
+  useEffect(() => {
+    async function main() {
+      if (!data) return;
+
+      const vaults = offers.map(async (offer) => {
+        const [offerPubKey] = PublicKey.findProgramAddressSync(
+          [Buffer.from("offer"), Buffer.from(offer.id)],
+          data.program.programId,
+        );
+        const [vault] = PublicKey.findProgramAddressSync(
+          [Buffer.from("offer_vault"), offerPubKey.toBuffer()],
+          data.program.programId,
+        );
+
+        return getAccount(data?.program.provider.connection, vault).catch(() => null);
+      });
+
+      const balances = await Promise.all(vaults);
+      setBalance(balances);
+    }
+
+    main();
+  }, [data]);
 
   const handleOfferInvestmentsClaim = (event: React.MouseEvent, offerId: string) => {
     const id = toast.loading(t("claiming-investments"));
@@ -63,9 +93,13 @@ export default function OffersMobileTable({ offers }: DesktopTableProps) {
     });
   };
 
+  if (!balance) return null;
+
   return (
     <div className="flex flex-col gap-4 md:hidden">
-      {offers.map((offer) => {
+      {offers.map((offer, index) => {
+        const isClaimable = (balance[index]?.amount ?? 0n) > 0n ? true : false;
+
         return (
           <div key={offer.id} className="flex flex-col items-center rounded-lg bg-secondary">
             <Table className="flex flex-col rounded-2xl bg-secondary" key={offer.name}>
@@ -122,6 +156,7 @@ export default function OffersMobileTable({ offers }: DesktopTableProps) {
             </Table>
             <div className="w-full px-4 py-3">
               <Button
+                disabled={!isClaimable}
                 className="w-full disabled:border-disabled disabled:bg-disabled disabled:text-disabled-foreground"
                 onClick={(event) => handleOfferInvestmentsClaim(event, offer.id)}
               >
