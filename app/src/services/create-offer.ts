@@ -52,7 +52,7 @@ export async function createOffer({
     program.programId,
   );
 
-  await program.methods
+  const tx = await program.methods
     .createOffer(
       id,
       description,
@@ -80,7 +80,7 @@ export async function createOffer({
     .rpc({ commitment: "finalized" });
 
   return {
-    tx: offer.toString(),
+    tx,
     id: id,
     offerAddress: offer.toString(),
   };
