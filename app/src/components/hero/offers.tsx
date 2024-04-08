@@ -31,13 +31,13 @@ export function Offers() {
             <ListFilter size={20} /> {t("filter")}
           </Button>
         </div>
-        <Card className="flex flex-col gap-6">
-          <h2 className="bg-back text-medium text-primary md:text-2xl md:font-bold">
-            {t("title")}
-          </h2>
+        <Card className="bg-transparent md:bg-primary-foreground">
+          <div className="flex flex-col gap-6">
+            <h2 className="font-medium text-primary md:text-2xl md:font-bold">{t("title")}</h2>
 
-          <div className="grid grid-cols-3 gap-10">
-            {offers?.map((offer) => <OfferCard key={offer.id} offer={offer} />)}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-10">
+              {offers?.map((offer) => <OfferCard key={offer.id} offer={offer} />)}
+            </div>
           </div>
         </Card>
       </div>

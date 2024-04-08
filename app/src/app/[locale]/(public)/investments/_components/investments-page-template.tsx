@@ -42,6 +42,12 @@ export function InvestmentsPageTemplate({ params }: PageProps<{ locale: string }
         </div>
       </div>
 
+      {investorInvestments.investorInvestments.length === 0 && (
+        <div className="flex h-[300px] items-center justify-center font-medium text-placeholder-foreground">
+          No investment found yet.
+        </div>
+      )}
+
       <InvestmentsMobileTable investments={investorInvestments.investorInvestments} />
       <InvestmentsDesktopTable investments={investorInvestments.investorInvestments} />
     </div>

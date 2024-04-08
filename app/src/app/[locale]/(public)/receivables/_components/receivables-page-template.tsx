@@ -38,6 +38,12 @@ export function ReceivablesPageTemplate({ params }: PageProps<{ locale: string }
         </div>
       </div>
 
+      {data.investorInvestments.length === 0 && (
+        <div className="flex h-[300px] items-center justify-center gap-8 font-medium text-placeholder-foreground">
+          No repayments found yet.
+        </div>
+      )}
+
       <ReceivablesDesktopTable investments={data.investorInvestments} />
       <ReceivablesMobileTable investments={data.investorInvestments} />
     </div>
