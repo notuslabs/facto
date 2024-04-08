@@ -1,11 +1,10 @@
-![facto](https://github.com/notuslabs/notus-wallet/assets/80167149/d46325d3-b389-46de-9ae9-63f68a334632)
+![facto](./app/public/facto.jpg)
 
 # 🏦 Facto - Revolutionizing Credit Markets for SMEs
 
 Facto is an innovative blockchain-based solution aimed at transforming the credit market, especially for small and medium-sized enterprises (SMEs). Facto's decentralized crowdfunding platform eliminates intermediaries, connecting investors directly to companies seeking financing. With a 1.5% annual fee on the total amount financed, Facto aims to reduce the disparity between interest rates charged and received in Brazil, promoting a scenario of mutual gain.
 
-To learn more about Facto, check out our introductory video:
-[Facto Intro Video](https://www.loom.com/share/1b7e92c3e3b74ee39e87177339f17900?sid=3f2ea8be-ef43-4413-95c6-e90ce21c56b2)
+To learn more about Facto, check out our [introductory](https://www.loom.com/share/25f9f47a342549ae804689ef686aa4c2) video and [demo](https://www.loom.com/share/1d140532fc544376a4c555a0ee17cf62).
 
 ## 🔗 Features
 
