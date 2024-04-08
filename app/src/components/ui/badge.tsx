@@ -18,7 +18,7 @@ export const STATUSES_TO_VARIANTS = {
   [OfferStatus.Finished]: "white", // white
   [OfferStatus.Funded]: "green",
   [OfferStatus.OnTrack]: "blue",
-  [OfferStatus.Open]: "white", // white
+  [OfferStatus.Open]: "secondary", // white
   [OfferStatus.StartingSoon]: "white", // white
 } as const;
 
