@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { Link } from "@/navigation";
-import { CircleDollarSign, ExternalLink } from "lucide-react";
+import { CircleDollarSign, ExternalLink, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useFormatNumber } from "@/hooks/number-formatters";
 import { Badge, STATUSES_TO_VARIANTS } from "@/components/ui/badge";
@@ -19,10 +19,11 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { useOfferInvestmentsClaim } from "@/hooks/use-offer-investments-claim";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { PublicKey, Connection } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { useProgram } from "@/hooks/use-program";
 import { Account, getAccount } from "@solana/spl-token";
 import { useEffect, useState } from "react";
+import { ClaimInvestments } from "./claim-investments-button";
 
 interface DesktopTableProps {
   offers: Offer[];
@@ -33,8 +34,6 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
   const tb = useTranslations("offer-status");
   const formatDate = useDateFormatter();
   const formatCurrency = useFormatNumber();
-  const { mutate: offerInvestmentsClaim, isPending: isClaiming } = useOfferInvestmentsClaim();
-  const queryClient = useQueryClient();
   const { data } = useProgram();
   const [balance, setBalance] = useState<(Account | null)[]>();
 
@@ -62,42 +61,7 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
     main();
   }, [data, offers]);
 
-  if (!data) return null;
-
-  const handleOfferInvestmentsClaim = (event: React.MouseEvent, offerId: string) => {
-    const id = toast.loading(t("claiming-investments"));
-
-    offerInvestmentsClaim(offerId, {
-      async onSuccess(data, variables, context) {
-        await Promise.all([
-          queryClient.invalidateQueries({
-            queryKey: ["offers-by-borrower"],
-          }),
-          queryClient.invalidateQueries({
-            queryKey: ["token-accounts"],
-          }),
-        ]);
-        toast.success(t("investments-claimed"), {
-          id,
-          action: (() => (
-            <a
-              href={`https://explorer.solana.com/tx/${data?.signature}?cluster=devnet`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({ variant: "outline" })}
-            >
-              {t("view-transaction")}
-            </a>
-          ))(),
-        });
-      },
-      onError(error, variables, context) {
-        toast.error(error.message, { id });
-      },
-    });
-  };
-
-  if (!balance) return null;
+  if (!data || balance == null) return null;
 
   return (
     <div className="hidden flex-col gap-4 md:flex">
@@ -106,7 +70,7 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
 
         return (
           <div key={offer.id} className="flex items-center rounded-lg bg-secondary">
-            <Table className="rounded-2xl bg-secondary p-4" key={offer.name}>
+            <Table className="rounded-2xl bg-secondary p-4" key={`${offer.name}-${index}-desktop`}>
               <>
                 <TableHeader className="text-xs text-placeholder-foreground">
                   <TableRow>
@@ -156,14 +120,11 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
               </>
             </Table>
             <div className="px-4">
-              <Button
-                disabled={!isClaimable || isClaiming}
-                className="disabled:border-disabled disabled:bg-disabled disabled:text-disabled-foreground"
-                onClick={(event) => handleOfferInvestmentsClaim(event, offer.id)}
-              >
-                <CircleDollarSign size={16} />
-                {t("claim-investments")}
-              </Button>
+              <ClaimInvestments
+                investmentKey={`${offer.id}-${index}`}
+                offerId={offer.id}
+                isClaimable={isClaimable}
+              />
             </div>
           </div>
         );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormatNumber } from "@/hooks/number-formatters";
 import { useBalance } from "@/hooks/use-get-balance";
 import { Link } from "@/navigation";
 import { ArrowUpSquare, Loader2Icon, PlusSquare } from "lucide-react";
@@ -7,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 export default function TransactionsContent() {
   const t = useTranslations("transactions-page");
+  const formatCurrency = useFormatNumber();
   const { data, isPending } = useBalance({ variant: "investor" });
   return (
     <div className="flex h-[582px] flex-col gap-8 rounded-t-3xl bg-primary-foreground px-4 pt-6">
@@ -15,7 +17,9 @@ export default function TransactionsContent() {
         {isPending ? (
           <Loader2Icon className="text-brand-500 animate-spin" size={24} />
         ) : (
-          <span className="text-3xl font-extrabold">$ {data?.formattedBalance ?? "0.00"}</span>
+          <span className="text-3xl font-extrabold">
+            {formatCurrency({ value: data?.formattedBalance ?? 0 })}
+          </span>
         )}
       </div>
 
