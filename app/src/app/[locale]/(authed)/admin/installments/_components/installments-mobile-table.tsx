@@ -29,7 +29,7 @@ export default function InstallmentsMobileTable({ data }: DesktopTableProps) {
         return tableData.installmentsList.map((installment, index) => (
           <div
             className="flex flex-col content-center items-center rounded-2xl bg-secondary"
-            key={`${tableData.name}-${installment.installmentNumber}`}
+            key={`${tableData.name}-${installment.installmentNumber}-mobile`}
           >
             <Table>
               <TableRow className="flex flex-col gap-1 border-b border-border-hover">

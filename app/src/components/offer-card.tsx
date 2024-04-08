@@ -71,22 +71,22 @@ function OfferCardBody({
         </div>
 
         <Progress
-          indicatorColor="bg-facto-primary"
+          indicatorColor="bg-brand-500"
           className="h-2.5 w-full rounded-full dark:bg-primary-foreground"
           value={(amountAcquired / amountToBeAcquired) * 100}
         />
       </div>
       <div className="flex items-center justify-between gap-2 border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
-        <p className="text-sm">{t("project-status")}</p>
+        <p className="text-xs">{t("project-status")}</p>
         <Badge variant={STATUSES_TO_VARIANTS[status]}>{offerStatusT(status)}</Badge>
       </div>
-      <div className="flex items-center justify-between gap-2 border-b border-t border-border-hover bg-secondary px-4 py-[0.625rem]">
-        <p className="text-sm">{t("credit-score")}</p>
+      <div className="flex items-center justify-between gap-2 bg-secondary px-4 py-[0.625rem]">
+        <p className="text-xs">{t("credit-score")}</p>
         {scoreRange != null && <ScoreBadge scoreRange={scoreRange} />}
       </div>
-      <div className="flex items-center justify-between gap-2 border-b border-border-hover bg-secondary px-4 py-[0.625rem]">
-        <p className="text-sm">{t("payment-frequency")}</p>
-        <span className="text-xs font-semibold text-primary">{t("monthly")}</span>
+      <div className="flex items-center justify-between gap-2 bg-secondary px-4 py-[0.625rem] text-xs">
+        <p>{t("payment-frequency")}</p>
+        <span className="font-semibold text-primary">{t("monthly")}</span>
       </div>
     </div>
   );

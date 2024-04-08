@@ -139,7 +139,9 @@
     "status": "Status",
     "see-offer": "Ver oferta",
     "installments": "parcelas",
-    "per-year": "ao ano"
+    "per-year": "ao ano",
+    "no-investments": "Nenhum investimento ainda",
+    "no-investments-description": "Quando investir em uma oferta, ela será exibida aqui"
   },
   "admin-offers": {
     "title": "Minhas Ofertas",
@@ -190,7 +192,9 @@
     "claim": "Resgatar",
     "installment-claimed": "O valor da parcela foi resgatado com sucesso!",
     "view-transaction": "Ver transação",
-    "claiming-installment": "Resgatando parcela..."
+    "claiming-installment": "Resgatando parcela...",
+    "no-repayments": "Sem parcelas a receber",
+    "no-repayments-description": "Suas parcelas a receber serão exibidas aqui"
   },
   "transactions-page": {
     "title": "",
@@ -198,13 +202,13 @@
     "description": "Seus investimentos crescem mais rápido com a",
     "your-balance": "Seu saldo para investimento",
     "withdrawal": "Saque",
-    "mint": "Cunhar"
+    "mint": "Mint"
   },
   "deposit-page": {
     "mint-value": "Valor do depósito",
     "your-balance": "Seu saldo em conta é de ",
-    "disclaimer": "Este é um projeto para um hackathon e estamos usando um token USDC falso. Você pode usar esta interface para cunhar esse token, mas ele não representa nenhum valor financeiro, apenas para fins de demonstração.",
-    "mint": "Cunhar",
+    "disclaimer": "Este é um projeto para um hackathon e estamos usando um token USDC falso. Você pode usar esta interface para fazer o mint do token, mas ele não representa nenhum valor financeiro, apenas para fins de demonstração.",
+    "mint": "Mint",
     "address": "Endereço da transação",
     "address-copied": "Endereço copiado"
   },
@@ -230,7 +234,7 @@
     "claimed": "Resgatado"
   },
   "transactions-dialog": {
-    "mint": "Cunhar",
+    "mint": "Mint",
     "withdrawal": "Saque",
     "description": "Adicione saldo em sua conta para investir",
     "mint-value": "Valor do depósito",
@@ -258,7 +262,7 @@
       "form-fields": {
         "name": "Nome de Originador",
         "name-description": "{chars}/{maxChars} caracteres max",
-        "name-placeholder": "Nome de Investidor",
+        "name-placeholder": "Nome de Originador",
         "token": "Slug do Token",
         "token-description": "{chars}/{maxChars} caracteres max",
         "token-placeholder": "Ex: SLUG",

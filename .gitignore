@@ -7,4 +7,5 @@ node_modules
 test-ledger
 .yarn
 facto-keypair.json
+paymaster-keypair.json
 .env

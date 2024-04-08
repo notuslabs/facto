@@ -15,7 +15,7 @@ export default function TransactionsHeader() {
         <span className="text-lg font-bold">{data?.userInfo?.name}</span>
       </div>
 
-      <div className="flex justify-between rounded-lg bg-facto-primary p-4">
+      <div className="bg-brand-500 flex justify-between rounded-lg p-4">
         <div className="flex w-2/3 flex-col gap-1 text-sm font-medium text-on-color-foreground">
           <span>{t("description")}</span>
           <span className="text-base font-semibold">Facto</span>

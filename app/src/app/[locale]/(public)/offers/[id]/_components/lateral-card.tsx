@@ -40,6 +40,7 @@ export function LateralCard({ offerId }: LateralCardProps) {
         isLoadingBalance={isLoadingBalance}
         offerRemaining={offer.remainingAmount}
         minAmountInvest={offer.minAmountInvest}
+        offerStatus={offer.status}
       />
 
       <div className="rounded-bl-lg rounded-br-lg border bg-primary-foreground">
@@ -66,7 +67,7 @@ export function LateralCard({ offerId }: LateralCardProps) {
         </div>
         <div className="p-4 md:px-6">
           <Progress
-            indicatorColor="bg-facto-primary"
+            indicatorColor="bg-brand-500"
             value={Math.round((offer.acquiredAmount / offer.goalAmount) * 100)}
           />
         </div>

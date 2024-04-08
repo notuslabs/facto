@@ -18,6 +18,7 @@ import { useCreateInvestor } from "@/hooks/use-create-investor";
 import { PublicKey } from "@solana/web3.js";
 import { Loader2 } from "lucide-react";
 import { useSolanaWallet } from "@/hooks/use-solana-wallet";
+import { cn } from "@/lib/utils";
 
 export type NavbarVariant = "investor" | "borrower" | "none";
 
@@ -105,12 +106,13 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
     {
       label: t("transactions"),
       href: "/transactions" as const,
+      className: "lg:hidden block",
     },
   ];
 
   return (
     <nav className="relative w-full py-4 dark:bg-background md:h-[153px] md:pt-8">
-      <div className="absolute -left-[15%] -top-[225%] hidden size-[531px] rounded-full bg-facto-primary opacity-[8%] blur-3xl md:block 2xl:left-0" />
+      <div className="bg-brand-500 absolute -left-[15%] -top-[225%] hidden size-[531px] rounded-full opacity-[8%] blur-3xl md:block 2xl:left-0" />
       <div className="container flex items-center justify-between">
         <div className="z-20 flex items-center gap-12">
           <Link href="/" className="flex items-center justify-start gap-2">
@@ -140,7 +142,10 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="flex flex-col items-center gap-2 text-center text-muted-foreground transition-colors"
+                    className={cn(
+                      "flex flex-col items-center gap-2 text-center text-muted-foreground transition-colors",
+                      link?.className,
+                    )}
                   >
                     {link.label}
                   </Link>
@@ -150,7 +155,7 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
         </div>
 
         <div className="flex items-center justify-end gap-3">
-          {(!data?.userInfo || correctStateVariant === "none") && <LocaleSwitcher />}
+          {!data?.userInfo && correctStateVariant === "none" && <LocaleSwitcher />}
           {!isLoading && correctStateVariant !== "none" && <NavbarWithdrawalButton />}
           {!!data?.userInfo && !isLoading && correctStateVariant !== "none" && (
             <NavbarDepositButton variant={correctStateVariant} />

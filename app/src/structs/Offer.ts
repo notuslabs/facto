@@ -132,7 +132,7 @@ export class Offer {
     }
 
     if (this.acquiredAmount == this.goalAmount) {
-      if (currentTime < deadlineTime && this.totalInstallmentsPaid == 0) {
+      if (currentTime < deadlineTime && !this.totalInstallmentsPaid) {
         return OfferStatus.Funded;
       }
 
@@ -185,11 +185,7 @@ export class Offer {
         status = InstallmentStatus.Paid;
       }
 
-      if (
-        this.totalInstallmentsPaid &&
-        Date.now() > date.getTime() &&
-        installmentNumber > this.totalInstallmentsPaid
-      ) {
+      if (Date.now() > date.getTime() && installmentNumber > (this.totalInstallmentsPaid ?? 0)) {
         status = InstallmentStatus.Overdue;
       }
 
