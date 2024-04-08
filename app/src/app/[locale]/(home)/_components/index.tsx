@@ -44,7 +44,7 @@ export function Opening() {
               <p className="text-lg">
                 The 100% onchain credit marketplace built with{" "}
                 <span className="inline-block bg-gradient-to-r from-[#15D085] via-[#20E69D] to-[#AA66FE] bg-clip-text text-transparent">
-                  Solana Token Extensions
+                  Solana
                 </span>
               </p>
             </>

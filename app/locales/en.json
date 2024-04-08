@@ -2,11 +2,11 @@
   "not-authenticated": "You need to be authenticated",
   "meta-data": {
     "title": "Facto",
-    "description": "The 100% onchain credit marketplace built with Solana Token Extensions"
+    "description": "The 100% onchain credit marketplace built with Solana"
   },
   "opening-page": {
     "title": "Borrow or lend money at better rates with Facto",
-    "description": "The 100% onchain credit marketplace built with Solana Token Extensions",
+    "description": "The 100% onchain credit marketplace built with Solana",
     "investor-title": "I'm an INVESTOR",
     "investor-description": "And want to see offers",
     "borrower-title": "I'm a BORROWER",
