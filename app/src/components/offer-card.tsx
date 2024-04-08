@@ -71,7 +71,7 @@ function OfferCardBody({
         </div>
 
         <Progress
-          indicatorColor="bg-facto-primary"
+          indicatorColor="bg-brand-500"
           className="h-2.5 w-full rounded-full dark:bg-primary-foreground"
           value={(amountAcquired / amountToBeAcquired) * 100}
         />

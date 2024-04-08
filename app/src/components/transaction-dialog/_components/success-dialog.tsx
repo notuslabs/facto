@@ -24,7 +24,7 @@ export default function SuccessDialog({
     <div className="relative mx-auto flex w-[355px] flex-col gap-12 sm:w-[451px]">
       <DialogHeader className="pt-[60.5px]">
         <DialogTitle className="flex flex-col items-center gap-2">
-          <CheckCircle2 size={46.67} className="text-facto-primary" strokeWidth={2} />
+          <CheckCircle2 size={46.67} className="text-brand-500" strokeWidth={2} />
           {t(`title-${type}`)}
         </DialogTitle>
       </DialogHeader>

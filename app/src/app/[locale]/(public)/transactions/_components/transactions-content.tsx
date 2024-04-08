@@ -13,7 +13,7 @@ export default function TransactionsContent() {
       <div className="flex flex-col items-center justify-center gap-1 text-center">
         <span className="text-xs text-muted-foreground">{t("your-balance")}</span>
         {isPending ? (
-          <Loader2Icon className="animate-spin text-facto-primary" size={24} />
+          <Loader2Icon className="text-brand-500 animate-spin" size={24} />
         ) : (
           <span className="text-3xl font-extrabold">$ {data?.formattedBalance ?? "0.00"}</span>
         )}
@@ -24,7 +24,7 @@ export default function TransactionsContent() {
           href="/transactions/deposit"
           className="flex flex-col items-center gap-2 rounded-2xl border border-border-hover p-8 dark:bg-[#252529]"
         >
-          <PlusSquare size={24} className="text-facto-primary" />
+          <PlusSquare size={24} className="text-brand-500" />
           <span className="text-lg font-medium">{t("mint")}</span>
         </Link>
 
@@ -32,7 +32,7 @@ export default function TransactionsContent() {
           href="/transactions/withdrawal"
           className="flex flex-col items-center gap-2 rounded-2xl border border-border-hover p-8 dark:bg-[#252529]"
         >
-          <ArrowUpSquare size={24} className="text-facto-primary" />
+          <ArrowUpSquare size={24} className="text-brand-500" />
           <span className="text-lg font-medium">{t("withdrawal")}</span>
         </Link>
       </div>
