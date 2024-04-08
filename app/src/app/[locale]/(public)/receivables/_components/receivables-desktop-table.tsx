@@ -38,7 +38,7 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
           return (
             <div
               className="flex items-center rounded-lg bg-secondary"
-              key={installment.installmentNumber}
+              key={`${installment.installmentNumber}-${index}-desktop`}
             >
               <Table>
                 <>

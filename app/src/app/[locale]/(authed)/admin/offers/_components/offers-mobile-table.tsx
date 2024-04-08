@@ -68,7 +68,10 @@ export default function OffersMobileTable({ offers }: DesktopTableProps) {
 
         return (
           <div key={offer.id} className="flex flex-col items-center rounded-lg bg-secondary">
-            <Table className="flex flex-col rounded-2xl bg-secondary" key={offer.name}>
+            <Table
+              className="flex flex-col rounded-2xl bg-secondary"
+              key={`${offer.name}-${index}-mobile`}
+            >
               <TableRow className="flex flex-col gap-1 border-b border-border-hover">
                 <TableHeader className="flex justify-between text-xs text-placeholder-foreground">
                   <TableHead className="h-4 pt-3">{t("offer-name")}</TableHead>

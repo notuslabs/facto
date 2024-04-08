@@ -26,8 +26,11 @@ export default function InvestmentsDesktopTable({ investments }: DesktopTablePro
 
   return (
     <div className="hidden flex-col gap-4 md:flex">
-      {investments.map((investment) => (
-        <Table className="rounded-2xl bg-secondary p-4" key={investment.offer.name}>
+      {investments.map((investment, index) => (
+        <Table
+          className="rounded-2xl bg-secondary p-4"
+          key={`${investment.offer.name}-${index}-desktop`}
+        >
           <>
             <TableHeader className="text-xs text-placeholder-foreground">
               <TableRow>
@@ -45,8 +48,12 @@ export default function InvestmentsDesktopTable({ investments }: DesktopTablePro
             <TableBody className="text-sm font-medium">
               <TableRow>
                 <TableCell className="pb-3 pt-2">{investment.offer.name}</TableCell>
-                <TableCell className="pb-3 pt-2">{investment.offer.acquiredAmount}</TableCell>
-                <TableCell className="pb-3 pt-2">{investment.offer.goalAmount}</TableCell>
+                <TableCell className="pb-3 pt-2">
+                  {formatCurrency({ value: investment.offer.acquiredAmount })}
+                </TableCell>
+                <TableCell className="pb-3 pt-2">
+                  {formatCurrency({ value: investment.offer.goalAmount })}
+                </TableCell>
                 <TableCell className="pb-3 pt-2">
                   {formatCurrency({ value: investment.totalInvested })}
                 </TableCell>

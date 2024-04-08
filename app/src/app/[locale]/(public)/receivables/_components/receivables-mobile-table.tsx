@@ -36,7 +36,7 @@ export default function ReceivablesMobileTable({ investments }: MobileTableProps
             installmentsReceived === installment.installmentNumber;
 
           return (
-            <div key={installment.installmentNumber} className="bg-secondary">
+            <div key={`${installment.installmentNumber}-${index}-desktop`} className="bg-secondary">
               <Table className="flex flex-col rounded-2xl bg-secondary">
                 <TableRow className="flex items-center justify-between border-b border-border-hover">
                   <TableHeader className="text-xs text-placeholder-foreground">

@@ -70,7 +70,7 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
 
         return (
           <div key={offer.id} className="flex items-center rounded-lg bg-secondary">
-            <Table className="rounded-2xl bg-secondary p-4" key={offer.name}>
+            <Table className="rounded-2xl bg-secondary p-4" key={`${offer.name}-${index}-desktop`}>
               <>
                 <TableHeader className="text-xs text-placeholder-foreground">
                   <TableRow>

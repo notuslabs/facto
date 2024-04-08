@@ -29,7 +29,7 @@ export default function InstallmentssDesktopTable({ data }: DesktopTableProps) {
         return tableData.installmentsList.map((installment, index) => (
           <div
             className="flex content-center items-center rounded-2xl bg-secondary"
-            key={`${tableData.name}-${installment.installmentNumber}`}
+            key={`${tableData.name}-${installment.installmentNumber}-desktop`}
           >
             <Table className="p-4">
               <>
