@@ -1,7 +1,6 @@
 import { DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
 import { useBalance } from "@/hooks/use-get-balance";
-import { useProgram } from "@/hooks/use-program";
 import SuccessDialog from "./_components/success-dialog";
 import { useWithdrawal } from "@/hooks/use-withdrawal";
 import { useDeposit } from "@/hooks/use-deposit";
@@ -14,9 +13,9 @@ import { z } from "zod";
 import copy from "copy-to-clipboard";
 import { toast } from "sonner";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { formatNumber } from "@/lib/format-number";
 import { Input } from "@/components/ui/input";
 import { useTokenAccounts } from "@/hooks/use-token-accounts";
+import { useFormatNumber } from "@/hooks/number-formatters";
 
 interface TransactionDialogProps {
   type: "deposit" | "withdrawal";
@@ -34,7 +33,7 @@ const DepositSchema = z.object({
 export default function TransactionDialog({ type, variant }: TransactionDialogProps) {
   const t = useTranslations("transactions-dialog");
   const { data: balance } = useBalance({ variant });
-  const { data } = useProgram();
+  const formatCurrency = useFormatNumber();
   const { data: tokenAccounts } = useTokenAccounts();
   const {
     mutate: withdrawal,
@@ -147,7 +146,7 @@ export default function TransactionDialog({ type, variant }: TransactionDialogPr
                     <span>
                       {t("your-balance")}{" "}
                       <span className="font-bold">
-                        {formatNumber(balance?.formattedBalance ?? 0)}
+                        {formatCurrency({ value: balance?.formattedBalance ?? 0 })}
                       </span>
                     </span>
                   </form>
