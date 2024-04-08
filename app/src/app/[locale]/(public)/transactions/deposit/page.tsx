@@ -14,10 +14,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDeposit } from "@/hooks/use-deposit";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
-import { formatNumber } from "@/lib/format-number";
 import { useTokenAccounts } from "@/hooks/use-token-accounts";
 import SuccessDialog from "@/components/transaction-dialog/_components/success-dialog";
 import { Dialog } from "@/components/ui/dialog";
+import { useFormatNumber } from "@/hooks/number-formatters";
 
 const DepositSchema = z.object({
   amount: z.number().positive().int(),
@@ -29,10 +29,10 @@ export default function TransactionsDepositPage() {
     isPending: isDepositPending,
     isSuccess,
     data: transactionHash,
-    reset,
   } = useDeposit();
   const { data, isPending } = useBalance({ variant: "investor" });
   const { data: tokenAccounts } = useTokenAccounts();
+  const formatCurrency = useFormatNumber();
   const t = useTranslations("deposit-page");
   const form = useForm<z.infer<typeof DepositSchema>>({
     resolver: zodResolver(DepositSchema),
@@ -104,7 +104,7 @@ export default function TransactionsDepositPage() {
                       <span>
                         {t("your-balance")}{" "}
                         <span className="font-bold">
-                          {formatNumber(data?.formattedBalance ?? 0)}
+                          {formatCurrency({ value: data?.formattedBalance ?? 0 })}
                         </span>
                       </span>
                     </form>
