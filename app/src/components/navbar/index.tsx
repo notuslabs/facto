@@ -18,6 +18,7 @@ import { useCreateInvestor } from "@/hooks/use-create-investor";
 import { PublicKey } from "@solana/web3.js";
 import { Loader2 } from "lucide-react";
 import { useSolanaWallet } from "@/hooks/use-solana-wallet";
+import { cn } from "@/lib/utils";
 
 export type NavbarVariant = "investor" | "borrower" | "none";
 
@@ -105,6 +106,7 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
     {
       label: t("transactions"),
       href: "/transactions" as const,
+      className: "lg:hidden block",
     },
   ];
 
@@ -140,7 +142,10 @@ export function Navbar({ variant = "investor" }: NavbarProps) {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="flex flex-col items-center gap-2 text-center text-muted-foreground transition-colors"
+                    className={cn(
+                      "flex flex-col items-center gap-2 text-center text-muted-foreground transition-colors",
+                      link?.className,
+                    )}
                   >
                     {link.label}
                   </Link>
