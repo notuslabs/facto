@@ -2,7 +2,7 @@
 
 # 🏦 Facto - Revolutionizing Credit Markets for SMEs
 
-Facto is an innovative blockchain-based solution aimed at transforming the credit market, especially for small and medium-sized enterprises (SMEs). Facto's decentralized crowdfunding platform eliminates intermediaries, connecting investors directly to companies seeking financing. With a 1.5% annual fee on the total amount financed, Facto aims to reduce the disparity between interest rates charged and received in Brazil, promoting a scenario of mutual gain.
+Facto is a decentralized credit platform built 100% onchain, directly connecting institutional borrowers and investors through crowdfunding and tokenization, eliminating the need for intermediaries. Unlike typical DeFi platforms that struggle with complex onboarding, Facto ensures straightforward onboarding for both lenders and borrowers.
 
 To learn more about Facto, check out our [introductory](https://www.loom.com/share/25f9f47a342549ae804689ef686aa4c2) video and [demo](https://www.loom.com/share/1d140532fc544376a4c555a0ee17cf62).
 
@@ -13,8 +13,6 @@ To learn more about Facto, check out our [introductory](https://www.loom.com/sha
 - **Transparent Tokenization**: Experience transparent tokenization of financing, ensuring clarity and security throughout the funding process.
 
 - **Efficient Crowdfunding Platform**: Facto provides an efficient crowdfunding platform, connecting investors directly with businesses in need of funding, reducing unnecessary intermediaries and streamlining the financing process.
-
-- **Secure Authentication**: Benefit from secure authentication mechanisms, ensuring the safety of user accounts and transactions within the Facto platform.
 
 ## 💻 Technologies Used
 
@@ -61,13 +59,13 @@ $ solana-test-validator
 $ solana-keygen pubkey paymaster-keypair.json
 
 # Get airdrop for paymaster
-$ solana airdrop 100 <paymaster pub key>
+$ solana airdrop 100 <paymaster pub key> --url l
 
 # Get airdrop for yourself
-$ solana airdrop 100
+$ solana airdrop 100 --url l
 
 # Create fake mint token and copy the Address on output and add it on app/.env.local NEXT_PUBLIC_FAKE_MINT_ADDRESS
-$ spl-token create-token --decimals 6 --owner <paymaster pub key> --fee-payer paymaster-keypair.json
+$ spl-token create-token --decimals 6 --owner <paymaster pub key> --fee-payer paymaster-keypair.json --url l
 
 # Deploy program
 $ npm run deploy
