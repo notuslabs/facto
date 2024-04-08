@@ -40,6 +40,7 @@ export function LateralCard({ offerId }: LateralCardProps) {
         isLoadingBalance={isLoadingBalance}
         offerRemaining={offer.remainingAmount}
         minAmountInvest={offer.minAmountInvest}
+        offerStatus={offer.status}
       />
 
       <div className="rounded-bl-lg rounded-br-lg border bg-primary-foreground">
