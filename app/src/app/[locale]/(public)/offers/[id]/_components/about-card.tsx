@@ -26,6 +26,7 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
   const formatPercent = useFormatPercent();
   const format = useDateFormatter();
   const t = useTranslations("offer-page.about-borrower");
+  const tb = useTranslations("offer-status");
 
   const otherOffers = allOffers.filter((offer) => offer.id !== offerId);
 
@@ -92,7 +93,7 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
               <TableCell>{formatNumber({ value: offer.goalAmount })}</TableCell>
               <TableCell>{format(offer.installmentsEndDate, "P")}</TableCell>
               <TableCell className="text-right">
-                <Badge variant={STATUSES_TO_VARIANTS[offer.status]}>{offer.status}</Badge>
+                <Badge variant={STATUSES_TO_VARIANTS[offer.status]}>{tb(offer.status)}</Badge>
               </TableCell>
             </TableRow>
           ))}
