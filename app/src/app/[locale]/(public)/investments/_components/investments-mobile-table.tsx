@@ -26,8 +26,11 @@ export default function InvestmentsMobileTable({ investments }: DesktopTableProp
 
   return (
     <div className="flex flex-col gap-4 md:hidden">
-      {investments.map((investment) => (
-        <Table className="flex flex-col rounded-2xl bg-secondary" key={investment.offer.name}>
+      {investments.map((investment, index) => (
+        <Table
+          className="flex flex-col rounded-2xl bg-secondary"
+          key={`${investment.offer.name}-${index}-mobile`}
+        >
           <TableRow className="flex flex-col gap-1 border-b border-border-hover">
             <TableHeader className="flex justify-between text-xs text-placeholder-foreground">
               <TableHead className="h-4 pt-3">{t("offer-name")}</TableHead>

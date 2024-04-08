@@ -3,7 +3,7 @@
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import DisclaimerCard from "@/components/disclaimer-card";
 import { useBalance } from "@/hooks/use-get-balance";
-import { ArrowUpSquare, ClipboardCopy, Loader2, Loader2Icon, PlusSquare } from "lucide-react";
+import { ArrowUpSquare, ClipboardCopy, Loader2, Loader2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import GoBackButton from "../_components/go-back-button";
 import { toast } from "sonner";
@@ -13,12 +13,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
-import { formatNumber } from "@/lib/format-number";
 import { useWithdrawal } from "@/hooks/use-withdrawal";
-import { useProgram } from "@/hooks/use-program";
 import { useTokenAccounts } from "@/hooks/use-token-accounts";
 import SuccessDialog from "@/components/transaction-dialog/_components/success-dialog";
 import { Dialog } from "@/components/ui/dialog";
+import { useFormatNumber } from "@/hooks/number-formatters";
 
 const WithdrawalSchema = z.object({
   amount: z.number().positive().int(),
@@ -26,8 +25,8 @@ const WithdrawalSchema = z.object({
 
 export default function TransactionsDepositPage() {
   const { data: balance, isPending } = useBalance({ variant: "investor" });
-  const { data: programa } = useProgram();
   const { data: tokenAccounts } = useTokenAccounts();
+  const formatCurrency = useFormatNumber();
   const {
     mutate: withdrawal,
     isPending: isWithdrawalPending,
@@ -106,7 +105,7 @@ export default function TransactionsDepositPage() {
                       <span>
                         {t("your-balance")}{" "}
                         <span className="font-bold">
-                          {formatNumber(balance?.formattedBalance ?? 0)}
+                          {formatCurrency({ value: balance?.formattedBalance ?? 0 })}
                         </span>
                       </span>
                     </form>

@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { useFormatNumber } from "@/hooks/number-formatters";
 import { useInvest } from "@/hooks/use-invest";
+import { OfferStatus } from "@/structs/Offer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, HelpingHand, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -39,6 +40,7 @@ type LateralCardProps = {
   offerRemaining: number;
   minAmountInvest?: number;
   isLoadingBalance: boolean;
+  offerStatus: OfferStatus;
 };
 
 export function LateralCardForm({
@@ -47,6 +49,7 @@ export function LateralCardForm({
   isLoadingBalance,
   offerRemaining,
   minAmountInvest,
+  offerStatus,
 }: LateralCardProps) {
   const { mutate: invest, isPending: isInvesting } = useInvest();
   const formatNumber = useFormatNumber();
@@ -178,7 +181,7 @@ export function LateralCardForm({
             type="submit"
             variant="outline"
             className="w-full hover:bg-subtle"
-            disabled={isInvesting}
+            disabled={isInvesting || offerStatus !== OfferStatus.Open}
           >
             {t("invest-now")}
             {isInvesting ? (

@@ -1,5 +1,4 @@
 import { Badge, installmentStatusToVariant } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,74 +8,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useFormatNumber } from "@/hooks/number-formatters";
-import { useClaimInstallment } from "@/hooks/use-claim-installment";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
-import { useProgram } from "@/hooks/use-program";
 import { Investment } from "@/structs/Investment";
 import { InstallmentStatus } from "@/structs/Offer";
-import { useQueryClient } from "@tanstack/react-query";
-import { CircleDollarSign } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
+import { ClaimReceivable } from "./claim-receivable-button";
 
 interface ReceivableDesktopTableProps {
   investments: Investment[];
 }
 
 export default function ReceivablesDesktopTable({ investments }: ReceivableDesktopTableProps) {
-  const { mutate } = useClaimInstallment();
   const t = useTranslations("receivables-page");
   const tb = useTranslations("badges");
   const formatDate = useDateFormatter();
   const formatCurrency = useFormatNumber();
-  const queryClient = useQueryClient();
-  const { data } = useProgram();
-
-  const handleInstallmentClaim = async (
-    event: React.MouseEvent<HTMLButtonElement>,
-    offerId: string,
-  ) => {
-    event.currentTarget.disabled = true;
-
-    const id = toast.loading(t("claiming-installment"));
-
-    mutate(offerId, {
-      async onSuccess(tx, variables, context) {
-        await Promise.all([
-          queryClient.invalidateQueries({
-            queryKey: ["investor-investments", data?.keypair.publicKey.toString()],
-          }),
-          queryClient.invalidateQueries({
-            queryKey: ["token-accounts"],
-          }),
-        ]);
-
-        toast.success(t("installment-claimed"), {
-          action: (() => (
-            <a
-              href={`https://explorer.solana.com/tx/${tx}?cluster=devnet`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({ variant: "outline" })}
-            >
-              {t("view-transaction")}
-            </a>
-          ))(),
-          id,
-        });
-      },
-      onError(error, variables, context) {
-        toast.error(error.message, {
-          id,
-        });
-        event.currentTarget.disabled = true;
-      },
-    });
-  };
 
   return (
     <div className="hidden flex-col gap-4 md:flex">
-      {investments.map((investment) => {
+      {investments.map((investment, index) => {
         return investment.offer.installmentsList.map((installment) => {
           let installmentsReceived = investment.installmentsReceived
             ? investment.installmentsReceived + 1
@@ -88,7 +38,7 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
           return (
             <div
               className="flex items-center rounded-lg bg-secondary"
-              key={installment.installmentNumber}
+              key={`${installment.installmentNumber}-${index}-desktop`}
             >
               <Table>
                 <>
@@ -123,14 +73,11 @@ export default function ReceivablesDesktopTable({ investments }: ReceivableDeskt
                 </>
               </Table>
               <div className="px-4">
-                <Button
-                  disabled={!isAbleToClaim}
-                  className="disabled:border-disabled disabled:bg-disabled disabled:text-disabled-foreground"
-                  onClick={(event) => handleInstallmentClaim(event, investment.offer.id)}
-                >
-                  <CircleDollarSign size={16} />
-                  {t("claim")}
-                </Button>
+                <ClaimReceivable
+                  offerId={investment.offer.id}
+                  isAbleToClaim={isAbleToClaim}
+                  investmentKey={`${investment.offer.id}-${index}`}
+                />
               </div>
             </div>
           );
