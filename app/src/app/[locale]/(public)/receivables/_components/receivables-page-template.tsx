@@ -7,6 +7,7 @@ import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import ReceivablesDesktopTable from "./receivables-desktop-table";
 import ReceivablesMobileTable from "./receivables-mobile-table";
+import ReceiptIllustration from "@/components/illustrations/receipt-illustration";
 
 export function ReceivablesPageTemplate({ params }: PageProps<{ locale: string }>) {
   const t = useTranslations("receivables-page");
@@ -39,8 +40,12 @@ export function ReceivablesPageTemplate({ params }: PageProps<{ locale: string }
       </div>
 
       {data.investorInvestments.length === 0 && (
-        <div className="flex h-[300px] items-center justify-center gap-8 font-medium text-placeholder-foreground">
-          No repayments found yet.
+        <div className="flex h-[403px] flex-col items-center justify-center gap-4">
+          <ReceiptIllustration />
+          <div className="flex flex-col items-center justify-center gap-1 text-placeholder-foreground">
+            <span className="text-base text-primary">{t("no-repayments")}</span>
+            <span className="text-sm">{t("no-repayments-description")}</span>
+          </div>
         </div>
       )}
 

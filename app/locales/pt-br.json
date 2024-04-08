@@ -139,7 +139,9 @@
     "status": "Status",
     "see-offer": "Ver oferta",
     "installments": "parcelas",
-    "per-year": "ao ano"
+    "per-year": "ao ano",
+    "no-investments": "Nenhum investimento ainda",
+    "no-investments-description": "Quando investir em uma oferta, ela será exibida aqui"
   },
   "admin-offers": {
     "title": "Minhas Ofertas",
@@ -190,7 +192,9 @@
     "claim": "Resgatar",
     "installment-claimed": "O valor da parcela foi resgatado com sucesso!",
     "view-transaction": "Ver transação",
-    "claiming-installment": "Resgatando parcela..."
+    "claiming-installment": "Resgatando parcela...",
+    "no-repayments": "Sem parcelas a receber",
+    "no-repayments-description": "Suas parcelas a receber serão exibidas aqui"
   },
   "transactions-page": {
     "title": "",

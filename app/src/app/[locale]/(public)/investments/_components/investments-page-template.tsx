@@ -7,6 +7,8 @@ import { useTranslations } from "next-intl";
 import { useInvestorInvestments } from "@/hooks/use-investor-investments";
 import { PageProps } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { HandCardMoney } from "@/components/illustrations/hand-card-money";
+import HandMoney from "@/components/illustrations/hand-money";
 
 export function InvestmentsPageTemplate({ params }: PageProps<{ locale: string }>) {
   const { data: investorInvestments } = useInvestorInvestments();
@@ -43,8 +45,12 @@ export function InvestmentsPageTemplate({ params }: PageProps<{ locale: string }
       </div>
 
       {investorInvestments.investorInvestments.length === 0 && (
-        <div className="flex h-[300px] items-center justify-center font-medium text-placeholder-foreground">
-          No investment found yet.
+        <div className="flex h-[403px] flex-col items-center justify-center gap-4">
+          <HandMoney />
+          <div className="flex flex-col items-center justify-center gap-1 text-placeholder-foreground">
+            <span className="text-base text-primary">{t("no-investments")}</span>
+            <span className="text-sm">{t("no-investments-description")}</span>
+          </div>
         </div>
       )}
 

@@ -139,7 +139,9 @@
     "status": "Status",
     "see-offer": "See offer",
     "installments": "repayments",
-    "per-year": "per year"
+    "per-year": "per year",
+    "no-investments": "No investments yet",
+    "no-investments-description": "When you invest in an offer, it will be displayed here"
   },
   "admin-offers": {
     "title": "My Offers",
@@ -190,7 +192,9 @@
     "claim": "Claim",
     "installment-claimed": "Repayment successfully claimed",
     "view-transaction": "View transaction",
-    "claiming-installment": "Claiming installment..."
+    "claiming-installment": "Claiming installment...",
+    "no-repayments": "No repayments yet",
+    "no-repayments-description": "Your repayments will be shown here"
   },
   "transactions-page": {
     "title": "",
