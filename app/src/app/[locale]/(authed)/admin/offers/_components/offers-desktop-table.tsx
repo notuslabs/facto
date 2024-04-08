@@ -33,7 +33,7 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
   const tb = useTranslations("offer-status");
   const formatDate = useDateFormatter();
   const formatCurrency = useFormatNumber();
-  const { mutate: offerInvestmentsClaim } = useOfferInvestmentsClaim();
+  const { mutate: offerInvestmentsClaim, isPending: isClaiming } = useOfferInvestmentsClaim();
   const queryClient = useQueryClient();
   const { data } = useProgram();
   const [balance, setBalance] = useState<(Account | null)[]>();
@@ -74,7 +74,7 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
             queryKey: ["offers-by-borrower"],
           }),
           queryClient.invalidateQueries({
-            queryKey: ["balance"],
+            queryKey: ["token-accounts"],
           }),
         ]);
         toast.success(t("investments-claimed"), {
@@ -157,7 +157,7 @@ export default function OffersDesktopTable({ offers }: DesktopTableProps) {
             </Table>
             <div className="px-4">
               <Button
-                disabled={!isClaimable}
+                disabled={!isClaimable || isClaiming}
                 className="disabled:border-disabled disabled:bg-disabled disabled:text-disabled-foreground"
                 onClick={(event) => handleOfferInvestmentsClaim(event, offer.id)}
               >

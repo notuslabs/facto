@@ -1,0 +1,98 @@
+![facto](https://github.com/notuslabs/notus-wallet/assets/80167149/d46325d3-b389-46de-9ae9-63f68a334632)
+
+# 🏦 Facto - Revolutionizing Credit Markets for SMEs
+
+Facto is an innovative blockchain-based solution aimed at transforming the credit market, especially for small and medium-sized enterprises (SMEs). Facto's decentralized crowdfunding platform eliminates intermediaries, connecting investors directly to companies seeking financing. With a 1.5% annual fee on the total amount financed, Facto aims to reduce the disparity between interest rates charged and received in Brazil, promoting a scenario of mutual gain.
+
+To learn more about Facto, check out our introductory video:
+[Facto Intro Video](https://www.loom.com/share/1b7e92c3e3b74ee39e87177339f17900?sid=3f2ea8be-ef43-4413-95c6-e90ce21c56b2)
+
+## 🔗 Features
+
+- **User-Centric Experience**: Facto ensures a seamless and intuitive funding journey, offering an accessible interface designed to cater to users of all backgrounds, whether they're investors or businesses, regardless of their familiarity with blockchain technology.
+
+- **Transparent Tokenization**: Experience transparent tokenization of financing, ensuring clarity and security throughout the funding process.
+
+- **Efficient Crowdfunding Platform**: Facto provides an efficient crowdfunding platform, connecting investors directly with businesses in need of funding, reducing unnecessary intermediaries and streamlining the financing process.
+
+- **Secure Authentication**: Benefit from secure authentication mechanisms, ensuring the safety of user accounts and transactions within the Facto platform.
+
+## 💻 Technologies Used
+
+Facto is built with the following technologies:
+
+- **Solana**: Solana is a fast and low-cost blockchain platform for decentralized apps and crypto-currencies, known for its high transaction speed thanks to its unique consensus mechanism. It's ideal for scalable blockchain applications.
+
+- **Anchor**: Anchor simplifies building smart contracts on Solana with a framework that makes development safer and more efficient. It offers easy APIs, integrated testing, and solutions for common challenges, aiming to streamline the development process.
+
+- **Next/React**: Next.js enhances React apps with features like server-side rendering and static site generation, making web development faster and more efficient. It combines React's component-based architecture with performance optimizations for a better developer and user experience.
+
+- **Web3Auth**: Web3Auth offers passwordless authentication for blockchain apps, improving security and user experience with one-click logins using blockchain technology. It simplifies access to decentralized applications by eliminating traditional login hurdles.
+
+## 📥 Getting Started
+
+### Install Depencies:
+
+- Rust: https://www.rust-lang.org/tools/install
+- Solana: https://docs.solanalabs.com/cli/install (Make sure to install the 1.18.8 version)
+- Anchor: https://www.anchor-lang.com/docs/installation#anchor
+
+### To get started with Facto:
+
+```bash
+$ git clone https://github.com/notuslabs/facto
+```
+
+```bash
+# Installing general dependencies
+$ npm install
+
+# Generate new key pair for the program
+$ solana-keygen new -o facto-keypair.json
+
+# Generate new key pair for the paymaster
+$ solana-keygen new -o paymaster-keypair.json
+
+# Copy the paymaster-keypair.json to app/.env.local PAYMASTER_PRIVATE_KEY without "[]" equal app/.env.local.example
+
+# Run solana test validator
+$ solana-test-validator
+
+# Copy paymaster pub key
+$ solana-keygen pubkey paymaster-keypair.json
+
+# Get airdrop for paymaster
+$ solana airdrop 100 <paymaster pub key>
+
+# Get airdrop for yourself
+$ solana airdrop 100
+
+# Create fake mint token and copy the Address on output and add it on app/.env.local NEXT_PUBLIC_FAKE_MINT_ADDRESS
+$ spl-token create-token --decimals 6 --owner <paymaster pub key> --fee-payer paymaster-keypair.json
+
+# Deploy program
+$ npm run deploy
+
+# Enter front-end folder
+$ cd app/
+
+# Installing front-end dependencies
+$ npm install
+
+# Running the application
+$ npm run dev
+
+# Make sure you have all environment variables
+```
+
+### Run tests:
+
+```bash
+$ npm install
+
+$ npm run test
+```
+
+## License
+
+© [2024] [NotusLabs]. All rights reserved. [LICENSE](LICENSE.txt).
