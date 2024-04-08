@@ -4,7 +4,7 @@ use state::*;
 #[macro_use]
 extern crate dotenv_codegen;
 
-declare_id!("factoKTYLrfmqhnwvA9KRuoexnghhTp56YSXoPAVqcW");
+declare_id!(pubkey::str_to_pubkey(dotenv!("FACTO_PROGRAM_ID")));
 
 pub mod instructions;
 pub mod pubkey;
