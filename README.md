@@ -6,13 +6,9 @@ Facto is a decentralized credit platform built 100% onchain, directly connecting
 
 To learn more about Facto, check out our [introductory](https://www.loom.com/share/25f9f47a342549ae804689ef686aa4c2) video and [demo](https://www.loom.com/share/1d140532fc544376a4c555a0ee17cf62).
 
-## 🔗 Features
+## 🗺️ Diagram
 
-- **User-Centric Experience**: Facto ensures a seamless and intuitive funding journey, offering an accessible interface designed to cater to users of all backgrounds, whether they're investors or businesses, regardless of their familiarity with blockchain technology.
-
-- **Transparent Tokenization**: Experience transparent tokenization of financing, ensuring clarity and security throughout the funding process.
-
-- **Efficient Crowdfunding Platform**: Facto provides an efficient crowdfunding platform, connecting investors directly with businesses in need of funding, reducing unnecessary intermediaries and streamlining the financing process.
+![](assets/facto_diagram.png)
 
 ## 💻 Technologies Used
 
