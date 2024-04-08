@@ -1,3 +1,4 @@
+import { Badge, STATUSES_TO_VARIANTS } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -90,7 +91,9 @@ export function AboutCard({ offerId, name, description, allOffers }: AboutCardPr
               <TableCell>{offer.name}</TableCell>
               <TableCell>{formatNumber({ value: offer.goalAmount })}</TableCell>
               <TableCell>{format(offer.installmentsEndDate, "P")}</TableCell>
-              <TableCell className="text-right">{offer.status}</TableCell>
+              <TableCell className="text-right">
+                <Badge variant={STATUSES_TO_VARIANTS[offer.status]}>{offer.status}</Badge>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

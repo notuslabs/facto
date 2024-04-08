@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge, installmentStatusToVariant } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useFormatNumber } from "@/hooks/number-formatters";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { InstallmentsList } from "@/structs/Offer";
 import { useTranslations } from "next-intl";
@@ -21,11 +22,16 @@ export function ReceptionCronogram({
   installmentsList,
 }: ReceptionCronogramProps) {
   const format = useDateFormatter();
+  const formatCurrency = useFormatNumber();
   const t = useTranslations("offer-page.income-schedule");
   const tr = useTranslations("badges");
   const installments = installmentsList.map((installment) => ({
     ...installment,
-    status: <Badge variant="secondary">{tr(installment.status)}</Badge>,
+    status: (
+      <Badge variant={installmentStatusToVariant[installment.status]}>
+        {tr(installment.status)}
+      </Badge>
+    ),
   }));
 
   return (
@@ -50,7 +56,7 @@ export function ReceptionCronogram({
               <TableCell>
                 {tableData.installmentNumber}/{installmentsCount}
               </TableCell>
-              <TableCell>{tableData.amount}</TableCell>
+              <TableCell>{formatCurrency({ value: tableData.amount })}</TableCell>
               <TableCell className="text-right">{tableData.status}</TableCell>
             </TableRow>
           ))}
