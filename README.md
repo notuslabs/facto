@@ -1,4 +1,4 @@
-![facto](./app/public/facto.jpg)
+![facto](https://github.com/notuslabs/facto/assets/35041924/2a2d25ad-ddb9-43c0-82e8-52c04ec10ad0)
 
 # 🏦 Facto - Revolutionizing Credit Markets for SMEs
 
