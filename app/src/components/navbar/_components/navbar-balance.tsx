@@ -19,13 +19,13 @@ export function NavbarBalance({ variant }: NavbarBalanceProps) {
 
   return (
     <span className="inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-      <WalletCards size={24} className="text-facto-primary" />
+      <WalletCards size={24} className="text-brand-500" />
       <div className="flex flex-col">
         <span className="font-regular text-start text-xs text-muted-foreground">
           {t("balance")}
         </span>
         {isPending ? (
-          <Loader2Icon className="animate-spin text-facto-primary" size={16} />
+          <Loader2Icon className="text-brand-500 animate-spin" size={16} />
         ) : (
           <span>{formatNumber({ value: data?.formattedBalance ?? 0 })}</span>
         )}

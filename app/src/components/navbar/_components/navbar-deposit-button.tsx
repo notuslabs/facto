@@ -20,7 +20,7 @@ export function NavbarDepositButton({ variant }: NavbarDepositProps) {
         {" "}
         <Button variant="secondary" className="hidden gap-2 rounded-md lg:flex">
           {t("deposit")}
-          <PlusSquare size={20} className="text-facto-primary" />
+          <PlusSquare size={20} className="text-brand-500" />
         </Button>
       </DialogTrigger>
       <DialogContent className="border-0">

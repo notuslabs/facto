@@ -138,12 +138,17 @@
     --input-hover-border: #d4d4d8;
     --ring: #3b82f6;
 
-    --facto-primary-green: #A3DE10;
-
     --radius: 0.5rem;
 
-    --facto-primary-green: #A3DE10;
-    --facto-secondary-green: #E0FF92;
+    --brand-primary-50: #f7fde7;
+    --brand-primary-100: #edfbcb;
+    --brand-primary-200: #def89b;
+    --brand-primary-300: #ccf467;
+    --brand-primary-400: #baf032;
+    --brand-primary-500: #a3de10;
+    --brand-primary-600: #82b00d;
+    --brand-primary-700: #62850a;
+    --brand-pirmary-800: #475e0a;
   }
 
   .dark {
@@ -286,8 +291,15 @@
     --input-hover-border: #3f3f46;
     --ring: #3b82f6;
 
-    --facto-primary-green: #A3DE10;
-    --facto-secondary-green: #E0FF92;
+    --brand-primary-50: #f7fde7;
+    --brand-primary-100: #edfbcb;
+    --brand-primary-200: #def89b;
+    --brand-primary-300: #ccf467;
+    --brand-primary-400: #baf032;
+    --brand-primary-500: #a3de10;
+    --brand-primary-600: #82b00d;
+    --brand-primary-700: #62850a;
+    --brand-pirmary-800: #475e0a;
   }
 }
 
@@ -307,5 +319,9 @@
   }
   input[type="number"] {
     -moz-appearance: textfield;
+  }
+
+  .brand-primary-gradient {
+    @apply from-brand-500 bg-gradient-to-r to-[#e0ff92];
   }
 }

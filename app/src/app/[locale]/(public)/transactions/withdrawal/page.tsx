@@ -74,7 +74,7 @@ export default function TransactionsDepositPage() {
               <div className="flex flex-col gap-3 text-xs">
                 {t("withdrawal-value")}
                 {isPending ? (
-                  <Loader2Icon className="animate-spin text-facto-primary" size={24} />
+                  <Loader2Icon className="text-brand-500 animate-spin" size={24} />
                 ) : (
                   <Form {...form}>
                     <form className="flex flex-col gap-1" onSubmit={form.handleSubmit(onSubmit)}>

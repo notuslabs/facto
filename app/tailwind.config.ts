@@ -38,9 +38,16 @@ const config = {
         "9xl": ["6.75rem", { lineHeight: "12rem" }],
       },
       colors: {
-        facto: {
-          primary: "var(--facto-primary-green)",
-          secondary: "var(--facto-secondary-green)",
+        brand: {
+          50: "var(--brand-primary-50)",
+          100: "var(--brand-primary-100)",
+          200: "var(--brand-primary-200)",
+          300: "var(--brand-primary-300)",
+          400: "var(--brand-primary-400)",
+          500: "var(--brand-primary-500)",
+          600: "var(--brand-primary-600)",
+          700: "var(--brand-primary-700)",
+          800: "var(--brand-primary-800)",
         },
         success: {
           foreground: "var(--success-foreground)",
