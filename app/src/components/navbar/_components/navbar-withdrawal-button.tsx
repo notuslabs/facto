@@ -15,8 +15,7 @@ export function NavbarWithdrawalButton() {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        {" "}
+      <DialogTrigger asChild>
         <Button variant="secondary" className="hidden gap-2 rounded-md lg:flex">
           {t("withdrawal")}
           <ArrowUpSquare size={20} className="text-brand-500" />
